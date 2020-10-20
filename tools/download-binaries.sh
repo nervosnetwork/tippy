@@ -4,7 +4,6 @@ CKB_VERSION=$(cat .ckb-version)
 ROOT_DIR=$(pwd) # Be sure to run this from root directory!
 
 function download_ckb_macos() {
-  # macOS
   CKB_FILENAME="ckb_${CKB_VERSION}_x86_64-apple-darwin"
   cd $ROOT_DIR/bin/mac
 
@@ -17,7 +16,6 @@ function download_ckb_macos() {
 }
 
 function download_ckb_linux() {
-  # Linux
   CKB_FILENAME="ckb_${CKB_VERSION}_x86_64-unknown-linux-gnu"
   cd $ROOT_DIR/bin/linux
 
@@ -30,9 +28,7 @@ function download_ckb_linux() {
 }
 
 function download_ckb_windows() {
-  # Windows
   CKB_FILENAME="ckb_${CKB_VERSION}_x86_64-pc-windows-msvc"
-  cd $ROOT_DIR/packages/neuron-wallet/bin/win
   cd $ROOT_DIR/bin/win
 
   curl -O -L "https://github.com/nervosnetwork/ckb/releases/download/${CKB_VERSION}/${CKB_FILENAME}.zip"
