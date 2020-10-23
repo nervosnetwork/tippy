@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Core", "src\Tippy.Core\Tippy.Core.csproj", "{70B123CA-9A21-46C3-8D56-3286AB65D176}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Ctrl", "src\Tippy.Ctrl\Tippy.Ctrl.csproj", "{60120ACF-B4A9-4D49-8962-D448233CA6C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tippy", "src\Tippy\Tippy.csproj", "{F8EFA320-C229-44BA-8877-8578671B504D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70B123CA-9A21-46C3-8D56-3286AB65D176}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70B123CA-9A21-46C3-8D56-3286AB65D176}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70B123CA-9A21-46C3-8D56-3286AB65D176}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70B123CA-9A21-46C3-8D56-3286AB65D176}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60120ACF-B4A9-4D49-8962-D448233CA6C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60120ACF-B4A9-4D49-8962-D448233CA6C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60120ACF-B4A9-4D49-8962-D448233CA6C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60120ACF-B4A9-4D49-8962-D448233CA6C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8EFA320-C229-44BA-8877-8578671B504D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8EFA320-C229-44BA-8877-8578671B504D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8EFA320-C229-44BA-8877-8578671B504D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8EFA320-C229-44BA-8877-8578671B504D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08BF23BE-7259-4673-A227-6480B6DF808C}
+	EndGlobalSection
+EndGlobal
