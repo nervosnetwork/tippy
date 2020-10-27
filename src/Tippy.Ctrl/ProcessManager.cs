@@ -79,8 +79,7 @@ namespace Tippy.Ctrl
 
         static string BinaryFullPath(string binary)
         {
-            var path = BinDepsDirectory().Concat(new[] { BinaryFileName(binary) }).ToArray();
-            return Path.Combine(path);
+            return Path.Combine(Path.Combine(BinDepsDirectory()), binary);
         }
 
         static string[] BinDepsDirectory()
@@ -96,15 +95,6 @@ namespace Tippy.Ctrl
             }
 
             return new[] { AppContext.BaseDirectory, "BinDeps", platformFolder };
-        }
-
-        private static string BinaryFileName(string binary)
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return binary + ".exe";
-            }
-            return binary;
         }
     }
 }
