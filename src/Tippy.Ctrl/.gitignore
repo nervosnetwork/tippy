@@ -1,6 +1,1 @@
-!BinDeps/linux
-BinDeps/linux/*
-!BinDeps/mac
-BinDeps/mac/*
-!BinDeps/win
-BinDeps/win/*
+BinDeps/
