@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Tippy.Core;
+using Tippy.Ctrl;
 
 namespace Tippy.Controllers
 {

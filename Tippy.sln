@@ -7,7 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Core", "src\Tippy.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Ctrl", "src\Tippy.Ctrl\Tippy.Ctrl.csproj", "{60120ACF-B4A9-4D49-8962-D448233CA6C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tippy", "src\Tippy\Tippy.csproj", "{F8EFA320-C229-44BA-8877-8578671B504D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy", "src\Tippy\Tippy.csproj", "{F8EFA320-C229-44BA-8877-8578671B504D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{60120ACF-B4A9-4D49-8962-D448233CA6C1} = {60120ACF-B4A9-4D49-8962-D448233CA6C1}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

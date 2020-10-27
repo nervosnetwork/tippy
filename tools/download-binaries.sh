@@ -5,7 +5,7 @@ ROOT_DIR=$(pwd) # Be sure to run this from root directory!
 
 function download_ckb_macos() {
   CKB_FILENAME="ckb_${CKB_VERSION}_x86_64-apple-darwin"
-  cd $ROOT_DIR/bin/mac
+  cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/mac
 
   curl -O -L "https://github.com/nervosnetwork/ckb/releases/download/${CKB_VERSION}/${CKB_FILENAME}.zip"
   unzip ${CKB_FILENAME}.zip
@@ -17,7 +17,7 @@ function download_ckb_macos() {
 
 function download_ckb_linux() {
   CKB_FILENAME="ckb_${CKB_VERSION}_x86_64-unknown-linux-gnu"
-  cd $ROOT_DIR/bin/linux
+  cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
 
   curl -O -L "https://github.com/nervosnetwork/ckb/releases/download/${CKB_VERSION}/${CKB_FILENAME}.tar.gz"
   tar xvzf ${CKB_FILENAME}.tar.gz
@@ -29,7 +29,7 @@ function download_ckb_linux() {
 
 function download_ckb_windows() {
   CKB_FILENAME="ckb_${CKB_VERSION}_x86_64-pc-windows-msvc"
-  cd $ROOT_DIR/bin/win
+  cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/win
 
   curl -O -L "https://github.com/nervosnetwork/ckb/releases/download/${CKB_VERSION}/${CKB_FILENAME}.zip"
   unzip ${CKB_FILENAME}.zip

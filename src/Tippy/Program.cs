@@ -1,18 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Tippy.Ctrl;
 
 namespace Tippy
 {
     public class Program
     {
         public static void Main(string[] args)
-        {
+        { 
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnAppExit);
+            Core.Environment.CreateAppDataFolder();
+            ProcessManager.Start();
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -22,5 +21,11 @@ namespace Tippy
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        static void OnAppExit(object sender, EventArgs e)
+        {
+            Console.WriteLine("Exiting Tippy...");
+            ProcessManager.Stop();
+        }
     }
 }

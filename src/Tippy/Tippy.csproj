@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tippy.Core\Tippy.Core.csproj" />
+    <ProjectReference Include="..\Tippy.Ctrl\Tippy.Ctrl.csproj" />
   </ItemGroup>
 
 
