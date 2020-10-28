@@ -8,15 +8,18 @@ namespace Tippy.Ctrl
 {
     public class ProcessManager
     {
-        static Process ckbProcess = null;
+        static Process ckbProcess;
+        static Process indexerProcess;
 
         public static void Start()
         {
             StartCkb();
+            StartIndexer();
         }
 
         public static void Stop()
         {
+            StopIndexer();
             StopCkb();
         }
 
@@ -70,6 +73,40 @@ namespace Tippy.Ctrl
             process.StartInfo.Arguments = "init";
             process.Start();
             process.WaitForExit();
+        }
+
+        public static void StartIndexer()
+        {
+            indexerProcess = new Process();
+            indexerProcess.StartInfo.UseShellExecute = false;
+            indexerProcess.StartInfo.FileName = BinaryFullPath("ckb-indexer");
+            indexerProcess.StartInfo.WorkingDirectory = WorkingDirectory();
+            indexerProcess.StartInfo.Arguments = "-s indexer-data";
+
+            indexerProcess.StartInfo.RedirectStandardOutput = true;
+            indexerProcess.StartInfo.RedirectStandardError = true;
+
+            indexerProcess.OutputDataReceived += (sender, e) =>
+            {
+                Console.WriteLine(e.Data);
+            };
+
+            indexerProcess.Exited += (sender, e) =>
+            {
+                Console.WriteLine("Unable to start process");
+            };
+
+            indexerProcess.Start();
+            indexerProcess.BeginOutputReadLine();
+        }
+
+        public static void StopIndexer()
+        {
+            if (indexerProcess != null)
+            {
+                indexerProcess.Kill();
+                indexerProcess.WaitForExit();
+            }
         }
 
         static string WorkingDirectory()
