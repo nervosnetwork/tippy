@@ -11,7 +11,7 @@ namespace Tippy.Ctrl.Process
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.FileName = BinaryFullPath("ckb");
             process.StartInfo.WorkingDirectory = WorkingDirectory();
-            process.StartInfo.Arguments = "minder";
+            process.StartInfo.Arguments = "miner";
 
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
