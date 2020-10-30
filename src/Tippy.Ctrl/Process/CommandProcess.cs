@@ -42,7 +42,7 @@ namespace Tippy.Ctrl.Process
 
             process.ErrorDataReceived += (sender, e) =>
             {
-                Console.WriteLine(e.Data);
+                Console.Error.WriteLine(e.Data);
             };
         }
 
