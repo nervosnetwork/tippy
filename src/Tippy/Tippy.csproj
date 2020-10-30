@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <ExternalConsole>true</ExternalConsole>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tippy.Core\Tippy.Core.csproj" />
     <ProjectReference Include="..\Tippy.Ctrl\Tippy.Ctrl.csproj" />
