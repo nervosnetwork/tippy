@@ -9,6 +9,7 @@
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</Content>
     <Folder Include="Properties\" />
+    <Folder Include="Process\" />
   </ItemGroup>
 
   <ItemGroup>
