@@ -12,19 +12,6 @@ namespace Tippy.Ctrl.Process
             process.StartInfo.FileName = BinaryFullPath("ckb");
             process.StartInfo.WorkingDirectory = WorkingDirectory();
             process.StartInfo.Arguments = "miner";
-
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-
-            process.OutputDataReceived += (sender, e) =>
-            {
-                Console.WriteLine(e.Data);
-            };
-
-            process.Exited += (sender, e) =>
-            {
-                Console.WriteLine("Unable to start process");
-            };
         }
     }
 }

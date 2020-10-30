@@ -15,8 +15,10 @@ namespace Tippy.Ctrl.Process
             if (process == null)
             {
                 Configure();
+                HandleOutput();
             }
             process.Start();
+            process.BeginErrorReadLine();
             process.BeginOutputReadLine();
         }
 
@@ -29,17 +31,32 @@ namespace Tippy.Ctrl.Process
             }
         }
 
-        protected string WorkingDirectory()
-        {
-            return Tippy.Core.Environment.GetAppDataFolder();
+        protected void HandleOutput() {
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+
+            process.OutputDataReceived += (sender, e) =>
+            {
+                Console.WriteLine(e.Data);
+            };
+
+            process.ErrorDataReceived += (sender, e) =>
+            {
+                Console.WriteLine(e.Data);
+            };
         }
 
-        protected string BinaryFullPath(string binary)
+        protected static string BinaryFullPath(string binary)
         {
             return Path.Combine(Path.Combine(BinDepsDirectory()), binary);
         }
 
-        protected string[] BinDepsDirectory()
+        protected static string WorkingDirectory()
+        {
+            return Tippy.Core.Environment.GetAppDataFolder();
+        }
+
+        protected static string[] BinDepsDirectory()
         {
             var platformFolder = "win";
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
