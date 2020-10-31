@@ -12,6 +12,17 @@ namespace Tippy.Ctrl.Process
         abstract protected void Configure();
 
         public void Start() {
+            if (!Directory.Exists(WorkingDirectory())) {
+                try
+                {
+                    Directory.CreateDirectory(WorkingDirectory());
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail($"Failed to create folder {ex}");
+                }
+            }
+
             if (process == null)
             {
                 Configure();
@@ -46,14 +57,14 @@ namespace Tippy.Ctrl.Process
             };
         }
 
+        protected static string WorkingDirectory()
+        {
+            return Path.Combine(Core.Environment.GetAppDataFolder(), "devchain");
+        }
+
         protected static string BinaryFullPath(string binary)
         {
             return Path.Combine(Path.Combine(BinDepsDirectory()), binary);
-        }
-
-        protected static string WorkingDirectory()
-        {
-            return Tippy.Core.Environment.GetAppDataFolder();
         }
 
         protected static string[] BinDepsDirectory()
