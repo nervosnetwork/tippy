@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Tippy.Core;
-using Tippy.Ctrl;
 
 namespace Tippy.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class HomeController : ControllerBase
+    [Route("/")]
+    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -20,6 +17,12 @@ namespace Tippy.Controllers
             _logger = logger;
         }
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        /*
         [HttpGet]
         public IEnumerable<Block> Get()
         {
@@ -30,6 +33,6 @@ namespace Tippy.Controllers
                 Height = index,
             })
             .ToArray();
-        }
+        }*/
     }
 }
