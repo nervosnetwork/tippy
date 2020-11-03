@@ -25,7 +25,6 @@ namespace Tippy
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddSpaStaticFiles(configuration =>
@@ -42,15 +41,21 @@ namespace Tippy
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
 
             app.UseStaticFiles();
-
             app.UseSpaStaticFiles();
+
+            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                // endpoints.MapControllers();
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapFallbackToController("Index", "Home");
             });
 
             app.UseSpa(spa =>
@@ -59,7 +64,9 @@ namespace Tippy
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    // Do not start ClientApp.
+                    // spa.UseReactDevelopmentServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });
         }

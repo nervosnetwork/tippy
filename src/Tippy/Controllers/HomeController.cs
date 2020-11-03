@@ -7,7 +7,7 @@ using Tippy.Core;
 
 namespace Tippy.Controllers
 {
-    [Route("/")]
+    [Route("/home")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
