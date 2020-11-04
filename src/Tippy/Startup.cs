@@ -55,7 +55,7 @@ namespace Tippy
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
 
-                endpoints.MapFallbackToController("Index", "Home");
+                // endpoints.MapFallbackToController("Index", "Home");
             });
 
             app.UseSpa(spa =>
