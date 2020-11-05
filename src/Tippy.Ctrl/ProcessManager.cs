@@ -16,7 +16,7 @@ namespace Tippy.Ctrl
                 node = new Process.NodeProcess();
             }
             node.Start();
-            System.Threading.Tasks.Task.Delay(3000).Wait(); // Give change for the RPC to get ready
+            System.Threading.Tasks.Task.Delay(2000).Wait(); // Give change for the RPC to get ready
 
             if (miner == null)
             {

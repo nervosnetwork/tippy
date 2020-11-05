@@ -1,0 +1,20 @@
+﻿{
+  "data": {
+    "id": "1559555643",
+    "type": "index_statistic",
+    "attributes": {
+      "tip_block_number": "29795",
+      "average_block_time": 20000,
+      "current_epoch_difficulty": 10024,
+      "hash_rate": "1.562224830086230946",
+      "epoch_info": {
+        "epoch_number": "10",
+        "epoch_length": "1000",
+        "index": "100"
+      },
+      "estimated_epoch_time": "24988300",
+      "transactions_last_24hrs": "100",
+      "transactions_count_per_minute": "9.77"
+    }
+  }
+}

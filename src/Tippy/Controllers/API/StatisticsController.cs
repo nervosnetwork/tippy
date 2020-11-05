@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using Tippy.MockApiData;
 
 namespace Tippy.Controllers.API
 {
@@ -12,24 +8,21 @@ namespace Tippy.Controllers.API
     public class StatisticsController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<int> Index()
+        public ActionResult Index()
         {
-            // TODO
-            return new [] { 1, 2, 3 };
+            return Ok(Loader.JsonFromFile("Statistics"));
         }
 
         [HttpGet("blockchain_info")]
-        public IEnumerable<int> BlockChainInfo()
+        public ActionResult BlockChainInfo()
         {
-            // TODO
-            return new [] { 1, 2, 3 };
+            return Ok(Loader.JsonFromFile("BlockchainInfo"));
         }
 
         [HttpGet("tip_block_number")]
-        public IEnumerable<int> TipBlockNumber()
+        public ActionResult TipBlockNumber()
         {
-            // TODO
-            return new [] { 1, 2, 3 };
+            return Ok(Loader.JsonFromFile("TipBlockNumber"));
         }
     }
 }

@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using Tippy.MockApiData;
 
 namespace Tippy.Controllers.API
 {
@@ -12,10 +8,9 @@ namespace Tippy.Controllers.API
     public class TransactionsController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<int> Index()
+        public ActionResult Index()
         {
-            // TODO
-            return new [] { 1, 2, 3 };
+            return Ok(Loader.JsonFromFile("Transactions"));
         }
     }
 }

@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Tippy.Core;
+﻿using Microsoft.AspNetCore.Mvc;
+using Tippy.MockApiData;
 
 namespace Tippy.Controllers.API
 {
@@ -13,16 +8,9 @@ namespace Tippy.Controllers.API
     public class BlocksController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<Block> Index()
+        public ActionResult Index()
         {
-            // TODO
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Block
-            {
-                Date = DateTime.Now.AddDays(index),
-                Height = index,
-            })
-            .ToArray();
+            return Ok(Loader.JsonFromFile("Blocks"));
         }
     }
 }
