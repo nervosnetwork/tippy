@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Text.Json;
 using Ckb.Rpc;
 using Tippy.MockApiData;
 using Tippy.ApiData;
+
+using Attributes = System.Collections.Generic.Dictionary<string, object>;
 
 namespace Tippy.Controllers.API
 {
@@ -24,7 +24,7 @@ namespace Tippy.Controllers.API
             var response = rpc.GetBlockchainInfo();
             var result = new Result(
                 new Data("statistic",
-                    new Dictionary<string, object>()
+                    new Attributes()
                     {
                         ["blockchain_info"] = response
                     })
@@ -39,7 +39,7 @@ namespace Tippy.Controllers.API
             var response = rpc.GetTipBlockNumber();
             var result = new Result(
                 new Data("statistic_info",
-                    new Dictionary<string, object>()
+                    new Attributes()
                     {
                         ["tip_block_number"] = response
                     })

@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
+
+using Attributes = System.Collections.Generic.Dictionary<string, object>;
 
 namespace Tippy.ApiData
 {
@@ -25,7 +26,7 @@ namespace Tippy.ApiData
         {
         }
 
-        public Data(string type, Dictionary<string, object> attrs)
+        public Data(string type, Attributes attrs)
         {
             Type = type;
             Attributes = attrs;
@@ -38,6 +39,6 @@ namespace Tippy.ApiData
         public string Type { get; set; } = "";
 
         [JsonPropertyName("attributes")]
-        public Dictionary<string, object> Attributes { get; set; }
+        public Attributes Attributes { get; set; }
     }
 }
