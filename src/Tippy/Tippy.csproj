@@ -16,6 +16,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Tippy.Core\Tippy.Core.csproj" />
     <ProjectReference Include="..\Tippy.Ctrl\Tippy.Ctrl.csproj" />
+    <ProjectReference Include="..\Ckb.Rpc\Ckb.Rpc.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 
 
@@ -24,6 +27,7 @@
     <Folder Include="Views\Home\" />
     <Folder Include="Views\Shared\" />
     <Folder Include="MockApiData\" />
+    <Folder Include="ApiData\" />
   </ItemGroup>
 
   <ItemGroup>

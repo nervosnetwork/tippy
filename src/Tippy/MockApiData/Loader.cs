@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Tippy.MockApiData
 {
@@ -18,7 +18,7 @@ namespace Tippy.MockApiData
         internal static string JsonFromFile(string filename)
         {
             var content = LoadFile(filename);
-            return JsonConvert.SerializeObject(JsonConvert.DeserializeObject(content));
+            return content;
         }
     }
 }
