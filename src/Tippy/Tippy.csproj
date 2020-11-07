@@ -14,6 +14,13 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>TRACE;DEBUG;NET;NET5_0;NETCOREAPP;RAZOR_RUNTIMECOMPILATIION</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tippy.Core\Tippy.Core.csproj" />
     <ProjectReference Include="..\Tippy.Ctrl\Tippy.Ctrl.csproj" />
@@ -32,15 +39,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0-rc.2.20475.17" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.0-rc.2.20475.17" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0-rc.2.20475.17" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains(RAZOR_RUNTIMECOMPILATIION))">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0-rc.2.20475.17" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
-    <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     <Content Remove="MockApiData\Blocks.json" />
     <Content Remove="MockApiData\BlockchainInfo.json" />
