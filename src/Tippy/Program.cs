@@ -8,7 +8,7 @@ namespace Tippy
     public class Program
     {
         public static void Main(string[] args)
-        { 
+        {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnAppExit);
             Core.Environment.CreateAppDataFolder();
             ProcessManager.Start();

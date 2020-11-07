@@ -11,23 +11,16 @@ namespace Tippy.Ctrl
         public static void Start()
         {
             Console.WriteLine("Starting child processes...");
-            if (node == null)
-            {
-                node = new Process.NodeProcess();
-            }
+            node ??= new Process.NodeProcess();
             node.Start();
-            System.Threading.Tasks.Task.Delay(2000).Wait(); // Give change for the RPC to get ready
+            // Wait for the RPC to get ready.
+            // A better approach would be to catch ckb output to make sure it's already listening.
+            System.Threading.Tasks.Task.Delay(1000).Wait();
 
-            if (miner == null)
-            {
-                miner = new Process.MinerProcess();
-            }
+            miner ??= new Process.MinerProcess();
             miner.Start();
 
-            if (indexer == null)
-            {
-                indexer = new Process.IndexerProcess();
-            }
+            indexer ??= new Process.IndexerProcess();
             indexer.Start();
             Console.WriteLine("Started child processes.");
         }
