@@ -8,6 +8,7 @@
   <ItemGroup>
 	<Content Include="BinDeps\**">
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
     <Folder Include="Properties\" />
     <Folder Include="Process\" />
