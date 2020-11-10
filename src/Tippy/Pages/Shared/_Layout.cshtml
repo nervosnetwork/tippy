@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <style>
+        html, body { height: 100%; }
+    </style>
+</head>
+<body>
+    <header>
+        <a asp-page="Home">Home</a>
+        <a asp-page="/Explorer">Explorer</a>
+    </header>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

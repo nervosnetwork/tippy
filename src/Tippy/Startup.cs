@@ -20,10 +20,10 @@ namespace Tippy
         public void ConfigureServices(IServiceCollection services)
         {
 #if RAZOR_RUNTIMECOMPILATIION
-            services.AddControllersWithViews()
+            services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
 #else
-            services.AddControllersWithViews();
+            services.AddRazorPages();
 #endif
 
             services.AddSpaStaticFiles(configuration =>
@@ -49,6 +49,7 @@ namespace Tippy
             app.UseEndpoints(endpoints =>
             {
                 // endpoints.MapControllers();
+                endpoints.MapRazorPages();
 
                 endpoints.MapControllerRoute(
                     name: "default",

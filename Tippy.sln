@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy", "src\Tippy\Tippy.cs
 		{60120ACF-B4A9-4D49-8962-D448233CA6C1} = {60120ACF-B4A9-4D49-8962-D448233CA6C1}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ckb.Rpc", "src\Ckb.Rpc\Ckb.Rpc.csproj", "{CBD74B04-FD67-4E27-A7C3-C0B72D774632}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Rpc", "src\Ckb.Rpc\Ckb.Rpc.csproj", "{CBD74B04-FD67-4E27-A7C3-C0B72D774632}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
