@@ -20,7 +20,7 @@ namespace Tippy.TagHelpers
             var tagRoute = context.AllAttributes["asp-page"]?.Value.ToString();
             var className = currentRoute == tagRoute ? "is-active" : "";
 
-            var tag = new TagBuilder("a");
+            TagBuilder tag = new ("a");
             tag.Attributes.Add("class", className);
             output.MergeAttributes(tag);
         }
