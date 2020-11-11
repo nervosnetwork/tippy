@@ -1,0 +1,30 @@
+﻿html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+.container.main-container {
+    padding: 0;
+}
+
+.main-columns {
+    margin: 0;
+}
+
+.side-menu-container {
+    height: 100vh;
+}
+
+.side-menu {
+    width: 280px;
+}
+
+.explorer-container {
+    border: none;
+    height: 100vh;
+    width: calc(100% + 1.5rem);
+    margin: -0.75rem;
+}

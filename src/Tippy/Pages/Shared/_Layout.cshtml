@@ -5,17 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/bulma.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <style>
-        html, body { height: 100%; }
     </style>
 </head>
 <body>
-    <header>
-        <a asp-page="Home">Home</a>
-        <a asp-page="/Explorer">Explorer</a>
-    </header>
-    <div>
-        @RenderBody()
+    <div class="container is-fluid main-container">
+        <div class="columns main-columns">
+            <div class="column is-narrow side-menu-container has-background-light">
+                <aside class="menu side-menu mt-6">
+                  <p class="menu-label">
+                    General
+                  </p>
+                  <ul class="menu-list">
+                    <li><a href="/home" class="@Html.ActiveClass("/Home")">Dashboard</a></li>
+                    <li><a href="/explorer" class="@Html.ActiveClass("/Explorer")">Explorer</a></li>
+                  </ul>
+                  <p class="menu-label">
+                    Configuration
+                  </p>
+                  <ul class="menu-list">
+                    <li><a>TODO</a></li>
+                  </ul>
+                </aside>
+            </div>
+
+            <div class="column">
+                @RenderBody()
+            </div>
+        </div>
     </div>
 </body>
 </html>
