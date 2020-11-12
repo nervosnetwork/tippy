@@ -46,10 +46,8 @@ namespace Tippy.Ctrl.Process
         }
 
         static string LockArg()
-        { 
-            // TODO: read from user config for Block Assembler
-            var lockArg = "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7";
-            return lockArg;
+        {
+            return Core.Settings.BlockAssembler.LockArg;
         }
 
         static string ChainSpec()
@@ -64,9 +62,8 @@ namespace Tippy.Ctrl.Process
         {
             get
             {
-                var assembly = Assembly.GetExecutingAssembly();
                 var resourceName = "Tippy.Ctrl.ChainSpecTemplate.txt";
-                using Stream stream = assembly.GetManifestResourceStream(resourceName);
+                using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
                 using StreamReader reader = new StreamReader(stream);
                 return reader.ReadToEnd();
             }
