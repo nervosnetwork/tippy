@@ -47,7 +47,7 @@ namespace Tippy.Ctrl.Process
 
         static string LockArg()
         {
-            return Core.Settings.BlockAssembler.LockArg;
+            return Core.Settings.GetSettings().BlockAssembler.LockArg;
         }
 
         static string ChainSpec()

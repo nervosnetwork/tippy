@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Settings.json" />
+    <None Remove="settings.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Settings.json" />

@@ -1,40 +1,51 @@
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
-using System.Text.Json.Serialization;
 using System.Reflection;
 using System.IO;
+using System.Text.Json;
 
 namespace Tippy.Core
 {
     public class Settings
     {
-        private static Lazy<IConfiguration> Configuration = new Lazy<IConfiguration>(() =>
+        private static Settings Singleton;
+        public static Settings GetSettings()
         {
-            if (!File.Exists(FilePath))
+            if (Singleton == null)
             {
-                SaveText(SettingsTemplate);
+                if (!File.Exists(FilePath))
+                {
+                    SaveJson(SettingsTemplate);
+                }
+
+                Singleton = new();
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(Environment.GetAppDataFolder())
+                    .AddJsonFile("settings.json", false, true)
+                    .Build();
+                config.Bind(Singleton);
+                    
             }
 
-            var builder = new ConfigurationBuilder()
-              .SetBasePath(Environment.GetAppDataFolder())
-              .AddJsonFile("settings.json", false, true);
-
-            return builder.Build();
-        });
-
-        private static IConfiguration Config => Configuration.Value;
-
-        public static BlockAssembler BlockAssembler => Config.GetSection("blockAssembler").Get<BlockAssembler>();
-
-        static void Save()
-        { 
-            // TODO
+            return Singleton;
         }
 
-        static void SaveText(string text)
+        public BlockAssembler BlockAssembler { get; set; }
+
+        public void Save()
         {
-            File.WriteAllText(FilePath, text);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            var json = JsonSerializer.Serialize(GetSettings(), options);
+            SaveJson(json);
+        }
+
+        static void SaveJson(string json)
+        {
+            File.WriteAllText(FilePath, json);
         }
 
         private static string FilePath = Path.Combine(Environment.GetAppDataFolder(), "settings.json");
@@ -45,7 +56,7 @@ namespace Tippy.Core
             {
                 var resourceName = "Tippy.Core.Settings.json";
                 using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-                using StreamReader reader = new StreamReader(stream);
+                using StreamReader reader = new(stream);
                 return reader.ReadToEnd();
             }
         }
@@ -53,7 +64,6 @@ namespace Tippy.Core
 
     public class BlockAssembler
     {
-        [JsonPropertyName("lockArg")]
-        public String LockArg { get; set; }
+        public string LockArg { get; set; }
     }
 }
