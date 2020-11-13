@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using System.Reflection;
+using System.Globalization;
 
 namespace Tippy.Ctrl.Process
 {
@@ -53,7 +54,7 @@ namespace Tippy.Ctrl.Process
         static string ChainSpec()
         {
             var spec = ChainSpecTemplate;
-            spec = spec.Replace("[GENESIS_CELL_MESSAGE]", "ckb_dev_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
+            spec = spec.Replace("[GENESIS_CELL_MESSAGE]", "ckb_dev_" + DateTime.Now.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture));
             var bytes = Encoding.UTF8.GetBytes(spec);
             return Convert.ToBase64String(bytes);
         }
