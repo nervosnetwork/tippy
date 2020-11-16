@@ -15,9 +15,36 @@
 }
 
 <form method="post">
-    <div class="field is-grouped">
-        <div class="control">
-            <button class="button is-link">Restart node</button>
+    @if (Model.IsNodeRunning)
+    {
+        <div class="field is-grouped">
+            <div class="control">
+                <div class="tags has-addons">
+                    <span class="tag is-dark">Node</span>
+                    <span class="tag is-success">running</span>
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-link is-small" asp-page-handler="Restart">Restart node</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="field is-grouped">
+            <div class="control">
+                <div class="tags has-addons">
+                    <span class="tag is-dark">Node</span>
+                    <span class="tag is-danger">stopped</span>
+                </div>
+            </div>
+        </div>
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-link is-small" asp-page-handler="Start">Start node</button>
+            </div>
+        </div>
+    }
 </form>

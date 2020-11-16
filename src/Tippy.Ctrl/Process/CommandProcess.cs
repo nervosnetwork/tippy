@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -10,6 +10,19 @@ namespace Tippy.Ctrl.Process
         protected System.Diagnostics.Process process;
 
         abstract protected void Configure();
+
+        public bool IsRunning
+        {
+            get
+            {
+                if (process != null && !process.HasExited)
+                {
+                    process.Refresh();
+                    return process.Responding;
+                }
+                return false;
+            }
+        }
 
         public void Start() {
             if (!Directory.Exists(WorkingDirectory())) {
@@ -23,11 +36,11 @@ namespace Tippy.Ctrl.Process
                 }
             }
 
-            if (process == null)
-            {
-                Configure();
-                HandleOutput();
-            }
+            Stop();
+
+            Configure();
+            HandleOutput();
+
             process.Start();
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();

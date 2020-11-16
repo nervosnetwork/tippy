@@ -8,6 +8,14 @@ namespace Tippy.Ctrl
         static Process.CommandProcess miner;
         static Process.CommandProcess indexer;
 
+        public static bool IsRunning
+        {
+            get
+            {
+                return node?.IsRunning ?? false;
+            }
+        }
+
         public static void Start()
         {
             Console.WriteLine("Starting child processes...");

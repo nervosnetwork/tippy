@@ -12,15 +12,32 @@ namespace Tippy.Pages
         [TempData]
         public string Message { get; set; }
 
+        public bool IsNodeRunning { get; set; }
+
         public void OnGet()
         {
+            IsNodeRunning = Ctrl.ProcessManager.IsRunning;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            Message = "";
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostRestartAsync()
+        {
             Ctrl.ProcessManager.Restart();
 
             Message = "Node has been restarted.";
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostStartAsync()
+        {
+            Ctrl.ProcessManager.Start();
+
+            Message = "Node has been started.";
             return RedirectToPage();
         }
     }
