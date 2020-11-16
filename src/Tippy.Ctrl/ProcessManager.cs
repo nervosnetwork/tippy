@@ -34,6 +34,12 @@ namespace Tippy.Ctrl
             Console.WriteLine("Stopped child processes.");
         }
 
+        public static void Restart()
+        {
+            Stop();
+            Start();
+        }
+
         public static void UpdateConfiguration()
         {
             Process.NodeProcess.UpdateConfiguration();

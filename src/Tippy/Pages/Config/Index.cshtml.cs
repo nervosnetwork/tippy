@@ -14,6 +14,9 @@ namespace Tippy.Pages.Config
         [BindProperty]
         public string LockArg { get; set; } = Core.Settings.GetSettings().BlockAssembler.LockArg;
 
+        [TempData]
+        public string Message { get; set; }
+
         public void OnGet()
         {
         }
@@ -30,6 +33,7 @@ namespace Tippy.Pages.Config
             settings.Save();
             Ctrl.ProcessManager.UpdateConfiguration();
 
+            Message = "Lock arg was updated.";
             return RedirectToPage();
         }
     }

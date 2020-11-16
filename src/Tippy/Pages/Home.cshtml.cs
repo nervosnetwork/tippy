@@ -9,8 +9,19 @@ namespace Tippy.Pages
 {
     public class HomeModel : PageModel
     {
+        [TempData]
+        public string Message { get; set; }
+
         public void OnGet()
         {
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            Ctrl.ProcessManager.Restart();
+
+            Message = "Node has been restarted.";
+            return RedirectToPage();
         }
     }
 }

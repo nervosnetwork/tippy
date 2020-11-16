@@ -1,4 +1,10 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your Javascript code.
+$(function () {
+    $(".notification .delete").on("click", function(e) {
+        $(this).parent(".notification").remove();
+        e.preventDefault();
+    });
+});

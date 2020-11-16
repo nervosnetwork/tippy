@@ -4,10 +4,18 @@
     ViewData["Title"] = "Configuration";
 }
 
-<form method="post">
-    <h1>Configuration</h1>
+<h1 class="title">Configuration</h1>
 
+<form method="post">
     <div asp-validation-summary="All"></div>
+
+    @if (TempData["Message"]?.ToString().Length > 0)
+    {
+        <div class="notification is-success">
+            <button class="delete"></button>
+            <div>@TempData["Message"]</div>
+        </div>
+    }
 
     <div class="field">
         <div class="control">
