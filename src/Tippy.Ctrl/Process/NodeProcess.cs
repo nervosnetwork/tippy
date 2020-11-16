@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Reflection;
 using System.Globalization;
+using System.Linq;
 
 namespace Tippy.Ctrl.Process
 {
@@ -21,7 +22,7 @@ namespace Tippy.Ctrl.Process
 
         static void InitalizeCkbIfNecessary()
         {
-            if (File.Exists(Path.Combine(WorkingDirectory(), "ckb.toml")))
+            if (File.Exists(TomlFile))
             {
                 return;
             }
@@ -41,14 +42,46 @@ namespace Tippy.Ctrl.Process
             process.WaitForExit();
         }
 
-        static string BuildArguments()
+        public static void UpdateConfiguration()
         {
-            return $"init --chain dev --ba-arg {LockArg()} --import-spec -";
+            try
+            {
+                var tomlContent = File.ReadLines(TomlFile);
+                var updatedContent = tomlContent.Select((line) =>
+                {
+                    if (line.StartsWith("args = ", System.StringComparison.Ordinal))
+                    {
+                        return $"args = \"{LockArg}\"";
+
+                    } else
+                    {
+                        return line;
+                    }
+                });
+                File.WriteAllLines(TomlFile, updatedContent.ToArray());
+            } catch
+            {}
         }
 
-        static string LockArg()
+        static string TomlFile
         {
-            return Core.Settings.GetSettings().BlockAssembler.LockArg;
+            get
+            {
+                return Path.Combine(WorkingDirectory(), "ckb.toml");
+            }
+        }
+
+        static string BuildArguments()
+        {
+            return $"init --chain dev --ba-arg {LockArg} --import-spec -";
+        }
+
+        static string LockArg
+        {
+            get
+            {
+                return Core.Settings.GetSettings().BlockAssembler.LockArg;
+            }
         }
 
         static string ChainSpec()

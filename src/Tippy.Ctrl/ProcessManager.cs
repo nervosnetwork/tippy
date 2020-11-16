@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Tippy.Ctrl
 {
@@ -32,6 +32,11 @@ namespace Tippy.Ctrl
             miner.Stop();
             node.Stop();
             Console.WriteLine("Stopped child processes.");
+        }
+
+        public static void UpdateConfiguration()
+        {
+            Process.NodeProcess.UpdateConfiguration();
         }
     }
 }

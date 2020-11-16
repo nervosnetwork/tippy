@@ -25,6 +25,10 @@ namespace Tippy.Pages.Config
                 return Page();
             }
 
+            var settings = Core.Settings.GetSettings();
+            settings.BlockAssembler.LockArg = LockArg;
+            settings.Save();
+            Ctrl.ProcessManager.UpdateConfiguration();
 
             return RedirectToPage();
         }
