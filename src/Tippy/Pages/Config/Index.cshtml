@@ -1,0 +1,33 @@
+﻿@page
+@model Tippy.Pages.Config.IndexModel
+@{
+    ViewData["Title"] = "Configuration";
+}
+
+<form method="post">
+    <h1>Configuration</h1>
+
+    <div asp-validation-summary="All"></div>
+
+    <div class="field">
+        <div class="control">
+            <label asp-for="LockArg" class="label"></label>
+            <input asp-for="LockArg" class="input" placeholder="Lock Arg" />
+        </div>
+    </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-link">Save</button>
+        </div>
+        <!--
+          <div class="control">
+            <button class="button is-link is-light">Cancel</button>
+          </div>
+        -->
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
