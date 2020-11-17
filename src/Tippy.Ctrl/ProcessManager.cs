@@ -8,13 +8,9 @@ namespace Tippy.Ctrl
         static Process.CommandProcess miner;
         static Process.CommandProcess indexer;
 
-        public static bool IsRunning
-        {
-            get
-            {
-                return node?.IsRunning ?? false;
-            }
-        }
+        public static bool IsRunning => node?.IsRunning ?? false;
+
+        public static void UpdateConfiguration() => Process.NodeProcess.UpdateConfiguration();
 
         public static void Start()
         {
@@ -46,11 +42,6 @@ namespace Tippy.Ctrl
         {
             Stop();
             Start();
-        }
-
-        public static void UpdateConfiguration()
-        {
-            Process.NodeProcess.UpdateConfiguration();
         }
     }
 }

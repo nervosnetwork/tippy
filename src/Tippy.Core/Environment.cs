@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Diagnostics;
@@ -7,14 +7,12 @@ namespace Tippy.Core
 {
     public class Environment
     {
-        public static string GetAppDataFolder()
-        {
-            return Path.Combine(GetSystemAppDataFolder(), "Tippy");
-        }
+        public static string GetAppDataFolder() => Path.Combine(GetSystemAppDataFolder(), "Tippy");
 
         public static void CreateAppDataFolder()
         {
-            if (Directory.Exists(GetAppDataFolder())) {
+            if (Directory.Exists(GetAppDataFolder()))
+            {
                 return;
             }
 

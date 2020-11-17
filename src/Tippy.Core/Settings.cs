@@ -25,7 +25,7 @@ namespace Tippy.Core
                     .AddJsonFile("settings.json", false, true)
                     .Build();
                 config.Bind(Singleton);
-                    
+
             }
 
             return Singleton;
@@ -48,7 +48,7 @@ namespace Tippy.Core
             File.WriteAllText(FilePath, json);
         }
 
-        private static string FilePath = Path.Combine(Environment.GetAppDataFolder(), "settings.json");
+        private static readonly string FilePath = Path.Combine(Environment.GetAppDataFolder(), "settings.json");
 
         private static string SettingsTemplate
         {

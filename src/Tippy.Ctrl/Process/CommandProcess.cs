@@ -24,8 +24,10 @@ namespace Tippy.Ctrl.Process
             }
         }
 
-        public void Start() {
-            if (!Directory.Exists(WorkingDirectory())) {
+        public void Start()
+        {
+            if (!Directory.Exists(WorkingDirectory()))
+            {
                 try
                 {
                     Directory.CreateDirectory(WorkingDirectory());
@@ -46,7 +48,8 @@ namespace Tippy.Ctrl.Process
             process.BeginOutputReadLine();
         }
 
-        public void Stop() { 
+        public void Stop()
+        {
             if (process != null)
             {
                 process.Kill();
@@ -55,7 +58,8 @@ namespace Tippy.Ctrl.Process
             }
         }
 
-        protected void HandleOutput() {
+        protected void HandleOutput()
+        {
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
 
@@ -70,15 +74,11 @@ namespace Tippy.Ctrl.Process
             };
         }
 
-        protected static string WorkingDirectory()
-        {
-            return Path.Combine(Core.Environment.GetAppDataFolder(), "devchain");
-        }
+        protected static string WorkingDirectory() =>
+            Path.Combine(Core.Environment.GetAppDataFolder(), "devchain");
 
-        protected static string BinaryFullPath(string binary)
-        {
-            return Path.Combine(Path.Combine(BinDepsDirectory()), binary);
-        }
+        protected static string BinaryFullPath(string binary) =>
+            Path.Combine(Path.Combine(BinDepsDirectory()), binary);
 
         protected static string[] BinDepsDirectory()
         {

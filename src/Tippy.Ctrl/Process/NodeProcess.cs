@@ -53,41 +53,31 @@ namespace Tippy.Ctrl.Process
                     {
                         return $"args = \"{LockArg}\"";
 
-                    } else
+                    }
+                    else
                     {
                         return line;
                     }
                 });
                 File.WriteAllLines(TomlFile, updatedContent.ToArray());
-            } catch
-            {}
-        }
-
-        static string TomlFile
-        {
-            get
-            {
-                return Path.Combine(WorkingDirectory(), "ckb.toml");
             }
+            catch
+            { }
         }
 
-        static string BuildArguments()
-        {
-            return $"init --chain dev --ba-arg {LockArg} --import-spec -";
-        }
+        static string TomlFile => Path.Combine(WorkingDirectory(), "ckb.toml");
 
-        static string LockArg
-        {
-            get
-            {
-                return Core.Settings.GetSettings().BlockAssembler.LockArg;
-            }
-        }
+        static string BuildArguments() => $"init --chain dev --ba-arg {LockArg} --import-spec -";
+
+        static string LockArg => Core.Settings.GetSettings().BlockAssembler.LockArg;
 
         static string ChainSpec()
         {
             var spec = ChainSpecTemplate;
-            spec = spec.Replace("[GENESIS_CELL_MESSAGE]", "ckb_dev_" + DateTime.Now.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture));
+            spec = spec.Replace(
+                "[GENESIS_CELL_MESSAGE]",
+                "ckb_dev_" + DateTime.Now.ToString("yyyyMMddHHmmss",
+                CultureInfo.InvariantCulture));
             var bytes = Encoding.UTF8.GetBytes(spec);
             return Convert.ToBase64String(bytes);
         }
