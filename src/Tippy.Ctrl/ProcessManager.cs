@@ -43,5 +43,12 @@ namespace Tippy.Ctrl
             Stop();
             Start();
         }
+
+        public static void ResetData()
+        {
+            Stop();
+            Process.NodeProcess.Reset();
+            Start();
+        }
     }
 }

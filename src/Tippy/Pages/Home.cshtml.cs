@@ -40,5 +40,13 @@ namespace Tippy.Pages
             Message = "Node has been started.";
             return RedirectToPage();
         }
+
+        public async Task<IActionResult> OnPostResetAsync()
+        {
+            Ctrl.ProcessManager.ResetData();
+
+            Message = "Node data has been reset. Node has been restarted.";
+            return RedirectToPage();
+        }
     }
 }

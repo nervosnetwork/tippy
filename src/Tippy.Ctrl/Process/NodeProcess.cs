@@ -42,6 +42,18 @@ namespace Tippy.Ctrl.Process
             process.WaitForExit();
         }
 
+        public static void Reset()
+        {
+            try
+            {
+                Directory.Delete(Path.Combine(WorkingDirectory(), "data"), true);
+                Directory.Delete(Path.Combine(WorkingDirectory(), "indexer-data"), true);
+            }
+            catch
+            {
+            }
+        }
+
         public static void UpdateConfiguration()
         {
             try

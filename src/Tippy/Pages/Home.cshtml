@@ -15,36 +15,59 @@
 }
 
 <form method="post">
-    @if (Model.IsNodeRunning)
-    {
-        <div class="field is-grouped">
-            <div class="control">
-                <div class="tags has-addons">
-                    <span class="tag is-dark">Node</span>
-                    <span class="tag is-success">running</span>
+@if (Model.IsNodeRunning)
+{
+    <div class="field is-grouped">
+        <div class="control">
+            <div class="tags has-addons">
+                <span class="tag is-dark">Node</span>
+                <span class="tag is-success">running</span>
+            </div>
+        </div>
+    </div>
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-primary" asp-page-handler="Restart">Restart node</button>
+        </div>
+    </div>
+}
+else
+{
+    <div class="field is-grouped">
+        <div class="control">
+            <div class="tags has-addons">
+                <span class="tag is-dark">Node</span>
+                <span class="tag is-danger">stopped</span>
+            </div>
+        </div>
+    </div>
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-primary" asp-page-handler="Start">Start node</button>
+        </div>
+    </div>
+}
+
+    <hr class="hr"/>
+
+    <h2 class="subtitle">Danger Zone</h2>
+
+    <div class="columns">
+        <div class="column is-two-thirds">
+            <div class="level box">
+                <div class="level-left">
+                    <div class="level-item field is-grouped">
+                        <div class="control">
+                            <h3>Reset node data and restart node</h3>
+                            <p class="help is-danger is-size-6">All data will be wiped.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <button class="button is-primary is-danger" asp-page-handler="Reset">Reset node data</button>
                 </div>
             </div>
         </div>
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-link is-small" asp-page-handler="Restart">Restart node</button>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="field is-grouped">
-            <div class="control">
-                <div class="tags has-addons">
-                    <span class="tag is-dark">Node</span>
-                    <span class="tag is-danger">stopped</span>
-                </div>
-            </div>
-        </div>
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-link is-small" asp-page-handler="Start">Start node</button>
-            </div>
-        </div>
-    }
+        <div class="column"></div>
+    </div>
 </form>
