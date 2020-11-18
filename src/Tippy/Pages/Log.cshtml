@@ -1,0 +1,16 @@
+﻿@page
+@{
+    ViewData["Title"] = "Logs";
+}
+
+<h1 class="title">Logs</h1>
+
+<div class="field">
+    <div class="control">
+        <textarea class="textarea is-primary" id="logList" rows="25" readonly></textarea>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_SignalrScriptsPartial"); }
+}

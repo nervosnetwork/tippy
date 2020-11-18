@@ -27,7 +27,7 @@ namespace Tippy.Ctrl.Process
                 return;
             }
 
-            using System.Diagnostics.Process process = new System.Diagnostics.Process();
+            using System.Diagnostics.Process process = new();
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.FileName = BinaryFullPath("ckb");
@@ -99,7 +99,7 @@ namespace Tippy.Ctrl.Process
             get
             {
                 var resourceName = "Tippy.Ctrl.ChainSpecTemplate.txt";
-                using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+                using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName)!;
                 using StreamReader reader = new StreamReader(stream);
                 return reader.ReadToEnd();
             }

@@ -7,7 +7,7 @@ namespace Tippy.Ctrl.Process
 {
     abstract class CommandProcess
     {
-        protected System.Diagnostics.Process process;
+        protected System.Diagnostics.Process? process;
 
         abstract protected void Configure();
 
@@ -43,9 +43,9 @@ namespace Tippy.Ctrl.Process
             Configure();
             HandleOutput();
 
-            process.Start();
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
+            process?.Start();
+            process?.BeginErrorReadLine();
+            process?.BeginOutputReadLine();
         }
 
         public void Stop()
@@ -60,6 +60,10 @@ namespace Tippy.Ctrl.Process
 
         protected void HandleOutput()
         {
+            if (process == null)
+            {
+                return;
+            }
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
 

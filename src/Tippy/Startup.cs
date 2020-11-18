@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Tippy.Hubs;
 
 namespace Tippy
 {
@@ -19,6 +20,8 @@ namespace Tippy
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
 #if RAZOR_RUNTIMECOMPILATIION
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
@@ -54,6 +57,8 @@ namespace Tippy
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapHub<LogHub>("/loghub");
 
                 // endpoints.MapFallbackToController("Index", "Home");
             });

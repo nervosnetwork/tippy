@@ -2,11 +2,20 @@ using System;
 
 namespace Tippy.Ctrl
 {
+    public class LogReceivedEventArgs : EventArgs
+    { 
+        public string? Log { get; internal set; }
+    }
+
+    public delegate void NodeLogEventHandler(object? sender, LogReceivedEventArgs e);
+
     public class ProcessManager
     {
-        static Process.CommandProcess node;
-        static Process.CommandProcess miner;
-        static Process.CommandProcess indexer;
+        static Process.CommandProcess? node;
+        static Process.CommandProcess? miner;
+        static Process.CommandProcess? indexer;
+
+        public static event NodeLogEventHandler? NodeLogReceived;
 
         public static bool IsRunning => node?.IsRunning ?? false;
 
@@ -32,9 +41,9 @@ namespace Tippy.Ctrl
         public static void Stop()
         {
             Console.WriteLine("Stopping child processes...");
-            indexer.Stop();
-            miner.Stop();
-            node.Stop();
+            indexer?.Stop();
+            miner?.Stop();
+            node?.Stop();
             Console.WriteLine("Stopped child processes.");
         }
 
@@ -42,6 +51,8 @@ namespace Tippy.Ctrl
         {
             Stop();
             Start();
+            // TODO: debug only. Remove this and connect to node process output.
+            NodeLogReceived?.Invoke(null, new LogReceivedEventArgs() { Log = "Restarted..." });
         }
 
         public static void ResetData()
