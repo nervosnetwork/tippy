@@ -5,9 +5,17 @@ using System.Runtime.InteropServices;
 
 namespace Tippy.Ctrl.Process
 {
+    class LogEventArgs : EventArgs
+    { 
+        public string? Log { get; internal set; }
+    }
+
+    delegate void LogEventHandler(object? sender, LogEventArgs e);
+
     abstract class CommandProcess
     {
         protected System.Diagnostics.Process? process;
+        public event LogEventHandler? LogReceived;
 
         abstract protected void Configure();
 
@@ -69,12 +77,12 @@ namespace Tippy.Ctrl.Process
 
             process.OutputDataReceived += (sender, e) =>
             {
-                Console.WriteLine(e.Data);
+                LogReceived?.Invoke(this, new LogEventArgs() { Log = e.Data });
             };
 
             process.ErrorDataReceived += (sender, e) =>
             {
-                Console.Error.WriteLine(e.Data);
+                LogReceived?.Invoke(this, new LogEventArgs() { Log = e.Data });
             };
         }
 

@@ -24,16 +24,27 @@ namespace Tippy.Ctrl
         public static void Start()
         {
             Console.WriteLine("Starting child processes...");
-            node ??= new Process.NodeProcess();
+            if (node == null)
+            { 
+                node = new Process.NodeProcess();
+                node.LogReceived += new Process.LogEventHandler(OnLogReceived);
+            }
             node.Start();
             // Wait for the RPC to get ready.
             // A better approach would be to catch ckb output to make sure it's already listening.
             System.Threading.Tasks.Task.Delay(1000).Wait();
 
-            miner ??= new Process.MinerProcess();
+            if (miner == null)
+            { 
+                miner = new Process.MinerProcess();
+                miner.LogReceived += new Process.LogEventHandler(OnLogReceived);
+            }
             miner.Start();
 
-            indexer ??= new Process.IndexerProcess();
+            if (indexer == null)
+            { 
+                indexer = new Process.IndexerProcess();
+            }
             indexer.Start();
             Console.WriteLine("Started child processes.");
         }
@@ -51,8 +62,6 @@ namespace Tippy.Ctrl
         {
             Stop();
             Start();
-            // TODO: debug only. Remove this and connect to node process output.
-            NodeLogReceived?.Invoke(null, new LogReceivedEventArgs() { Log = "Restarted..." });
         }
 
         public static void ResetData()
@@ -60,6 +69,12 @@ namespace Tippy.Ctrl
             Stop();
             Process.NodeProcess.Reset();
             Start();
+        }
+
+        static void OnLogReceived(object? sender, Process.LogEventArgs e)
+        {
+            Console.WriteLine(e.Log);
+            NodeLogReceived?.Invoke(sender, new LogReceivedEventArgs() { Log = "\n" + e.Log });
         }
     }
 }

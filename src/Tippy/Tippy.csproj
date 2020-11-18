@@ -37,6 +37,7 @@
     <Folder Include="TagHelpers\" />
     <Folder Include="Hubs\" />
     <Folder Include="wwwroot\lib\signalr\" />
+    <Folder Include="wwwroot\lib\ansi_up\" />
   </ItemGroup>
 
   <ItemGroup>

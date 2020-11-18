@@ -28,3 +28,10 @@ body {
     width: calc(100% + 1.5rem);
     margin: -0.75rem;
 }
+
+.log-box {
+    overflow-y: scroll;
+    height: calc(100vh - 120px);
+    border: solid 1px #ccc;
+    padding: 20px;
+}

@@ -1,10 +1,11 @@
 "use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/loghub").build();
+var ansiUp = new AnsiUp;
 
 connection.on("ReceiveLog", function (log) {
-    var logEncoded = log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    document.getElementById("logList").value += logEncoded;
+    var line = ansiUp.ansi_to_html(log);
+    document.getElementById("log-box").innerHTML += "<p>" + line + "</p>";
 });
 
 connection.start().then(function () {
