@@ -1,7 +1,9 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Tippy.Ctrl;
 using Tippy.Hubs;
 
@@ -17,9 +19,12 @@ namespace Tippy
             Core.Environment.CreateAppDataFolder();
 
             var host = CreateHostBuilder(args).Build();
+            CreateDbIfNotExists(host);
+
             _hubContext = (IHubContext<LogHub>)host.Services.GetService(typeof(IHubContext<LogHub>));
             ProcessManager.NodeLogReceived += new NodeLogEventHandler(OnLogReceived);
             ProcessManager.Start();
+
             host.Run();
         }
 
@@ -29,6 +34,22 @@ namespace Tippy
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static void CreateDbIfNotExists(IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<Core.Models.DbContext>();
+                context.Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred creating the DB.");
+            }
+        }
 
         static void OnAppExit(object sender, EventArgs e)
         {

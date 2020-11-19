@@ -1,6 +1,9 @@
 using System;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,6 +31,13 @@ namespace Tippy
 #else
             services.AddRazorPages();
 #endif
+
+            services.AddDbContext<Core.Models.DbContext>(options =>
+            {
+                var dbPath = Path.Combine(Core.Environment.GetAppDataFolder(), "project.db");
+                options.UseSqlite($"Data Source={dbPath}");
+            });
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddSpaStaticFiles(configuration =>
             {

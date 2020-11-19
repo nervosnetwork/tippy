@@ -38,11 +38,13 @@
     <Folder Include="Hubs\" />
     <Folder Include="wwwroot\lib\signalr\" />
     <Folder Include="wwwroot\lib\ansi_up\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$(DefineConstants.Contains(RAZOR_RUNTIMECOMPILATIION))">
