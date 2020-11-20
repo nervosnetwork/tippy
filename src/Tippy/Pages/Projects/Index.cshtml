@@ -49,14 +49,44 @@
                 <span class="tag is-success">Running</span>
             </td>
             <td>
-              <a class="button is-success is-small">Start</a>
-              <a class="button is-danger is-small">Stop</a>
-              <a class="button is-warning is-small">Restart</a>
+              <a class="button is-success is-small">
+                  <span class="icon">
+                      <i class="fas fa-play"></i>
+                  </span>
+                  <span>Start</span>
+              </a>
+              <a class="button is-danger is-small">
+                  <span class="icon">
+                      <i class="fas fa-pause"></i>
+                  </span>
+                  <span>Stop</span>
+              </a>
+              <a class="button is-warning is-small">
+                  <span class="icon">
+                      <i class="fas fa-redo"></i>
+                  </span>
+                  <span>Restart</span>
+              </a>
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-page="./Details" asp-route-id="@item.ID" class="button is-primary is-small is-outlined">
+                    <span>Details</span>
+                    <span class="icon is-small">
+                        <i class="fas fa-info-circle"></i>
+                    </span>
+                </a>
+                <a asp-page="./Edit" asp-route-id="@item.ID" class="button is-link is-primary is-small is-outlined">
+                    <span>Edit</span>
+                    <span class="icon is-small">
+                        <i class="far fa-edit"></i>
+                    </span>
+                </a>
+                <a asp-page="./Delete" asp-route-id="@item.ID" class="button is-danger is-small is-outlined">
+                    <span>Delete</span>
+                    <span class="icon is-small">
+                        <i class="far fa-trash-alt"></i>
+                    </span>
+                </a>
             </td>
         </tr>
 }
