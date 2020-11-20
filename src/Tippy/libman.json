@@ -32,6 +32,14 @@
         "webfonts/fa-solid-900.woff",
         "webfonts/fa-solid-900.woff2"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bulma@0.9.1",
+      "destination": "wwwroot/lib/bulma",
+      "files": [
+        "css/bulma.min.css"
+      ]
     }
   ]
 }
