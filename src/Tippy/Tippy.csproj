@@ -36,8 +36,6 @@
     <Folder Include="ApiData\" />
     <Folder Include="TagHelpers\" />
     <Folder Include="Hubs\" />
-    <Folder Include="wwwroot\lib\signalr\" />
-    <Folder Include="wwwroot\lib\ansi_up\" />
     <Folder Include="Pages\Projects\" />
   </ItemGroup>
 
@@ -71,6 +69,7 @@
     <Content Remove="MockApiData\Transactions.json" />
     <Content Remove="MockApiData\TipBlockNumber.json" />
     <Content Remove="MockApiData\Statistics.json" />
+    <Content Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -102,9 +101,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Pages\Home - Copy.cshtml.cs">
-      <DependentUpon>Home.cshtml.cs</DependentUpon>
-    </Compile>
+    <Content Include="wwwroot\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
@@ -124,7 +124,7 @@
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)build\**" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
