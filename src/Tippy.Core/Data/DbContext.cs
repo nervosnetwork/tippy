@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Tippy.Core.Models;
 
-namespace Tippy.Core.Models
+namespace Tippy.Core.Data
 {
     public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {

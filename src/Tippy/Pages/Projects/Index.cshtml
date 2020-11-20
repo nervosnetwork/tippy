@@ -1,0 +1,58 @@
+@page
+@model Tippy.Pages.Projects.IndexModel
+
+@{ ViewData["Title"] = "Projects"; }
+
+<h1 class="title">Projects</h1>
+
+<div class="columns">
+    <div class="column is-two-thirds">
+
+        <div class="columns">
+            @foreach (var item in Model.Project)
+            {
+<div class="column is-one-third">
+    <div class="card">
+        <div class="card-content">
+            <div class="content">
+                <p class="title">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </p>
+                <p>
+                    Chain type: @Html.DisplayFor(modelItem => item.Chain)
+                </p>
+                <p>
+                    RPC: http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
+                </p>
+            </div>
+        </div>
+        <footer class="card-footer">
+            <a asp-page="./Edit" asp-route-id="@item.ID" class="card-footer-item">Edit</a>
+            <!--<a asp-page="./Details" asp-route-id="@item.ID" class="card-footer-item">Details</a>-->
+            <a asp-page="./Delete" asp-route-id="@item.ID" class="card-footer-item is-danger">Delete</a>
+        </footer>
+    </div>
+</div>      }
+
+            <div class="column is-one-third">
+                <div class="card">
+                    <div class="card-content">
+                        <p class="title">
+                            Create a new project to run a CKB chain
+                        </p>
+                    </div>
+                    <footer class="card-footer">
+                        <p class="card-footer-item">
+                        </p>
+                        <p class="card-footer-item">
+                            <span>
+                                <a asp-page="Create">Create a new project</a>
+                            </span>
+                        </p>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

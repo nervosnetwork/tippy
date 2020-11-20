@@ -41,7 +41,7 @@ namespace Tippy
             var services = scope.ServiceProvider;
             try
             {
-                var context = services.GetRequiredService<Core.Models.DbContext>();
+                var context = services.GetRequiredService<Core.Data.DbContext>();
                 context.Database.EnsureCreated();
             }
             catch (Exception ex)

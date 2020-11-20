@@ -1,0 +1,49 @@
+@page
+@model Tippy.Pages.Projects.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Project.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Project.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Project.Chain)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Project.Chain)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Project.NodeRpcPort)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Project.NodeRpcPort)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Project.NodeNetworkPort)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Project.NodeNetworkPort)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Project.IndexerRpcPort)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Project.IndexerRpcPort)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Project.ID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

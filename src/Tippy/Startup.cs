@@ -32,7 +32,7 @@ namespace Tippy
             services.AddRazorPages();
 #endif
 
-            services.AddDbContext<Core.Models.DbContext>(options =>
+            services.AddDbContext<Core.Data.DbContext>(options =>
             {
                 var dbPath = Path.Combine(Core.Environment.GetAppDataFolder(), "project.db");
                 options.UseSqlite($"Data Source={dbPath}");
