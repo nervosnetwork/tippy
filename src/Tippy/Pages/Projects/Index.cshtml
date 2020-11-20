@@ -5,54 +5,60 @@
 
 <h1 class="title">Projects</h1>
 
-<div class="columns">
-    <div class="column is-two-thirds">
+<p>
+    <a asp-page="Create" class="button is-link is-primary">Create new project</a>
+</p>
 
-        <div class="columns">
-            @foreach (var item in Model.Project)
-            {
-<div class="column is-one-third">
-    <div class="card">
-        <div class="card-content">
-            <div class="content">
-                <p class="title">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </p>
-                <p>
-                    Chain type: @Html.DisplayFor(modelItem => item.Chain)
-                </p>
-                <p>
-                    RPC: http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
-                </p>
-            </div>
-        </div>
-        <footer class="card-footer">
-            <a asp-page="./Edit" asp-route-id="@item.ID" class="card-footer-item">Edit</a>
-            <!--<a asp-page="./Details" asp-route-id="@item.ID" class="card-footer-item">Details</a>-->
-            <a asp-page="./Delete" asp-route-id="@item.ID" class="card-footer-item is-danger">Delete</a>
-        </footer>
-    </div>
-</div>      }
-
-            <div class="column is-one-third">
-                <div class="card">
-                    <div class="card-content">
-                        <p class="title">
-                            Create a new project to run a CKB chain
-                        </p>
-                    </div>
-                    <footer class="card-footer">
-                        <p class="card-footer-item">
-                        </p>
-                        <p class="card-footer-item">
-                            <span>
-                                <a asp-page="Create">Create a new project</a>
-                            </span>
-                        </p>
-                    </footer>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
+<table class="table is-striped is-hoverable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].Chain)
+            </th>
+            <th>
+                RPC
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project[0].LockArg)
+            </th>
+            <th>Status</th>
+            <th>Control</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Project) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Chain)
+            </td>
+            <td>
+                http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LockArg)
+            </td>
+            <td>
+                <span class="tag is-light">Stopped</span>
+                <span class="tag is-success">Running</span>
+            </td>
+            <td>
+              <a class="button is-success is-small">Start</a>
+              <a class="button is-danger is-small">Stop</a>
+              <a class="button is-warning is-small">Restart</a>
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
