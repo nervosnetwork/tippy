@@ -18,9 +18,7 @@
     <div class="field">
         <label asp-for="Project.Chain" class="label"></label>
         <div class="control">
-            <div class="select">
-                <select asp-for="Project.Chain" asp-items="Html.GetEnumSelectList<Tippy.Core.Models.Project.ChainType>()"></select>
-            </div>
+            <span>@Html.DisplayFor(model => model.Project.Chain)</span>
         </div>
     </div>
     <div class="field">
