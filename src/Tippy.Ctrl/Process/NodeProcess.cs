@@ -49,11 +49,12 @@ namespace Tippy.Ctrl.Process
         {
             try
             {
-                Directory.Delete(Path.Combine(WorkingDirectory(), "data"), true);
                 Directory.Delete(Path.Combine(WorkingDirectory(), "indexer-data"), true);
+                Directory.Delete(Path.Combine(WorkingDirectory(), "data"), true);
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine($"Failed to reset project data, {e.Message}");
             }
         }
 

@@ -1,21 +1,21 @@
 ﻿@page
-@model Tippy.Pages.Projects.DeleteModel
+@model Tippy.Pages.Projects.ResetModel
 
-@{ ViewData["Title"] = "Delete project"; }
+@{ ViewData["Title"] = "Reset project data"; }
 
 <div class="modal is-active">
     <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
-            <p class="modal-card-title">Delete project</p>
+            <p class="modal-card-title">Reset project data</p>
         </header>
         <section class="modal-card-body">
-            <p>Are you sure you want to delete project <strong>@Html.DisplayFor(model => model.Project.Name)</strong>?</p>
+            <p>Are you sure you want to reset all data for project <strong>@Html.DisplayFor(model => model.Project.Name)</strong>?</p>
         </section>
         <footer class="modal-card-foot">
             <form method="post" class="mt-4">
                 <input type="hidden" asp-for="Project.ID" />
-                <input type="submit" value="Delete" class="button is-danger" />
+                <input type="submit" value="Reset data" class="button is-danger" />
                 <a asp-page="./Index" class="button is-link is-light">Cancel</a>
             </form>
         </footer>

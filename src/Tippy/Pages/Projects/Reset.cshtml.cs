@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,11 +10,11 @@ using Tippy.Ctrl;
 
 namespace Tippy.Pages.Projects
 {
-    public class DeleteModel : PageModel
+    public class ResetModel : PageModel
     {
         private readonly Tippy.Core.Data.DbContext _context;
 
-        public DeleteModel(Tippy.Core.Data.DbContext context)
+        public ResetModel(Tippy.Core.Data.DbContext context)
         {
             _context = context;
         }
@@ -47,7 +50,6 @@ namespace Tippy.Pages.Projects
             if (Project != null)
             {
                 ProcessManager.ResetData(Project);
-                _context.Projects.Remove(Project);
                 await _context.SaveChangesAsync();
             }
 

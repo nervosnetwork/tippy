@@ -107,6 +107,12 @@
                             <i class="far fa-edit"></i>
                         </span>
                     </a>
+                    <a asp-page="./Reset" asp-route-id="@item.ID" class="button is-warning is-small is-outlined">
+                        <span>Reset Data</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-info-circle"></i>
+                        </span>
+                    </a>
                     <a asp-page="./Delete" asp-route-id="@item.ID" class="button is-danger is-small is-outlined">
                         <span>Delete</span>
                         <span class="icon is-small">
