@@ -7,11 +7,14 @@ using System.Linq;
 
 namespace Tippy.Ctrl.Process
 {
-    class NodeProcess : CommandProcess
+    internal class NodeProcess : CommandProcess
     {
+        internal NodeProcess(ProcessInfo info) : base(info) { }
+
         protected override void Configure()
         {
             InitalizeCkbIfNecessary();
+            UpdateConfiguration();
 
             process = new System.Diagnostics.Process();
             process.StartInfo.UseShellExecute = false;
@@ -20,7 +23,7 @@ namespace Tippy.Ctrl.Process
             process.StartInfo.Arguments = "run";
         }
 
-        static void InitalizeCkbIfNecessary()
+        void InitalizeCkbIfNecessary()
         {
             if (File.Exists(TomlFile))
             {
@@ -32,7 +35,7 @@ namespace Tippy.Ctrl.Process
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.FileName = BinaryFullPath("ckb");
             process.StartInfo.WorkingDirectory = WorkingDirectory();
-            process.StartInfo.Arguments = BuildArguments();
+            process.StartInfo.Arguments = BuildArguments(); // TODO: only load spec template for devnet
             process.Start();
 
             StreamWriter writer = process.StandardInput;
@@ -42,7 +45,7 @@ namespace Tippy.Ctrl.Process
             process.WaitForExit();
         }
 
-        public static void Reset()
+        public void Reset()
         {
             try
             {
@@ -54,17 +57,24 @@ namespace Tippy.Ctrl.Process
             }
         }
 
-        public static void UpdateConfiguration()
+        void UpdateConfiguration()
         {
             try
             {
                 var tomlContent = File.ReadLines(TomlFile);
                 var updatedContent = tomlContent.Select((line) =>
                 {
-                    if (line.StartsWith("args = ", System.StringComparison.Ordinal))
+                    if (line.StartsWith("args = "))
                     {
                         return $"args = \"{LockArg}\"";
-
+                    }
+                    else if (line.StartsWith("listen_addresses ="))
+                    {
+                        return $"listen_addresses = [\"/ip4/0.0.0.0/tcp/{ProcessInfo.NodeNetworkPort}\"]";
+                    }
+                    else if (line.StartsWith("listen_address ="))
+                    {
+                        return $"listen_address = \"127.0.0.1:{ProcessInfo.NodeRpcPort}\"";
                     }
                     else
                     {
@@ -77,15 +87,15 @@ namespace Tippy.Ctrl.Process
             { }
         }
 
-        static string TomlFile => Path.Combine(WorkingDirectory(), "ckb.toml");
+        string TomlFile => Path.Combine(WorkingDirectory(), "ckb.toml");
 
-        static string BuildArguments() => $"init --chain dev --ba-arg {LockArg} --import-spec -";
+        string BuildArguments() => $"init --chain dev --ba-arg {LockArg} --import-spec -";
 
-        static string LockArg => Core.Settings.GetSettings().BlockAssembler.LockArg;
+        string LockArg => Core.Settings.GetSettings().BlockAssembler.LockArg;
 
-        static string ChainSpec()
+        string ChainSpec()
         {
-            var spec = ChainSpecTemplate;
+            var spec = DevChainSpecTemplate;
             spec = spec.Replace(
                 "[GENESIS_CELL_MESSAGE]",
                 "ckb_dev_" + DateTime.Now.ToString("yyyyMMddHHmmss",
@@ -94,7 +104,7 @@ namespace Tippy.Ctrl.Process
             return Convert.ToBase64String(bytes);
         }
 
-        private static string ChainSpecTemplate
+        private static string DevChainSpecTemplate
         {
             get
             {

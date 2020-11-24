@@ -51,5 +51,3 @@ charset = utf-8-bom
 
 [*.cs]
 dotnet_diagnostic.CA1304.severity = error
-dotnet_diagnostic.CA1305.severity = error
-dotnet_diagnostic.CA1310.severity = error

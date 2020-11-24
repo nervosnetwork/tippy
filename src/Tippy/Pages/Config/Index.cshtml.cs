@@ -31,7 +31,6 @@ namespace Tippy.Pages.Config
             var settings = Core.Settings.GetSettings();
             settings.BlockAssembler.LockArg = LockArg;
             settings.Save();
-            // Ctrl.ProcessManager.UpdateConfiguration();
 
             Message = "Lock arg was updated.";
             return RedirectToPage();

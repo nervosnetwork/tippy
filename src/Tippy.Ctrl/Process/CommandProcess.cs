@@ -14,8 +14,11 @@ namespace Tippy.Ctrl.Process
 
     abstract class CommandProcess
     {
+        internal ProcessInfo ProcessInfo { get; private set; }
         protected System.Diagnostics.Process? process;
         public event LogEventHandler? LogReceived;
+
+        internal CommandProcess(ProcessInfo processInfo) => ProcessInfo = processInfo;
 
         abstract protected void Configure();
 
@@ -86,8 +89,8 @@ namespace Tippy.Ctrl.Process
             };
         }
 
-        protected static string WorkingDirectory() =>
-            Path.Combine(Core.Environment.GetAppDataFolder(), "devchain");
+        protected string WorkingDirectory() =>
+            Path.Combine(Core.Environment.GetAppDataFolder(), $"chain-{ProcessInfo.ID}");
 
         protected static string BinaryFullPath(string binary) =>
             Path.Combine(Path.Combine(BinDepsDirectory()), binary);
