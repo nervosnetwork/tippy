@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Tippy.Core.Data;
+using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
 
 namespace Tippy.Pages.Projects
@@ -19,15 +17,24 @@ namespace Tippy.Pages.Projects
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            // TODO: pre-fill unused port numbers
+            var projects = await _context.Projects.ToListAsync();
+            var calculatingFromUsed = projects.Count > 0;
+            var rpcPorts = projects.Select(p => int.Parse(p.NodeRpcPort, CultureInfo.InvariantCulture));
+            var networkPorts = projects.Select(p => int.Parse(p.NodeNetworkPort, CultureInfo.InvariantCulture));
+            var indexerPorts = projects.Select(p => int.Parse(p.IndexerRpcPort, CultureInfo.InvariantCulture));
+
             Project = new Project
             {
-                Name = "Project name",
+                Name = "My Chain",
                 Chain = Project.ChainType.Dev,
+                NodeRpcPort = calculatingFromUsed ? (rpcPorts.Max() + 3).ToString(CultureInfo.InvariantCulture) : "8114",
+                NodeNetworkPort = calculatingFromUsed ? (networkPorts.Max() + 3).ToString(CultureInfo.InvariantCulture) : "8115",
+                IndexerRpcPort = calculatingFromUsed ? (indexerPorts.Max() + 3).ToString(CultureInfo.InvariantCulture) : "8116",
                 LockArg = "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
             };
+
             return Page();
         }
 

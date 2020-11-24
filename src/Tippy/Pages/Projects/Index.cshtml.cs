@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Tippy.Core.Data;
 using Tippy.Core.Models;
+using Tippy.Ctrl;
 
 namespace Tippy.Pages.Projects
 {
@@ -19,11 +16,17 @@ namespace Tippy.Pages.Projects
             _context = context;
         }
 
-        public IList<Project> Project { get;set; }
+        public IList<Project> Projects { get; set; }
+        public Dictionary<Project, bool> RunningFlags { get; set;  }
 
         public async Task OnGetAsync()
         {
-            Project = await _context.Projects.ToListAsync();
+            Projects = await _context.Projects.ToListAsync();
+            RunningFlags = new Dictionary<Project, bool>();
+            foreach (var p in Projects)
+            {
+                RunningFlags.Add(p, ProcessManager.IsRunning(p));
+            }
         }
     }
 }

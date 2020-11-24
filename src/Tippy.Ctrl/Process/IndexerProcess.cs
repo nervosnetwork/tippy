@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 
 namespace Tippy.Ctrl.Process
@@ -12,6 +12,7 @@ namespace Tippy.Ctrl.Process
             process.StartInfo.FileName = BinaryFullPath("ckb-indexer");
             process.StartInfo.WorkingDirectory = WorkingDirectory();
             process.StartInfo.Arguments = "-s indexer-data";
+            // TODO: pass in listen_uri and ckb_uri
         }
     }
 }

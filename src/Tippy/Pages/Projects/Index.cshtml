@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model Tippy.Pages.Projects.IndexModel
 
 @{ ViewData["Title"] = "Projects"; }
@@ -13,16 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Project[0].Name)
+                @Html.DisplayNameFor(model => model.Projects[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Project[0].Chain)
+                @Html.DisplayNameFor(model => model.Projects[0].Chain)
             </th>
             <th>
                 RPC
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Project[0].LockArg)
+                @Html.DisplayNameFor(model => model.Projects[0].LockArg)
             </th>
             <th>Status</th>
             <th>Control</th>
@@ -30,65 +30,91 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Project) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Chain)
-            </td>
-            <td>
-                http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LockArg)
-            </td>
-            <td>
-                <span class="tag is-light">Stopped</span>
-                <span class="tag is-success">Running</span>
-            </td>
-            <td>
-              <a class="button is-success is-small">
-                  <span class="icon">
-                      <i class="fas fa-play"></i>
-                  </span>
-                  <span>Start</span>
-              </a>
-              <a class="button is-danger is-small">
-                  <span class="icon">
-                      <i class="fas fa-pause"></i>
-                  </span>
-                  <span>Stop</span>
-              </a>
-              <a class="button is-warning is-small">
-                  <span class="icon">
-                      <i class="fas fa-redo"></i>
-                  </span>
-                  <span>Restart</span>
-              </a>
-            </td>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.ID" class="button is-primary is-small is-outlined">
-                    <span>Details</span>
-                    <span class="icon is-small">
-                        <i class="fas fa-info-circle"></i>
-                    </span>
-                </a>
-                <a asp-page="./Edit" asp-route-id="@item.ID" class="button is-link is-primary is-small is-outlined">
-                    <span>Edit</span>
-                    <span class="icon is-small">
-                        <i class="far fa-edit"></i>
-                    </span>
-                </a>
-                <a asp-page="./Delete" asp-route-id="@item.ID" class="button is-danger is-small is-outlined">
-                    <span>Delete</span>
-                    <span class="icon is-small">
-                        <i class="far fa-trash-alt"></i>
-                    </span>
-                </a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Projects)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Chain)
+                </td>
+                <td>
+                    http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LockArg)
+                </td>
+                <td>
+                    @if (Model.RunningFlags[item])
+                    {
+                        <span class="tag is-success">Running</span>
+                    }
+                    else
+                    {
+                        <span class="tag is-light">Stopped</span>
+                    }
+                </td>
+                <td>
+                    @if (Model.RunningFlags[item])
+                    {
+                        <div class="columns is-1 is-variable">
+                            <div class="column">
+                                <form asp-page="./Stop" asp-route-id="@item.ID" method="post">
+                                    <button class="button is-danger is-small">
+                                        <span class="icon">
+                                            <i class="fas fa-pause"></i>
+                                        </span>
+                                        <span>Stop</span>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="column">
+                                <form asp-page="./Restart" asp-route-id="@item.ID" method="post">
+                                    <button class="button is-warning is-small">
+                                        <span class="icon">
+                                            <i class="fas fa-redo"></i>
+                                        </span>
+                                        <span>Restart</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-page="./Start" asp-route-id="@item.ID" method="post">
+                            <button class="button is-success is-small">
+                                <span class="icon">
+                                    <i class="fas fa-play"></i>
+                                </span>
+                                <span>Start</span>
+                            </button>
+                            <input type="hidden" asp-for="@item.ID" />
+                        </form>
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.ID" class="button is-primary is-small is-outlined">
+                        <span>Details</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-info-circle"></i>
+                        </span>
+                    </a>
+                    <a asp-page="./Edit" asp-route-id="@item.ID" class="button is-link is-primary is-small is-outlined">
+                        <span>Edit</span>
+                        <span class="icon is-small">
+                            <i class="far fa-edit"></i>
+                        </span>
+                    </a>
+                    <a asp-page="./Delete" asp-route-id="@item.ID" class="button is-danger is-small is-outlined">
+                        <span>Delete</span>
+                        <span class="icon is-small">
+                            <i class="far fa-trash-alt"></i>
+                        </span>
+                    </a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

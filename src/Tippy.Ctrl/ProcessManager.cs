@@ -1,74 +1,70 @@
 using System;
+using System.Collections.Generic;
+using Tippy.Core.Models;
 
 namespace Tippy.Ctrl
 {
     public class LogReceivedEventArgs : EventArgs
     { 
-        public string? Log { get; internal set; }
+        public string? Log { get; init; }
     }
 
     public delegate void NodeLogEventHandler(object? sender, LogReceivedEventArgs e);
 
     public class ProcessManager
     {
-        static Process.CommandProcess? node;
-        static Process.CommandProcess? miner;
-        static Process.CommandProcess? indexer;
-
         public static event NodeLogEventHandler? NodeLogReceived;
 
-        public static bool IsRunning => node?.IsRunning ?? false;
+        static List<ProcessGroup> processGroups = new List<ProcessGroup>();
 
-        public static void UpdateConfiguration() => Process.NodeProcess.UpdateConfiguration();
+        static ProcessGroup? GroupFor(Project project) =>
+            processGroups.Find(g => g.ProcessInfo == ProcessInfo.FromProject(project));
 
-        public static void Start()
+        public static bool IsRunning(Project project) => GroupFor(project) != null;
+
+        public static void Start(Project project)
         {
-            Console.WriteLine("Starting child processes...");
-            if (node == null)
-            { 
-                node = new Process.NodeProcess();
-                node.LogReceived += new Process.LogEventHandler(OnLogReceived);
+            if (!IsRunning(project))
+            {
+                ProcessGroup group = new(ProcessInfo.FromProject(project));
+                group.Start();
+                // TODO connect log
+                processGroups.Add(group);
             }
-            node.Start();
-            // Wait for the RPC to get ready.
-            // A better approach would be to catch ckb output to make sure it's already listening.
-            System.Threading.Tasks.Task.Delay(1000).Wait();
-
-            if (miner == null)
-            { 
-                miner = new Process.MinerProcess();
-                miner.LogReceived += new Process.LogEventHandler(OnLogReceived);
-            }
-            miner.Start();
-
-            if (indexer == null)
-            { 
-                indexer = new Process.IndexerProcess();
-            }
-            indexer.Start();
-            Console.WriteLine("Started child processes.");
         }
 
         public static void Stop()
         {
-            Console.WriteLine("Stopping child processes...");
-            indexer?.Stop();
-            miner?.Stop();
-            node?.Stop();
-            Console.WriteLine("Stopped child processes.");
+            foreach (var group in processGroups)
+            {
+                group.Stop();
+            }
+            processGroups.Clear();
         }
 
-        public static void Restart()
+        public static void Stop(Project project)
         {
-            Stop();
-            Start();
+            var group = GroupFor(project);
+            if (group == null)
+            {
+                return; 
+            }
+            // TODO disconnect log
+            group.Stop();
+            processGroups.Remove(group);
         }
 
-        public static void ResetData()
+        public static void Restart(Project project)
         {
-            Stop();
-            Process.NodeProcess.Reset();
-            Start();
+            Stop(project);
+            Start(project);
+        }
+
+        public static void ResetData(Project project)
+        {
+            Stop(project);
+            ProcessGroup group = new(ProcessInfo.FromProject(project));
+            group.ResetData();
         }
 
         static void OnLogReceived(object? sender, Process.LogEventArgs e)

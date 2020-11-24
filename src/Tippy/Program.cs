@@ -23,7 +23,6 @@ namespace Tippy
 
             _hubContext = (IHubContext<LogHub>)host.Services.GetService(typeof(IHubContext<LogHub>));
             ProcessManager.NodeLogReceived += new NodeLogEventHandler(OnLogReceived);
-            ProcessManager.Start();
 
             host.Run();
         }

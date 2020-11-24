@@ -16,7 +16,7 @@ namespace Tippy.Pages
 
         public void OnGet()
         {
-            IsNodeRunning = Ctrl.ProcessManager.IsRunning;
+            IsNodeRunning = false; // TODO: Ctrl.ProcessManager.IsRunning;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -27,7 +27,7 @@ namespace Tippy.Pages
 
         public async Task<IActionResult> OnPostRestartAsync()
         {
-            Ctrl.ProcessManager.Restart();
+            // TODO: Ctrl.ProcessManager.Restart();
 
             Message = "Node has been restarted.";
             return RedirectToPage();
@@ -35,7 +35,7 @@ namespace Tippy.Pages
 
         public async Task<IActionResult> OnPostStartAsync()
         {
-            Ctrl.ProcessManager.Start();
+            // TODO: Ctrl.ProcessManager.Start();
 
             Message = "Node has been started.";
             return RedirectToPage();
@@ -43,7 +43,7 @@ namespace Tippy.Pages
 
         public async Task<IActionResult> OnPostResetAsync()
         {
-            Ctrl.ProcessManager.ResetData();
+            // TODO: Ctrl.ProcessManager.ResetData();
 
             Message = "Node data has been reset. Node has been restarted.";
             return RedirectToPage();
