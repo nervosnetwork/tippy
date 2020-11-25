@@ -22,7 +22,9 @@
                 <i class="fas fa-mug-hot fa-3x"></i>
             </span>
         </p>
-        Create your first project and launch a CKB devnet quickly.
+        <p>
+            Create your first project and launch a CKB devnet quickly.
+        </p>
     </div>
     <form asp-page="./QuickStart" method="post">
         <button class="button is-primary">
@@ -37,4 +39,33 @@
 @if (Model.ActiveProject != null)
 {
     <h2 class="subtitle">@Model.ActiveProject.Name</h2>
+
+    @if (Model.IsNodeRunning)
+    {
+        <form method="post">
+            <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.ID" class="button is-danger is-small">
+                <span class="icon">
+                    <i class="fas fa-pause"></i>
+                </span>
+                <span>Stop</span>
+            </button>
+            <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.ID" class="button is-warning is-small">
+                <span class="icon">
+                    <i class="fas fa-redo"></i>
+                </span>
+                <span>Restart</span>
+            </button>
+        </form>
+    }
+    else
+    {
+        <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.ID" method="post">
+            <button class="button is-success is-small">
+                <span class="icon">
+                    <i class="fas fa-play"></i>
+                </span>
+                <span>Start</span>
+            </button>
+        </form>
+    }
 }

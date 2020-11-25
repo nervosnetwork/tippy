@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Tippy.Filters;
 using Tippy.Hubs;
 
 namespace Tippy
@@ -31,6 +32,8 @@ namespace Tippy
 #else
             services.AddRazorPages();
 #endif
+
+            services.AddScoped<ActiveProjectFilter>();
 
             services.AddDbContext<Core.Data.DbContext>(options =>
             {

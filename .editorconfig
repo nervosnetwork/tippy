@@ -49,5 +49,3 @@ end_of_line = lf
 [*.{razor,cshtml}]
 charset = utf-8-bom
 
-[*.cs]
-dotnet_diagnostic.CA1304.severity = error

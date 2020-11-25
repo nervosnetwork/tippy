@@ -4,4 +4,18 @@
     ViewData["Title"] = "Explorer";
 }
 
-<iframe src="/" class="explorer-container" title="Explorer"></iframe>
+@if (Model.ActiveProject != null)
+{
+    <iframe src="/" class="explorer-container" title="Explorer"></iframe>
+}
+else
+{
+    <div class="notification is-warning">
+        <p class="ml-3">
+            <span class="icon has-text-danger">
+                <i class="fas fa-exclamation-triangle fa-3x"></i>
+            </span>
+        </p>
+        <p>No chain is running. Please <a asp-page="/Home/Index">start</a> a project/chain first.</p>
+    </div>
+}

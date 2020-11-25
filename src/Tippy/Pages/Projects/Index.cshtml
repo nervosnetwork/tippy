@@ -15,13 +15,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.Projects[0].Name)
             </th>
+            <th>Status</th>
             <th>
                 @Html.DisplayNameFor(model => model.Projects[0].Chain)
             </th>
-            <th>
-                RPC
-            </th>
-            <th>Status</th>
+            <th>RPC</th>
             <th>Control</th>
             <th></th>
         </tr>
@@ -35,12 +33,6 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Chain)
-                </td>
-                <td>
-                    http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
-                </td>
-                <td>
                     @if (Model.RunningFlags[item])
                     {
                         <span class="tag is-success">Running</span>
@@ -51,30 +43,28 @@
                     }
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Chain)
+                </td>
+                <td>
+                    http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
+                </td>
+                <td>
                     @if (Model.RunningFlags[item])
                     {
-                        <div class="columns is-1 is-variable">
-                            <div class="column">
-                                <form asp-page="./Stop" asp-route-id="@item.ID" method="post">
-                                    <button class="button is-danger is-small">
-                                        <span class="icon">
-                                            <i class="fas fa-pause"></i>
-                                        </span>
-                                        <span>Stop</span>
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="column">
-                                <form asp-page="./Restart" asp-route-id="@item.ID" method="post">
-                                    <button class="button is-warning is-small">
-                                        <span class="icon">
-                                            <i class="fas fa-redo"></i>
-                                        </span>
-                                        <span>Restart</span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                        <form method="post">
+                            <button asp-page="./Stop" asp-route-id="@item.ID" class="button is-danger is-small">
+                                <span class="icon">
+                                    <i class="fas fa-pause"></i>
+                                </span>
+                                <span>Stop</span>
+                            </button>
+                            <button asp-page="./Restart" asp-route-id="@item.ID" class="button is-warning is-small">
+                                <span class="icon">
+                                    <i class="fas fa-redo"></i>
+                                </span>
+                                <span>Restart</span>
+                            </button>
+                        </form>
                     }
                     else
                     {
@@ -85,7 +75,6 @@
                                 </span>
                                 <span>Start</span>
                             </button>
-                            <input type="hidden" asp-for="@item.ID" />
                         </form>
                     }
                 </td>

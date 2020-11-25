@@ -20,7 +20,7 @@ namespace Tippy.Ctrl
         static ProcessGroup? GroupFor(Project project) =>
             processGroups.Find(g => g.ProcessInfo == ProcessInfo.FromProject(project));
 
-        public static bool IsRunning(Project project) => GroupFor(project) != null;
+        public static bool IsRunning(Project project) => project != null && GroupFor(project) != null;
 
         public static void Start(Project project)
         {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tippy.Ctrl;
 using Tippy.Core.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Tippy.Pages.Projects
 {
@@ -36,6 +37,11 @@ namespace Tippy.Pages.Projects
                 ProcessManager.Restart(Project);
             }
 
+            var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();
+            if (!referer.Contains("projects"))
+            {
+                return Redirect(referer);
+            }
             return RedirectToPage("./Index");
         }
     }

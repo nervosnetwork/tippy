@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
+using Tippy.Ctrl;
+using Tippy.Filters;
 
 namespace Tippy.Pages.Home
 {
+    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class IndexModel : PageModel
     {
         private readonly Tippy.Core.Data.DbContext _context;
@@ -29,8 +32,8 @@ namespace Tippy.Pages.Home
         public async Task OnGetAsync()
         {
             Projects = await _context.Projects.ToListAsync();
-            ActiveProject = Projects.FirstOrDefault(p => p.IsActive) ?? Projects[0];
-            IsNodeRunning = false;
+            ActiveProject = HttpContext.Items["ActiveProject"] as Project;
+            IsNodeRunning = ProcessManager.IsRunning(ActiveProject);
         }
     }
 }
