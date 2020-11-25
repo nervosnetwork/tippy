@@ -11,33 +11,59 @@
     <style>
     </style>
 </head>
-<body>
-    <div class="container is-fluid main-container">
-        <div class="columns main-columns">
-            <div class="column is-narrow side-menu-container has-background-light">
-                <aside class="menu side-menu mt-6">
-                  <p class="menu-label">
-                    General
-                  </p>
-                  <ul class="menu-list">
-                    <li><a asp-page="/Home/Index">Dashboard</a></li>
-                    <li><a asp-page="/Explorer">Explorer</a></li>
-                    <li><a asp-page="/Log">Logs</a></li>
-                  </ul>
-                  <p class="menu-label">
-                    Configuration
-                  </p>
-                  <ul class="menu-list">
-                    <li><a asp-page="/Projects/Index">Projects</a></li>
-                    <!--<li><a asp-page="/Config/Index">Config</a></li>-->
-                  </ul>
-                </aside>
+<body class="has-navbar-fixed-top">
+    <nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+        <div class="container is-fullhd">
+            <div class="navbar-brand">
+                <span class="navbar-item">
+                  <i class="fab fa-connectdevelop fa-2x has-text-success"></i>
+                </span>
             </div>
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a asp-page="/Home/Index" class="navbar-item">Dashboard</a>
+                    <a asp-page="/Explorer" class="navbar-item">Explorer</a>
+                    <a asp-page="/Log" class="navbar-item">Logs</a>
+                    <a asp-page="/Projects/Index" class="navbar-item">Projects</a>
 
-            <div class="column">
-                @RenderBody()
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            More
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                                todo
+                            </a>
+                            <a class="navbar-item">
+                                todo
+                            </a>
+                            <a class="navbar-item">
+                                todo
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">
+                                todo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary">
+                                <strong>todo</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </nav>
+
+    <div class="container is-fullhd pt-5">
+        @RenderBody()
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
