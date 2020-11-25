@@ -27,7 +27,7 @@ namespace Tippy.Pages.Projects
 
             Project = new Project
             {
-                Name = "My Chain",
+                Name = $"CKB Chain",
                 Chain = Project.ChainType.Dev,
                 NodeRpcPort = calculatingFromUsed ? (rpcPorts.Max() + 3).ToString(CultureInfo.InvariantCulture) : "8114",
                 NodeNetworkPort = calculatingFromUsed ? (networkPorts.Max() + 3).ToString(CultureInfo.InvariantCulture) : "8115",
@@ -49,6 +49,8 @@ namespace Tippy.Pages.Projects
                 return Page();
             }
 
+            var projects = await _context.Projects.ToListAsync();
+            Project.IsActive = !projects.Any(p => p.IsActive);
             _context.Projects.Add(Project);
             await _context.SaveChangesAsync();
 

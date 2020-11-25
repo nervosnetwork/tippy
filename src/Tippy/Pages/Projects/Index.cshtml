@@ -21,9 +21,6 @@
             <th>
                 RPC
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Projects[0].LockArg)
-            </th>
             <th>Status</th>
             <th>Control</th>
             <th></th>
@@ -32,7 +29,8 @@
     <tbody>
         @foreach (var item in Model.Projects)
         {
-            <tr>
+            var className = item.IsActive ? "is-selected" : "";
+            <tr class=@className>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -41,9 +39,6 @@
                 </td>
                 <td>
                     http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LockArg)
                 </td>
                 <td>
                     @if (Model.RunningFlags[item])

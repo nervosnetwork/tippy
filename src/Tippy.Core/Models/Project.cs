@@ -33,5 +33,8 @@ namespace Tippy.Core.Models
         [Display(Name = "Block Assembler Lock Arg")]
         [Required]
         public string LockArg { get; set; }
+
+        [Display(Name = "Active")]
+        public bool IsActive { get; set; }
     }
 }

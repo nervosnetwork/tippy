@@ -15,8 +15,12 @@ namespace Tippy.Core.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Project>()
-                .Property(c => c.Chain)
+                .Property(p => p.Chain)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<Project>()
+                .Property(p => p.IsActive)
+                .HasDefaultValue(false);
         }
     }
 }
