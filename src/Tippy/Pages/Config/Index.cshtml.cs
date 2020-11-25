@@ -12,7 +12,7 @@ namespace Tippy.Pages.Config
     {
         [Required]
         [BindProperty]
-        public string LockArg { get; set; } = Core.Settings.GetSettings().BlockAssembler.LockArg;
+        public string Unused { get; set; } = "";
 
         [TempData]
         public string Message { get; set; }
@@ -29,10 +29,9 @@ namespace Tippy.Pages.Config
             }
 
             var settings = Core.Settings.GetSettings();
-            settings.BlockAssembler.LockArg = LockArg;
             settings.Save();
 
-            Message = "Lock arg was updated.";
+            Message = "Settings saved";
             return RedirectToPage();
         }
     }

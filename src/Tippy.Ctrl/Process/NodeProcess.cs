@@ -35,7 +35,7 @@ namespace Tippy.Ctrl.Process
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.FileName = BinaryFullPath("ckb");
             process.StartInfo.WorkingDirectory = WorkingDirectory();
-            process.StartInfo.Arguments = BuildArguments(); // TODO: only load spec template for devnet
+            process.StartInfo.Arguments = BuildArguments();
             process.Start();
 
             StreamWriter writer = process.StandardInput;
@@ -67,7 +67,7 @@ namespace Tippy.Ctrl.Process
                 {
                     if (line.StartsWith("args = "))
                     {
-                        return $"args = \"{LockArg}\"";
+                        return $"args = \"{ProcessInfo.LockArg}\"";
                     }
                     else if (line.StartsWith("listen_addresses ="))
                     {
@@ -90,17 +90,23 @@ namespace Tippy.Ctrl.Process
 
         string TomlFile => Path.Combine(WorkingDirectory(), "ckb.toml");
 
-        string BuildArguments() => $"init --chain dev --ba-arg {LockArg} --import-spec -";
-
-        string LockArg => Core.Settings.GetSettings().BlockAssembler.LockArg;
+        string BuildArguments()
+        {
+            switch (ProcessInfo.Chain)
+            {
+                case Core.Models.Project.ChainType.Testnet:
+                    return $"init --chain testnet --ba-arg {ProcessInfo.LockArg}";
+                case Core.Models.Project.ChainType.Mainnet:
+                    return $"init --chain mainnet --ba-arg {ProcessInfo.LockArg}";
+                default:
+                    return $"init --chain dev --ba-arg {ProcessInfo.LockArg} --import-spec -";
+            }
+        }
 
         string ChainSpec()
         {
             var spec = DevChainSpecTemplate;
-            spec = spec.Replace(
-                "[GENESIS_CELL_MESSAGE]",
-                "ckb_dev_" + DateTime.Now.ToString("yyyyMMddHHmmss",
-                CultureInfo.InvariantCulture));
+            spec = spec.Replace("[GENESIS_CELL_MESSAGE]", "ckb_dev_" + ProcessInfo.ID);
             var bytes = Encoding.UTF8.GetBytes(spec);
             return Convert.ToBase64String(bytes);
         }

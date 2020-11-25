@@ -31,8 +31,6 @@ namespace Tippy.Core
             return Singleton;
         }
 
-        public BlockAssembler BlockAssembler { get; set; }
-
         public void Save()
         {
             var options = new JsonSerializerOptions
@@ -60,10 +58,5 @@ namespace Tippy.Core
                 return reader.ReadToEnd();
             }
         }
-    }
-
-    public class BlockAssembler
-    {
-        public string LockArg { get; set; }
     }
 }
