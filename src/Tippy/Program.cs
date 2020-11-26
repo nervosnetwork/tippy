@@ -15,14 +15,14 @@ namespace Tippy
 
         public static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnAppExit);
+            AppDomain.CurrentDomain.ProcessExit += OnAppExit;
             Core.Environment.CreateAppDataFolder();
 
             var host = CreateHostBuilder(args).Build();
             CreateDbIfNotExists(host);
 
             _hubContext = (IHubContext<LogHub>)host.Services.GetService(typeof(IHubContext<LogHub>));
-            ProcessManager.NodeLogReceived += new NodeLogEventHandler(OnLogReceived);
+            ProcessManager.NodeLogReceived += OnNodeLogReceived;
 
             host.Run();
         }
@@ -56,9 +56,9 @@ namespace Tippy
             ProcessManager.Stop();
         }
 
-        static async void OnLogReceived(object? sender, LogReceivedEventArgs e)
+        static async void OnNodeLogReceived(object? sender, LogReceivedEventArgs e)
         { 
-            await _hubContext.Clients.All.SendAsync("ReceiveLog", e.Log);
+            await _hubContext.Clients.All.SendAsync("ReceiveLog", e.ID, e.Log);
         }
     }
 }

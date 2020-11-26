@@ -6,6 +6,7 @@ namespace Tippy.Ctrl
 {
     public class LogReceivedEventArgs : EventArgs
     { 
+        public int ID { get; init; }
         public string? Log { get; init; }
     }
 
@@ -27,8 +28,8 @@ namespace Tippy.Ctrl
             if (!IsRunning(project))
             {
                 ProcessGroup group = new(ProcessInfo.FromProject(project));
+                group.NodeLogReceived += OnLogReceived;
                 group.Start();
-                // TODO connect log
                 processGroups.Add(group);
             }
         }
@@ -49,8 +50,8 @@ namespace Tippy.Ctrl
             {
                 return; 
             }
-            // TODO disconnect log
             group.Stop();
+            group.NodeLogReceived -= OnLogReceived;
             processGroups.Remove(group);
         }
 
@@ -67,10 +68,13 @@ namespace Tippy.Ctrl
             group.ResetData();
         }
 
-        static void OnLogReceived(object? sender, Process.LogEventArgs e)
+        static void OnLogReceived(object? sender, LogReceivedEventArgs e)
         {
             Console.WriteLine(e.Log);
-            NodeLogReceived?.Invoke(sender, new LogReceivedEventArgs() { Log = "\n" + e.Log });
+            if (sender is ProcessGroup group)
+            {
+                NodeLogReceived?.Invoke(sender, e);
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Tippy.Ctrl
             if (node == null)
             {
                 node = new Process.NodeProcess(ProcessInfo);
-                node.LogReceived += new Process.LogEventHandler(OnLogReceived);
+                node.LogReceived += OnLogReceived;
             }
             node.Start();
             // Wait for the RPC to get ready.
@@ -38,7 +38,7 @@ namespace Tippy.Ctrl
                 if (miner == null)
                 {
                     miner = new Process.MinerProcess(ProcessInfo);
-                    miner.LogReceived += new Process.LogEventHandler(OnLogReceived);
+                    miner.LogReceived += OnLogReceived;
                 }
                 miner.Start();
             }
@@ -73,10 +73,9 @@ namespace Tippy.Ctrl
             np.Reset();
         }
 
-        void OnLogReceived(object? sender, Process.LogEventArgs e)
+        void OnLogReceived(object? sender, LogReceivedEventArgs e)
         {
-            WriteLine(e.Log);
-            NodeLogReceived?.Invoke(sender, new LogReceivedEventArgs() { Log = "\n" + e.Log });
+            NodeLogReceived?.Invoke(this, e);
         }
     }
 }

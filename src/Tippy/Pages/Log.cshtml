@@ -1,12 +1,29 @@
 ﻿@page
+@model Tippy.Pages.LogModel
 @{
     ViewData["Title"] = "Logs";
 }
 
-<h1 class="title">Logs</h1>
 
-<div class="log-box" id="log-box"></div>
+@if (Model.ActiveProject != null)
+{
+    <h1 class="title">Logs</h1>
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_SignalrScriptsPartial"); }
+    <input type="hidden" id="project-id" value="@Model.ActiveProject.ID" />
+    <div class="log-box" id="log-box"></div>
+
+    @section Scripts {
+        @{ await Html.RenderPartialAsync("_SignalrScriptsPartial"); }
+    }
+}
+else
+{
+    <div class="notification is-warning">
+        <p class="ml-3">
+            <span class="icon has-text-danger">
+                <i class="fas fa-exclamation-triangle fa-3x"></i>
+            </span>
+        </p>
+        <p>No chain is running. Please <a asp-page="/Home/Index">start</a> a project/chain first.</p>
+    </div>
 }
