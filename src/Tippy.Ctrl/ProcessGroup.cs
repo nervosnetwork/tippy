@@ -68,7 +68,7 @@ namespace Tippy.Ctrl
             Start();
         }
 
-        internal List<int> portsInUse()
+        internal List<int> PortsInUse()
         {
             var allPortsInUse = Util.LocalPort.PortsInUse();
             var portsToCheck = new string[]
@@ -77,7 +77,7 @@ namespace Tippy.Ctrl
                     ProcessInfo.NodeNetworkPort,
                     ProcessInfo.IndexerRpcPort
                 }
-                .Select(p => int.Parse(p));
+                .Select(int.Parse);
             return portsToCheck
                 .Where(p => allPortsInUse.Contains(p))
                 .ToList();

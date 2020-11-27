@@ -29,7 +29,7 @@ namespace Tippy.Ctrl
             if (!IsRunning(project))
             {
                 ProcessGroup group = new(ProcessInfo.FromProject(project));
-                var portsInUse = group.portsInUse();
+                var portsInUse = group.PortsInUse();
                 if (portsInUse.Count > 0)
                 {
                     var message = $"Port(s) {string.Join(", " , portsInUse)} already used. Please update project to use other ports.";
