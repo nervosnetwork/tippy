@@ -29,7 +29,7 @@ namespace Tippy.Controllers.API
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index([FromQuery(Name = "page")] int? page, [FromQuery(Name = "page_size")] int? pageSize)
         {
             var client = Rpc();
             if (client == null)
@@ -38,12 +38,40 @@ namespace Tippy.Controllers.API
             }
 
             UInt64 tipBlockNumber = client.GetTipBlockNumber();
-            List<UInt64> blockNumbers = GetBlockNumbers(tipBlockNumber, 10);
+            if (page == null || pageSize == null)
+            {
+                ArrayResult<BlocksResult> r = GetBlocks(client, tipBlockNumber, 10);
+                return Ok(r);
+            }
 
-            BlocksResult[] brs = blockNumbers.Select(num => GetBlock(client, num)).Where(br => br != null).ToArray();
-            ArrayResult<BlocksResult> result = new("block_list", brs);
+            if (page < 1 || pageSize < 1)
+            {
+                return NoContent();
+            }
+
+            UInt64 skipCount = (UInt64)((page - 1) * pageSize);
+            if (skipCount > tipBlockNumber)
+            {
+                return NoContent();
+            }
+
+            UInt64 startBlockNumber = tipBlockNumber - skipCount;
+            Meta meta = new();
+            meta.Total = tipBlockNumber + 1;
+            meta.PageSize = (int)pageSize;
+            ArrayResult<BlocksResult> result = GetBlocks(client, startBlockNumber, (int)pageSize, meta);
 
             return Ok(result);
+        }
+
+        private static ArrayResult<BlocksResult> GetBlocks(Client client, UInt64 startBlockNumber, int count, Meta? meta = null)
+        {
+            List<UInt64> blockNumbers = GetBlockNumbers(startBlockNumber, count);
+
+            BlocksResult[] brs = blockNumbers.Select(num => GetBlock(client, num)).Where(br => br != null).ToArray();
+            ArrayResult<BlocksResult> result = new("block_list", brs, meta);
+
+            return result;
         }
 
         private static BlocksResult? GetBlock(Client client, UInt64 num)
