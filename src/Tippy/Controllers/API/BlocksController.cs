@@ -9,6 +9,7 @@ using Tippy.Ctrl;
 using Tippy.ApiData;
 using System.Text.Json.Serialization;
 using Tippy.Filters;
+using Tippy.Util;
 
 namespace Tippy.Controllers.API
 {
@@ -59,9 +60,9 @@ namespace Tippy.Controllers.API
             int inputsCount = transactions.Select(tx => tx.inputs.Length).Aggregate(0, (acc, cur) => acc + cur);
             int outputsCount = transactions.Select(tx => tx.outputs.Length).Aggregate(0, (acc, cur) => acc + cur);
 
-            var number = $"{Util.HexToUInt64(header.number)}";
+            var number = $"{Hex.HexToUInt64(header.number)}";
             int transactionsCount = transactions.Length;
-            string timestamp = $"{ Util.HexToUInt64(header.timestamp) }";
+            string timestamp = $"{ Hex.HexToUInt64(header.timestamp) }";
 
             BlocksResult br = new();
             br.Number = number;

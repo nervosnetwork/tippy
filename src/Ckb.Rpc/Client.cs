@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Tippy.Util;
 
 namespace Ckb.Rpc
 {
@@ -43,7 +44,7 @@ namespace Ckb.Rpc
         public UInt64 GetTipBlockNumber()
         {
             var result = Call("get_tip_block_number")?.Result?.ToString() ?? "0x0";
-            return Util.HexToUInt64(result);
+            return Hex.HexToUInt64(result);
         }
 
         public Dictionary<string, object> GetBlockchainInfo()

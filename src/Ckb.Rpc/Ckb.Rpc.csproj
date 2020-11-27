@@ -6,4 +6,8 @@
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tippy.Util\Tippy.Util.csproj" />
+  </ItemGroup>
+
 </Project>
