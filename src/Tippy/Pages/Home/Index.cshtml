@@ -38,7 +38,45 @@
 
 @if (Model.ActiveProject != null)
 {
-    <h2 class="subtitle">@Model.ActiveProject.Name</h2>
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <h2 class="subtitle">
+                    <strong>@Model.ActiveProject.Name</strong>
+                    (@Model.ActiveProject.Chain.ToString().ToLower())
+                </h2>
+            </div>
+            <div class="level-item">
+                <div class="navbar-menu">
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <span class="navbar-link">
+                            Switch project
+                        </span>
+
+                        <div class="navbar-dropdown">
+                            <form method="post">
+                                @foreach (var item in Model.Projects)
+                                {
+                                    @if (item.ID == Model.ActiveProject.ID)
+                                    {
+                                        <span class="navbar-item"><strong>@item.Name</strong></span>
+                                    }
+                                    else
+                                    {
+                                        <button asp-page="./SwitchProject" asp-route-id="@item.ID" class="navbar-item button-as-link">@item.Name</button>
+                                    }
+                                }
+                            </form>
+                            <hr class="navbar-divider">
+                            <a asp-page="/Projects/Index" class="navbar-item">
+                                Manage projects
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     @if (Model.IsNodeRunning)
     {
