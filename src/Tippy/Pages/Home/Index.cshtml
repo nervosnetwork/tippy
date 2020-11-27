@@ -46,35 +46,39 @@
                     (@Model.ActiveProject.Chain.ToString().ToLower())
                 </h2>
             </div>
-            <div class="level-item">
-                <div class="navbar-menu">
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">
-                            Switch project
-                        </span>
 
-                        <div class="navbar-dropdown">
-                            <form method="post">
-                                @foreach (var item in Model.Projects)
-                                {
-                                    @if (item.ID == Model.ActiveProject.ID)
+            @if (Model.Projects.Count > 1)
+            {
+                <div class="level-item">
+                    <div class="navbar-menu pl-6">
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <span class="navbar-link">
+                                Switch project
+                            </span>
+
+                            <div class="navbar-dropdown">
+                                <form method="post">
+                                    @foreach (var item in Model.Projects)
                                     {
-                                        <span class="navbar-item"><strong>@item.Name</strong></span>
+                                        @if (item.ID == Model.ActiveProject.ID)
+                                        {
+                                            <span class="navbar-item"><strong>@item.Name</strong></span>
+                                        }
+                                        else
+                                        {
+                                            <button asp-page="./SwitchProject" asp-route-id="@item.ID" class="navbar-item button-as-link">@item.Name</button>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <button asp-page="./SwitchProject" asp-route-id="@item.ID" class="navbar-item button-as-link">@item.Name</button>
-                                    }
-                                }
-                            </form>
-                            <hr class="navbar-divider">
-                            <a asp-page="/Projects/Index" class="navbar-item">
-                                Manage projects
-                            </a>
+                                </form>
+                                <hr class="navbar-divider">
+                                <a asp-page="/Projects/Index" class="navbar-item">
+                                    Manage projects
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
     </nav>
 
