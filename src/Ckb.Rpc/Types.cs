@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Ckb.Rpc.Types
 {
+#nullable disable
     public class Block
     {
         public Header Header { get; set; }
@@ -29,7 +30,9 @@ namespace Ckb.Rpc.Types
     public class Transaction
     {
         public CellDeps[] CellDeps { get; set; }
+#nullable enable
         public string? Hash { get; set; }
+#nullable disable
         public string[] HeaderDeps { get; set; }
         public Input[] Inputs { get; set; }
         public Output[] Outputs { get; set; }
@@ -62,7 +65,9 @@ namespace Ckb.Rpc.Types
 
         [JsonPropertyName("lock")]
         public Script Lock { get; set; }
+#nullable enable
         public Script? Type { get; set; }
+#nullable disable
     }
 
     public class Script
