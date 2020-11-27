@@ -35,23 +35,21 @@ namespace Tippy.Controllers.API
             }
 
             UInt64 tipBlockNumber = client.GetTipBlockNumber();
-
             List<UInt64> blockNumbers = GetBlockNumbers(tipBlockNumber, 10);
 
-            BlocksResult[] brs = blockNumbers.Select(num =>
-            {
-                return GetBlock(client, num);
-            }).ToArray();
-
+            BlocksResult[] brs = blockNumbers.Select(num => GetBlock(client, num)).Where(br => br != null).ToArray();
             ArrayResult<BlocksResult> result = new("block_list", brs);
 
-            string json = System.Text.Json.JsonSerializer.Serialize(result);
             return Ok(result);
         }
 
-        private static BlocksResult GetBlock(Client client, UInt64 num)
+        private static BlocksResult? GetBlock(Client client, UInt64 num)
         {
-            Block block = client.GetBlockByNumber(num);
+            Block? block = client.GetBlockByNumber(num);
+            if (block == null)
+            {
+                return null;
+            }
 
             var header = block.header;
             var transactions = block.transactions;

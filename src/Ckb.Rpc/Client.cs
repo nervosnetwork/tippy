@@ -53,12 +53,15 @@ namespace Ckb.Rpc
             return JsonSerializer.Deserialize<Dictionary<string, object>>(result) ?? fallback;
         }
 
-        public Types.Block GetBlockByNumber(UInt64 num)
+        public Types.Block? GetBlockByNumber(UInt64 num)
         {
             string[] methodParams = { Util.UInt64ToHex(num) };
-            var result = Call("get_block_by_number", methodParams)?.Result?.ToString() ?? "{}";
-            Types.Block fallback = new();
-            return JsonSerializer.Deserialize<Types.Block>(result) ?? fallback;
+            var result = Call("get_block_by_number", methodParams)?.Result?.ToString();
+            if (result == null)
+            {
+                return null;
+            }
+            return JsonSerializer.Deserialize<Types.Block>(result);
         }
     }
 
