@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -40,10 +40,10 @@ namespace Ckb.Rpc
             return JsonSerializer.Deserialize<ResponseObject>(responseReader.ReadToEnd());
         }
 
-        public Int64 GetTipBlockNumber()
+        public UInt64 GetTipBlockNumber()
         {
             var result = Call("get_tip_block_number")?.Result?.ToString() ?? "0x0";
-            return Util.HexToInt64(result);
+            return Util.HexToUInt64(result);
         }
 
         public Dictionary<string, object> GetBlockchainInfo()
@@ -51,6 +51,17 @@ namespace Ckb.Rpc
             var fallback = new Dictionary<string, object> { };
             var result = Call("get_blockchain_info")?.Result?.ToString() ?? "{}";
             return JsonSerializer.Deserialize<Dictionary<string, object>>(result) ?? fallback;
+        }
+
+        public Types.Block? GetBlockByNumber(UInt64 num)
+        {
+            string[] methodParams = { Util.UInt64ToHex(num) };
+            var result = Call("get_block_by_number", methodParams)?.Result?.ToString();
+            if (result == null)
+            {
+                return null;
+            }
+            return JsonSerializer.Deserialize<Types.Block>(result);
         }
     }
 
