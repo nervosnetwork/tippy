@@ -23,11 +23,19 @@ namespace Tippy.Ctrl
 
         public static bool IsRunning(Project project) => project != null && GroupFor(project) != null;
 
+        /// If any port is already in use, throw InvalidOperationException.
         public static void Start(Project project)
         {
             if (!IsRunning(project))
             {
                 ProcessGroup group = new(ProcessInfo.FromProject(project));
+                var portsInUse = group.portsInUse();
+                if (portsInUse.Count > 0)
+                {
+                    var message = $"Port(s) {string.Join(", " , portsInUse)} already used. Please update project to use other ports.";
+                    throw new System.InvalidOperationException(message);
+                }
+
                 group.NodeLogReceived += OnLogReceived;
                 group.Start();
                 processGroups.Add(group);

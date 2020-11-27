@@ -34,7 +34,14 @@ namespace Tippy.Pages.Projects
 
             if (Project != null)
             {
-                ProcessManager.Start(Project);
+                try
+                {
+                    ProcessManager.Start(Project);
+                }
+                catch (System.InvalidOperationException e)
+                {
+                    TempData["ErrorMessage"] = e.Message;
+                }
             }
 
             var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();

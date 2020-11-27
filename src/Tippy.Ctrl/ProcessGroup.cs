@@ -1,5 +1,7 @@
 using static System.Console;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Tippy.Ctrl
 {
@@ -64,6 +66,21 @@ namespace Tippy.Ctrl
         {
             Stop();
             Start();
+        }
+
+        internal List<int> portsInUse()
+        {
+            var allPortsInUse = Util.LocalPort.PortsInUse();
+            var portsToCheck = new string[]
+                {
+                    ProcessInfo.NodeRpcPort,
+                    ProcessInfo.NodeNetworkPort,
+                    ProcessInfo.IndexerRpcPort
+                }
+                .Select(p => int.Parse(p));
+            return portsToCheck
+                .Where(p => allPortsInUse.Contains(p))
+                .ToList();
         }
 
         internal void ResetData()

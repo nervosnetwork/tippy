@@ -37,7 +37,14 @@ namespace Tippy.Pages.Home
 
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
-            ProcessManager.Start(project);
+            try
+            {
+                ProcessManager.Start(project);
+            }
+            catch (System.InvalidOperationException e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+            }
 
             return RedirectToPage("./Index");
         }

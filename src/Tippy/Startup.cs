@@ -28,9 +28,17 @@ namespace Tippy
 
 #if RAZOR_RUNTIMECOMPILATIION
             services.AddRazorPages()
+                .AddMvcOptions(options =>
+                {
+                    options.Filters.Add(new PageMessageFilter());
+                })
                 .AddRazorRuntimeCompilation();
 #else
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddMvcOptions(options =>
+                {
+                    options.Filters.Add(new PageMessageFilter());
+                });
 #endif
 
             services.AddScoped<ActiveProjectFilter>();
