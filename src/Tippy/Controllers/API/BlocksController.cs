@@ -54,15 +54,15 @@ namespace Tippy.Controllers.API
                 return null;
             }
 
-            var header = block.header;
-            var transactions = block.transactions;
+            var header = block.Header;
+            var transactions = block.Transactions;
 
-            int inputsCount = transactions.Select(tx => tx.inputs.Length).Aggregate(0, (acc, cur) => acc + cur);
-            int outputsCount = transactions.Select(tx => tx.outputs.Length).Aggregate(0, (acc, cur) => acc + cur);
+            int inputsCount = transactions.Select(tx => tx.Inputs.Length).Aggregate(0, (acc, cur) => acc + cur);
+            int outputsCount = transactions.Select(tx => tx.Outputs.Length).Aggregate(0, (acc, cur) => acc + cur);
 
-            var number = $"{Hex.HexToUInt64(header.number)}";
+            var number = $"{Hex.HexToUInt64(header.Number)}";
             int transactionsCount = transactions.Length;
-            string timestamp = $"{ Hex.HexToUInt64(header.timestamp) }";
+            string timestamp = $"{ Hex.HexToUInt64(header.Timestamp) }";
 
             BlocksResult br = new();
             br.Number = number;
