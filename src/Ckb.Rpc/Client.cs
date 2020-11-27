@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -62,7 +63,12 @@ namespace Ckb.Rpc
             {
                 return null;
             }
-            return JsonSerializer.Deserialize<Types.Block>(result);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = new SnakeCaseJsonNamingPolicy(),
+                WriteIndented = true
+            };
+            return JsonSerializer.Deserialize<Types.Block>(result, options);
         }
     }
 
@@ -91,5 +97,12 @@ namespace Ckb.Rpc
 
         [JsonPropertyName("result")]
         public object? Result { get; set; }
+    }
+
+    public class SnakeCaseJsonNamingPolicy : JsonNamingPolicy
+    {
+        public override string ConvertName(string name) =>
+            string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString()))
+                .ToLower();
     }
 }

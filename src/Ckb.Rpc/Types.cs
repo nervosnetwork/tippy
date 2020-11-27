@@ -2,81 +2,79 @@ using System.Text.Json.Serialization;
 
 namespace Ckb.Rpc.Types
 {
-
     public class Block
     {
-        public Header header { get; set; }
-        public string[] proposals { get; set; }
-        public Transaction[] transactions { get; set; }
-        public Uncle[] uncles { get; set; }
+        public Header Header { get; set; }
+        public string[] Proposals { get; set; }
+        public Transaction[] Transactions { get; set; }
+        public Uncle[] Uncles { get; set; }
     }
 
     public class Header
     {
-        public string compact_target { get; set; }
-        public string dao { get; set; }
-        public string epoch { get; set; }
-        public string hash { get; set; }
-        public string nonce { get; set; }
-        public string number { get; set; }
-        public string parent_hash { get; set; }
-        public string proposals_hash { get; set; }
-        public string timestamp { get; set; }
-        public string transactions_root { get; set; }
-        public string uncles_hash { get; set; }
-        public string version { get; set; }
+        public string CompactTarget { get; set; }
+        public string Dao { get; set; }
+        public string Epoch { get; set; }
+        public string Hash { get; set; }
+        public string Nonce { get; set; }
+        public string Number { get; set; }
+        public string ParentHash { get; set; }
+        public string ProposalsHash { get; set; }
+        public string Timestamp { get; set; }
+        public string TransactionsRoot { get; set; }
+        public string UnclesHash { get; set; }
+        public string Version { get; set; }
     }
 
     public class Transaction
     {
-        public CellDeps[] cell_deps { get; set; }
-        public string? hash { get; set; }
-        public string[] header_deps { get; set; }
-        public Input[] inputs { get; set; }
-        public Output[] outputs { get; set; }
-        public string[] outputs_data { get; set; }
-        public string version { get; set; }
-        public string[] witnesses { get; set; }
+        public CellDeps[] CellDeps { get; set; }
+        public string? Hash { get; set; }
+        public string[] HeaderDeps { get; set; }
+        public Input[] Inputs { get; set; }
+        public Output[] Outputs { get; set; }
+        public string[] OutputsData { get; set; }
+        public string Version { get; set; }
+        public string[] Witnesses { get; set; }
     }
 
     public class CellDeps
     {
-        public string dep_type { get; set; }
-        public OutPoint out_point { get; set; }
+        public string DepType { get; set; }
+        public OutPoint OutPoint { get; set; }
     }
 
     public class OutPoint
     {
-        public string index { get; set; }
-        public string tx_hash { get; set; }
+        public string Index { get; set; }
+        public string TxHash { get; set; }
     }
 
     public class Input
     {
-        public OutPoint previous_output { get; set; }
-        public string since { get; set; }
+        public OutPoint PreviousOutput { get; set; }
+        public string Since { get; set; }
     }
 
     public class Output
     {
-        public string capacity { get; set; }
+        public string Capacity { get; set; }
 
         [JsonPropertyName("lock")]
         public Script Lock { get; set; }
-        public Script? type { get; set; }
+        public Script? Type { get; set; }
     }
 
     public class Script
     {
-        public string args { get; set; }
-        public string code_hash { get; set; }
-        public string hash_type { get; set; }
+        public string Args { get; set; }
+        public string CodeHash { get; set; }
+        public string HashType { get; set; }
     }
 
     public class Uncle
     {
-        public string[] proposals { get; set; }
-        public Header header { get; set; }
+        public string[] Proposals { get; set; }
+        public Header Header { get; set; }
     }
-
 }
