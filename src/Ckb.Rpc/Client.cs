@@ -56,7 +56,7 @@ namespace Ckb.Rpc
 
         public Types.Block? GetBlockByNumber(UInt64 num)
         {
-            string[] methodParams = { Util.UInt64ToHex(num) };
+            string[] methodParams = { Hex.UInt64ToHex(num) };
             var result = Call("get_block_by_number", methodParams)?.Result?.ToString();
             if (result == null)
             {
