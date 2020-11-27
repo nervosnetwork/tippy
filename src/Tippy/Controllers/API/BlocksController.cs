@@ -8,11 +8,13 @@ using Tippy.Core.Models;
 using Tippy.Ctrl;
 using Tippy.ApiData;
 using System.Text.Json.Serialization;
+using Tippy.Filters;
 
 namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class BlocksController : ControllerBase
     {
         private Client? Rpc()
