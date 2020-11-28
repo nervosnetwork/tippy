@@ -6,13 +6,13 @@
 <h1 class="title">Edit project</h1>
 
 <form method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="has-text-danger-dark"></div>
     <input type="hidden" asp-for="Project.ID" />
     <div class="field">
         <div class="control">
             <label asp-for="Project.Name" class="label"></label>
             <input asp-for="Project.Name" class="input" />
-            <span asp-validation-for="Project.Name" class="text-danger"></span>
+            <span asp-validation-for="Project.Name" class="has-text-danger-dark"></span>
         </div>
     </div>
     <div class="field">
@@ -25,28 +25,28 @@
         <div class="control">
             <label asp-for="Project.NodeRpcPort" class="label"></label>
             <input asp-for="Project.NodeRpcPort" class="input" />
-            <span asp-validation-for="Project.NodeRpcPort" class="text-danger"></span>
+            <span asp-validation-for="Project.NodeRpcPort" class="has-text-danger-dark"></span>
         </div>
     </div>
     <div class="field">
         <div class="control">
             <label asp-for="Project.NodeNetworkPort" class="label"></label>
             <input asp-for="Project.NodeNetworkPort" class="input" />
-            <span asp-validation-for="Project.NodeNetworkPort" class="text-danger"></span>
+            <span asp-validation-for="Project.NodeNetworkPort" class="has-text-danger-dark"></span>
         </div>
     </div>
     <div class="field">
         <div class="control">
             <label asp-for="Project.IndexerRpcPort" class="label"></label>
             <input asp-for="Project.IndexerRpcPort" class="input" />
-            <span asp-validation-for="Project.IndexerRpcPort" class="text-danger"></span>
+            <span asp-validation-for="Project.IndexerRpcPort" class="has-text-danger-dark"></span>
         </div>
     </div>
     <div class="field">
         <div class="control">
             <label asp-for="Project.LockArg" class="label"></label>
             <input asp-for="Project.LockArg" class="input" />
-            <span asp-validation-for="Project.LockArg" class="text-danger"></span>
+            <span asp-validation-for="Project.LockArg" class="has-text-danger-dark"></span>
         </div>
     </div>
     <div class="field is-grouped">

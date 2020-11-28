@@ -21,17 +21,17 @@ namespace Tippy.Pages.Projects
         {
             var projects = await _context.Projects.ToListAsync();
             var calculatingFromUsed = projects.Count > 0;
-            var rpcPorts = projects.Select(p => int.Parse(p.NodeRpcPort, CultureInfo.InvariantCulture));
-            var networkPorts = projects.Select(p => int.Parse(p.NodeNetworkPort, CultureInfo.InvariantCulture));
-            var indexerPorts = projects.Select(p => int.Parse(p.IndexerRpcPort, CultureInfo.InvariantCulture));
+            var rpcPorts = projects.Select(p => p.NodeRpcPort);
+            var networkPorts = projects.Select(p => p.NodeNetworkPort);
+            var indexerPorts = projects.Select(p => p.IndexerRpcPort);
 
             Project = new Project
             {
                 Name = $"CKB Chain",
                 Chain = Project.ChainType.Dev,
-                NodeRpcPort = calculatingFromUsed ? (rpcPorts.Max() + 3).ToString(CultureInfo.InvariantCulture) : "8114",
-                NodeNetworkPort = calculatingFromUsed ? (networkPorts.Max() + 3).ToString(CultureInfo.InvariantCulture) : "8115",
-                IndexerRpcPort = calculatingFromUsed ? (indexerPorts.Max() + 3).ToString(CultureInfo.InvariantCulture) : "8116",
+                NodeRpcPort = calculatingFromUsed ? rpcPorts.Max() + 3 : 8114,
+                NodeNetworkPort = calculatingFromUsed ? networkPorts.Max() + 3 : 8115,
+                IndexerRpcPort = calculatingFromUsed ? indexerPorts.Max() + 3 : 8116,
                 LockArg = "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
             };
 

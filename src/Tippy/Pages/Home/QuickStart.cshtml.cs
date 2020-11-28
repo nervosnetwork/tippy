@@ -28,9 +28,9 @@ namespace Tippy.Pages.Home
             {
                 Name = "CKB devchain",
                 Chain = Project.ChainType.Dev,
-                NodeRpcPort = "8114",
-                NodeNetworkPort = "8115",
-                IndexerRpcPort = "8116",
+                NodeRpcPort = 8114,
+                NodeNetworkPort = 8115,
+                IndexerRpcPort = 8116,
                 LockArg = "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7",
                 IsActive = true
             };

@@ -20,15 +20,18 @@ namespace Tippy.Core.Models
 
         [Display(Name = "RPC Port")]
         [Required]
-        public string NodeRpcPort { get; set; }
+        [Range(6000, 65535, ErrorMessage = "{0} must be between {1} and {2}.")]
+        public int NodeRpcPort { get; set; }
 
         [Display(Name = "Network Port")]
         [Required]
-        public string NodeNetworkPort { get; set; }
+        [Range(6000, 65535, ErrorMessage = "{0} must be between {1} and {2}.")]
+        public int NodeNetworkPort { get; set; }
 
         [Display(Name = "Indexer RPC Port")]
         [Required]
-        public string IndexerRpcPort { get; set; }
+        [Range(6000, 65535, ErrorMessage = "{0} must be between {1} and {2}.")]
+        public int IndexerRpcPort { get; set; }
 
         [Display(Name = "Block Assembler Lock Arg")]
         [Required]

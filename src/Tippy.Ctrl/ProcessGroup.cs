@@ -71,13 +71,12 @@ namespace Tippy.Ctrl
         internal List<int> PortsInUse()
         {
             var allPortsInUse = Util.LocalPort.PortsInUse();
-            var portsToCheck = new string[]
+            var portsToCheck = new int[]
                 {
                     ProcessInfo.NodeRpcPort,
                     ProcessInfo.NodeNetworkPort,
                     ProcessInfo.IndexerRpcPort
-                }
-                .Select(int.Parse);
+                };
             return portsToCheck
                 .Where(p => allPortsInUse.Contains(p))
                 .ToList();
