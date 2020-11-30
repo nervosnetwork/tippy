@@ -82,4 +82,62 @@ namespace Ckb.Rpc.Types
         public string[] Proposals { get; set; }
         public Header Header { get; set; }
     }
+
+
+    public class BlockEconomicState
+    {
+        [JsonPropertyName("finalized_at")]
+        public string FinalizedAt { get; set; }
+
+        [JsonPropertyName("issuance")]
+        public BlockIssuance Issuance { get; set; }
+
+        [JsonPropertyName("miner_reward")]
+        public MinerReward MinerReward { get; set; }
+
+        [JsonPropertyName("txs_fee")]
+        public string TxsFee { get; set; }
+    }
+
+    public class BlockIssuance
+    {
+        [JsonPropertyName("primary")]
+        public string Primary { get; set; }
+
+        [JsonPropertyName("secondary")]
+        public string Secondary { get; set; }
+    }
+
+    public class MinerReward
+    {
+        [JsonPropertyName("committed")]
+        public string Committed { get; set; }
+
+        [JsonPropertyName("primary")]
+        public string Primary { get; set; }
+
+        [JsonPropertyName("proposal")]
+        public string Proposal { get; set; }
+
+        [JsonPropertyName("secondary")]
+        public string Secondary { get; set; }
+    }
+
+
+    public class EpochView
+    {
+        [JsonPropertyName("compact_target")]
+        public string CompactTarget { get; set; }
+
+        [JsonPropertyName("length")]
+        public string Length { get; set; }
+
+        [JsonPropertyName("number")]
+        public string Number { get; set; }
+
+        [JsonPropertyName("start_number")]
+        public string StartNumber { get; set; }
+    }
+
+
 }

@@ -64,6 +64,74 @@ namespace Tippy.Controllers.API
             return Ok(result);
         }
 
+        // TODO: should use UInt64 here
+        [HttpGet("{id:int}")]
+        public ActionResult Details(UInt64 id)
+        {
+            var client = Rpc();
+            if (client == null)
+            {
+                return NoContent();
+            }
+
+            Block? block = client.GetBlockByNumber(id);
+            if (block == null)
+            {
+                return NoContent();
+            }
+
+            BlockDetailResult blockDetail = new();
+            blockDetail.BlockHash = block.Header.Hash;
+            // TODO: update this.
+            blockDetail.MinerHash = "ckt";
+            blockDetail.TransactionsRoot = block.Header.TransactionsRoot;
+            blockDetail.Number = $"{id}";
+            blockDetail.Version = $"{Hex.HexToUInt32(block.Header.Version)}";
+            blockDetail.ProposalsCount = $"{block.Proposals.Length}";
+            blockDetail.UnclesCount = $"{block.Uncles.Length}";
+            blockDetail.Timestamp = $"{Hex.HexToUInt64(block.Header.Timestamp)}";
+            blockDetail.TransactionsCount = $"{block.Transactions.Length}";
+            blockDetail.Nonce = $"{Hex.HexToBigInteger(block.Header.Nonce)}";
+            blockDetail.Difficulty = Hex.HexToUInt32(block.Header.CompactTarget).ToString();
+
+            // Epoch info
+            var epochInfo = EpochInfo.Parse(Hex.HexToUInt64(block.Header.Epoch));
+            blockDetail.StartNumber = "0";
+            blockDetail.Length = epochInfo.Length.ToString();
+            blockDetail.Epoch = epochInfo.Number.ToString();
+            blockDetail.BlockIndexInEpoch = epochInfo.Index.ToString();
+
+            EpochView? epochView = client.GetEpochByNumber(epochInfo.Number);
+            if (epochView != null)
+            {
+                blockDetail.StartNumber = Hex.HexToUInt64(epochView.StartNumber).ToString();
+            }
+
+            // reward
+            string blockHash = block.Header.Hash;
+            blockDetail.RewardStatus = "pending";
+            blockDetail.MinerReward = "";
+            BlockEconomicState? economicState = client.GetBlockEconomicState(blockHash);
+            if (economicState != null)
+            {
+                MinerReward reward = economicState.MinerReward;
+                string[] rewards = new string[]
+                {
+                    reward.Primary,
+                    reward.Secondary,
+                    reward.Proposal,
+                    reward.Committed,
+                };
+                UInt64 minerReward = rewards.Select(r => Hex.HexToUInt64(r)).Aggregate((sum, cur) => sum + cur);
+                blockDetail.MinerReward = minerReward.ToString();
+                blockDetail.RewardStatus = "issued";
+            }
+
+            Result<BlockDetailResult> result = new("block", blockDetail);
+
+            return Ok(result);
+        }
+
         private static ArrayResult<BlocksResult> GetBlocks(Client client, UInt64 startBlockNumber, int count, Meta? meta = null)
         {
             List<UInt64> blockNumbers = GetBlockNumbers(startBlockNumber, count);
@@ -141,5 +209,62 @@ namespace Tippy.Controllers.API
 
         [JsonPropertyName("live_cell_changes")]
         public string LiveCellChanges { get; set; } = default!;
+    }
+
+
+
+    public class BlockDetailResult
+    {
+        [JsonPropertyName("block_hash")]
+        public string BlockHash { get; set; } = default!;
+
+        [JsonPropertyName("miner_hash")]
+        public string MinerHash { get; set; } = default!;
+
+        [JsonPropertyName("transactions_root")]
+        public string TransactionsRoot { get; set; } = default!;
+
+        [JsonPropertyName("reward_status")]
+        public string RewardStatus { get; set; } = default!;
+
+        [JsonPropertyName("number")]
+        public string Number { get; set; } = default!;
+
+        [JsonPropertyName("start_number")]
+        public string StartNumber { get; set; } = default!;
+
+        [JsonPropertyName("length")]
+        public string Length { get; set; } = default!;
+
+        [JsonPropertyName("version")]
+        public string Version { get; set; } = default!;
+
+        [JsonPropertyName("proposals_count")]
+        public string ProposalsCount { get; set; } = default!;
+
+        [JsonPropertyName("uncles_count")]
+        public string UnclesCount { get; set; } = default!;
+
+        [JsonPropertyName("timestamp")]
+        public string Timestamp { get; set; } = default!;
+
+        [JsonPropertyName("transactions_count")]
+        public string TransactionsCount { get; set; } = default!;
+
+        [JsonPropertyName("epoch")]
+        public string Epoch { get; set; } = default!;
+
+        [JsonPropertyName("block_index_in_epoch")]
+        public string BlockIndexInEpoch { get; set; } = default!;
+
+        [JsonPropertyName("nonce")]
+        public string Nonce { get; set; } = default!;
+
+        [JsonPropertyName("difficulty")]
+        public string Difficulty { get; set; } = default!;
+
+        [JsonPropertyName("miner_reward")]
+        public string MinerReward { get; set; } = default!;
+
     }
 }

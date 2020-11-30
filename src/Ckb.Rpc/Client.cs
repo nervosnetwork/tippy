@@ -24,6 +24,7 @@ namespace Ckb.Rpc
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(Url);
             webRequest.ContentType = "application/json";
             webRequest.Method = "POST";
+            webRequest.KeepAlive = true;
 
             var request = new RequestObject
             {
@@ -69,6 +70,36 @@ namespace Ckb.Rpc
                 WriteIndented = true
             };
             return JsonSerializer.Deserialize<Types.Block>(result, options);
+        }
+
+        public Types.BlockEconomicState? GetBlockEconomicState(string blockHash)
+        {
+            string[] methodParams = { blockHash };
+            string? result = Call("get_block_economic_state", methodParams)?.Result?.ToString();
+            if (result == null)
+            {
+                return null;
+            }
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            return JsonSerializer.Deserialize<Types.BlockEconomicState>(result, options);
+        }
+
+        public Types.EpochView? GetEpochByNumber(UInt64 epochNumber)
+        {
+            string[] methodParams = { Hex.UInt64ToHex(epochNumber) };
+            string? result = Call("get_epoch_by_number", methodParams)?.Result?.ToString();
+            if (result == null)
+            {
+                return null;
+            }
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            return JsonSerializer.Deserialize<Types.EpochView>(result, options);
         }
     }
 
