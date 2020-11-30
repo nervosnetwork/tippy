@@ -15,7 +15,7 @@ namespace Tippy.Core.Models
         public int ID { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public ChainType Chain { get; set; } = ChainType.Dev;
 
         [Display(Name = "RPC Port")]
@@ -35,7 +35,7 @@ namespace Tippy.Core.Models
 
         [Display(Name = "Block Assembler Lock Arg")]
         [Required]
-        public string LockArg { get; set; }
+        public string LockArg { get; set; } = "0x";
 
         [Display(Name = "Active")]
         public bool IsActive { get; set; }

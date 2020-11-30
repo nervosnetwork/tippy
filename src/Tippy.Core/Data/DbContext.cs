@@ -10,7 +10,7 @@ namespace Tippy.Core.Data
         {
         }
 
-        public DbSet<Project> Projects { get; set; }
+        public DbSet<Project> Projects { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

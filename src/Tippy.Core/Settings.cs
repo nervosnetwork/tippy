@@ -9,7 +9,7 @@ namespace Tippy.Core
 {
     public class Settings
     {
-        private static Settings Singleton;
+        private static Settings? Singleton;
         public static Settings GetSettings()
         {
             if (Singleton == null)
@@ -53,9 +53,13 @@ namespace Tippy.Core
             get
             {
                 var resourceName = "Tippy.Core.Settings.json";
-                using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-                using StreamReader reader = new(stream);
-                return reader.ReadToEnd();
+                using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+                if (stream != null)
+                {
+                    using StreamReader reader = new(stream);
+                    return reader.ReadToEnd();
+                }
+                return "";
             }
         }
     }
