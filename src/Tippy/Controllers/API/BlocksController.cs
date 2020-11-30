@@ -20,7 +20,7 @@ namespace Tippy.Controllers.API
     {
         private Client? Rpc()
         {
-            Project activeProject = HttpContext.Items["ActiveProject"] as Project;
+            Project? activeProject = HttpContext.Items["ActiveProject"] as Project;
             if (activeProject != null && ProcessManager.IsRunning(activeProject))
             {
                 return new Client($"http://localhost:{activeProject.NodeRpcPort}");
@@ -68,7 +68,7 @@ namespace Tippy.Controllers.API
         {
             List<UInt64> blockNumbers = GetBlockNumbers(startBlockNumber, count);
 
-            BlocksResult[] brs = blockNumbers.Select(num => GetBlock(client, num)).Where(br => br != null).ToArray();
+            BlocksResult[] brs = blockNumbers.Select(num => GetBlock(client, num)).OfType<BlocksResult>().ToArray();
             ArrayResult<BlocksResult> result = new("block_list", brs, meta);
 
             return result;
@@ -92,15 +92,17 @@ namespace Tippy.Controllers.API
             int transactionsCount = transactions.Length;
             string timestamp = $"{ Hex.HexToUInt64(header.Timestamp) }";
 
-            BlocksResult br = new();
-            br.Number = number;
-            br.TransactionsCount = $"{transactionsCount}";
-            br.Timestamp = timestamp;
-            br.LiveCellChanges = $"{outputsCount - inputsCount}";
-            // TODO: update this
-            br.Reward = "4000000000";
-            // TODO: update this
-            br.MinerHash = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+            BlocksResult br = new()
+            {
+                Number = number,
+                TransactionsCount = $"{transactionsCount}",
+                Timestamp = timestamp,
+                LiveCellChanges = $"{outputsCount - inputsCount}",
+                // TODO: update this
+                Reward = "4000000000",
+                // TODO: update this
+                MinerHash = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83"
+            };
 
             return br;
         }
@@ -123,21 +125,21 @@ namespace Tippy.Controllers.API
     public class BlocksResult
     {
         [JsonPropertyName("miner_hash")]
-        public string MinerHash { get; set; }
+        public string MinerHash { get; set; } = default!;
 
         [JsonPropertyName("number")]
-        public string Number { get; set; }
+        public string Number { get; set; } = default!;
 
         [JsonPropertyName("timestamp")]
-        public string Timestamp { get; set; }
+        public string Timestamp { get; set; } = default!;
 
         [JsonPropertyName("reward")]
-        public string Reward { get; set; }
+        public string Reward { get; set; } = default!;
 
         [JsonPropertyName("transactions_count")]
-        public string TransactionsCount { get; set; }
+        public string TransactionsCount { get; set; } = default!;
 
         [JsonPropertyName("live_cell_changes")]
-        public string LiveCellChanges { get; set; }
+        public string LiveCellChanges { get; set; } = default!;
     }
 }

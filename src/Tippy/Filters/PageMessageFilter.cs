@@ -10,8 +10,8 @@ namespace Tippy.Filters
     {
         async Task IAsyncPageFilter.OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
-            ITempDataDictionary tempData = null;
-            PageContext pageContext = null;
+            ITempDataDictionary? tempData = null;
+            PageContext? pageContext = null;
 
             if (context.HandlerInstance is Page page)
             {

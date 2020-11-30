@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Tippy.Core.Data;
 using Tippy.Core.Models;
 
 namespace Tippy.Pages.Projects
@@ -21,7 +17,7 @@ namespace Tippy.Pages.Projects
         }
 
         [BindProperty]
-        public Project Project { get; set; }
+        public Project Project { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -56,7 +52,7 @@ namespace Tippy.Pages.Projects
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProjectExists(Project.ID))
+                if (!ProjectExists(Project!.ID))
                 {
                     return NotFound();
                 }

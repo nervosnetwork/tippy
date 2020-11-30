@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -16,7 +16,7 @@ namespace Tippy.TagHelpers
         {
             base.Process(context, output);
 
-            var currentRoute = ViewContext.RouteData.Values["page"].ToString();
+            var currentRoute = ViewContext.RouteData.Values["page"]?.ToString();
             var tagRoute = context.AllAttributes["asp-page"]?.Value.ToString();
             var className = currentRoute == tagRoute ? "is-active" : "";
 

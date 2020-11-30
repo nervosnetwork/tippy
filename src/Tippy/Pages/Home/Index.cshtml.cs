@@ -21,11 +21,11 @@ namespace Tippy.Pages.Home
             _context = context;
         }
 
-        public IList<Project> Projects { get; set; }
-        public Project ActiveProject { get; set; }
+        public IList<Project> Projects { get; set; } = new List<Project>();
+        public Project? ActiveProject { get; set; }
 
         [TempData]
-        public string Message { get; set; }
+        public string Message { get; set; } = "";
 
         public bool IsNodeRunning { get; set; }
 
@@ -33,7 +33,7 @@ namespace Tippy.Pages.Home
         {
             Projects = await _context.Projects.ToListAsync();
             ActiveProject = HttpContext.Items["ActiveProject"] as Project;
-            IsNodeRunning = ProcessManager.IsRunning(ActiveProject);
+            IsNodeRunning = ActiveProject != null && ProcessManager.IsRunning(ActiveProject);
         }
     }
 }

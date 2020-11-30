@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +38,7 @@ namespace Tippy.Pages.Projects
         }
 
         [BindProperty]
-        public Project Project { get; set; }
+        public Project Project { get; set; } = default!;
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()

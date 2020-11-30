@@ -7,10 +7,6 @@ namespace Tippy.ApiData
 {
     public class Result<T>
     {
-        public Result()
-        {
-        }
-
         public Result(Data<T> data)
         {
             Data = data;
@@ -42,16 +38,11 @@ namespace Tippy.ApiData
 
     public class Result : Result<DefaultAttributesType>
     {
-        public Result() : base() { }
         public Result(Data data) : base(data) { }
     }
 
     public class Data<T>
     { 
-        public Data()
-        {
-        }
-
         public Data(string type, T attrs)
         {
             Type = type;
@@ -70,8 +61,6 @@ namespace Tippy.ApiData
 
     public class Data : Data<DefaultAttributesType>
     {
-        public Data() : base() { }
-
         public Data(string type, DefaultAttributesType attrs) : base(type, attrs) { }
     }
 

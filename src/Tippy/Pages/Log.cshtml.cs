@@ -9,12 +9,11 @@ namespace Tippy.Pages
     [ServiceFilter(typeof(ActiveProjectFilter))]
     public class LogModel : PageModel
     {
-        public Project ActiveProject { get; set; }
+        public Project? ActiveProject { get; set; }
 
         public void OnGet()
         {
-            var activeProject = HttpContext.Items["ActiveProject"] as Project;
-            if (activeProject != null && ProcessManager.IsRunning(activeProject))
+            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
             {
                 ActiveProject = activeProject;
             }

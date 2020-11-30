@@ -9,7 +9,7 @@
 <form method="post">
     <div asp-validation-summary="All"></div>
 
-    @if (TempData["Message"]?.ToString().Length > 0)
+    @if ((TempData["Message"]?.ToString() ?? "").Length > 0)
     {
         <div class="notification is-success">
             <button class="delete"></button>

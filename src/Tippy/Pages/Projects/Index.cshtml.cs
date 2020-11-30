@@ -16,8 +16,8 @@ namespace Tippy.Pages.Projects
             _context = context;
         }
 
-        public IList<Project> Projects { get; set; }
-        public Dictionary<Project, bool> RunningFlags { get; set;  }
+        public IList<Project> Projects { get; set; } = new List<Project>();
+        public Dictionary<Project, bool> RunningFlags { get; set; } = default!;
 
         public async Task OnGetAsync()
         {

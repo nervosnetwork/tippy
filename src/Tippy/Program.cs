@@ -11,7 +11,7 @@ namespace Tippy
 {
     public class Program
     {
-        static IHubContext<LogHub> _hubContext;
+        static IHubContext<LogHub>? _hubContext;
 
         public static void Main(string[] args)
         {
@@ -21,7 +21,7 @@ namespace Tippy
             var host = CreateHostBuilder(args).Build();
             CreateDbIfNotExists(host);
 
-            _hubContext = (IHubContext<LogHub>)host.Services.GetService(typeof(IHubContext<LogHub>));
+            _hubContext = host.Services.GetService(typeof(IHubContext<LogHub>)) as IHubContext<LogHub>;
             ProcessManager.NodeLogReceived += OnNodeLogReceived;
 
             host.Run();
@@ -50,7 +50,7 @@ namespace Tippy
             }
         }
 
-        static void OnAppExit(object sender, EventArgs e)
+        static void OnAppExit(object? sender, EventArgs e)
         {
             Console.WriteLine("Exiting Tippy...");
             ProcessManager.Stop();
@@ -58,7 +58,10 @@ namespace Tippy
 
         static async void OnNodeLogReceived(object? sender, LogReceivedEventArgs e)
         { 
-            await _hubContext.Clients.All.SendAsync("ReceiveLog", e.ID, e.Log);
+            if (_hubContext != null)
+            {
+                await _hubContext.Clients.All.SendAsync("ReceiveLog", e.ID, e.Log);
+            }
         }
     }
 }

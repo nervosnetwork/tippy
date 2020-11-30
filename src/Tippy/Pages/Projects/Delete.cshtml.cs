@@ -17,7 +17,7 @@ namespace Tippy.Pages.Projects
         }
 
         [BindProperty]
-        public Project Project { get; set; }
+        public Project Project { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

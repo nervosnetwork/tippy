@@ -19,7 +19,7 @@ namespace Tippy.Pages.Projects
             _context = context;
         }
 
-        public Project Project { get; set; }
+        public Project Project { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
