@@ -27,13 +27,17 @@ namespace Tippy.ApiData
 
     public class ArrayResult<T>
     {
-        public ArrayResult(string type, T[] attrs)
+        public ArrayResult(string type, T[] attrs, Meta? meta = null)
         {
             Data = attrs.Select(attr => new Data<T>(type, attr)).ToArray();
+            Meta = meta;
         }
 
         [JsonPropertyName("data")]
         public Data<T>[] Data { get; set; }
+
+        [JsonPropertyName("meta")]
+        public Meta? Meta { get; set; }
     }
 
     public class Result : Result<DefaultAttributesType>
@@ -69,5 +73,14 @@ namespace Tippy.ApiData
         public Data() : base() { }
 
         public Data(string type, DefaultAttributesType attrs) : base(type, attrs) { }
+    }
+
+    public class Meta
+    {
+        [JsonPropertyName("total")]
+        public ulong Total { get; set; }
+
+        [JsonPropertyName("page_size")]
+        public int PageSize { get; set; }
     }
 }
