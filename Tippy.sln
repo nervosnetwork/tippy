@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tippy.Util", "src\Tippy.Util\Tippy.Util.csproj", "{3D78596E-B801-46EB-9F81-F59FFD6D1EF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Util", "src\Tippy.Util\Tippy.Util.csproj", "{3D78596E-B801-46EB-9F81-F59FFD6D1EF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ckb.Cryptography", "src\Ckb.Cryptography\Ckb.Cryptography.csproj", "{23E9A14A-572D-4DCB-A266-6A986BDA8487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{3D78596E-B801-46EB-9F81-F59FFD6D1EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D78596E-B801-46EB-9F81-F59FFD6D1EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D78596E-B801-46EB-9F81-F59FFD6D1EF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E9A14A-572D-4DCB-A266-6A986BDA8487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E9A14A-572D-4DCB-A266-6A986BDA8487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E9A14A-572D-4DCB-A266-6A986BDA8487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E9A14A-572D-4DCB-A266-6A986BDA8487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
