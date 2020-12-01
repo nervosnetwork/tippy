@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Isopoh.Cryptography.Blake2b" Version="1.1.10" />
+    <PackageReference Include="Cryptography.ECDSA.Secp256K1" Version="1.1.3" />
   </ItemGroup>
 
 </Project>
