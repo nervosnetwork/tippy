@@ -26,19 +26,17 @@ namespace Tippy
         {
             services.AddSignalR();
 
-#if RAZOR_RUNTIMECOMPILATIION
-            services.AddRazorPages()
-                .AddMvcOptions(options =>
+            var mvcBuilder = services.AddRazorPages()
+                .AddJsonOptions(options =>
                 {
-                    options.Filters.Add(new PageMessageFilter());
+                    options.JsonSerializerOptions.WriteIndented = true;
                 })
-                .AddRazorRuntimeCompilation();
-#else
-            services.AddRazorPages()
                 .AddMvcOptions(options =>
                 {
                     options.Filters.Add(new PageMessageFilter());
                 });
+#if RAZOR_RUNTIMECOMPILATIION
+                mvcBuilder.AddRazorRuntimeCompilation();
 #endif
 
             services.AddScoped<ActiveProjectFilter>();
