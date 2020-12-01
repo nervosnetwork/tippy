@@ -64,12 +64,7 @@ namespace Ckb.Rpc
             {
                 return null;
             }
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = new SnakeCaseJsonNamingPolicy(),
-                WriteIndented = true
-            };
-            return JsonSerializer.Deserialize<Types.Block>(result, options);
+            return JsonSerializer.Deserialize<Types.Block>(result);
         }
 
         public Types.BlockEconomicState? GetBlockEconomicState(string blockHash)
@@ -80,11 +75,7 @@ namespace Ckb.Rpc
             {
                 return null;
             }
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-            return JsonSerializer.Deserialize<Types.BlockEconomicState>(result, options);
+            return JsonSerializer.Deserialize<Types.BlockEconomicState>(result);
         }
 
         public Types.EpochView? GetEpochByNumber(UInt64 epochNumber)
@@ -95,11 +86,7 @@ namespace Ckb.Rpc
             {
                 return null;
             }
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-            return JsonSerializer.Deserialize<Types.EpochView>(result, options);
+            return JsonSerializer.Deserialize<Types.EpochView>(result);
         }
     }
 
