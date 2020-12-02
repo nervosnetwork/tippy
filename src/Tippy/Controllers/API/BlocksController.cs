@@ -7,7 +7,6 @@ using Ckb.Rpc.Types;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 using Tippy.ApiData;
-using System.Text.Json.Serialization;
 using Tippy.Filters;
 using Tippy.Util;
 
@@ -20,8 +19,7 @@ namespace Tippy.Controllers.API
     {
         private Client? Rpc()
         {
-            Project? activeProject = HttpContext.Items["ActiveProject"] as Project;
-            if (activeProject != null && ProcessManager.IsRunning(activeProject))
+            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
             {
                 return new Client($"http://localhost:{activeProject.NodeRpcPort}");
             }
@@ -40,7 +38,7 @@ namespace Tippy.Controllers.API
             UInt64 tipBlockNumber = client.GetTipBlockNumber();
             if (page == null || pageSize == null)
             {
-                ArrayResult<BlocksResult> r = GetBlocks(client, tipBlockNumber, 10);
+                ArrayResult<BlockResult> r = GetBlocks(client, tipBlockNumber, 10);
                 return Ok(r);
             }
 
@@ -59,7 +57,7 @@ namespace Tippy.Controllers.API
             Meta meta = new();
             meta.Total = tipBlockNumber + 1;
             meta.PageSize = (int)pageSize;
-            ArrayResult<BlocksResult> result = GetBlocks(client, startBlockNumber, (int)pageSize, meta);
+            ArrayResult<BlockResult> result = GetBlocks(client, startBlockNumber, (int)pageSize, meta);
 
             return Ok(result);
         }
@@ -132,17 +130,17 @@ namespace Tippy.Controllers.API
             return Ok(result);
         }
 
-        private static ArrayResult<BlocksResult> GetBlocks(Client client, UInt64 startBlockNumber, int count, Meta? meta = null)
+        private static ArrayResult<BlockResult> GetBlocks(Client client, UInt64 startBlockNumber, int count, Meta? meta = null)
         {
             List<UInt64> blockNumbers = GetBlockNumbers(startBlockNumber, count);
 
-            BlocksResult[] brs = blockNumbers.Select(num => GetBlock(client, num)).OfType<BlocksResult>().ToArray();
-            ArrayResult<BlocksResult> result = new("block_list", brs, meta);
+            BlockResult[] brs = blockNumbers.Select(num => GetBlock(client, num)).OfType<BlockResult>().ToArray();
+            ArrayResult<BlockResult> result = new("block_list", brs, meta);
 
             return result;
         }
 
-        private static BlocksResult? GetBlock(Client client, UInt64 num)
+        private static BlockResult? GetBlock(Client client, UInt64 num)
         {
             Block? block = client.GetBlockByNumber(num);
             if (block == null)
@@ -160,7 +158,7 @@ namespace Tippy.Controllers.API
             int transactionsCount = transactions.Length;
             string timestamp = $"{ Hex.HexToUInt64(header.Timestamp) }";
 
-            BlocksResult br = new()
+            BlockResult br = new()
             {
                 Number = number,
                 TransactionsCount = $"{transactionsCount}",
@@ -188,83 +186,5 @@ namespace Tippy.Controllers.API
             }
             return nums;
         }
-    }
-
-    public class BlocksResult
-    {
-        [JsonPropertyName("miner_hash")]
-        public string MinerHash { get; set; } = default!;
-
-        [JsonPropertyName("number")]
-        public string Number { get; set; } = default!;
-
-        [JsonPropertyName("timestamp")]
-        public string Timestamp { get; set; } = default!;
-
-        [JsonPropertyName("reward")]
-        public string Reward { get; set; } = default!;
-
-        [JsonPropertyName("transactions_count")]
-        public string TransactionsCount { get; set; } = default!;
-
-        [JsonPropertyName("live_cell_changes")]
-        public string LiveCellChanges { get; set; } = default!;
-    }
-
-
-
-    public class BlockDetailResult
-    {
-        [JsonPropertyName("block_hash")]
-        public string BlockHash { get; set; } = default!;
-
-        [JsonPropertyName("miner_hash")]
-        public string MinerHash { get; set; } = default!;
-
-        [JsonPropertyName("transactions_root")]
-        public string TransactionsRoot { get; set; } = default!;
-
-        [JsonPropertyName("reward_status")]
-        public string RewardStatus { get; set; } = default!;
-
-        [JsonPropertyName("number")]
-        public string Number { get; set; } = default!;
-
-        [JsonPropertyName("start_number")]
-        public string StartNumber { get; set; } = default!;
-
-        [JsonPropertyName("length")]
-        public string Length { get; set; } = default!;
-
-        [JsonPropertyName("version")]
-        public string Version { get; set; } = default!;
-
-        [JsonPropertyName("proposals_count")]
-        public string ProposalsCount { get; set; } = default!;
-
-        [JsonPropertyName("uncles_count")]
-        public string UnclesCount { get; set; } = default!;
-
-        [JsonPropertyName("timestamp")]
-        public string Timestamp { get; set; } = default!;
-
-        [JsonPropertyName("transactions_count")]
-        public string TransactionsCount { get; set; } = default!;
-
-        [JsonPropertyName("epoch")]
-        public string Epoch { get; set; } = default!;
-
-        [JsonPropertyName("block_index_in_epoch")]
-        public string BlockIndexInEpoch { get; set; } = default!;
-
-        [JsonPropertyName("nonce")]
-        public string Nonce { get; set; } = default!;
-
-        [JsonPropertyName("difficulty")]
-        public string Difficulty { get; set; } = default!;
-
-        [JsonPropertyName("miner_reward")]
-        public string MinerReward { get; set; } = default!;
-
     }
 }
