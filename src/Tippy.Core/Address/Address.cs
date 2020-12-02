@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Tippy.Util;
+using Types = Ckb.Rpc.Types;
+
+namespace Tippy.Core.Address
+{
+    public class Address
+    {
+        static readonly string SECP_CODE_HASH = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8";
+        static readonly string SECP_HASH_TYPE = "type";
+        static readonly int SECP_SHORT_ID = 0;
+
+        static readonly string MULTISIG_CODE_HASH = "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8";
+        static readonly string MULTISIG_HASH_TYPE = "type";
+        static readonly int MULTISIG_SHORT_ID = 1;
+
+        public static string GenerateAddress(Types.Script script, string prefix)
+        {
+            List<int> data = new();
+            int? shortId = null;
+            if (script.CodeHash == SECP_CODE_HASH && script.HashType == SECP_HASH_TYPE)
+            {
+                shortId = SECP_SHORT_ID;
+            } else if (script.CodeHash == MULTISIG_CODE_HASH && script.HashType == MULTISIG_HASH_TYPE)
+            {
+                shortId = MULTISIG_SHORT_ID;
+            }
+             if (shortId != null)
+            {
+                data.Add(1);
+                data.Add((int)shortId);
+                foreach (byte c in Hex.HexToBytes(script.Args))
+                {
+                    data.Add(Convert.ToInt32(c));
+                }
+            }
+            else
+            {
+                data.Add(script.HashType == "type" ? 4 : 2);
+                foreach (byte c in Hex.HexToBytes(script.CodeHash))
+                {
+                    data.Add(Convert.ToInt32(c));
+                }
+                foreach (byte c in Hex.HexToBytes(script.Args))
+                {
+                    data.Add(Convert.ToInt32(c));
+                }
+            }
+            string addr = ConvertAddresse.Encode(prefix, data.ToArray());
+
+            return addr;
+        }
+
+        public static Types.Script ParseAddress(string address, string prefix)
+        {
+            (string hrp, int[] data) = ConvertAddresse.Decode(address);
+
+            if (hrp != prefix)
+            {
+                throw new Exception($"Invalid prefix! Expected: {prefix}, actual: {hrp}");
+            }
+            if (data[0] == 1)
+            {
+                if (data.Length < 2)
+                {
+                    throw new Exception("Invalid payload length!");
+                }
+                string codeHash;
+                string hashType;
+                if (data[1] == SECP_SHORT_ID)
+                {
+                    codeHash = SECP_CODE_HASH;
+                    hashType = SECP_HASH_TYPE;
+                } else if (data[1] == MULTISIG_SHORT_ID)
+                {
+                    codeHash = MULTISIG_CODE_HASH;
+                    hashType = MULTISIG_HASH_TYPE;
+                } else
+                {
+                    throw new Exception("Short address format error!");
+                }
+
+                return new Types.Script()
+                {
+                    CodeHash = codeHash,
+                    HashType = hashType,
+                    Args = IntsToHex(data.Skip(2).ToArray())
+                };
+            }
+            else if (data[0] == 2 || data[0] == 4)
+            {
+                if (data.Length < 33)
+                {
+                    throw new Exception("Invalid payload length!");
+                }
+
+                return new Types.Script()
+                {
+                    CodeHash = IntsToHex(data.Skip(1).Take(32).ToArray()),
+                    HashType = data[0] == 2 ? "data" : "type",
+                    Args = IntsToHex(data.Skip(33).ToArray())
+                };
+            }
+            throw new Exception($"Invalid payload format type: {data[0]}");
+        }
+
+        private static string IntsToHex(int[] values)
+        {
+            return Hex.BytesToHex(values.Select(v => (byte)v).ToArray());
+        }
+    }
+}

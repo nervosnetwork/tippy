@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 
 namespace Tippy.Util
@@ -22,5 +23,19 @@ namespace Tippy.Util
         }
 
         public static string UInt64ToHex(UInt64 num) => $"0x{num:x}";
+
+        public static byte[] HexToBytes(string i)
+        {
+            string hex = i.Remove(0, 2);
+            return Enumerable.Range(0, hex.Length)
+                 .Where(x => x % 2 == 0)
+                 .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                 .ToArray();
+        }
+
+        public static string BytesToHex(byte[] bytes)
+        {
+            return "0x" + string.Concat(bytes.Select(b => b.ToString("x2")).ToArray());
+        }
     }
 }
