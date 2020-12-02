@@ -26,7 +26,7 @@ namespace Tippy.Pages.Projects
                 return NotFound();
             }
 
-            Project = await _context.Projects.FirstOrDefaultAsync(m => m.ID == id);
+            Project = await _context.Projects.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Project == null)
             {

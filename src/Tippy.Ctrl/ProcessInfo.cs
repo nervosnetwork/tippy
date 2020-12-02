@@ -6,7 +6,7 @@ namespace Tippy.Ctrl
         int NodeNetworkPort, int IndexerRpcPort, string LockArg)
     {
         public static ProcessInfo FromProject(Project project) =>
-            new ProcessInfo(project.ID, project.Chain, project.NodeRpcPort,
+            new ProcessInfo(project.Id, project.Chain, project.NodeRpcPort,
                 project.NodeNetworkPort, project.IndexerRpcPort, project.LockArg);
     }
 }

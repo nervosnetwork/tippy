@@ -26,7 +26,7 @@ namespace Tippy.Pages.Projects
                 return NotFound();
             }
 
-            Project = await _context.Projects.FirstOrDefaultAsync(m => m.ID == id);
+            Project = await _context.Projects.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Project == null)
             {
@@ -52,7 +52,7 @@ namespace Tippy.Pages.Projects
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProjectExists(Project!.ID))
+                if (!ProjectExists(Project!.Id))
                 {
                     return NotFound();
                 }
@@ -67,7 +67,7 @@ namespace Tippy.Pages.Projects
 
         private bool ProjectExists(int id)
         {
-            return _context.Projects.Any(e => e.ID == id);
+            return _context.Projects.Any(e => e.Id == id);
         }
     }
 }
