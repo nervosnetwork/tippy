@@ -19,7 +19,7 @@ namespace Ckb.Rpc
 
         readonly Uri Url;
 
-        public ResponseObject? Call(string method, params object[]? methodParams)
+        T? Call<T>(string method, params object[]? methodParams)
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(Url);
             webRequest.ContentType = "application/json";
@@ -40,57 +40,46 @@ namespace Ckb.Rpc
             using WebResponse webResponse = webRequest.GetResponse();
             using Stream responseStream = webResponse.GetResponseStream();
             using StreamReader responseReader = new StreamReader(responseStream);
-            return JsonSerializer.Deserialize<ResponseObject>(responseReader.ReadToEnd());
+            var response = JsonSerializer.Deserialize<ResponseObject<T>>(responseReader.ReadToEnd());
+            if (response != null)
+            {
+                return response.Result;
+            }
+            return default;
         }
 
         public UInt64 GetTipBlockNumber()
         {
-            var result = Call("get_tip_block_number")?.Result?.ToString() ?? "0x0";
+            var result = Call<string>("get_tip_block_number") ?? "0x0";
             return Hex.HexToUInt64(result);
         }
 
         public Dictionary<string, object> GetBlockchainInfo()
         {
             var fallback = new Dictionary<string, object> { };
-            var result = Call("get_blockchain_info")?.Result?.ToString() ?? "{}";
-            return JsonSerializer.Deserialize<Dictionary<string, object>>(result) ?? fallback;
+            return Call<Dictionary<string, object>>("get_blockchain_info") ?? fallback;
         }
 
         public Types.Block? GetBlockByNumber(UInt64 num)
         {
             string[] methodParams = { Hex.UInt64ToHex(num) };
-            var result = Call("get_block_by_number", methodParams)?.Result?.ToString();
-            if (result == null)
-            {
-                return null;
-            }
-            return JsonSerializer.Deserialize<Types.Block>(result);
+            return Call<Types.Block>("get_block_by_number", methodParams);
         }
 
         public Types.BlockEconomicState? GetBlockEconomicState(string blockHash)
         {
             string[] methodParams = { blockHash };
-            string? result = Call("get_block_economic_state", methodParams)?.Result?.ToString();
-            if (result == null)
-            {
-                return null;
-            }
-            return JsonSerializer.Deserialize<Types.BlockEconomicState>(result);
+            return Call<Types.BlockEconomicState>("get_block_economic_state", methodParams);
         }
 
         public Types.EpochView? GetEpochByNumber(UInt64 epochNumber)
         {
             string[] methodParams = { Hex.UInt64ToHex(epochNumber) };
-            string? result = Call("get_epoch_by_number", methodParams)?.Result?.ToString();
-            if (result == null)
-            {
-                return null;
-            }
-            return JsonSerializer.Deserialize<Types.EpochView>(result);
+            return Call<Types.EpochView>("get_epoch_by_number", methodParams);
         }
     }
 
-    public class RequestObject
+    class RequestObject
     {
         [JsonPropertyName("jsonrpc")]
         public string Jsonrpc { get; } = "2.0";
@@ -105,7 +94,7 @@ namespace Ckb.Rpc
         public object[]? Params { get; set; }
     }
 
-    public class ResponseObject
+    class ResponseObject<T>
     {
         [JsonPropertyName("jsonrpc")]
         public string Jsonrpc { get; set; } = "2.0";
@@ -114,7 +103,7 @@ namespace Ckb.Rpc
         public string Id { get; set; } = "1";
 
         [JsonPropertyName("result")]
-        public object? Result { get; set; }
+        public T? Result { get; set; }
     }
 
     public class SnakeCaseJsonNamingPolicy : JsonNamingPolicy
