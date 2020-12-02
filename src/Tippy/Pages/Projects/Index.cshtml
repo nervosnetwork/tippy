@@ -52,13 +52,13 @@
                     @if (Model.RunningFlags[item])
                     {
                         <form method="post">
-                            <button asp-page="./Stop" asp-route-id="@item.ID" class="button is-danger is-small">
+                            <button asp-page="./Stop" asp-route-id="@item.Id" class="button is-danger is-small">
                                 <span class="icon">
                                     <i class="fas fa-pause"></i>
                                 </span>
                                 <span>Stop</span>
                             </button>
-                            <button asp-page="./Restart" asp-route-id="@item.ID" class="button is-warning is-small">
+                            <button asp-page="./Restart" asp-route-id="@item.Id" class="button is-warning is-small">
                                 <span class="icon">
                                     <i class="fas fa-redo"></i>
                                 </span>
@@ -68,7 +68,7 @@
                     }
                     else
                     {
-                        <form asp-page="./Start" asp-route-id="@item.ID" method="post">
+                        <form asp-page="./Start" asp-route-id="@item.Id" method="post">
                             <button class="button is-success is-small">
                                 <span class="icon">
                                     <i class="fas fa-play"></i>
@@ -79,25 +79,25 @@
                     }
                 </td>
                 <td>
-                    <a asp-page="./Details" asp-route-id="@item.ID" class="button is-info is-small is-outlined">
+                    <a asp-page="./Details" asp-route-id="@item.Id" class="button is-info is-small is-outlined">
                         <span>Details</span>
                         <span class="icon is-small">
                             <i class="fas fa-info-circle"></i>
                         </span>
                     </a>
-                    <a asp-page="./Edit" asp-route-id="@item.ID" class="button is-link is-primary is-small is-outlined">
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="button is-link is-primary is-small is-outlined">
                         <span>Edit</span>
                         <span class="icon is-small">
                             <i class="far fa-edit"></i>
                         </span>
                     </a>
-                    <a asp-page="./Reset" asp-route-id="@item.ID" class="button is-warning is-small is-outlined">
+                    <a asp-page="./Reset" asp-route-id="@item.Id" class="button is-warning is-small is-outlined">
                         <span>Reset Data</span>
                         <span class="icon is-small">
                             <i class="fas fa-info-circle"></i>
                         </span>
                     </a>
-                    <a asp-page="./Delete" asp-route-id="@item.ID" class="button is-danger is-small is-outlined">
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="button is-danger is-small is-outlined">
                         <span>Delete</span>
                         <span class="icon is-small">
                             <i class="far fa-trash-alt"></i>

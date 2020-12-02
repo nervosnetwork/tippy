@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model Tippy.Pages.Projects.EditModel
 
 @{ ViewData["Title"] = "Edit project"; }
@@ -7,7 +7,7 @@
 
 <form method="post">
     <div asp-validation-summary="ModelOnly" class="has-text-danger-dark"></div>
-    <input type="hidden" asp-for="Project.ID" />
+    <input type="hidden" asp-for="Project.Id" />
     <div class="field">
         <div class="control">
             <label asp-for="Project.Name" class="label"></label>

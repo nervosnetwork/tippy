@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model Tippy.Pages.Projects.DetailsModel
 
 @{ ViewData["Title"] = "Project details"; }
@@ -56,7 +56,7 @@
 
 <div class="field is-grouped">
     <div class="control">
-        <a asp-page="./Edit" asp-route-id="@Model.Project.ID" class="button is-primary">Edit</a>
+        <a asp-page="./Edit" asp-route-id="@Model.Project.Id" class="button is-primary">Edit</a>
     </div>
     <div class="control">
         <a asp-page="./Index" class="button is-link is-light">Back</a>

@@ -60,13 +60,13 @@
                                 <form method="post">
                                     @foreach (var item in Model.Projects)
                                     {
-                                        @if (item.ID == Model.ActiveProject.ID)
+                                        @if (item.Id == Model.ActiveProject.Id)
                                         {
                                             <span class="navbar-item"><strong>@item.Name</strong></span>
                                         }
                                         else
                                         {
-                                            <button asp-page="./SwitchProject" asp-route-id="@item.ID" class="navbar-item button-as-link">@item.Name</button>
+                                            <button asp-page="./SwitchProject" asp-route-id="@item.Id" class="navbar-item button-as-link">@item.Name</button>
                                         }
                                     }
                                 </form>
@@ -85,13 +85,13 @@
     @if (Model.IsNodeRunning)
     {
         <form method="post">
-            <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.ID" class="button is-danger is-small">
+            <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-danger is-small">
                 <span class="icon">
                     <i class="fas fa-pause"></i>
                 </span>
                 <span>Stop</span>
             </button>
-            <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.ID" class="button is-warning is-small">
+            <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.Id" class="button is-warning is-small">
                 <span class="icon">
                     <i class="fas fa-redo"></i>
                 </span>
@@ -101,7 +101,7 @@
     }
     else
     {
-        <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.ID" method="post">
+        <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.Id" method="post">
             <button class="button is-success is-small">
                 <span class="icon">
                     <i class="fas fa-play"></i>
