@@ -23,6 +23,12 @@ namespace Tippy.Ctrl
 
         public static bool IsRunning(Project project) => project != null && GroupFor(project) != null;
 
+        public static string GetLogFolder(Project project)
+        {
+            ProcessGroup group = new(ProcessInfo.FromProject(project));
+            return group.LogFolder();
+        }
+
         /// If any port is already in use, throw InvalidOperationException.
         public static void Start(Project project)
         {

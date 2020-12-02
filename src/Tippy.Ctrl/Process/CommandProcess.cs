@@ -96,7 +96,7 @@ namespace Tippy.Ctrl.Process
             };
         }
 
-        protected string WorkingDirectory() =>
+        internal string WorkingDirectory() =>
             Path.Combine(Core.Environment.GetAppDataFolder(), $"chain-{ProcessInfo.ID}");
 
         protected static string BinaryFullPath(string binary) =>

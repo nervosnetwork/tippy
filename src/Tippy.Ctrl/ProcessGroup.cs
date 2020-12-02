@@ -2,6 +2,7 @@ using static System.Console;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Tippy.Ctrl
 {
@@ -20,6 +21,12 @@ namespace Tippy.Ctrl
         internal event NodeLogEventHandler? NodeLogReceived;
 
         internal bool IsRunning => node?.IsRunning ?? false;
+
+        internal string LogFolder()
+        {
+            Process.NodeProcess p = new(ProcessInfo);
+            return Path.Combine(p.WorkingDirectory(), "data", "logs");
+        }
 
         internal void Start()
         {
