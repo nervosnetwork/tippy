@@ -8,24 +8,24 @@ namespace Tippy.Core.Address
 {
     public class Address
     {
-        static readonly string SECP_CODE_HASH = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8";
-        static readonly string SECP_HASH_TYPE = "type";
-        static readonly int SECP_SHORT_ID = 0;
+        static readonly string SecpCodeHash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8";
+        static readonly string SecpHashType = "type";
+        static readonly int SecpShortId = 0;
 
-        static readonly string MULTISIG_CODE_HASH = "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8";
-        static readonly string MULTISIG_HASH_TYPE = "type";
-        static readonly int MULTISIG_SHORT_ID = 1;
+        static readonly string MultisigCodeHash = "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8";
+        static readonly string MultisigHashType = "type";
+        static readonly int MultisigShortId = 1;
 
         public static string GenerateAddress(Types.Script script, string prefix)
         {
             List<int> data = new();
             int? shortId = null;
-            if (script.CodeHash == SECP_CODE_HASH && script.HashType == SECP_HASH_TYPE)
+            if (script.CodeHash == SecpCodeHash && script.HashType == SecpHashType)
             {
-                shortId = SECP_SHORT_ID;
-            } else if (script.CodeHash == MULTISIG_CODE_HASH && script.HashType == MULTISIG_HASH_TYPE)
+                shortId = SecpShortId;
+            } else if (script.CodeHash == MultisigCodeHash && script.HashType == MultisigHashType)
             {
-                shortId = MULTISIG_SHORT_ID;
+                shortId = MultisigShortId;
             }
              if (shortId != null)
             {
@@ -48,14 +48,14 @@ namespace Tippy.Core.Address
                     data.Add(Convert.ToInt32(c));
                 }
             }
-            string addr = ConvertAddresse.Encode(prefix, data.ToArray());
+            string addr = ConvertAddress.Encode(prefix, data.ToArray());
 
             return addr;
         }
 
         public static Types.Script ParseAddress(string address, string prefix)
         {
-            (string hrp, int[] data) = ConvertAddresse.Decode(address);
+            (string hrp, int[] data) = ConvertAddress.Decode(address);
 
             if (hrp != prefix)
             {
@@ -69,14 +69,14 @@ namespace Tippy.Core.Address
                 }
                 string codeHash;
                 string hashType;
-                if (data[1] == SECP_SHORT_ID)
+                if (data[1] == SecpShortId)
                 {
-                    codeHash = SECP_CODE_HASH;
-                    hashType = SECP_HASH_TYPE;
-                } else if (data[1] == MULTISIG_SHORT_ID)
+                    codeHash = SecpCodeHash;
+                    hashType = SecpHashType;
+                } else if (data[1] == MultisigShortId)
                 {
-                    codeHash = MULTISIG_CODE_HASH;
-                    hashType = MULTISIG_HASH_TYPE;
+                    codeHash = MultisigCodeHash;
+                    hashType = MultisigHashType;
                 } else
                 {
                     throw new Exception("Short address format error!");

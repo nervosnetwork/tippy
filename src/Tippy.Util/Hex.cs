@@ -24,18 +24,14 @@ namespace Tippy.Util
 
         public static string UInt64ToHex(UInt64 num) => $"0x{num:x}";
 
-        public static byte[] HexToBytes(string i)
+        public static byte[] HexToBytes(string hex)
         {
-            string hex = i.Remove(0, 2);
-            return Enumerable.Range(0, hex.Length)
-                 .Where(x => x % 2 == 0)
-                 .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                 .ToArray();
+            return Convert.FromHexString(hex.Remove(0, 2));
         }
 
         public static string BytesToHex(byte[] bytes)
         {
-            return "0x" + string.Concat(bytes.Select(b => b.ToString("x2")).ToArray());
+            return "0x" + Convert.ToHexString(bytes).ToLower();
         }
     }
 }

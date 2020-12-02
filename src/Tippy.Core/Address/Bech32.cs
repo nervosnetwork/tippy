@@ -154,7 +154,7 @@ namespace Tippy.Core.Address
         }
     }
 
-    public class ConvertAddresse
+    public class ConvertAddress
     {
         static int[] ConvertBits(int[] data, uint fromBits, uint toBits, bool pad)
         {

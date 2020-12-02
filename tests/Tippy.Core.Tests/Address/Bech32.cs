@@ -129,14 +129,14 @@ namespace Tippy.Core.Tests.Address
             foreach (var info in ValidAddresses)
             {
                 // Decode
-                (string hrp, int[] data) = ConvertAddresse.Decode(info.Address);
+                (string hrp, int[] data) = ConvertAddress.Decode(info.Address);
                 var hex = Util.Hex.BytesToHex(
                     data.Select(d => (byte)d).ToArray());
                 Assert.Equal(info.Prefix, hrp);
                 Assert.Equal(info.Hex, hex);
 
                 // Encode
-                string addr = ConvertAddresse.Encode(hrp, data);
+                string addr = ConvertAddress.Encode(hrp, data);
                 Assert.Equal(info.Address, addr);
             }
         }
@@ -146,7 +146,7 @@ namespace Tippy.Core.Tests.Address
         {
             foreach(var info in InvalidAddresses)
             {
-                var exception = Assert.Throws<Exception>(() => ConvertAddresse.Decode(info.Address));
+                var exception = Assert.Throws<Exception>(() => ConvertAddress.Decode(info.Address));
                 Assert.Equal(info.ErrorMessage, exception.Message);
             }
         }
