@@ -1,8 +1,8 @@
 using Xunit;
 
-using CoreAddress = Tippy.Core.Address.Address;
+using CoreAddress = Ckb.Address.Address;
 
-namespace Tippy.Core.Tests.Address
+namespace Ckb.Address.Tests.Address
 {
     public class Address
     {

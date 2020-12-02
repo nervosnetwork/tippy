@@ -1,6 +1,6 @@
-using Types = Ckb.Rpc.Types;
+using Types = Ckb.Types;
 
-namespace Tippy.Core.Tests.Address
+namespace Ckb.Address.Tests.Address
 {
     public class Fixture
 

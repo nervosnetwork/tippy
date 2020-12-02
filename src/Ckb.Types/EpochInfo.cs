@@ -1,6 +1,6 @@
 using System;
 
-namespace Tippy.Util
+namespace Ckb.Types
 {
     public class EpochInfo
     {
