@@ -24,12 +24,12 @@ namespace Tippy.Util
 
         public static string UInt64ToHex(UInt64 num) => $"0x{num:x}";
 
-        public static byte[] HexToBytes(string hex)
+        public static byte[] HexStringToBytes(string hex)
         {
             return Convert.FromHexString(hex.Remove(0, 2));
         }
 
-        public static string BytesToHex(byte[] bytes)
+        public static string BytesToHexString(byte[] bytes)
         {
             return "0x" + Convert.ToHexString(bytes).ToLower();
         }

@@ -130,7 +130,7 @@ namespace Tippy.Core.Tests.Address
             {
                 // Decode
                 (string hrp, int[] data) = ConvertAddress.Decode(info.Address);
-                var hex = Util.Hex.BytesToHex(
+                var hex = Util.Hex.BytesToHexString(
                     data.Select(d => (byte)d).ToArray());
                 Assert.Equal(info.Prefix, hrp);
                 Assert.Equal(info.Hex, hex);

@@ -31,7 +31,7 @@ namespace Tippy.Core.Address
             {
                 data.Add(1);
                 data.Add((int)shortId);
-                foreach (byte c in Hex.HexToBytes(script.Args))
+                foreach (byte c in Hex.HexStringToBytes(script.Args))
                 {
                     data.Add(Convert.ToInt32(c));
                 }
@@ -39,11 +39,11 @@ namespace Tippy.Core.Address
             else
             {
                 data.Add(script.HashType == "type" ? 4 : 2);
-                foreach (byte c in Hex.HexToBytes(script.CodeHash))
+                foreach (byte c in Hex.HexStringToBytes(script.CodeHash))
                 {
                     data.Add(Convert.ToInt32(c));
                 }
-                foreach (byte c in Hex.HexToBytes(script.Args))
+                foreach (byte c in Hex.HexStringToBytes(script.Args))
                 {
                     data.Add(Convert.ToInt32(c));
                 }
@@ -108,7 +108,7 @@ namespace Tippy.Core.Address
 
         private static string IntsToHex(int[] values)
         {
-            return Hex.BytesToHex(values.Select(v => (byte)v).ToArray());
+            return Hex.BytesToHexString(values.Select(v => (byte)v).ToArray());
         }
     }
 }
