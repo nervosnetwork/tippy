@@ -9,7 +9,8 @@ namespace Tippy.Pages.Config
     {
         [Required]
         [BindProperty]
-        public string Unused { get; set; } = "";
+        [Display(Name = "Open browser on launch")]
+        public bool OpenBrowserOnLaunch { get; set; } = Core.Settings.GetSettings().AppSettings.OpenBrowserOnLaunch;
 
         [TempData]
         public string Message { get; set; } = "";
@@ -26,6 +27,7 @@ namespace Tippy.Pages.Config
             }
 
             var settings = Core.Settings.GetSettings();
+            settings.AppSettings.OpenBrowserOnLaunch = OpenBrowserOnLaunch;
             settings.Save();
 
             Message = "Settings saved";
