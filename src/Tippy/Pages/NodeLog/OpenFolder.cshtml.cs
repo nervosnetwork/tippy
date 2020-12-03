@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 using Tippy.Filters;
+using Tippy.Util;
 
 namespace Tippy.Pages.NodeLog
 {
@@ -16,12 +17,7 @@ namespace Tippy.Pages.NodeLog
             {
                 await Task.Run(() =>
                 {
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
-                    {
-                        FileName = ProcessManager.GetLogFolder(activeProject),
-                        UseShellExecute = true,
-                        Verb = "open"
-                    });
+                    FolderOpener.Open(ProcessManager.GetLogFolder(activeProject));
                 });
             }
 
