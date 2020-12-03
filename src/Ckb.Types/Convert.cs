@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Numerics;
+using System.Linq;
 
 namespace Ckb.Types
 {
@@ -31,6 +32,15 @@ namespace Ckb.Types
         public static string BytesToHexString(byte[] bytes)
         {
             return "0x" + System.Convert.ToHexString(bytes).ToLower();
+        }
+
+        public static UInt32 LEBytesToUInt32(byte[] bytes)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                return BitConverter.ToUInt32(bytes);
+            }
+            return BitConverter.ToUInt32(bytes.Reverse().ToArray());
         }
     }
 }
