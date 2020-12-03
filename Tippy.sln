@@ -21,11 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Util", "src\Tippy.Util\Tippy.Util.csproj", "{3D78596E-B801-46EB-9F81-F59FFD6D1EF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ckb.Cryptography", "src\Ckb.Cryptography\Ckb.Cryptography.csproj", "{23E9A14A-572D-4DCB-A266-6A986BDA8487}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Cryptography", "src\Ckb.Cryptography\Ckb.Cryptography.csproj", "{23E9A14A-572D-4DCB-A266-6A986BDA8487}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{78455740-B1BC-4370-90F1-59C2D39BBD8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tippy.Core.Tests", "tests\Tippy.Core.Tests\Tippy.Core.Tests.csproj", "{C4D9614D-63DE-4E6A-B05F-6FC66606AE4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Core.Tests", "tests\Tippy.Core.Tests\Tippy.Core.Tests.csproj", "{C4D9614D-63DE-4E6A-B05F-6FC66606AE4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,10 +65,10 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {08BF23BE-7259-4673-A227-6480B6DF808C}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C4D9614D-63DE-4E6A-B05F-6FC66606AE4F} = {78455740-B1BC-4370-90F1-59C2D39BBD8A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08BF23BE-7259-4673-A227-6480B6DF808C}
 	EndGlobalSection
 EndGlobal

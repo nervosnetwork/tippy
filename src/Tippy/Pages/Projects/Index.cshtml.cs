@@ -27,13 +27,6 @@ namespace Tippy.Pages.Projects
             {
                 RunningFlags.Add(p, ProcessManager.IsRunning(p));
             }
-
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
-            {
-                FileName = Core.Environment.GetAppDataFolder() + System.IO.Path.DirectorySeparatorChar,
-                UseShellExecute = true,
-                Verb = "open"
-            });
         }
     }
 }
