@@ -19,9 +19,26 @@ namespace Tippy.Controllers.API
     {
         private Client? Rpc()
         {
-            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
+            Project? activeProject = CurrentRunningProject();
+            if (activeProject != null)
             {
                 return new Client($"http://localhost:{activeProject.NodeRpcPort}");
+            }
+
+            return null;
+        }
+
+        private bool IsMainnet()
+        {
+            return CurrentRunningProject()?.Chain == Project.ChainType.Mainnet;
+        }
+
+        private Project? CurrentRunningProject()
+        {
+            Project? activeProject = HttpContext.Items["ActiveProject"] as Project;
+            if (activeProject != null && ProcessManager.IsRunning(activeProject))
+            {
+                return activeProject;
             }
             return null;
         }
@@ -80,8 +97,6 @@ namespace Tippy.Controllers.API
 
             BlockDetailResult blockDetail = new();
             blockDetail.BlockHash = block.Header.Hash;
-            // TODO: update this.
-            blockDetail.MinerHash = "ckt";
             blockDetail.TransactionsRoot = block.Header.TransactionsRoot;
             blockDetail.Number = $"{id}";
             blockDetail.Version = $"{Hex.HexToUInt32(block.Header.Version)}";
@@ -91,6 +106,13 @@ namespace Tippy.Controllers.API
             blockDetail.TransactionsCount = $"{block.Transactions.Length}";
             blockDetail.Nonce = $"{Hex.HexToBigInteger(block.Header.Nonce)}";
             blockDetail.Difficulty = Hex.HexToUInt32(block.Header.CompactTarget).ToString();
+
+            // Miner Address
+            string prefix = IsMainnet() ? "ckb" : "ckt";
+            string cellbaseWitness = block.Transactions[0].Witnesses[0];
+            Script script = CellbaseWitness.Parse(cellbaseWitness);
+            string minerAddress = Ckb.Address.Address.GenerateAddress(script, prefix);
+            blockDetail.MinerHash = minerAddress;
 
             // Epoch info
             var epochInfo = EpochInfo.Parse(Hex.HexToUInt64(block.Header.Epoch));

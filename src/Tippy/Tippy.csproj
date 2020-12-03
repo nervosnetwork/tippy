@@ -23,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ckb.Address\Ckb.Address.csproj" />
     <ProjectReference Include="..\Tippy.Core\Tippy.Core.csproj" />
     <ProjectReference Include="..\Tippy.Ctrl\Tippy.Ctrl.csproj" />
     <ProjectReference Include="..\Ckb.Rpc\Ckb.Rpc.csproj">
