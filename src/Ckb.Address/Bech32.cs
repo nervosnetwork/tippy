@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
+[assembly: InternalsVisibleTo("Ckb.Address.Tests")]
 namespace Ckb.Address
 {
-    public class Bech32
+    internal class Bech32
     {
         static readonly string CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
 
@@ -64,7 +66,7 @@ namespace Ckb.Address
             return ret;
         }
 
-        public static string Encode(string hrp, int[] data)
+        internal static string Encode(string hrp, int[] data)
         {
             if (hrp.Length < 1)
             {
@@ -108,7 +110,7 @@ namespace Ckb.Address
             return ret.ToString().ToUpper();
         }
 
-        public static (string Hrp, int[] Data) Decode(string bechString)
+        internal static (string Hrp, int[] Data) Decode(string bechString)
         {
             if (bechString.ToLower() != bechString && bechString.ToUpper() != bechString)
             {

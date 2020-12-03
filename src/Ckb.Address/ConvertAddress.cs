@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Ckb.Address.Tests")]
 namespace Ckb.Address
 {
-    public class ConvertAddress
+    internal class ConvertAddress
     {
         static int[] ConvertBits(int[] data, uint fromBits, uint toBits, bool pad)
         {
@@ -44,14 +46,14 @@ namespace Ckb.Address
             return ret.ToArray();
         }
 
-        public static (string Hrp, int[] Data) Decode(string addr)
+        internal static (string Hrp, int[] Data) Decode(string addr)
         {
             (string hrp, int[] data) = Bech32.Decode(addr);
             int[] res = ConvertBits(data, 5, 8, false);
             return (hrp, res);
         }
 
-        public static string Encode(string hrp, int[] data)
+        internal static string Encode(string hrp, int[] data)
         {
             int[] bits = ConvertBits(data, 8, 5, true);
             string ret = Bech32.Encode(hrp, bits);
