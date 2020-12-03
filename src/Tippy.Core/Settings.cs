@@ -9,26 +9,28 @@ namespace Tippy.Core
 {
     public class Settings
     {
-        private static Settings? Singleton;
+        public AppSettings AppSettings { get; set; } = default!;
+
+        private static Settings? singleton;
         public static Settings GetSettings()
         {
-            if (Singleton == null)
+            if (singleton == null)
             {
                 if (!File.Exists(FilePath))
                 {
                     SaveJson(SettingsTemplate);
                 }
 
-                Singleton = new();
+                singleton = new();
                 var config = new ConfigurationBuilder()
                     .SetBasePath(Environment.GetAppDataFolder())
                     .AddJsonFile("settings.json", false, true)
                     .Build();
-                config.Bind(Singleton);
+                config.Bind(singleton);
 
             }
 
-            return Singleton;
+            return singleton;
         }
 
         public void Save()
@@ -62,5 +64,10 @@ namespace Tippy.Core
                 return "";
             }
         }
+    }
+
+    public class AppSettings
+    {
+        public bool OpenBrowserOnLaunch { get; set; }
     }
 }

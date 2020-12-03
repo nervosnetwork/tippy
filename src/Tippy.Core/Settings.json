@@ -1,2 +1,5 @@
 {
+  "AppSettings": {
+    "OpenBrowserOnLaunch": true
+  }
 }

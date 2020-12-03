@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Tippy.Core;
 using Tippy.Ctrl;
 using Tippy.Hubs;
+using Tippy.Util;
 
 namespace Tippy
 {
@@ -23,6 +25,11 @@ namespace Tippy
 
             _hubContext = host.Services.GetService(typeof(IHubContext<LogHub>)) as IHubContext<LogHub>;
             ProcessManager.NodeLogReceived += OnNodeLogReceived;
+
+            if (Settings.GetSettings().AppSettings.OpenBrowserOnLaunch)
+            {
+                UrlOpener.Open("http://localhost:5000/home");
+            }
 
             host.Run();
         }
