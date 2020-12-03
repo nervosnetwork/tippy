@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tippy.Util;
-using Types = Ckb.Rpc.Types;
 
-namespace Tippy.Core.Address
+namespace Ckb.Address
 {
     public class Address
     {
@@ -31,7 +29,7 @@ namespace Tippy.Core.Address
             {
                 data.Add(1);
                 data.Add((int)shortId);
-                foreach (byte c in Hex.HexStringToBytes(script.Args))
+                foreach (byte c in Types.Convert.HexStringToBytes(script.Args))
                 {
                     data.Add(Convert.ToInt32(c));
                 }
@@ -39,11 +37,11 @@ namespace Tippy.Core.Address
             else
             {
                 data.Add(script.HashType == "type" ? 4 : 2);
-                foreach (byte c in Hex.HexStringToBytes(script.CodeHash))
+                foreach (byte c in Types.Convert.HexStringToBytes(script.CodeHash))
                 {
                     data.Add(Convert.ToInt32(c));
                 }
-                foreach (byte c in Hex.HexStringToBytes(script.Args))
+                foreach (byte c in Types.Convert.HexStringToBytes(script.Args))
                 {
                     data.Add(Convert.ToInt32(c));
                 }
@@ -108,7 +106,7 @@ namespace Tippy.Core.Address
 
         private static string IntsToHex(int[] values)
         {
-            return Hex.BytesToHexString(values.Select(v => (byte)v).ToArray());
+            return Types.Convert.BytesToHexString(values.Select(v => (byte)v).ToArray());
         }
     }
 }

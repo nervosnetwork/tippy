@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Ckb.Rpc.Types
+namespace Ckb.Types
 {
 #nullable disable
     public class Block

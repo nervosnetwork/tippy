@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Tippy.Core\Tippy.Core.csproj" />
+    <ProjectReference Include="..\..\src\Ckb.Address\Ckb.Address.csproj" />
   </ItemGroup>
 
 </Project>

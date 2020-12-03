@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
-using Tippy.Core.Address;
-
-namespace Tippy.Core.Tests.Address
+namespace Ckb.Address.Tests.Address
 {
     class ValidAddressFixture
     {
@@ -130,7 +125,7 @@ namespace Tippy.Core.Tests.Address
             {
                 // Decode
                 (string hrp, int[] data) = ConvertAddress.Decode(info.Address);
-                var hex = Util.Hex.BytesToHexString(
+                var hex = Types.Convert.BytesToHexString(
                     data.Select(d => (byte)d).ToArray());
                 Assert.Equal(info.Prefix, hrp);
                 Assert.Equal(info.Hex, hex);

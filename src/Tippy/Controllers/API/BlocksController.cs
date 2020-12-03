@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Ckb.Rpc;
-using Ckb.Rpc.Types;
+using Ckb.Types;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 using Tippy.ApiData;

@@ -1,9 +1,6 @@
-using Types = Ckb.Rpc.Types;
-
-namespace Tippy.Core.Tests.Address
+namespace Ckb.Address.Tests.Address
 {
-    public class Fixture
-
+    class Fixture
     {
         public string CodeHash { get; set; }
         public string HashType { get; set; }
@@ -39,7 +36,7 @@ namespace Tippy.Core.Tests.Address
         }
     }
 
-    public class Addresses
+    class Addresses
     {
         public static string TestnetPrefix = "ckt";
         public static string MainnetPrefix = "ckb";

@@ -21,8 +21,4 @@
     <Folder Include="Models\" />
     <Folder Include="Data\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ckb.Rpc\Ckb.Rpc.csproj" />
-    <ProjectReference Include="..\Tippy.Util\Tippy.Util.csproj" />
-  </ItemGroup>
 </Project>
