@@ -1,9 +1,6 @@
-using Types = Ckb.Types;
-
 namespace Ckb.Address.Tests.Address
 {
-    public class Fixture
-
+    class Fixture
     {
         public string CodeHash { get; set; }
         public string HashType { get; set; }
@@ -39,7 +36,7 @@ namespace Ckb.Address.Tests.Address
         }
     }
 
-    public class Addresses
+    class Addresses
     {
         public static string TestnetPrefix = "ckt";
         public static string MainnetPrefix = "ckb";

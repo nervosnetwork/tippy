@@ -2,8 +2,6 @@ using System;
 using System.Linq;
 using Xunit;
 
-using Ckb.Address;
-
 namespace Ckb.Address.Tests.Address
 {
     class ValidAddressFixture
