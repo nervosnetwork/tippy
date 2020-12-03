@@ -152,7 +152,7 @@ namespace Tippy.Controllers.API
             return Ok(result);
         }
 
-        private static ArrayResult<BlockResult> GetBlocks(Client client, UInt64 startBlockNumber, int count, Meta? meta = null)
+        private ArrayResult<BlockResult> GetBlocks(Client client, UInt64 startBlockNumber, int count, Meta? meta = null)
         {
             List<UInt64> blockNumbers = GetBlockNumbers(startBlockNumber, count);
 
@@ -162,7 +162,7 @@ namespace Tippy.Controllers.API
             return result;
         }
 
-        private static BlockResult? GetBlock(Client client, UInt64 num)
+        private BlockResult? GetBlock(Client client, UInt64 num)
         {
             Block? block = client.GetBlockByNumber(num);
             if (block == null)
@@ -191,6 +191,28 @@ namespace Tippy.Controllers.API
                 // TODO: update this
                 MinerHash = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83"
             };
+
+            // Reward
+            string blockHash = header.Hash;
+            br.Reward = "";
+            BlockEconomicState? economicState = client.GetBlockEconomicState(blockHash);
+            if (economicState != null)
+            {
+                MinerReward reward = economicState.MinerReward;
+                string[] rewards = new string[]
+                {
+                    reward.Primary,
+                    reward.Secondary
+                };
+                br.Reward = rewards.Select(r => Hex.HexToUInt64(r)).Aggregate((sum, cur) => sum + cur).ToString();
+            }
+
+            // Miner Address
+            string prefix = IsMainnet() ? "ckb" : "ckt";
+            string cellbaseWitness = block.Transactions[0].Witnesses[0];
+            Script script = CellbaseWitness.Parse(cellbaseWitness);
+            string minerAddress = Ckb.Address.Address.GenerateAddress(script, prefix);
+            br.MinerHash = minerAddress;
 
             return br;
         }
