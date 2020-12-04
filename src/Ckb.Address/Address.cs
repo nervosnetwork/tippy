@@ -25,7 +25,7 @@ namespace Ckb.Address
             {
                 shortId = MultisigShortId;
             }
-             if (shortId != null)
+            if (shortId != null)
             {
                 data.Add(1);
                 data.Add((int)shortId);

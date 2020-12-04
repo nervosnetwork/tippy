@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +29,11 @@ namespace Tippy
 
             if (Settings.GetSettings().AppSettings.OpenBrowserOnLaunch)
             {
-                UrlOpener.Open("http://localhost:5000/home");
+                Task.Run(async () =>
+                {
+                    await Task.Delay(1000);
+                    UrlOpener.Open("http://localhost:5000/home");
+                });
             }
 
             host.Run();
