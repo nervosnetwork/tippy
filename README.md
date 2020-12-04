@@ -25,3 +25,7 @@
 5. Open `Tippy.sln` with Visual Studio 2019 (v16.8 or later), Visual Studio 2019 for Mac (v8.8 or later), or Visual Studio Code
 6. Select `Tippy` as startup project for the solution, then start debugging it
 7. Browse `http://localhost:5000/home` in your browser
+
+## Design
+
+Tippy's page design is baded on [mazipan/bulma-admin-dashboard-template](https://github.com/mazipan/bulma-admin-dashboard-template).
