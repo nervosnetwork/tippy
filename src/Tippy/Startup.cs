@@ -36,7 +36,7 @@ namespace Tippy
                     options.Filters.Add(new PageMessageFilter());
                 });
 #if RAZOR_RUNTIMECOMPILATIION
-                mvcBuilder.AddRazorRuntimeCompilation();
+            mvcBuilder.AddRazorRuntimeCompilation();
 #endif
 
             services.AddScoped<ActiveProjectFilter>();
@@ -61,7 +61,6 @@ namespace Tippy
             {
                 app.UseDeveloperExceptionPage();
             }
-
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
