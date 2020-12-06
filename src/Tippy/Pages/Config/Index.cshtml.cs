@@ -2,9 +2,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Tippy.Filters;
 
 namespace Tippy.Pages.Config
 {
+    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class IndexModel : PageModel
     {
         [Required]

@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
+using Tippy.Filters;
 
 namespace Tippy.Pages.Projects
 {
+    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class IndexModel : PageModel
     {
         private readonly Tippy.Core.Data.DbContext _context;

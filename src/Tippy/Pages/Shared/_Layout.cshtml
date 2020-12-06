@@ -37,21 +37,34 @@
                         </span>
                         <span class="tag is-danger counter">6</span>
                     </a>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            current project
-                        </a>
 
-                        <div class="navbar-dropdown is-right">
-                            <a class="navbar-item">
-                                Todo
-                            </a>
-                            <hr class="navbar-divider" />
-                            <a class="navbar-item">
-                                Todo
-                            </a>
+                    @if (Context.Items["ActiveProject"] is Tippy.Core.Models.Project activeProject &&
+                       Context.Items["Projects"] is IList<Tippy.Core.Models.Project> projects && projects.Count > 1)
+                    {
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <span class="navbar-link">
+                                Switch project
+                            </span>
+
+                            <div class="navbar-dropdown is-right">
+                                @foreach (var item in projects)
+                                {
+                                    @if (item.Id == activeProject.Id)
+                                    {
+                                        <span class="navbar-item"><strong>@item.Name</strong></span>
+                                    }
+                                    else
+                                    {
+                                        <a asp-page="/Home/SwitchProject" asp-route-id="@item.Id" class="navbar-item button-as-link">@item.Name</a>
+                                    }
+                                    <hr class="navbar-divider" />
+                                }
+                                <a asp-page="/Projects/Index" class="navbar-item">
+                                    Manage projects
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </nav>
         </div>

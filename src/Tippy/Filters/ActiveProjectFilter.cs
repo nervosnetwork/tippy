@@ -16,8 +16,13 @@ namespace Tippy.Filters
 
         async Task IAsyncResourceFilter.OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
+            var projects = await _context.Projects.ToListAsync();
             var activeProject = await _context.Projects.FirstOrDefaultAsync(p => p.IsActive);
-            activeProject ??= await _context.Projects.FirstOrDefaultAsync(p => true); // Fall back to none active project
+            if (activeProject == null && projects.Count > 0)
+            {
+                activeProject = projects[0]; // Fall back to none active project
+            }
+            context.HttpContext.Items["Projects"] = projects;
             context.HttpContext.Items["ActiveProject"] = activeProject;
             await next();
         }
