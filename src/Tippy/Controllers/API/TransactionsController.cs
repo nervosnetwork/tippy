@@ -8,6 +8,7 @@ using Tippy.Core.Models;
 using Tippy.Ctrl;
 using Tippy.Filters;
 using Tippy.Util;
+using System.Linq;
 
 namespace Tippy.Controllers.API
 {
@@ -88,7 +89,7 @@ namespace Tippy.Controllers.API
                     continue;
                 }
 
-                for (int i = 1; i < transactionsLength; i++)
+                for (int i = transactionsLength - 1; i > 0; i--)
                 {
                     if (currentSkipCount < skipCount)
                     {
@@ -97,13 +98,14 @@ namespace Tippy.Controllers.API
                     }
                     Transaction tx = block.Transactions[i];
 
+                    UInt64 capacityInvolved = GetInputsCapacities(client, tx);
+
                     TransactionResult txResult = new()
                     {
                         TransactionHash = tx.Hash ?? "0x",
                         BlockNumber = Hex.HexToUInt64(block.Header.Number).ToString(),
                         BlockTimestamp = Hex.HexToUInt64(block.Header.Timestamp).ToString(),
-                        // TODO: update this.
-                        CapacityInvolved = "0",
+                        CapacityInvolved = capacityInvolved.ToString(),
                         LiveCellChanges = (tx.Outputs.Length - tx.Inputs.Length).ToString()
                     };
                     transactionResults.Add(txResult);
@@ -123,6 +125,24 @@ namespace Tippy.Controllers.API
             ArrayResult<TransactionResult> arrayResult = new("ckb_transaction_list", transactionResults.ToArray(), meta);
 
             return arrayResult;
+        }
+
+        private static UInt64 GetInputsCapacities(Client client, Transaction tx)
+        {
+            return tx.Inputs
+                .Select(i => GetInputCapacity(client, i.PreviousOutput.TxHash, Hex.HexToUInt32(i.PreviousOutput.Index)))
+                .Aggregate((sum, cur) => sum + cur);
+        }
+
+        private static UInt64 GetInputCapacity(Client client, string txHash, uint index)
+        {
+            TransactionWithStatus? transactionWithStatus = client.GetTransaction(txHash);
+            if (transactionWithStatus == null)
+            {
+                return 0;
+            }
+            string capacity = transactionWithStatus.Transaction.Outputs[index].Capacity;
+            return Hex.HexToUInt64(capacity);
         }
     }
 }
