@@ -77,6 +77,12 @@ namespace Ckb.Rpc
             string[] methodParams = { Hex.UInt64ToHex(epochNumber) };
             return Call<Types.EpochView>("get_epoch_by_number", methodParams);
         }
+
+        public Types.TransactionWithStatus? GetTransaction(string hash)
+        {
+            string[] methodParams = { hash };
+            return Call<Types.TransactionWithStatus>("get_transaction", methodParams);
+        }
     }
 
     class RequestObject

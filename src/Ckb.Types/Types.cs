@@ -65,6 +65,26 @@ namespace Ckb.Types
         public string[] Witnesses { get; set; }
     }
 
+
+    public class TxStatus
+    {
+        [JsonPropertyName("block_hash")]
+        public string? BlockHash { get; set; }
+
+        [JsonPropertyName("status")]
+        public string Status { get; set; } = default!;
+    }
+
+    public class TransactionWithStatus
+    {
+        [JsonPropertyName("transaction")]
+        public Transaction Transaction { get; set; } = default!;
+
+        [JsonPropertyName("tx_status")]
+        public TxStatus TxStatus { get; set; } = default!;
+    }
+
+
     public class CellDeps
     {
         [JsonPropertyName("dep_type")]

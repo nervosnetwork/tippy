@@ -186,15 +186,12 @@ namespace Tippy.Controllers.API
                 TransactionsCount = $"{transactionsCount}",
                 Timestamp = timestamp,
                 LiveCellChanges = $"{outputsCount - inputsCount}",
-                // TODO: update this
-                Reward = "4000000000",
-                // TODO: update this
-                MinerHash = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83"
+                Reward = "",
+                MinerHash = ""
             };
 
             // Reward
             string blockHash = header.Hash;
-            br.Reward = "";
             BlockEconomicState? economicState = client.GetBlockEconomicState(blockHash);
             if (economicState != null)
             {
