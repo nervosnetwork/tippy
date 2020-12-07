@@ -5,54 +5,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - Tippy</title>
-    <link rel="stylesheet" href="~/lib/bulma/css/bulma.min.css" />
+    <link rel="stylesheet" href="~/lib/mazipan/mazipan.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
     </style>
 </head>
-<body class="has-navbar-fixed-top">
-    <nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
-        <div class="container is-fullhd">
-            <div class="navbar-brand">
-                <span class="navbar-item">
-                  <i class="fab fa-connectdevelop fa-2x has-text-success"></i>
-                </span>
-            </div>
-            <div class="navbar-menu">
-                <div class="navbar-start">
-                    <a asp-page="/Home/Index" class="navbar-item">Dashboard</a>
-                    <a asp-page="/Explorer" class="navbar-item">Explorer</a>
-                    <a asp-page="/NodeLog/Index" class="navbar-item">Logs</a>
-                    <a asp-page="/Projects/Index" class="navbar-item">Projects</a>
-                </div>
-
-                <div class="navbar-end">
-                    <div class="navbar-item">
-                        <div class="buttons">
-                            <a asp-page="/Config/Index" class="navbar-item">Settings</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container is-fullhd pt-5">
-        @if (ViewData["ErrorMessage"] is string errorMessage && errorMessage.Length > 0)
-        {
-            <div class="notification is-danger">
-                <p class="m-3">
-                    <span class="icon has-text-white">
-                        <i class="fas fa-exclamation-triangle fa-3x"></i>
+<body>
+    <header class="hero">
+        <div class="hero-head">
+            <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <span class="navbar-item is--brand">
+                        <span class="">
+                            <i class="fab fa-connectdevelop fa-2x has-text-success"></i>
+                            <strong>Tippy</strong>
+                        </span>
                     </span>
-                </p>
-                <p>@errorMessage</p>
-            </div>
-            ViewData.Remove("ErrorMessage");
-        }
+                </div>
 
-        @RenderBody()
+                <div class="navbar-menu navbar-end" id="navMenu">
+                    <!--
+                    <a class="navbar-item nav-tag">
+                        <span class="icon is-small">
+                            <i class="far fa-envelope animated"></i>
+                        </span>
+                        <span class="tag is-success counter">2</span>
+                    </a>
+                    <a class="navbar-item nav-tag">
+                        <span class="icon is-small">
+                            <i class="far fa-bell animated"></i>
+                        </span>
+                        <span class="tag is-danger counter">6</span>
+                    </a>
+                    -->
+
+                    @if (Context.Items["ActiveProject"] is Tippy.Core.Models.Project activeProject &&
+                       Context.Items["Projects"] is IList<Tippy.Core.Models.Project> projects && projects.Count > 1)
+                    {
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <span class="navbar-link">
+                                Switch project
+                            </span>
+
+                            <div class="navbar-dropdown is-right">
+                                @foreach (var item in projects)
+                                {
+                                    @if (item.Id == activeProject.Id)
+                                    {
+                                        <span class="navbar-item"><strong>@item.Name</strong></span>
+                                    }
+                                    else
+                                    {
+                                        <a asp-page="/Home/SwitchProject" asp-route-id="@item.Id" class="navbar-item button-as-link">@item.Name</a>
+                                    }
+                                    <hr class="navbar-divider" />
+                                }
+                                <a asp-page="/Projects/Index" class="navbar-item">
+                                    Manage projects
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <div class="columns">
+            <aside id="main-sidebar" class="column is-2 aside">
+                <nav class="menu active-menu--<%= activeMenu %>">
+                    <p class="menu-label">General</p>
+                    <ul class="menu-list">
+                        <li>
+                            <a asp-page="/Home/Index">
+                                <span class="icon is-small"><i class="fas fa-tachometer-alt"></i></span>
+                                <span class="menu-text">Dashboard</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a asp-page="/Projects/Index">
+                                <span class="icon is-small"><i class="fas fa-project-diagram"></i></span>
+                                <span class="menu-text">Projects</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a asp-page="/Explorer">
+                                <span class="icon is-small"><i class="fab fa-wpexplorer"></i></span>
+                                <span class="menu-text">Explorer</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a asp-page="/NodeLog/Index">
+                                <span class="icon is-small"><i class="far fa-file-alt"></i></span>
+                                <span class="menu-text">Logs</span>
+                            </a>
+
+                        </li>
+                    </ul>
+                    <p class="menu-label">Configuration</p>
+                    <ul class="menu-list">
+                        <li>
+                            <a asp-page="/Config/Index">
+                                <span class="icon is-small"><i class="fas fa-cog"></i></span> <span class="menu-text">Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div id="sidebar-toggler">
+                    <span class="icon is-small"><i class="fa fa-angle-double-left"></i></span>
+                </div>
+            </aside>
+
+            <main class="column main">
+                @if (ViewData["ErrorMessage"] is string errorMessage && errorMessage.Length > 0)
+                {
+                    <div class=ontainer is-fullhd pt-5">
+                        <div class="notification is-danger">
+                            <p class="m-3">
+                                <span class="icon has-text-white">
+                                    <i class="fas fa-exclamation-triangle fa-3x"></i>
+                                </span>
+                            </p>
+                            <p>@errorMessage</p>
+                        </div>ViewData.Remove("ErrorMessage");
+                    </div>
+                }
+
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
