@@ -6,7 +6,8 @@
 
 @if (Model.ActiveProject != null)
 {
-    <iframe src="/" class="explorer-container" title="Explorer"></iframe>
+    var path = Request.Query["ref"];
+    <iframe src="/@path" class="explorer-container" title="Explorer"></iframe>
 }
 else
 {

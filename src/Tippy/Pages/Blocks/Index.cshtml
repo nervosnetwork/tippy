@@ -20,7 +20,11 @@
             @foreach (var block in Model.Result.Data)
             {
                 <tr>
-                    <td>@block.Attributes.Number</td>
+                    <td>
+                        <a asp-page="/Explorer" asp-route-ref="block/@block.Attributes.Number">
+                            @block.Attributes.Number
+                        </a>
+                    </td>
                     <td>@block.Attributes.TransactionsCount</td>
                     <td>
                         @if (string.IsNullOrEmpty(block.Attributes.Reward))
@@ -33,7 +37,11 @@
                             <span>@reward</span>
                         }
                     </td>
-                    <td>@block.Attributes.MinerHash</td>
+                    <td>
+                        <a asp-page="/Explorer" asp-route-ref="address/@block.Attributes.MinerHash">
+                            @block.Attributes.MinerHash
+                        </a>
+                    </td>
                     <td>@block.Attributes.Date()</td>
                 </tr>
             }
