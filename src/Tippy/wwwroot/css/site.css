@@ -28,3 +28,7 @@ body {
 	cursor: pointer;
 	outline: inherit;
 }
+
+.hash-text {
+    font-family: monospace;
+}
