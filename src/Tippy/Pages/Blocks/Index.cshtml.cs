@@ -1,0 +1,120 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Ckb.Rpc;
+using Ckb.Types;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Tippy.ApiData;
+using Tippy.Core.Models;
+using Tippy.Ctrl;
+using Tippy.Filters;
+using Tippy.Util;
+
+namespace Tippy.Pages.Blocks
+{
+    [ServiceFilter(typeof(ActiveProjectFilter))]
+    public class IndexModel : PageModel
+    {
+        public Project? ActiveProject { get; set; }
+        public ArrayResult<BlockResult> Result = default!;
+
+        public void OnGet([FromQuery(Name = "e")] int? end)
+        {
+            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
+            {
+                ActiveProject = activeProject;
+            }
+            else
+            {
+                return;
+            }
+
+            var client = Rpc();
+
+            int pageSize = 20;
+            int tipBlockNumber = (int)client.GetTipBlockNumber();
+            int endBlock = end ?? tipBlockNumber;
+            if (endBlock > tipBlockNumber)
+            {
+                endBlock = tipBlockNumber;
+            }
+            int startBlock = Math.Max(0, endBlock - pageSize + 1);
+
+            Meta meta = new()
+            {
+                Total = (UInt64)tipBlockNumber + 1,
+                PageSize = pageSize
+            };
+            Result = GetBlocks(client, startBlock, endBlock, meta);
+        }
+
+        private Client Rpc() => new Client($"http://localhost:{ActiveProject!.NodeRpcPort}");
+
+        private bool IsMainnet() => ActiveProject?.Chain == Project.ChainType.Mainnet;
+
+        private ArrayResult<BlockResult> GetBlocks(Client client, int startBlockNumber, int endBlockNumber, Meta? meta = null)
+        {
+            BlockResult[] brs = Enumerable.Range(startBlockNumber, endBlockNumber - startBlockNumber + 1)
+                .Select(num => GetBlock(client, num))
+                .OfType<BlockResult>()
+                .Reverse()
+                .ToArray();
+            ArrayResult<BlockResult> result = new("block_list", brs, meta);
+
+            return result;
+        }
+
+        private BlockResult? GetBlock(Client client, int num)
+        {
+            Block? block = client.GetBlockByNumber((UInt64)num);
+            if (block == null)
+            {
+                return null;
+            }
+
+            var header = block.Header;
+            var transactions = block.Transactions;
+
+            int inputsCount = transactions.Select(tx => tx.Inputs.Length).Aggregate(0, (acc, cur) => acc + cur);
+            int outputsCount = transactions.Select(tx => tx.Outputs.Length).Aggregate(0, (acc, cur) => acc + cur);
+
+            var number = $"{Hex.HexToUInt64(header.Number)}";
+            int transactionsCount = transactions.Length;
+            string timestamp = $"{ Hex.HexToUInt64(header.Timestamp) }";
+
+            BlockResult br = new()
+            {
+                Number = number,
+                TransactionsCount = $"{transactionsCount}",
+                Timestamp = timestamp,
+                LiveCellChanges = $"{outputsCount - inputsCount}",
+                Reward = "",
+                MinerHash = ""
+            };
+
+            // Reward
+            string blockHash = header.Hash;
+            BlockEconomicState? economicState = client.GetBlockEconomicState(blockHash);
+            if (economicState != null)
+            {
+                MinerReward reward = economicState.MinerReward;
+                string[] rewards = new string[]
+                {
+                    reward.Primary,
+                    reward.Secondary
+                };
+                br.Reward = rewards.Select(r => Hex.HexToUInt64(r)).Aggregate((sum, cur) => sum + cur).ToString();
+            }
+
+            // Miner Address
+            string prefix = IsMainnet() ? "ckb" : "ckt";
+            string cellbaseWitness = block.Transactions[0].Witnesses[0];
+            Script script = CellbaseWitness.Parse(cellbaseWitness);
+            string minerAddress = Ckb.Address.Address.GenerateAddress(script, prefix);
+            br.MinerHash = minerAddress;
+
+            return br;
+        }
+    }
+}

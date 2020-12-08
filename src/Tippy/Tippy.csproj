@@ -33,7 +33,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Pages\Shared\" />
     <Folder Include="MockApiData\" />
     <Folder Include="TagHelpers\" />
     <Folder Include="Hubs\" />

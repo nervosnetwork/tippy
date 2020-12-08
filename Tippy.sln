@@ -23,15 +23,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Util", "src\Tippy.Uti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Cryptography", "src\Ckb.Cryptography\Ckb.Cryptography.csproj", "{23E9A14A-572D-4DCB-A266-6A986BDA8487}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ckb.Address", "src\Ckb.Address\Ckb.Address.csproj", "{534B01EE-10C0-449F-B751-AA3E8B688393}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Address", "src\Ckb.Address\Ckb.Address.csproj", "{534B01EE-10C0-449F-B751-AA3E8B688393}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ckb.Types", "src\Ckb.Types\Ckb.Types.csproj", "{965128F1-0F8C-47E3-A86D-8D47E83E5F5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Types", "src\Ckb.Types\Ckb.Types.csproj", "{965128F1-0F8C-47E3-A86D-8D47E83E5F5A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1F1E8C7-788C-4C63-AC9C-5D44D618E437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ckb.Address.Tests", "tests\Ckb.Address.Tests\Ckb.Address.Tests.csproj", "{6A00AF35-991B-4C4E-81CA-4609E517B867}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Address.Tests", "tests\Ckb.Address.Tests\Ckb.Address.Tests.csproj", "{6A00AF35-991B-4C4E-81CA-4609E517B867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ckb.Types.Tests", "tests\Ckb.Types.Tests\Ckb.Types.Tests.csproj", "{9A6E7450-A456-4DDE-9FF1-A489B6E93FA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Types.Tests", "tests\Ckb.Types.Tests\Ckb.Types.Tests.csproj", "{9A6E7450-A456-4DDE-9FF1-A489B6E93FA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

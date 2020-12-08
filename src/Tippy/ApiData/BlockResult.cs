@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Tippy.ApiData
 {
-    class BlockResult
+    public class BlockResult
     {
         [JsonPropertyName("miner_hash")]
         public string MinerHash { get; set; } = default!;
@@ -23,7 +23,7 @@ namespace Tippy.ApiData
         public string LiveCellChanges { get; set; } = default!;
     }
 
-    class BlockDetailResult
+    public class BlockDetailResult
     {
         [JsonPropertyName("block_hash")]
         public string BlockHash { get; set; } = default!;

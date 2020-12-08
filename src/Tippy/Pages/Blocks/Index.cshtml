@@ -1,0 +1,60 @@
+﻿@page
+@model Tippy.Pages.Blocks.IndexModel
+@{ ViewData["Title"] = "Blocks"; }
+
+<h1 class="title has-text-primary">Blocks</h1>
+
+@if (Model.ActiveProject != null)
+{
+    <table class="table is-striped is-narrow is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>Height</th>
+                <th>Transactions</th>
+                <th>Reward</th>
+                <th>Miner</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var block in Model.Result.Data)
+            {
+                <tr>
+                    <td>@block.Attributes.Number</td>
+                    <td>@block.Attributes.TransactionsCount</td>
+                    <td>@block.Attributes.Reward</td>
+                    <td>@block.Attributes.MinerHash</td>
+                    <td>@block.Attributes.Timestamp</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        @{
+            int? previousPageEnd = int.Parse(Model.Result.Data.First().Attributes.Number) + Model.Result.Meta!.PageSize;
+            if ((UInt64)previousPageEnd > Model.Result.Meta!.Total)
+            {
+                previousPageEnd = null;
+            }
+            var nextPageEnd = int.Parse(Model.Result.Data.Last().Attributes.Number) - 1;
+        }
+        @if (previousPageEnd != null)
+        {
+            <a asp-page="./Index" asp-route-e="@previousPageEnd" class="pagination-previous">Previous</a>
+        }
+        @if (nextPageEnd >= 0)
+        {
+            <a asp-page="./Index" asp-route-e="@nextPageEnd" class="pagination-next">Next</a>
+        }
+        <ul class="pagination-list">
+            <!--
+            <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+            <li><span class="pagination-ellipsis">…</span></li>
+            -->
+        </ul>
+    </nav>
+}
+else
+{
+    <Partial name="_NoActiveProject" />
+}
