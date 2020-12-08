@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json.Serialization;
 
 namespace Tippy.ApiData
@@ -18,6 +19,12 @@ namespace Tippy.ApiData
 
         [JsonPropertyName("live_cell_changes")]
         public string LiveCellChanges { get; set; } = default!;
+
+        public DateTime Date()
+        {
+            DateTime date = new (1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            return date.AddSeconds(double.Parse(BlockTimestamp) / 1000).ToLocalTime();
+        }
     }
 
 
