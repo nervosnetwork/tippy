@@ -46,7 +46,7 @@ namespace Ckb.Types
     public class Transaction
     {
         [JsonPropertyName("cell_deps")]
-        public CellDeps[] CellDeps { get; set; }
+        public CellDep[] CellDeps { get; set; }
 #nullable enable
         [JsonPropertyName("hash")]
         public string? Hash { get; set; }
@@ -67,10 +67,8 @@ namespace Ckb.Types
 
     public class TxStatus
     {
-#nullable enable
         [JsonPropertyName("block_hash")]
         public string? BlockHash { get; set; }
-#nullable disable
 
         [JsonPropertyName("status")]
         public string Status { get; set; } = default!;
@@ -85,7 +83,8 @@ namespace Ckb.Types
         public TxStatus TxStatus { get; set; } = default!;
     }
 
-    public class CellDeps
+
+    public class CellDep
     {
         [JsonPropertyName("dep_type")]
         public string DepType { get; set; }
