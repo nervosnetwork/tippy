@@ -17,6 +17,9 @@ namespace Tippy.Controllers.API
     [ServiceFilter(typeof(ActiveProjectFilter))]
     public class TransactionsController : ControllerBase
     {
+        private const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
+        private const int TxProposalWindow = 12;
+
         private Client? Rpc()
         {
             Project? activeProject = CurrentRunningProject();
@@ -26,6 +29,11 @@ namespace Tippy.Controllers.API
             }
 
             return null;
+        }
+
+        private bool IsMainnet()
+        {
+            return CurrentRunningProject()?.Chain == Project.ChainType.Mainnet;
         }
 
         private Project? CurrentRunningProject()
@@ -66,6 +74,167 @@ namespace Tippy.Controllers.API
             meta.Total = 1000;
             meta.PageSize = (int)pageSize;
             ArrayResult<TransactionResult> result = GetTransactions(client, skipCount, (int)pageSize, tipBlockNumber, meta);
+            return Ok(result);
+        }
+
+        [HttpGet("{hash}")]
+        public ActionResult Details(string hash)
+        {
+            Client? client = Rpc();
+            if (client == null)
+            {
+                return NoContent();
+            }
+
+            TransactionWithStatus? transactionWithStatus = client.GetTransaction(hash);
+            if (transactionWithStatus == null)
+            {
+                return NoContent();
+            }
+
+            Transaction tx = transactionWithStatus.Transaction;
+
+            bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == EmptyHash;
+            string prefix = IsMainnet() ? "ckb" : "ckt";
+
+            TransactionDetailResult detail = new()
+            {
+                IsCellbase = isCellbase,
+                Witnesses = tx.Witnesses,
+                CellDeps = tx.CellDeps.Select(dep =>
+                {
+                    return new ApiData.CellDep()
+                    {
+                        DepType = dep.DepType,
+                        OutPoint = new ApiData.OutPoint()
+                        {
+                            TxHash = dep.OutPoint.TxHash,
+                            Index = Hex.HexToUInt32(dep.OutPoint.Index),
+                        }
+                    };
+                }).ToArray(),
+                HeaderDeps = tx.HeaderDeps,
+                TxStatus = transactionWithStatus.TxStatus.Status,
+                TransactionHash = hash,
+                TransactionFee = "0", // "0" for cellbase
+                BlockNumber = "",
+                Version = "",
+                BlockTimestamp = "",
+            };
+
+            if (transactionWithStatus.TxStatus.BlockHash != null)
+            {
+                Block? block = client.GetBlock(transactionWithStatus.TxStatus.BlockHash);
+                if (block != null)
+                {
+                    Header header = block.Header;
+                    UInt64 blockNumber = Hex.HexToUInt64(header.Number);
+
+                    detail.BlockNumber = blockNumber.ToString();
+                    detail.Version = Hex.HexToUInt32(header.Version).ToString();
+                    detail.BlockTimestamp = Hex.HexToUInt64(header.Timestamp).ToString();
+
+                    if (isCellbase && blockNumber < (UInt64)TxProposalWindow)
+                    {
+                        detail.DisplayInputs = new DisplayInput[]
+                        {
+                            new DisplayInput
+                            {
+                                FromCellbase = true,
+                                Capacity = "",
+                                AddressHash = "",
+                                TargetBlockNumber = "0",
+                                GeneratedTxHash = hash,
+                            }
+                        };
+                        detail.DisplayOutputs = Array.Empty<DisplayOutput>();
+                    }
+                    else if (isCellbase)
+                    {
+                        UInt64 targetBlockNumber = blockNumber + 1 - (UInt64)TxProposalWindow;
+                        detail.DisplayInputs = new DisplayInput[]
+                        {
+                            new DisplayInput
+                            {
+                                FromCellbase = true,
+                                Capacity = "",
+                                AddressHash = "",
+                                TargetBlockNumber = targetBlockNumber.ToString(),
+                                GeneratedTxHash = hash,
+                            }
+                        };
+                        Header? targetBlockHeader = client.GetHeaderByNumber(targetBlockNumber);
+                        if (targetBlockHeader == null)
+                        {
+                            throw new Exception("Target header not found!");
+                        }
+                        BlockEconomicState? targetEconomicState = client.GetBlockEconomicState(targetBlockHeader.Hash);
+                        if (targetEconomicState == null)
+                        {
+                            throw new Exception("Target economic state not found!");
+                        }
+                        detail.DisplayOutputs = tx.Outputs.Select(output =>
+                        {
+                            return new DisplayOutput
+                            {
+                                Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
+                                AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
+                                TargetBlockNumber = targetBlockNumber.ToString(),
+
+                                PrimaryReward = Hex.HexToUInt64(targetEconomicState.MinerReward.Primary).ToString(),
+                                SecondaryReward = Hex.HexToUInt64(targetEconomicState.MinerReward.Secondary).ToString(),
+                                CommitReward = Hex.HexToUInt64(targetEconomicState.MinerReward.Committed).ToString(),
+                                ProposalReward = Hex.HexToUInt64(targetEconomicState.MinerReward.Proposal).ToString(),
+
+                                // TODO: update Status & ConsumedTxHash
+                                Status = "live",
+                                ConsumedTxHash = "",
+                            };
+                        }).ToArray();
+                    }
+                }
+            }
+
+            if (!isCellbase)
+            {
+                var previousOutputs = GetPreviousOutputs(client, tx.Inputs);
+
+                UInt64 transactionFee = previousOutputs.Select(p => Hex.HexToUInt64(p.Capacity)).Aggregate((sum, cur) => sum + cur) -
+                    tx.Outputs.Select(o => Hex.HexToUInt64(o.Capacity)).Aggregate((sum, cur) => sum + cur);
+
+                detail.TransactionFee = transactionFee.ToString();
+                detail.DisplayInputs = tx.Inputs.Take(10).Select((input, idx) =>
+                {
+                    Output previousOutput = previousOutputs[idx];
+                    return new DisplayInput
+                    {
+                        FromCellbase = false,
+                        Capacity = Hex.HexToUInt64(previousOutput.Capacity).ToString(),
+                        AddressHash = Ckb.Address.Address.GenerateAddress(previousOutput.Lock, prefix),
+                        GeneratedTxHash = input.PreviousOutput.TxHash,
+                        CellIndex = Hex.HexToUInt32(input.PreviousOutput.Index).ToString(),
+                        // TODO: Need support "normal", "nervos_dao_deposit", "nervos_dao_withdrawing", "udt"
+                        CellType = "normal"
+                    };
+                }).ToArray();
+
+                detail.DisplayOutputs = tx.Outputs.Take(10).Select(output =>
+                {
+                    return new DisplayOutput
+                    {
+                        Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
+                        AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
+                        // TODO: upate this.
+                        Status = "live",
+                        ConsumedTxHash = "",
+                        // TODO: same in DisplayInputs
+                        CellType = "normal"
+                    };
+                }).ToArray();
+            }
+
+            Result<TransactionDetailResult> result = new("ckb_transaction", detail);
+
             return Ok(result);
         }
 
@@ -143,6 +312,22 @@ namespace Tippy.Controllers.API
             }
             string capacity = transactionWithStatus.Transaction.Outputs[index].Capacity;
             return Hex.HexToUInt64(capacity);
+        }
+
+        // For not cellbase
+        private static Output[] GetPreviousOutputs(Client client, Input[] inputs)
+        {
+            return inputs.Select(input => GetPreviousOutput(client, input)).ToArray();
+        }
+
+        private static Output GetPreviousOutput(Client client, Input input)
+        {
+            TransactionWithStatus? txWithStatus = client.GetTransaction(input.PreviousOutput.TxHash);
+            if (txWithStatus == null)
+            {
+                throw new Exception("");
+            }
+            return txWithStatus.Transaction.Outputs[Hex.HexToUInt32(input.PreviousOutput.Index)];
         }
     }
 }

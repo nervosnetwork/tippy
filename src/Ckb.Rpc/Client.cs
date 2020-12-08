@@ -66,6 +66,12 @@ namespace Ckb.Rpc
             return Call<Types.Block>("get_block_by_number", methodParams);
         }
 
+        public Types.Block? GetBlock(string hash)
+        {
+            string[] methodParams = { hash };
+            return Call<Types.Block>("get_block", methodParams);
+        }
+
         public Types.BlockEconomicState? GetBlockEconomicState(string blockHash)
         {
             string[] methodParams = { blockHash };
@@ -82,6 +88,12 @@ namespace Ckb.Rpc
         {
             string[] methodParams = { hash };
             return Call<Types.TransactionWithStatus>("get_transaction", methodParams);
+        }
+
+        public Types.Header? GetHeaderByNumber(UInt64 number)
+        {
+            string[] methodParams = { Hex.UInt64ToHex(number) };
+            return Call<Types.Header>("get_header_by_number", methodParams);
         }
     }
 
