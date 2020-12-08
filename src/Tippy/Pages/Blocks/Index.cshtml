@@ -22,7 +22,17 @@
                 <tr>
                     <td>@block.Attributes.Number</td>
                     <td>@block.Attributes.TransactionsCount</td>
-                    <td>@block.Attributes.Reward</td>
+                    <td>
+                        @if (string.IsNullOrEmpty(block.Attributes.Reward))
+                        {
+                            <span>0+</span>
+                        }
+                        else
+                        {
+                            var reward = decimal.Parse(block.Attributes.Reward) / 100_000_000;
+                            <span>@reward</span>
+                        }
+                    </td>
                     <td>@block.Attributes.MinerHash</td>
                     <td>@block.Attributes.Date()</td>
                 </tr>
