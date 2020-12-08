@@ -55,14 +55,12 @@ namespace Tippy.Pages.Blocks
 
         private ArrayResult<BlockResult> GetBlocks(Client client, int startBlockNumber, int endBlockNumber, Meta? meta = null)
         {
-            BlockResult[] brs = Enumerable.Range(startBlockNumber, endBlockNumber - startBlockNumber + 1)
+            BlockResult[] blockResults = Enumerable.Range(startBlockNumber, endBlockNumber - startBlockNumber + 1)
                 .Select(num => GetBlock(client, num))
                 .OfType<BlockResult>()
                 .Reverse()
                 .ToArray();
-            ArrayResult<BlockResult> result = new("block_list", brs, meta);
-
-            return result;
+            return new ArrayResult<BlockResult>("block_list", blockResults, meta);
         }
 
         private BlockResult? GetBlock(Client client, int num)
@@ -83,28 +81,23 @@ namespace Tippy.Pages.Blocks
             int transactionsCount = transactions.Length;
             string timestamp = $"{ Hex.HexToUInt64(header.Timestamp) }";
 
-            BlockResult br = new()
-            {
-                Number = number,
-                TransactionsCount = $"{transactionsCount}",
-                Timestamp = timestamp,
-                LiveCellChanges = $"{outputsCount - inputsCount}",
-                Reward = "",
-                MinerHash = ""
-            };
-
             // Reward
-            string blockHash = header.Hash;
-            BlockEconomicState? economicState = client.GetBlockEconomicState(blockHash);
-            if (economicState != null)
+            string CalcluateReward()
             {
+                string blockHash = header.Hash;
+                BlockEconomicState? economicState = client.GetBlockEconomicState(blockHash);
+                if (economicState == null)
+                {
+                    return "";
+                }
+
                 MinerReward reward = economicState.MinerReward;
                 string[] rewards = new string[]
                 {
                     reward.Primary,
                     reward.Secondary
                 };
-                br.Reward = rewards.Select(r => Hex.HexToUInt64(r)).Aggregate((sum, cur) => sum + cur).ToString();
+                return rewards.Select(r => Hex.HexToUInt64(r)).Aggregate((sum, cur) => sum + cur).ToString();
             }
 
             // Miner Address
@@ -112,9 +105,18 @@ namespace Tippy.Pages.Blocks
             string cellbaseWitness = block.Transactions[0].Witnesses[0];
             Script script = CellbaseWitness.Parse(cellbaseWitness);
             string minerAddress = Ckb.Address.Address.GenerateAddress(script, prefix);
-            br.MinerHash = minerAddress;
 
-            return br;
+            BlockResult result = new()
+            {
+                Number = number,
+                TransactionsCount = $"{transactionsCount}",
+                Timestamp = timestamp,
+                LiveCellChanges = $"{outputsCount - inputsCount}",
+                Reward = CalcluateReward(),
+                MinerHash = minerAddress
+            };
+
+            return result;
         }
     }
 }
