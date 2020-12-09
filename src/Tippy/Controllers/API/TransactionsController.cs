@@ -134,64 +134,9 @@ namespace Tippy.Controllers.API
                     detail.Version = Hex.HexToUInt32(header.Version).ToString();
                     detail.BlockTimestamp = Hex.HexToUInt64(header.Timestamp).ToString();
 
-                    if (isCellbase && blockNumber < (UInt64)TxProposalWindow)
-                    {
-                        detail.DisplayInputs = new DisplayInput[]
-                        {
-                            new DisplayInput
-                            {
-                                FromCellbase = true,
-                                Capacity = "",
-                                AddressHash = "",
-                                TargetBlockNumber = "0",
-                                GeneratedTxHash = hash,
-                            }
-                        };
-                        detail.DisplayOutputs = Array.Empty<DisplayOutput>();
-                    }
-                    else if (isCellbase)
-                    {
-                        UInt64 targetBlockNumber = blockNumber + 1 - (UInt64)TxProposalWindow;
-                        detail.DisplayInputs = new DisplayInput[]
-                        {
-                            new DisplayInput
-                            {
-                                FromCellbase = true,
-                                Capacity = "",
-                                AddressHash = "",
-                                TargetBlockNumber = targetBlockNumber.ToString(),
-                                GeneratedTxHash = hash,
-                            }
-                        };
-                        Header? targetBlockHeader = client.GetHeaderByNumber(targetBlockNumber);
-                        if (targetBlockHeader == null)
-                        {
-                            throw new Exception("Target header not found!");
-                        }
-                        BlockEconomicState? targetEconomicState = client.GetBlockEconomicState(targetBlockHeader.Hash);
-                        if (targetEconomicState == null)
-                        {
-                            throw new Exception("Target economic state not found!");
-                        }
-                        detail.DisplayOutputs = tx.Outputs.Select(output =>
-                        {
-                            return new DisplayOutput
-                            {
-                                Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
-                                AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
-                                TargetBlockNumber = targetBlockNumber.ToString(),
-
-                                PrimaryReward = Hex.HexToUInt64(targetEconomicState.MinerReward.Primary).ToString(),
-                                SecondaryReward = Hex.HexToUInt64(targetEconomicState.MinerReward.Secondary).ToString(),
-                                CommitReward = Hex.HexToUInt64(targetEconomicState.MinerReward.Committed).ToString(),
-                                ProposalReward = Hex.HexToUInt64(targetEconomicState.MinerReward.Proposal).ToString(),
-
-                                // TODO: update Status & ConsumedTxHash
-                                Status = "live",
-                                ConsumedTxHash = "",
-                            };
-                        }).ToArray();
-                    }
+                    var (displayInputs, displayOutputs) = GenerateCellbaseDisplayInfos(client, hash, tx.Outputs, blockNumber, prefix);
+                    detail.DisplayInputs = displayInputs;
+                    detail.DisplayOutputs = displayOutputs;
                 }
             }
 
@@ -201,36 +146,11 @@ namespace Tippy.Controllers.API
 
                 UInt64 transactionFee = previousOutputs.Select(p => Hex.HexToUInt64(p.Capacity)).Aggregate((sum, cur) => sum + cur) -
                     tx.Outputs.Select(o => Hex.HexToUInt64(o.Capacity)).Aggregate((sum, cur) => sum + cur);
-
                 detail.TransactionFee = transactionFee.ToString();
-                detail.DisplayInputs = tx.Inputs.Take(10).Select((input, idx) =>
-                {
-                    Output previousOutput = previousOutputs[idx];
-                    return new DisplayInput
-                    {
-                        FromCellbase = false,
-                        Capacity = Hex.HexToUInt64(previousOutput.Capacity).ToString(),
-                        AddressHash = Ckb.Address.Address.GenerateAddress(previousOutput.Lock, prefix),
-                        GeneratedTxHash = input.PreviousOutput.TxHash,
-                        CellIndex = Hex.HexToUInt32(input.PreviousOutput.Index).ToString(),
-                        // TODO: Need support "normal", "nervos_dao_deposit", "nervos_dao_withdrawing", "udt"
-                        CellType = "normal"
-                    };
-                }).ToArray();
 
-                detail.DisplayOutputs = tx.Outputs.Take(10).Select(output =>
-                {
-                    return new DisplayOutput
-                    {
-                        Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
-                        AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
-                        // TODO: upate this.
-                        Status = "live",
-                        ConsumedTxHash = "",
-                        // TODO: same in DisplayInputs
-                        CellType = "normal"
-                    };
-                }).ToArray();
+                var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(tx.Inputs, tx.Outputs, previousOutputs, prefix);
+                detail.DisplayInputs = displayInputs;
+                detail.DisplayOutputs = displayOutputs;
             }
 
             Result<TransactionDetailResult> result = new("ckb_transaction", detail);
@@ -328,6 +248,102 @@ namespace Tippy.Controllers.API
                 throw new Exception("");
             }
             return txWithStatus.Transaction.Outputs[Hex.HexToUInt32(input.PreviousOutput.Index)];
+        }
+
+        public static (DisplayInput[] DisplayInputs, DisplayOutput[] DisplayOutputs) GenerateCellbaseDisplayInfos(Client client, string txHash, Output[] outputs, UInt64 blockNumber, string prefix)
+        {
+            if (blockNumber < (UInt64)TxProposalWindow)
+            {
+                var dInputs = new DisplayInput[]
+                {
+                            new DisplayInput
+                            {
+                                FromCellbase = true,
+                                Capacity = "",
+                                AddressHash = "",
+                                TargetBlockNumber = "0",
+                                GeneratedTxHash = txHash,
+                            }
+                };
+                var dOutputs = Array.Empty<DisplayOutput>();
+                return (dInputs, dOutputs);
+            }
+            UInt64 targetBlockNumber = blockNumber + 1 - (UInt64)TxProposalWindow;
+            var displayInputs = new DisplayInput[]
+            {
+                            new DisplayInput
+                            {
+                                FromCellbase = true,
+                                Capacity = "",
+                                AddressHash = "",
+                                TargetBlockNumber = targetBlockNumber.ToString(),
+                                GeneratedTxHash = txHash,
+                            }
+            };
+            Header? targetBlockHeader = client.GetHeaderByNumber(targetBlockNumber);
+            if (targetBlockHeader == null)
+            {
+                throw new Exception("Target header not found!");
+            }
+            BlockEconomicState? targetEconomicState = client.GetBlockEconomicState(targetBlockHeader.Hash);
+            if (targetEconomicState == null)
+            {
+                throw new Exception("Target economic state not found!");
+            }
+            MinerReward minerReward = targetEconomicState.MinerReward;
+            var displayOutputs = outputs.Select(output =>
+            {
+                return new DisplayOutput
+                {
+                    Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
+                    AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
+                    TargetBlockNumber = targetBlockNumber.ToString(),
+
+                    PrimaryReward = Hex.HexToUInt64(minerReward.Primary).ToString(),
+                    SecondaryReward = Hex.HexToUInt64(minerReward.Secondary).ToString(),
+                    CommitReward = Hex.HexToUInt64(minerReward.Committed).ToString(),
+                    ProposalReward = Hex.HexToUInt64(minerReward.Proposal).ToString(),
+
+                    // TODO: update Status & ConsumedTxHash
+                    Status = "live",
+                    ConsumedTxHash = "",
+                };
+            }).ToArray();
+            return (displayInputs, displayOutputs);
+        }
+
+        public static (DisplayInput[] DisplayInputs, DisplayOutput[] DisplayOutputs) GenerateNotCellbaseDisplayInfos(Input[] inputs, Output[] outputs, Output[] previousOutputs, string prefix)
+        {
+            var displayInputs = inputs.Select((input, idx) =>
+            {
+                Output previousOutput = previousOutputs[idx];
+                return new DisplayInput
+                {
+                    FromCellbase = false,
+                    Capacity = Hex.HexToUInt64(previousOutput.Capacity).ToString(),
+                    AddressHash = Ckb.Address.Address.GenerateAddress(previousOutput.Lock, prefix),
+                    GeneratedTxHash = input.PreviousOutput.TxHash,
+                    CellIndex = Hex.HexToUInt32(input.PreviousOutput.Index).ToString(),
+                    // TODO: Need support "normal", "nervos_dao_deposit", "nervos_dao_withdrawing", "udt"
+                    CellType = "normal"
+                };
+            }).ToArray();
+
+            var displayOutputs = outputs.Select(output =>
+            {
+                return new DisplayOutput
+                {
+                    Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
+                    AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
+                    // TODO: upate this.
+                    Status = "live",
+                    ConsumedTxHash = "",
+                    // TODO: same in DisplayInputs
+                    CellType = "normal"
+                };
+            }).ToArray();
+
+            return (displayInputs, displayOutputs);
         }
     }
 }
