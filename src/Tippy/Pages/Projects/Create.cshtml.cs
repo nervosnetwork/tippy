@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Ckb.Address;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,11 @@ namespace Tippy.Pages.Projects
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            if (Project.LockArg.StartsWith("ckb") || Project.LockArg.StartsWith("ckt"))
+            {
+                Project.LockArg = Address.ParseAddress(Project.LockArg, Project.LockArg.Substring(0, 3)).Args;
             }
 
             var projects = await _context.Projects.ToListAsync();
