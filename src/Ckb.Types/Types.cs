@@ -67,8 +67,10 @@ namespace Ckb.Types
 
     public class TxStatus
     {
+#nullable enable
         [JsonPropertyName("block_hash")]
         public string? BlockHash { get; set; }
+#nullable disable
 
         [JsonPropertyName("status")]
         public string Status { get; set; } = default!;
