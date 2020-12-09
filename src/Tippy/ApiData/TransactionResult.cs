@@ -27,6 +27,30 @@ namespace Tippy.ApiData
         }
     }
 
+    public class BlockTransactionResult
+    {
+        [JsonPropertyName("is_cellbase")]
+        public bool IsCellbase { get; set; } = default!;
+
+        [JsonPropertyName("transaction_hash")]
+        public string TransactionHash { get; set; } = default!;
+
+        [JsonPropertyName("block_number")]
+        public string BlockNumber { get; set; } = default!;
+
+        [JsonPropertyName("block_timestamp")]
+        public string BlockTimestamp { get; set; } = default!;
+
+        [JsonPropertyName("display_inputs")]
+        public DisplayInput[] DisplayInputs { get; set; } = default!;
+
+        [JsonPropertyName("display_outputs")]
+        public DisplayOutput[] DisplayOutputs { get; set; } = default!;
+
+        [JsonPropertyName("income")]
+        public string? Income { get; set; } = null;
+    }
+
 
     public class TransactionDetailResult
     {
