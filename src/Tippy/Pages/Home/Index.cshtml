@@ -16,216 +16,276 @@
 
 @if (Model.Projects.Count == 0)
 {
-    <div class="notification is-warning">
-        <p class="ml-3">
-            <span class="icon has-text-danger">
-                <i class="fas fa-mug-hot fa-3x"></i>
-            </span>
-        </p>
-        <p>
-            Create your first project and launch a CKB devnet quickly.
-        </p>
+    <div class="columns is-multiline">
+        <div class="column">
+            <div class="box notification is-info">
+                <div class="heading">Quick launch</div>
+                <div class="subtitle">
+                    <span class="icon has-text-danger">
+                        <i class="fas fa-mug-hot"></i>
+                    </span>
+                    Launch a CKB devnet quickly.
+                </div>
+                <div>
+                    <form asp-page="./QuickStart" method="post">
+                        <button class="button is-primary is-large">
+                            <span class="icon">
+                                <i class="fas fa-magic"></i>
+                            </span>
+                            <span>Launch devnet instantly.</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box notification is-warning">
+                <div class="heading">Custom setup</div>
+                <div class="subtitle">
+                    <span class="icon has-text-danger">
+                        <i class="fas fa-sliders-h"></i>
+                    </span>
+                    Customize a chain to run.
+                </div>
+                <div>
+                    <a class="button is-primary is-large" asp-page="/Projects/Create">
+                        <span class="icon">
+                            <i class="fas fa-magic"></i>
+                        </span>
+                        <span>Create and customize a project.</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <form asp-page="./QuickStart" method="post">
-        <button class="button is-primary">
-            <span class="icon">
-                <i class="fas fa-magic"></i>
-            </span>
-            <span>Launch devnet</span>
-        </button>
-    </form>
 }
 
 @if (Model.ActiveProject != null)
 {
-    <nav class="level">
-        <div class="level-left">
-            <div class="level-item">
-                <h2 class="subtitle">
-                    <strong>@Model.ActiveProject.Name</strong>
-                    (@Model.ActiveProject.Chain.ToString().ToLower())
-                </h2>
+    <div class="columns is-multiline">
+        <div class="column">
+            <div class="box notification is-primary">
+                <div class="heading">Info</div>
+                <div class="title">@Model.ActiveProject.Name</div>
+                <div class="level">
+                    <div class="level-item">
+                        <div class="">
+                            <div class="heading">Chain type</div>
+                            <div class="title is-5">@Model.ActiveProject.Chain.ToString().ToLower()</div>
+                        </div>
+                    </div>
+                    <div class="level-item">
+                        <div class="">
+                            <div class="heading">RPC</div>
+                            <div class="title is-5">http://localhost:@Model.ActiveProject.NodeRpcPort</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
+        @if (Model.IsNodeRunning)
+        {
+            <div class="column">
+                <div class="box notification is-warning">
+                    <div class="heading">Actions</div>
+                    <div class="title">Running</div>
+                    <div class="level">
+                        <div class="">
+                            <div class="heading"></div>
+                            <div class="title is-5">
+                                <form method="post">
+                                    <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-danger is-small my-1">
+                                        <span class="icon">
+                                            <i class="fas fa-pause"></i>
+                                        </span>
+                                        <span>Stop</span>
+                                    </button>
+                                    <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.Id" class="button is-info is-small my-1">
+                                        <span class="icon">
+                                            <i class="fas fa-redo"></i>
+                                        </span>
+                                        <span>Restart</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box notification is-info">
+                    <div class="heading">Blocks</div>
+                    <div class="title">TODO</div>
+                    <div class="level">
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">TODO</div>
+                                <div class="title is-5">TODO</div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">TODO</div>
+                                <div class="title is-5">TODO</div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">TODO</div>
+                                <div class="title is-5">TODO</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box notification is-danger">
+                    <div class="heading">Transactions</div>
+                    <div class="title">TODO</div>
+                    <div class="level">
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">TODO</div>
+                                <div class="title is-5">TODO</div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">TODO</div>
+                                <div class="title is-5">TODO</div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">TODO</div>
+                                <div class="title is-5">TODO</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="column">
+                <div class="box notification is-warning">
+                    <div class="heading">Actions</div>
+                    <div class="title">Stopped</div>
+                    <div class="level">
+                        <div class="">
+                            <div class="heading"></div>
+                            <div class="title is-5">
+                                <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.Id" method="post">
+                                    <button class="button is-success is-small my-1">
+                                        <span class="icon">
+                                            <i class="fas fa-play"></i>
+                                        </span>
+                                        <span>Start</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box notification is-info">
+                    <div class="heading">Blocks</div>
+                    <div class="title">NA</div>
+                    <div class="level">
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">&nbsp;</div>
+                                <div class="title is-5">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">&nbsp;</div>
+                                <div class="title is-5">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">&nbsp;</div>
+                                <div class="title is-5">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box notification is-danger">
+                    <div class="heading">Transactions</div>
+                    <div class="title">NA</div>
+                    <div class="level">
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">&nbsp;</div>
+                                <div class="title is-5">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">&nbsp;</div>
+                                <div class="title is-5">&nbsp;</div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div class="">
+                                <div class="heading">&nbsp;</div>
+                                <div class="title is-5">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 
     @if (Model.IsNodeRunning)
     {
-        <form method="post">
-            <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-danger is-small">
-                <span class="icon">
-                    <i class="fas fa-pause"></i>
-                </span>
-                <span>Stop</span>
-            </button>
-            <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.Id" class="button is-warning is-small">
-                <span class="icon">
-                    <i class="fas fa-redo"></i>
-                </span>
-                <span>Restart</span>
-            </button>
-        </form>
-    }
-    else
-    {
-        <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.Id" method="post">
-            <button class="button is-success is-small">
-                <span class="icon">
-                    <i class="fas fa-play"></i>
-                </span>
-                <span>Start</span>
-            </button>
-        </form>
+        <div class="columns is-multiline">
+            <div class="column is-6">
+                <article class="message is-dark">
+                    <div class="message-header">
+                        <p>Chart</p>
+                    </div>
+                    <div class="message-body">
+                        <div id="chartLine" style="width: 100%"></div>
+                    </div>
+                </article>
+            </div>
+            <div class="column is-6">
+                <article class="message is-dark">
+                    <div class="message-header">
+                        <p>Chart</p>
+                    </div>
+                    <div class="message-body">
+                        <div id="chartScatter" style="width: 100%"></div>
+                    </div>
+                </article>
+            </div>
+            <div class="column is-6">
+                <article class="message is-dark">
+                    <div class="message-header">
+                        <p>Chart</p>
+                    </div>
+                    <div class="message-body">
+                        <div id="chartDoughnut" style="width: 100%"></div>
+                    </div>
+                </article>
+            </div>
+            <div class="column is-6">
+                <article class="message is-dark">
+                    <div class="message-header">
+                        <p>Chart</p>
+                    </div>
+                    <div class="message-body">
+                        <div id="chartBar" style="width: 100%"></div>
+                    </div>
+                </article>
+            </div>
+        </div>
     }
 }
-
-<div class="columns is-multiline">
-    <div class="column">
-        <div class="box notification is-primary">
-            <div class="heading">Top Seller Total</div>
-            <div class="title">56,950</div>
-            <div class="level">
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Sales $</div>
-                        <div class="title is-5">250K</div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Overall $</div>
-                        <div class="title is-5">750K</div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Sales %</div>
-                        <div class="title is-5">25%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div class="box notification is-warning">
-            <div class="heading">Revenue / Expenses</div>
-            <div class="title">55% / 45%</div>
-            <div class="level">
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Rev Prod $</div>
-                        <div class="title is-5">30%</div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Rev Serv $</div>
-                        <div class="title is-5">25%</div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Exp %</div>
-                        <div class="title is-5">45%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div class="box notification is-info">
-            <div class="heading">Feedback Activity</div>
-            <div class="title">78% &uarr;</div>
-            <div class="level">
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Pos</div>
-                        <div class="title is-5">1560</div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Neg</div>
-                        <div class="title is-5">368</div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Pos/Neg %</div>
-                        <div class="title is-5">77% / 23%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column">
-        <div class="box notification is-danger">
-            <div class="heading">Orders / Returns</div>
-            <div class="title">75% / 25%</div>
-            <div class="level">
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Orders $</div>
-                        <div class="title is-5">425K</div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Returns $</div>
-                        <div class="title is-5">106K</div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div class="">
-                        <div class="heading">Success %</div>
-                        <div class="title is-5">+ 28,5%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="columns is-multiline">
-    <div class="column is-6">
-        <article class="message is-dark">
-            <div class="message-header">
-                <p>Chart</p>
-            </div>
-            <div class="message-body">
-                <div id="chartLine" style="width: 100%"></div>
-            </div>
-        </article>
-    </div>
-    <div class="column is-6">
-        <article class="message is-dark">
-            <div class="message-header">
-                <p>Chart</p>
-            </div>
-            <div class="message-body">
-                <div id="chartScatter" style="width: 100%"></div>
-            </div>
-        </article>
-    </div>
-    <div class="column is-6">
-        <article class="message is-dark">
-            <div class="message-header">
-                <p>Chart</p>
-            </div>
-            <div class="message-body">
-                <div id="chartDoughnut" style="width: 100%"></div>
-            </div>
-        </article>
-    </div>
-    <div class="column is-6">
-        <article class="message is-dark">
-            <div class="message-header">
-                <p>Chart</p>
-            </div>
-            <div class="message-body">
-                <div id="chartBar" style="width: 100%"></div>
-            </div>
-        </article>
-    </div>
-</div>
-
