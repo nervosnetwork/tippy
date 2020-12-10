@@ -7,6 +7,9 @@ namespace Tippy.Util
 {
     public class Hex
     {
+        public static Int32 HexToInt32(string hex) =>
+            Int32.Parse(hex.Remove(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+
         public static UInt32 HexToUInt32(string hex) =>
             UInt32.Parse(hex.Remove(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 
@@ -23,6 +26,8 @@ namespace Tippy.Util
         }
 
         public static string UInt64ToHex(UInt64 num) => $"0x{num:x}";
+
+        public static string Int32ToHex(int num) => $"0x{num:x}";
 
         public static byte[] HexStringToBytes(string hex)
         {

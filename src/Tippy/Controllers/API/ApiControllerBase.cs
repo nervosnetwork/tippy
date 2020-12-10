@@ -20,9 +20,25 @@ namespace Tippy.Controllers.API
             return null;
         }
 
+        protected IndexerClient? NewIndexerClient()
+        {
+            Project? activeProject = CurrentRunningProject();
+            if (activeProject != null)
+            {
+                return new IndexerClient($"http://localhost:{activeProject.IndexerRpcPort}");
+            }
+
+            return null;
+        }
+
         protected bool IsMainnet()
         {
             return CurrentRunningProject()?.Chain == Project.ChainType.Mainnet;
+        }
+
+        protected string AddressPrefix()
+        {
+            return IsMainnet() ? "ckb" : "ckt";
         }
 
         private Project? CurrentRunningProject()
