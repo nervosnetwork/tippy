@@ -4,7 +4,6 @@ using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
-using Tippy.Filters;
 using Tippy.Util;
 using System.Linq;
 
@@ -12,7 +11,6 @@ namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class TransactionsController : ApplicationController
     {
         private const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";

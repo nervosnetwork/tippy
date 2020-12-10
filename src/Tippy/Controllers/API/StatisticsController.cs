@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Tippy.MockApiData;
 using Tippy.ApiData;
-using Tippy.Filters;
 
 using Attributes = System.Collections.Generic.Dictionary<string, object>;
 
@@ -9,7 +8,6 @@ namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class StatisticsController : ApplicationController
     {
         [HttpGet]

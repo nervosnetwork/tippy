@@ -2,9 +2,11 @@ using Ckb.Rpc;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
+using Tippy.Filters;
 
 namespace Tippy.Controllers.API
 {
+    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class ApplicationController : ControllerBase
     {
         protected Client? Rpc()

@@ -4,14 +4,12 @@ using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
-using Tippy.Filters;
 using Tippy.Util;
 
 namespace Tippy.Controllers.API
 {
     [Route("api/v1/block_transactions")]
     [ApiController]
-    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class BlockTransactionsController : ApplicationController
     {
         [HttpGet("{blockHash}")]

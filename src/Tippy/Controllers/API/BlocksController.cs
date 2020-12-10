@@ -5,14 +5,12 @@ using System.Collections.Generic;
 using Ckb.Rpc;
 using Ckb.Types;
 using Tippy.ApiData;
-using Tippy.Filters;
 using Tippy.Util;
 
 namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class BlocksController : ApplicationController
     {
         [HttpGet]
