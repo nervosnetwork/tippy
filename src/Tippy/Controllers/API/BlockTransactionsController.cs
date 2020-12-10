@@ -10,7 +10,7 @@ namespace Tippy.Controllers.API
 {
     [Route("api/v1/block_transactions")]
     [ApiController]
-    public class BlockTransactionsController : ApplicationController
+    public class BlockTransactionsController : ApiControllerBase
     {
         [HttpGet("{blockHash}")]
         public ActionResult Index(string blockHash, [FromQuery(Name = "page")] int? page, [FromQuery(Name = "page_size")] int? pageSize)

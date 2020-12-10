@@ -7,7 +7,7 @@ using Tippy.Filters;
 namespace Tippy.Controllers.API
 {
     [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class ApplicationController : ControllerBase
+    public class ApiControllerBase : ControllerBase
     {
         protected Client? Rpc()
         {

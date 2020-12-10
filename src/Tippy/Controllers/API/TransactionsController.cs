@@ -11,7 +11,7 @@ namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class TransactionsController : ApplicationController
+    public class TransactionsController : ApiControllerBase
     {
         private const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
         private const int TxProposalWindow = 12;

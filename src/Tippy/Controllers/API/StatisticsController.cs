@@ -8,7 +8,7 @@ namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class StatisticsController : ApplicationController
+    public class StatisticsController : ApiControllerBase
     {
         [HttpGet]
         public ActionResult Index()

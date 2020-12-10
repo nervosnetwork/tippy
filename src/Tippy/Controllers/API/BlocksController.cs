@@ -11,7 +11,7 @@ namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class BlocksController : ApplicationController
+    public class BlocksController : ApiControllerBase
     {
         [HttpGet]
         public ActionResult Index([FromQuery(Name = "page")] int? page, [FromQuery(Name = "page_size")] int? pageSize)
