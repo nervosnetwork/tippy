@@ -7,19 +7,20 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Tippy.Util;
+using IndexerTypes = Ckb.Types.IndexrTypes;
 
 namespace Ckb.Rpc
 {
-    public class Client
+    public class BaseClient
     {
-        public Client(string url)
+        public BaseClient(string url)
         {
             Url = new Uri(url);
         }
 
         readonly Uri Url;
 
-        T? Call<T>(string method, params object[]? methodParams)
+        public T? Call<T>(string method, params object[]? methodParams)
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(Url);
             webRequest.ContentType = "application/json";
@@ -47,6 +48,11 @@ namespace Ckb.Rpc
             }
             return default;
         }
+    }
+
+    public class Client : BaseClient
+    {
+        public Client(string url) : base(url) { }
 
         public UInt64 GetTipBlockNumber()
         {
@@ -94,6 +100,37 @@ namespace Ckb.Rpc
         {
             string[] methodParams = { Hex.UInt64ToHex(number) };
             return Call<Types.Header>("get_header_by_number", methodParams);
+        }
+    }
+
+    public class IndexerClient : BaseClient
+    {
+        public IndexerClient(string url) : base(url) { }
+
+        public IndexerTypes.CellCapacity? GetCellsCapacity(IndexerTypes.SearchKey searchKey)
+        {
+            object[] methodParams = { searchKey };
+            return Call<IndexerTypes.CellCapacity>("get_cells_capacity", methodParams);
+        }
+
+        public IndexerTypes.Result<IndexerTypes.Cell>? GetCells(IndexerTypes.SearchKey searchKey, string order = "asc", int limit = 100, string? afterCursor = null)
+        {
+            List<object> methodParams = new() { searchKey, order, Hex.Int32ToHex(limit) };
+            if (afterCursor != null)
+            {
+                methodParams.Add(afterCursor);
+            }
+            return Call<IndexerTypes.Result<IndexerTypes.Cell>>("get_cells", methodParams.ToArray());
+        }
+
+        public IndexerTypes.Result<IndexerTypes.Transaction>? GetTransactions(IndexerTypes.SearchKey searchKey, string order = "asc", int limit = 100, string? afterCursor = null)
+        {
+            List<object> methodParams = new() { searchKey, order, Hex.Int32ToHex(limit) };
+            if (afterCursor != null)
+            {
+                methodParams.Add(afterCursor);
+            }
+            return Call<IndexerTypes.Result<IndexerTypes.Transaction>>("get_transactions", methodParams.ToArray());
         }
     }
 
