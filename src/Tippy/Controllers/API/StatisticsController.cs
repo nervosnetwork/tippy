@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Ckb.Rpc;
 using Tippy.MockApiData;
 using Tippy.ApiData;
-using Tippy.Core.Models;
-using Tippy.Ctrl;
 using Tippy.Filters;
 
 using Attributes = System.Collections.Generic.Dictionary<string, object>;
@@ -13,17 +10,8 @@ namespace Tippy.Controllers.API
     [Route("api/v1/[controller]")]
     [ApiController]
     [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class StatisticsController : ControllerBase
+    public class StatisticsController : ApplicationController
     {
-        private Client? Rpc()
-        {
-            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
-            {
-                return new Client($"http://localhost:{activeProject.NodeRpcPort}");
-            }
-            return null;
-        }
-
         [HttpGet]
         public ActionResult Index()
         {
