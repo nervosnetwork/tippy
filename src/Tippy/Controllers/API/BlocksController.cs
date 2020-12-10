@@ -4,45 +4,15 @@ using System.Linq;
 using System.Collections.Generic;
 using Ckb.Rpc;
 using Ckb.Types;
-using Tippy.Core.Models;
-using Tippy.Ctrl;
 using Tippy.ApiData;
-using Tippy.Filters;
 using Tippy.Util;
 
 namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class BlocksController : ControllerBase
+    public class BlocksController : ApiControllerBase
     {
-        private Client? Rpc()
-        {
-            Project? activeProject = CurrentRunningProject();
-            if (activeProject != null)
-            {
-                return new Client($"http://localhost:{activeProject.NodeRpcPort}");
-            }
-
-            return null;
-        }
-
-        private bool IsMainnet()
-        {
-            return CurrentRunningProject()?.Chain == Project.ChainType.Mainnet;
-        }
-
-        private Project? CurrentRunningProject()
-        {
-            Project? activeProject = HttpContext.Items["ActiveProject"] as Project;
-            if (activeProject != null && ProcessManager.IsRunning(activeProject))
-            {
-                return activeProject;
-            }
-            return null;
-        }
-
         [HttpGet]
         public ActionResult Index([FromQuery(Name = "page")] int? page, [FromQuery(Name = "page_size")] int? pageSize)
         {

@@ -4,9 +4,6 @@ using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
-using Tippy.Core.Models;
-using Tippy.Ctrl;
-using Tippy.Filters;
 using Tippy.Util;
 using System.Linq;
 
@@ -14,37 +11,10 @@ namespace Tippy.Controllers.API
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class TransactionsController : ControllerBase
+    public class TransactionsController : ApiControllerBase
     {
         private const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
         private const int TxProposalWindow = 12;
-
-        private Client? Rpc()
-        {
-            Project? activeProject = CurrentRunningProject();
-            if (activeProject != null)
-            {
-                return new Client($"http://localhost:{activeProject.NodeRpcPort}");
-            }
-
-            return null;
-        }
-
-        private bool IsMainnet()
-        {
-            return CurrentRunningProject()?.Chain == Project.ChainType.Mainnet;
-        }
-
-        private Project? CurrentRunningProject()
-        {
-            Project? activeProject = HttpContext.Items["ActiveProject"] as Project;
-            if (activeProject != null && ProcessManager.IsRunning(activeProject))
-            {
-                return activeProject;
-            }
-            return null;
-        }
 
         [HttpGet]
         public ActionResult Index([FromQuery(Name = "page")] int? page, [FromQuery(Name = "page_size")] int? pageSize)
