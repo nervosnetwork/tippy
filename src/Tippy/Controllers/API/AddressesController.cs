@@ -16,12 +16,6 @@ namespace Tippy.Controllers.API
         [HttpGet("{address}")]
         public ActionResult Index(string address)
         {
-            var client = Rpc();
-            if (client == null)
-            {
-                return NoContent();
-            }
-
             IndexerClient? indexerClient = NewIndexerClient();
             if (indexerClient == null)
             {
