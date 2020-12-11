@@ -29,7 +29,7 @@ namespace Tippy.Controllers.API
 
             if (page == null || pageSize == null)
             {
-                ArrayResult<BlockTransactionResult> txResults = GetTransactions(client, block, 0, 10);
+                ArrayResult<TransactionListResult> txResults = GetTransactions(client, block, 0, 10);
                 return Ok(txResults);
             }
 
@@ -44,21 +44,21 @@ namespace Tippy.Controllers.API
             meta.Total = (UInt64)block.Transactions.Length;
             meta.PageSize = (int)pageSize;
 
-            ArrayResult<BlockTransactionResult> result = GetTransactions(client, block, skipCount, (int)pageSize);
+            ArrayResult<TransactionListResult> result = GetTransactions(client, block, skipCount, (int)pageSize);
 
             return Ok(result);
         }
 
-        private ArrayResult<BlockTransactionResult> GetTransactions(Client client, Block block, int skipCount, int size, Meta? meta = null)
+        private ArrayResult<TransactionListResult> GetTransactions(Client client, Block block, int skipCount, int size, Meta? meta = null)
         {
             string prefix = IsMainnet() ? "ckb" : "ckt";
-            BlockTransactionResult[] result = block.Transactions.Skip(skipCount).Take(size).Select((tx, i) =>
+            TransactionListResult[] result = block.Transactions.Skip(skipCount).Take(size).Select((tx, i) =>
             {
                 string txHash = tx.Hash ?? "0x";
                 bool isCellbase = i == 0 && skipCount == 0;
                 UInt64 blockNumber = Hex.HexToUInt64(block.Header.Number);
 
-                BlockTransactionResult txResult = new()
+                TransactionListResult txResult = new()
                 {
                     IsCellbase = isCellbase,
                     TransactionHash = txHash,
@@ -84,7 +84,7 @@ namespace Tippy.Controllers.API
                 return txResult;
             }).ToArray();
 
-            return new ArrayResult<BlockTransactionResult>("ckb_transactions", result, meta);
+            return new ArrayResult<TransactionListResult>("ckb_transactions", result, meta);
         }
 
         private static Output[] GetPreviousOutputs(Client client, Input[] inputs)

@@ -27,7 +27,7 @@ namespace Tippy.ApiData
         }
     }
 
-    public class BlockTransactionResult
+    public class TransactionListResult
     {
         [JsonPropertyName("is_cellbase")]
         public bool IsCellbase { get; set; } = default!;
@@ -52,11 +52,8 @@ namespace Tippy.ApiData
     }
 
 
-    public class TransactionDetailResult
+    public class TransactionDetailResult : TransactionListResult
     {
-        [JsonPropertyName("is_cellbase")]
-        public bool IsCellbase { get; set; } = default!;
-
         [JsonPropertyName("witnesses")]
         public string[] Witnesses { get; set; } = default!;
 
@@ -69,29 +66,11 @@ namespace Tippy.ApiData
         [JsonPropertyName("tx_status")]
         public string TxStatus { get; set; } = default!;
 
-        [JsonPropertyName("transaction_hash")]
-        public string TransactionHash { get; set; } = default!;
-
         [JsonPropertyName("transaction_fee")]
         public string TransactionFee { get; set; } = default!;
 
-        [JsonPropertyName("block_number")]
-        public string BlockNumber { get; set; } = default!;
-
         [JsonPropertyName("version")]
         public string Version { get; set; } = default!;
-
-        [JsonPropertyName("block_timestamp")]
-        public string BlockTimestamp { get; set; } = default!;
-
-        [JsonPropertyName("display_inputs")]
-        public DisplayInput[] DisplayInputs { get; set; } = default!;
-
-        [JsonPropertyName("display_outputs")]
-        public DisplayOutput[] DisplayOutputs { get; set; } = default!;
-
-        [JsonPropertyName("income")]
-        public string? Income { get; set; } = null;
     }
 
     public class CellDep

@@ -47,18 +47,18 @@ namespace Tippy.Controllers.API
                 PageSize = pageSize,
             };
 
-            ArrayResult<BlockTransactionResult> result = GetTransactions(client, txHashes, lockScript, meta);
+            ArrayResult<TransactionListResult> result = GetTransactions(client, txHashes, lockScript, meta);
 
             return Ok(result);
         }
 
-        private ArrayResult<BlockTransactionResult> GetTransactions(Client client, string[] txHashes, Script lockScript, Meta meta)
+        private ArrayResult<TransactionListResult> GetTransactions(Client client, string[] txHashes, Script lockScript, Meta meta)
         {
             string prefix = AddressPrefix();
 
             UInt64 SumOfOutputCapacities(Output[] outputs) => outputs.Where(o => o.Lock == lockScript).Select(o => Hex.HexToUInt64(o.Capacity)).Aggregate((UInt64)0, (sum, cur) => sum + cur);
 
-            List<BlockTransactionResult> results = new();
+            List<TransactionListResult> results = new();
             foreach (string txHash in txHashes)
             {
                 TransactionWithStatus? txWithStatus = client.GetTransaction(txHash);
@@ -69,7 +69,7 @@ namespace Tippy.Controllers.API
                 Transaction tx = txWithStatus.Transaction;
 
                 bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == TransactionsController.EmptyHash;
-                BlockTransactionResult txResult = new()
+                TransactionListResult txResult = new()
                 {
                     IsCellbase = isCellbase,
                     TransactionHash = txHash,
@@ -116,7 +116,7 @@ namespace Tippy.Controllers.API
 
                 results.Add(txResult);
             }
-            return new ArrayResult<BlockTransactionResult>("ckb_transactions", results.ToArray(), meta);
+            return new ArrayResult<TransactionListResult>("ckb_transactions", results.ToArray(), meta);
         }
 
         private static Output[] GetPreviousOutputs(Client client, Input[] inputs)
