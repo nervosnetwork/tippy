@@ -44,6 +44,8 @@ namespace Ckb.Rpc
             return Call<Types.EpochView>("get_epoch_by_number", methodParams);
         }
 
+        public Types.EpochView? GetCurrentEpoch() => Call<Types.EpochView>("get_current_epoch");
+
         public Types.TransactionWithStatus? GetTransaction(string hash)
         {
             string[] methodParams = { hash };

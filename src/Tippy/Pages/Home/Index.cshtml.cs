@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ckb.Address;
 using Ckb.Rpc;
+using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace Tippy.Pages.Home
         public Project? ActiveProject { get; set; }
         public UInt64 TipBlockNumber { get; set; }
         public string MinerAddress { get; set; } = "";
+        public EpochView? EpochView { get; set; }
 
         [TempData]
         public string Message { get; set; } = "";
@@ -42,9 +44,10 @@ namespace Tippy.Pages.Home
             if (IsNodeRunning)
             {
                 Client rpc = new ($"http://localhost:{ActiveProject!.NodeRpcPort}");
+                EpochView = rpc.GetCurrentEpoch();
                 TipBlockNumber = rpc.GetTipBlockNumber();
                 MinerAddress = Address.GenerateAddress(
-                    new Ckb.Types.Script
+                    new Script
                     {
                         Args = ActiveProject.LockArg,
                         CodeHash = Address.SecpCodeHash,

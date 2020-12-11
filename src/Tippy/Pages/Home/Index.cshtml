@@ -1,4 +1,5 @@
 ﻿@page
+@using Tippy.Util 
 @model Tippy.Pages.Home.IndexModel
 @{
     ViewData["Title"] = "Dashboard";
@@ -141,25 +142,26 @@
             </div>
             <div class="column">
                 <div class="box notification is-danger">
-                    <div class="heading">Transactions</div>
-                    <div class="title">TODO</div>
+                    <div class="heading">Epoch</div>
+                    <div class="title">@Hex.HexToUInt64(Model.EpochView!.Number)</div>
                     <div class="level">
                         <div class="level-item">
                             <div class="">
-                                <div class="heading">TODO</div>
-                                <div class="title is-5">TODO</div>
+                                <div class="heading">Current</div>
+                                @{ var current = Model.TipBlockNumber - Hex.HexToUInt64(Model.EpochView!.StartNumber) + 1; }
+                                <div class="title is-5">@current</div>
                             </div>
                         </div>
                         <div class="level-item">
                             <div class="">
-                                <div class="heading">TODO</div>
-                                <div class="title is-5">TODO</div>
+                                <div class="heading">Length</div>
+                                <div class="title is-5">@Hex.HexToUInt64(Model.EpochView!.Length)</div>
                             </div>
                         </div>
                         <div class="level-item">
                             <div class="">
-                                <div class="heading">TODO</div>
-                                <div class="title is-5">TODO</div>
+                                <div class="heading">Compact Target</div>
+                                <div class="title is-5">@Hex.HexToUInt32(Model.EpochView!.CompactTarget)</div>
                             </div>
                         </div>
                     </div>
@@ -217,7 +219,7 @@
             </div>
             <div class="column">
                 <div class="box notification is-danger">
-                    <div class="heading">Transactions</div>
+                    <div class="heading">Epoch</div>
                     <div class="title">NA</div>
                     <div class="level">
                         <div class="level-item">
