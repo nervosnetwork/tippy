@@ -13,7 +13,7 @@ namespace Tippy.Controllers.API
     [ApiController]
     public class TransactionsController : ApiControllerBase
     {
-        private const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
+        public const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
         private const int TxProposalWindow = 12;
 
         [HttpGet]
