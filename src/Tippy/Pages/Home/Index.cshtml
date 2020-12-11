@@ -114,27 +114,28 @@
             </div>
             <div class="column">
                 <div class="box notification is-info">
-                    <div class="heading">Blocks</div>
-                    <div class="title">TODO</div>
+                    <div class="heading">Current Block</div>
+                    <div class="title">@Model.TipBlockNumber</div>
                     <div class="level">
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">TODO</div>
-                                <div class="title is-5">TODO</div>
+                        @if (Model.ActiveProject.Chain == Tippy.Core.Models.Project.ChainType.Dev)
+                        {
+                            <div class="level-item">
+                                <div class="">
+                                    <div class="heading">Miner</div>
+                                    <div class="title is-5"><span style="font-size: 60%;">@Model.MinerAddress</span></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">TODO</div>
-                                <div class="title is-5">TODO</div>
+                        }
+                        else
+                        {
+                            <div class="level-item">
+                                <div class="">
+                                    <div class="heading">Miner</div>
+                                    <div class="title is-5">Mining is disabled for @Model.ActiveProject.Chain.ToString().ToLower()</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">TODO</div>
-                                <div class="title is-5">TODO</div>
-                            </div>
-                        </div>
+
+                        }
                     </div>
                 </div>
             </div>
@@ -190,7 +191,7 @@
             </div>
             <div class="column">
                 <div class="box notification is-info">
-                    <div class="heading">Blocks</div>
+                    <div class="heading">Current Block</div>
                     <div class="title">NA</div>
                     <div class="level">
                         <div class="level-item">

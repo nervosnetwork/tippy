@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ckb.Address;
+using Ckb.Rpc;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,8 @@ namespace Tippy.Pages.Home
 
         public IList<Project> Projects { get; set; } = new List<Project>();
         public Project? ActiveProject { get; set; }
+        public UInt64 TipBlockNumber { get; set; }
+        public string MinerAddress { get; set; } = "";
 
         [TempData]
         public string Message { get; set; } = "";
@@ -34,6 +38,20 @@ namespace Tippy.Pages.Home
             Projects = await _context.Projects.ToListAsync();
             ActiveProject = HttpContext.Items["ActiveProject"] as Project;
             IsNodeRunning = ActiveProject != null && ProcessManager.IsRunning(ActiveProject);
+
+            if (IsNodeRunning)
+            {
+                Client rpc = new ($"http://localhost:{ActiveProject!.NodeRpcPort}");
+                TipBlockNumber = rpc.GetTipBlockNumber();
+                MinerAddress = Address.GenerateAddress(
+                    new Ckb.Types.Script
+                    {
+                        Args = ActiveProject.LockArg,
+                        CodeHash = Address.SecpCodeHash,
+                        HashType = Address.SecpHashType 
+                    },
+                    "ckt");
+            }
         }
     }
 }
