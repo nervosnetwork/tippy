@@ -131,6 +131,31 @@ namespace Ckb.Types
         public string CodeHash { get; set; }
         [JsonPropertyName("hash_type")]
         public string HashType { get; set; }
+
+        public static bool operator ==(Script left, Script right)
+        {
+            return left.CodeHash == right.CodeHash && left.HashType == right.HashType && left.Args == right.Args;
+        }
+
+        public static bool operator !=(Script left, Script right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            Script script = obj as Script;
+            if (script == null)
+            {
+                return false;
+            }
+            return CodeHash == script.CodeHash && HashType == script.HashType && Args == script.Args;
+        }
+
+        public override int GetHashCode()
+        {
+            return CodeHash.GetHashCode() + HashType.GetHashCode() + Args.GetHashCode();
+        }
     }
 
     public class Uncle

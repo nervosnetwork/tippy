@@ -84,7 +84,7 @@ namespace Tippy.Controllers.API
                 return txResult;
             }).ToArray();
 
-            return new ArrayResult<BlockTransactionResult>("ckb_transactions", result);
+            return new ArrayResult<BlockTransactionResult>("ckb_transactions", result, meta);
         }
 
         private static Output[] GetPreviousOutputs(Client client, Input[] inputs)

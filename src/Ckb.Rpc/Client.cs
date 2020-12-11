@@ -55,5 +55,11 @@ namespace Ckb.Rpc
             string[] methodParams = { Hex.UInt64ToHex(number) };
             return Call<Types.Header>("get_header_by_number", methodParams);
         }
+
+        public Types.Header? GetHeader(string blockHash)
+        {
+            string[] methodParams = { blockHash };
+            return Call<Types.Header>("get_header", methodParams);
+        }
     }
 }
