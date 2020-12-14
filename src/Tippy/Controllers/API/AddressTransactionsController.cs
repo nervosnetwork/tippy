@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ckb.Address;
 using Ckb.Rpc;
 using Ckb.Types;
@@ -106,7 +105,8 @@ namespace Tippy.Controllers.API
                         tx.Inputs.Take(10).ToArray(),
                         tx.Outputs.Take(10).ToArray(),
                         previousOutputs.Take(10).ToArray(),
-                        prefix);
+                        prefix,
+                        txHash);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
 

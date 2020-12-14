@@ -118,7 +118,7 @@ namespace Tippy.Controllers.API
                     tx.Outputs.Select(o => Hex.HexToUInt64(o.Capacity)).Aggregate((sum, cur) => sum + cur);
                 detail.TransactionFee = transactionFee.ToString();
 
-                var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(tx.Inputs, tx.Outputs, previousOutputs, prefix);
+                var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(tx.Inputs, tx.Outputs, previousOutputs, prefix, hash);
                 detail.DisplayInputs = displayInputs;
                 detail.DisplayOutputs = displayOutputs;
             }
@@ -261,10 +261,11 @@ namespace Tippy.Controllers.API
                 throw new Exception("Target economic state not found!");
             }
             MinerReward minerReward = targetEconomicState.MinerReward;
-            var displayOutputs = outputs.Select(output =>
+            var displayOutputs = outputs.Select((output, i) =>
             {
                 return new DisplayOutput
                 {
+                    Id = $"{txHash}:{i}",
                     Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
                     AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
                     TargetBlockNumber = targetBlockNumber.ToString(),
@@ -282,13 +283,14 @@ namespace Tippy.Controllers.API
             return (displayInputs, displayOutputs);
         }
 
-        public static (DisplayInput[] DisplayInputs, DisplayOutput[] DisplayOutputs) GenerateNotCellbaseDisplayInfos(Input[] inputs, Output[] outputs, Output[] previousOutputs, string prefix)
+        public static (DisplayInput[] DisplayInputs, DisplayOutput[] DisplayOutputs) GenerateNotCellbaseDisplayInfos(Input[] inputs, Output[] outputs, Output[] previousOutputs, string prefix, string txHash)
         {
             var displayInputs = inputs.Select((input, idx) =>
             {
                 Output previousOutput = previousOutputs[idx];
                 return new DisplayInput
                 {
+                    Id = $"{input.PreviousOutput.TxHash}:{Hex.HexToInt32(input.PreviousOutput.Index)}",
                     FromCellbase = false,
                     Capacity = Hex.HexToUInt64(previousOutput.Capacity).ToString(),
                     AddressHash = Ckb.Address.Address.GenerateAddress(previousOutput.Lock, prefix),
@@ -299,10 +301,11 @@ namespace Tippy.Controllers.API
                 };
             }).ToArray();
 
-            var displayOutputs = outputs.Select(output =>
+            var displayOutputs = outputs.Select((output, i) =>
             {
                 return new DisplayOutput
                 {
+                    Id = $"{txHash}:{i}",
                     Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
                     AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
                     // TODO: upate this.

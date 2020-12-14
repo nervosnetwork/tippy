@@ -77,7 +77,7 @@ namespace Tippy.Controllers.API
                     Input[] inputs = tx.Inputs.Take(10).ToArray();
                     Output[] outputs = tx.Outputs.Take(10).ToArray();
                     Output[] previousOutptus = GetPreviousOutputs(client, inputs);
-                    var (displayInputs, displayOutputs) = TransactionsController.GenerateNotCellbaseDisplayInfos(inputs, outputs, previousOutptus, prefix);
+                    var (displayInputs, displayOutputs) = TransactionsController.GenerateNotCellbaseDisplayInfos(inputs, outputs, previousOutptus, prefix, txHash);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
                 }

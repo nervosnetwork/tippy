@@ -134,6 +134,14 @@ namespace Ckb.Types
 
         public static bool operator ==(Script left, Script right)
         {
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+            if (left is null || right is null)
+            {
+                return false;
+            }
             return left.CodeHash == right.CodeHash && left.HashType == right.HashType && left.Args == right.Args;
         }
 
@@ -144,8 +152,7 @@ namespace Ckb.Types
 
         public override bool Equals(object obj)
         {
-            Script script = obj as Script;
-            if (script == null)
+            if (obj is not Script script)
             {
                 return false;
             }
