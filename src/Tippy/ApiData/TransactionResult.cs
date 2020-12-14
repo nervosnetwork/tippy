@@ -116,6 +116,10 @@ namespace Tippy.ApiData
         // For cellbase
         [JsonPropertyName("target_block_number")]
         public string? TargetBlockNumber { get; set; } = default!;
+
+        // $"{txHash}:{index(int)}"
+        [JsonPropertyName("id")]
+        public string? Id { get; set; } = default!;
     }
 
     public class DisplayOutput
@@ -151,5 +155,9 @@ namespace Tippy.ApiData
 
         [JsonPropertyName("secondary_reward")]
         public string? SecondaryReward { get; set; } = default!;
+
+        // $"{txHash}:{index(int)}"
+        [JsonPropertyName("id")]
+        public string? Id { get; set; } = default!;
     }
 }
