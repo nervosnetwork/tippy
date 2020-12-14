@@ -110,7 +110,7 @@ namespace Tippy.Controllers.API
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
 
-                    UInt64 income = SumOfOutputCapacities(tx.Outputs) - SumOfOutputCapacities(previousOutputs);
+                    long income = (long)SumOfOutputCapacities(tx.Outputs) - (long)SumOfOutputCapacities(previousOutputs);
                     txResult.Income = income.ToString();
                 }
 
