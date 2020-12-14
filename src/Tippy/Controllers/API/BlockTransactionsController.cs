@@ -40,11 +40,13 @@ namespace Tippy.Controllers.API
 
             int skipCount = ((int)page - 1) * (int)pageSize;
 
-            Meta meta = new();
-            meta.Total = (UInt64)block.Transactions.Length;
-            meta.PageSize = (int)pageSize;
+            Meta meta = new()
+            {
+                Total = (UInt64)block.Transactions.Length,
+                PageSize = (int)pageSize,
+            };
 
-            ArrayResult<TransactionListResult> result = GetTransactions(client, block, skipCount, (int)pageSize);
+            ArrayResult<TransactionListResult> result = GetTransactions(client, block, skipCount, (int)pageSize, meta);
 
             return Ok(result);
         }
