@@ -75,7 +75,8 @@ namespace Tippy.Controllers.API
             blockDetail.Timestamp = $"{Hex.HexToUInt64(block.Header.Timestamp)}";
             blockDetail.TransactionsCount = $"{block.Transactions.Length}";
             blockDetail.Nonce = $"{Hex.HexToBigInteger(block.Header.Nonce)}";
-            blockDetail.Difficulty = Hex.HexToUInt32(block.Header.CompactTarget).ToString();
+            uint compactTarget = Hex.HexToUInt32(block.Header.CompactTarget);
+            blockDetail.Difficulty = Difficulty.CompactToDifficulty(compactTarget).ToString();
 
             // Miner Address
             string prefix = IsMainnet() ? "ckb" : "ckt";
