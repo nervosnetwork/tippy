@@ -147,13 +147,13 @@ namespace Tippy.Controllers.API
             int inputsCount = transactions.Select(tx => tx.Inputs.Length).Aggregate(0, (acc, cur) => acc + cur);
             int outputsCount = transactions.Select(tx => tx.Outputs.Length).Aggregate(0, (acc, cur) => acc + cur);
 
-            var number = $"{Hex.HexToUInt64(header.Number)}";
+            ulong number = Hex.HexToUInt64(header.Number);
             int transactionsCount = transactions.Length;
             string timestamp = $"{ Hex.HexToUInt64(header.Timestamp) }";
 
             BlockResult br = new()
             {
-                Number = number,
+                Number = number.ToString(),
                 TransactionsCount = $"{transactionsCount}",
                 Timestamp = timestamp,
                 LiveCellChanges = $"{outputsCount - inputsCount}",
@@ -167,16 +167,21 @@ namespace Tippy.Controllers.API
             if (economicState != null)
             {
                 MinerReward reward = economicState.MinerReward;
-                string[] rewards = new string[]
+                br.Reward = Hex.HexToUInt64(reward.Primary).ToString();
+            }
+            else
+            {
+                EpochInfo epochInfo = EpochInfo.Parse(Hex.HexToUInt64(block.Header.Epoch));
+                try
                 {
-                    reward.Primary,
-                    reward.Secondary
-                };
-                br.Reward = rewards.Select(r => Hex.HexToUInt64(r)).Aggregate((sum, cur) => sum + cur).ToString();
+                    ulong primaryReward = PrimaryReward(client, number, epochInfo.Number);
+                    br.Reward = primaryReward.ToString();
+                }
+                catch { }
             }
 
             // Miner Address
-            string prefix = IsMainnet() ? "ckb" : "ckt";
+            string prefix = AddressPrefix();
             string cellbaseWitness = block.Transactions[0].Witnesses[0];
             Script script = CellbaseWitness.Parse(cellbaseWitness);
             string minerAddress = Ckb.Address.Address.GenerateAddress(script, prefix);
@@ -197,6 +202,32 @@ namespace Tippy.Controllers.API
                 nums.Add(tipBlockNumber - (UInt64)i);
             }
             return nums;
+        }
+
+        private static ulong PrimaryReward(Client client, ulong blockNumber, ulong epochNumber)
+        {
+            if (blockNumber < 12)
+            {
+                return 0;
+            }
+
+            EpochView? epochInfo = client.GetEpochByNumber(epochNumber);
+            if (epochInfo == null)
+            {
+                throw new Exception($"No Epoch found by number: {epochNumber}");
+            }
+
+            ulong startNumber = Hex.HexToUInt64(epochInfo.StartNumber);
+            ulong length = Hex.HexToUInt64(epochInfo.Length);
+            ulong epochReward = 1_917_808_21917808;
+            ulong primaryReward = epochReward / length;
+            ulong remainderReward = epochReward % length;
+
+            if (blockNumber >= startNumber && blockNumber < startNumber + remainderReward)
+            {
+                return primaryReward + 1;
+            }
+            return primaryReward;
         }
     }
 }
