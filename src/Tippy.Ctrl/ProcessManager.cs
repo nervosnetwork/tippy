@@ -16,12 +16,26 @@ namespace Tippy.Ctrl
     {
         public static event NodeLogEventHandler? NodeLogReceived;
 
+        public enum MinerMode
+        {
+            Default,
+            SingleBlock,
+        }
+
         static List<ProcessGroup> processGroups = new List<ProcessGroup>();
 
         static ProcessGroup? GroupFor(Project project) =>
             processGroups.Find(g => g.ProcessInfo == ProcessInfo.FromProject(project));
 
         public static bool IsRunning(Project project) => project != null && GroupFor(project) != null;
+        public static bool IsMinerRunning(Project project)
+        {
+            if (project != null && GroupFor(project) is ProcessGroup group)
+            {
+                return group.IsMinerRunning;
+            }
+            return false;
+        }
 
         public static string GetLogFolder(Project project)
         {
@@ -73,6 +87,30 @@ namespace Tippy.Ctrl
         {
             Stop(project);
             Start(project);
+        }
+
+        public static void StartMiner(Project project, MinerMode mode)
+        {
+            var group = GroupFor(project);
+            if (group == null)
+            {
+                return;
+            }
+
+            if (mode == MinerMode.Default)
+            {
+                group.StartMiner();
+            }
+            else if (mode == MinerMode.SingleBlock)
+            {
+                // TODO: call rpc to generate one block
+            }
+        }
+
+        public static void StopMiner(Project project)
+        {
+            var group = GroupFor(project);
+            group?.StopMiner();
         }
 
         public static void ResetData(Project project)

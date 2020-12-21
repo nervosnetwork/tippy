@@ -124,6 +124,29 @@
                                 <div class="">
                                     <div class="heading">Miner</div>
                                     <div class="title is-5"><span style="font-size: 60%;">@Model.MinerAddress</span></div>
+                                    @if (Model.IsMinerRunning)
+                                    {
+                                        <form method="post">
+                                            <button asp-page="/Miners/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-danger is-small my-1">
+                                                <span class="icon">
+                                                    <i class="fas fa-pause"></i>
+                                                </span>
+                                                <span>Stop</span>
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form method="post">
+                                            <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" class="button is-success is-small my-1">
+                                                <span class="icon">
+                                                    <i class="fas fa-play"></i>
+                                                </span>
+                                                <span>Start</span>
+                                            </button>
+                                        </form>
+
+                                    }
                                 </div>
                             </div>
                         }

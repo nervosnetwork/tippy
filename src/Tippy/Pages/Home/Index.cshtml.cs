@@ -34,12 +34,14 @@ namespace Tippy.Pages.Home
         public string Message { get; set; } = "";
 
         public bool IsNodeRunning { get; set; }
+        public bool IsMinerRunning { get; set; }
 
         public async Task OnGetAsync()
         {
             Projects = await _context.Projects.ToListAsync();
             ActiveProject = HttpContext.Items["ActiveProject"] as Project;
             IsNodeRunning = ActiveProject != null && ProcessManager.IsRunning(ActiveProject);
+            IsMinerRunning = IsNodeRunning && ProcessManager.IsMinerRunning(ActiveProject!);
 
             if (IsNodeRunning)
             {

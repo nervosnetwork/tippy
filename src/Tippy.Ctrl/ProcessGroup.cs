@@ -21,6 +21,7 @@ namespace Tippy.Ctrl
         internal event NodeLogEventHandler? NodeLogReceived;
 
         internal bool IsRunning => node?.IsRunning ?? false;
+        internal bool IsMinerRunning => miner?.IsRunning ?? false;
 
         internal string LogFolder()
         {
@@ -30,7 +31,6 @@ namespace Tippy.Ctrl
 
         internal void Start()
         {
-            // TODO: update configuration before each launch
             WriteLine("Starting child processes...");
             if (node == null)
             {
@@ -42,15 +42,7 @@ namespace Tippy.Ctrl
             // A better approach would be to catch ckb output to make sure it's already listening.
             System.Threading.Tasks.Task.Delay(1000).Wait();
 
-            if (ProcessInfo.Chain == Core.Models.Project.ChainType.Dev)
-            {
-                if (miner == null)
-                {
-                    miner = new Process.MinerProcess(ProcessInfo);
-                    miner.LogReceived += OnLogReceived;
-                }
-                miner.Start();
-            }
+            // Do not start miner automatically.
 
             if (indexer == null)
             {
@@ -63,8 +55,8 @@ namespace Tippy.Ctrl
         internal void Stop()
         {
             WriteLine("Stopping child processes...");
+            StopMiner();
             indexer?.Stop();
-            miner?.Stop();
             node?.Stop();
             WriteLine("Stopped child processes.");
         }
@@ -73,6 +65,30 @@ namespace Tippy.Ctrl
         {
             Stop();
             Start();
+        }
+
+        internal void StartMiner()
+        {
+            if (ProcessInfo.Chain != Core.Models.Project.ChainType.Dev || !IsRunning)
+            {
+                return;
+            }
+
+            WriteLine("Starting miner process...");
+            if (miner == null)
+            {
+                miner = new Process.MinerProcess(ProcessInfo);
+                miner.LogReceived += OnLogReceived;
+            }
+            miner.Start();
+            WriteLine("Started miner process...");
+        }
+
+        internal void StopMiner()
+        {
+            WriteLine("Stopping miner process...");
+            miner?.Stop();
+            WriteLine("Stopped miner process...");
         }
 
         internal List<int> PortsInUse()
