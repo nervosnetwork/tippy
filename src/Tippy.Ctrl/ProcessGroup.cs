@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using Ckb.Rpc;
 
 namespace Tippy.Ctrl
 {
@@ -81,14 +82,27 @@ namespace Tippy.Ctrl
                 miner.LogReceived += OnLogReceived;
             }
             miner.Start();
-            WriteLine("Started miner process...");
+            WriteLine("Started miner process.");
         }
 
         internal void StopMiner()
         {
             WriteLine("Stopping miner process...");
             miner?.Stop();
-            WriteLine("Stopped miner process...");
+            WriteLine("Stopped miner process.");
+        }
+
+        internal void MineOneBlock()
+        {
+            if (ProcessInfo.Chain != Core.Models.Project.ChainType.Dev || !IsRunning)
+            {
+                return;
+            }
+
+            WriteLine("Generating block...");
+            Client rpc = new($"http://localhost:{ProcessInfo.NodeRpcPort}");
+            var block = rpc.GenerateBlock();
+            WriteLine($"Generated block {block}");
         }
 
         internal List<int> PortsInUse()

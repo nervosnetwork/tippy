@@ -144,6 +144,13 @@
                                                 </span>
                                                 <span>Start</span>
                                             </button>
+
+                                            <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" class="button is-success is-small my-1">
+                                                <span class="icon">
+                                                    <i class="fas fa-hammer"></i>
+                                                </span>
+                                                <span>Mine one block</span>
+                                            </button>
                                         </form>
 
                                     }

@@ -103,7 +103,7 @@ namespace Tippy.Ctrl
             }
             else if (mode == MinerMode.SingleBlock)
             {
-                // TODO: call rpc to generate one block
+                group.MineOneBlock();
             }
         }
 

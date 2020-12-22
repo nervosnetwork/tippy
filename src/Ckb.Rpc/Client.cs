@@ -63,5 +63,10 @@ namespace Ckb.Rpc
             string[] methodParams = { blockHash };
             return Call<Types.Header>("get_header", methodParams);
         }
+
+        public String? GenerateBlock(/* block_assembler_script: Option<Script>, block_assembler_message: Option<JsonBytes>*/)
+        {
+            return Call<String>("generate_block");
+        }
     }
 }

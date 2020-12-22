@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ckb.Rpc\Ckb.Rpc.csproj" />
     <ProjectReference Include="..\Tippy.Core\Tippy.Core.csproj" />
     <ProjectReference Include="..\Tippy.Util\Tippy.Util.csproj" />
   </ItemGroup>

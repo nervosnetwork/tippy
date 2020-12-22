@@ -77,6 +77,10 @@ namespace Tippy.Ctrl.Process
                     {
                         return $"listen_address = \"127.0.0.1:{ProcessInfo.NodeRpcPort}\"";
                     }
+                    else if (line.StartsWith("modules ="))
+                    {
+                        return $"modules = [\"Net\", \"Pool\", \"Miner\", \"Chain\", \"Stats\", \"Subscription\", \"Experiment\", \"IntegrationTest\", \"Debug\"]";
+                    }
                     else
                     {
                         return line;
