@@ -14,6 +14,7 @@
                 <th>Reward</th>
                 <th>Miner</th>
                 <th>Time</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -43,6 +44,16 @@
                         </a>
                     </td>
                     <td>@block.Attributes.Date()</td>
+                    <td>
+                        <form method="post">
+                            <button asp-page="./RollBackTo" asp-route-hash="@block.Attributes.BlockHash" class="button is-danger">
+                                <span class="icon">
+                                    <i class="fas fa-undo"></i>
+                                </span>
+                                <span>Roll back to</span>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>

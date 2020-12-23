@@ -11,6 +11,9 @@ namespace Tippy.ApiData
         [JsonPropertyName("number")]
         public string Number { get; set; } = default!;
 
+        [JsonPropertyName("block_hash")]
+        public string BlockHash { get; set; } = default!;
+
         [JsonPropertyName("timestamp")]
         public string Timestamp { get; set; } = default!;
 

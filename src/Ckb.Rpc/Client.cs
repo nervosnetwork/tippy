@@ -68,5 +68,10 @@ namespace Ckb.Rpc
         {
             return Call<String>("generate_block");
         }
+
+        public void Truncate(string targetTipHash)
+        {
+            Call<String>("truncate", new string[] { targetTipHash });
+        }
     }
 }

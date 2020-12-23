@@ -108,6 +108,7 @@ namespace Tippy.Pages.Blocks
             BlockResult result = new()
             {
                 Number = number,
+                BlockHash = header.Hash,
                 TransactionsCount = $"{transactionsCount}",
                 Timestamp = timestamp,
                 LiveCellChanges = $"{outputsCount - inputsCount}",
