@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Tippy.MockApiData;
 using Tippy.ApiData;
 
 using Attributes = System.Collections.Generic.Dictionary<string, object>;
@@ -13,7 +12,7 @@ namespace Tippy.Controllers.API
         [HttpGet]
         public ActionResult Index()
         {
-            return Ok(Loader.JsonFromFile("Statistics"));
+            return Ok("{}");
         }
 
         [HttpGet("blockchain_info")]

@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
@@ -34,7 +33,6 @@
 
 
   <ItemGroup>
-    <Folder Include="MockApiData\" />
     <Folder Include="TagHelpers\" />
     <Folder Include="Hubs\" />
   </ItemGroup>
@@ -65,16 +63,7 @@
     <Content Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     <Content Remove="libman.json" />
-    <Content Remove="MockApiData\Statistics.json" />
     <Content Remove="wwwroot\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="MockApiData\Statistics.json">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
