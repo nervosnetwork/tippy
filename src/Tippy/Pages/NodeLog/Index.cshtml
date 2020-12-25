@@ -1,10 +1,11 @@
 ﻿@page
 @model Tippy.Pages.NodeLog.IndexModel
+@using Tippy.Ctrl 
 @{
     ViewData["Title"] = "Logs";
 }
 
-@if (Model.ActiveProject != null)
+@if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
 {
     <div class="level">
         <div class="level-left">

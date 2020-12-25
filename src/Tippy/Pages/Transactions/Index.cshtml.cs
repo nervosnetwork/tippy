@@ -3,32 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using Ckb.Rpc;
 using Ckb.Types;
-using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
-using Tippy.Core.Models;
 using Tippy.Ctrl;
-using Tippy.Filters;
 using Tippy.Util;
 
 namespace Tippy.Pages.Transactions
 {
-    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class IndexModel : PageModelBase
     {
         public IndexModel(Tippy.Core.Data.DbContext context) : base(context)
         {
         }
 
-        public Project? ActiveProject { get; set; }
         public ArrayResult<TransactionResult> Result = default!;
 
         public void OnGet()
         {
-            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
-            {
-                ActiveProject = activeProject;
-            }
-            else
+            if (ActiveProject == null || !ProcessManager.IsRunning(ActiveProject))
             {
                 return;
             }

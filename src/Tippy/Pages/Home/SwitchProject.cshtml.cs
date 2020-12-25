@@ -1,17 +1,13 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tippy.Pages.Home
 {
-    public class SwitchProjectModel : PageModel
+    public class SwitchProjectModel : PageModelBase
     {
-        private readonly Tippy.Core.Data.DbContext _context;
-
-        public SwitchProjectModel(Tippy.Core.Data.DbContext context)
+        public SwitchProjectModel(Tippy.Core.Data.DbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -21,16 +17,16 @@ namespace Tippy.Pages.Home
                 return NotFound();
             }
 
-            var project = await _context.Projects.FindAsync(id);
+            var project = await DbContext.Projects.FindAsync(id);
             if (project == null)
             {
                 return NotFound();
             }
 
-            var projects = await _context.Projects.ToListAsync();
+            var projects = await DbContext.Projects.ToListAsync();
             projects.ForEach(p => p.IsActive = false);
             project.IsActive = true;
-            await _context.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

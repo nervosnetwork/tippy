@@ -1,23 +1,23 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Tippy.Core.Models;
 using Tippy.Ctrl;
-using Tippy.Filters;
 using Tippy.Util;
 
 namespace Tippy.Pages.NodeLog
 {
-    [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class OpenFolderModel : PageModel
+    public class OpenFolderModel : PageModelBase
     {
+        public OpenFolderModel(Tippy.Core.Data.DbContext context) : base(context)
+        {
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
+            if (ActiveProject != null && ProcessManager.IsRunning(ActiveProject))
             {
                 await Task.Run(() =>
                 {
-                    FolderOpener.Open(ProcessManager.GetLogFolder(activeProject));
+                    FolderOpener.Open(ProcessManager.GetLogFolder(ActiveProject));
                 });
             }
 

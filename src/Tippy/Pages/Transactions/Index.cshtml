@@ -1,10 +1,11 @@
 ﻿@page
 @model Tippy.Pages.Transactions.IndexModel
+@using Tippy.Ctrl
 @{ ViewData["Title"] = "Transactions"; }
 
 <h1 class="title has-text-primary">Transactions</h1>
 
-@if (Model.ActiveProject != null)
+@if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
 {
     <table class="table is-striped is-narrow is-fullwidth is-hoverable">
         <thead>

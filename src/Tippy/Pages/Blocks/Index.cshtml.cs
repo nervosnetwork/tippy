@@ -6,28 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
-using Tippy.Filters;
 using Tippy.Util;
 
 namespace Tippy.Pages.Blocks
 {
-    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class IndexModel : PageModelBase
     {
         public IndexModel(Tippy.Core.Data.DbContext context) : base(context)
         {
         }
 
-        public Project? ActiveProject { get; set; }
         public ArrayResult<BlockResult> Result = default!;
 
         public void OnGet([FromQuery(Name = "e")] int? end)
         {
-            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
-            {
-                ActiveProject = activeProject;
-            }
-            else
+            if (ActiveProject == null || !ProcessManager.IsRunning(ActiveProject))
             {
                 return;
             }

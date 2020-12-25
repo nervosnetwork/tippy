@@ -2,15 +2,15 @@ using System.Threading.Tasks;
 using Ckb.Rpc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Tippy.Core.Models;
-using Tippy.Filters;
 
 namespace Tippy.Pages.Blocks
 {
-    [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class RollBackToModel : PageModel
+    public class RollBackToModel : PageModelBase
     {
+        public RollBackToModel(Tippy.Core.Data.DbContext context) : base(context)
+        {
+        }
+
         public async Task<IActionResult> OnPostAsync(string? hash)
         {
             if (hash == null)
@@ -18,9 +18,9 @@ namespace Tippy.Pages.Blocks
                 return NotFound();
             }
 
-            if (HttpContext.Items["ActiveProject"] is Project activeProject)
+            if (ActiveProject != null)
             {
-                Client rpc = new($"http://localhost:{activeProject.NodeRpcPort}");
+                Client rpc = new($"http://localhost:{ActiveProject.NodeRpcPort}");
                 rpc.Truncate(hash);
             }
 

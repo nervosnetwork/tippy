@@ -6,19 +6,16 @@ using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
 using Tippy.Core.Models;
-using Tippy.Filters;
 using Tippy.Util;
 
 namespace Tippy.Pages.Blocks
 {
-    [ServiceFilter(typeof(ActiveProjectFilter))]
     public class DetailsModel : PageModelBase
     {
         public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
         {
         }
 
-        public Project? ActiveProject { get; set; }
         public Result<BlockDetailResult> BlockResult { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -29,7 +26,6 @@ namespace Tippy.Pages.Blocks
                 return NotFound();
             }
 
-            ActiveProject = HttpContext.Items["ActiveProject"] as Project;
             if (ActiveProject == null)
             {
                 return NotFound();

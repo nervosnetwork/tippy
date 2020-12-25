@@ -1,10 +1,11 @@
 ﻿@page
 @model Tippy.Pages.ExplorerModel
+@using Tippy.Ctrl
 @{
     ViewData["Title"] = "Explorer";
 }
 
-@if (Model.ActiveProject != null)
+@if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
 {
     var path = Request.Query["ref"];
     <iframe src="/@path" class="explorer-container" title="Explorer"></iframe>
