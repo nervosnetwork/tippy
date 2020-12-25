@@ -1,31 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Ckb.Address;
 using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Tippy.Core.Models;
 using Tippy.Ctrl;
-using Tippy.Filters;
 
 namespace Tippy.Pages.Home
 {
-    [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelBase
     {
-        private readonly Tippy.Core.Data.DbContext _context;
-
-        public IndexModel(Tippy.Core.Data.DbContext context)
+        public IndexModel(Tippy.Core.Data.DbContext context) :base(context)
         {
-            _context = context;
         }
 
-        public IList<Project> Projects { get; set; } = new List<Project>();
-        public Project? ActiveProject { get; set; }
         public UInt64 TipBlockNumber { get; set; }
         public string MinerAddress { get; set; } = "";
         public EpochView? EpochView { get; set; }
@@ -36,10 +23,8 @@ namespace Tippy.Pages.Home
         public bool IsNodeRunning { get; set; }
         public bool IsMinerRunning { get; set; }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            Projects = await _context.Projects.ToListAsync();
-            ActiveProject = HttpContext.Items["ActiveProject"] as Project;
             IsNodeRunning = ActiveProject != null && ProcessManager.IsRunning(ActiveProject);
             IsMinerRunning = IsNodeRunning && ProcessManager.IsMinerRunning(ActiveProject!);
 

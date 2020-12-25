@@ -2,28 +2,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ckb.Address;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
 
 namespace Tippy.Pages.Projects
 {
-    public class CreateModel : PageModel
+    public class CreateModel : PageModelBase
     {
-        private readonly Tippy.Core.Data.DbContext _context;
-
-        public CreateModel(Tippy.Core.Data.DbContext context)
+        public CreateModel(Tippy.Core.Data.DbContext context) : base(context)
         {
-            _context = context;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public void OnGet()
         {
-            var projects = await _context.Projects.ToListAsync();
-            var calculatingFromUsed = projects.Count > 0;
-            var rpcPorts = projects.Select(p => p.NodeRpcPort);
-            var networkPorts = projects.Select(p => p.NodeNetworkPort);
-            var indexerPorts = projects.Select(p => p.IndexerRpcPort);
+            var calculatingFromUsed = Projects.Count > 0;
+            var rpcPorts = Projects.Select(p => p.NodeRpcPort);
+            var networkPorts = Projects.Select(p => p.NodeNetworkPort);
+            var indexerPorts = Projects.Select(p => p.IndexerRpcPort);
 
             Project = new Project
             {
@@ -34,8 +29,6 @@ namespace Tippy.Pages.Projects
                 IndexerRpcPort = calculatingFromUsed ? indexerPorts.Max() + 3 : 8116,
                 LockArg = "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
             };
-
-            return Page();
         }
 
         [BindProperty]
@@ -54,10 +47,9 @@ namespace Tippy.Pages.Projects
                 Project.LockArg = Address.ParseAddress(Project.LockArg, Project.LockArg.Substring(0, 3)).Args;
             }
 
-            var projects = await _context.Projects.ToListAsync();
-            Project.IsActive = !projects.Any(p => p.IsActive);
-            _context.Projects.Add(Project);
-            await _context.SaveChangesAsync();
+            Project.IsActive = !Projects.Any(p => p.IsActive);
+            DbContext.Projects.Add(Project);
+            await DbContext.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

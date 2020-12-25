@@ -18,9 +18,6 @@ namespace Tippy.Pages.Miners
 
         [BindProperty]
         public Project? Project { get; set; }
-        public void OnGet()
-        {
-        }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {

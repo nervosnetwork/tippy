@@ -2,19 +2,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ckb.Address;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
 
 namespace Tippy.Pages.Projects
 {
-    public class EditModel : PageModel
+    public class EditModel : PageModelBase
     {
-        private readonly Tippy.Core.Data.DbContext _context;
-
-        public EditModel(Tippy.Core.Data.DbContext context)
+        public EditModel(Tippy.Core.Data.DbContext context) : base(context)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -27,8 +23,7 @@ namespace Tippy.Pages.Projects
                 return NotFound();
             }
 
-            Project = await _context.Projects.FirstOrDefaultAsync(m => m.Id == id);
-
+            Project = await DbContext.Projects.FindAsync(id);
             if (Project == null)
             {
                 return NotFound();
@@ -36,44 +31,29 @@ namespace Tippy.Pages.Projects
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (!ModelState.IsValid)
+            var toUpdate = await DbContext.Projects.FindAsync(id);
+            if (toUpdate == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            _context.Attach(Project).State = EntityState.Modified;
+            if (await TryUpdateModelAsync<Project>(
+                toUpdate,
+                "project",
+                p => p.Name, p => p.NodeRpcPort, p => p.NodeNetworkPort, p => p.IndexerRpcPort, p => p.LockArg))
+            {
 
-            if (Project.LockArg.StartsWith("ckb") || Project.LockArg.StartsWith("ckt"))
-            {
-                Project.LockArg = Address.ParseAddress(Project.LockArg, Project.LockArg.Substring(0, 3)).Args;
-            }
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProjectExists(Project!.Id))
+                if (toUpdate.LockArg.StartsWith("ckb") || toUpdate.LockArg.StartsWith("ckt"))
                 {
-                    return NotFound();
+                    toUpdate.LockArg = Address.ParseAddress(toUpdate.LockArg, toUpdate.LockArg.Substring(0, 3)).Args;
                 }
-                else
-                {
-                    throw;
-                }
+                await DbContext.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
 
-            return RedirectToPage("./Index");
-        }
-
-        private bool ProjectExists(int id)
-        {
-            return _context.Projects.Any(e => e.Id == id);
+            return Page();
         }
     }
 }

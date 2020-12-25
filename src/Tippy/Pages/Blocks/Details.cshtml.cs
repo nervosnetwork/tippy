@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tippy.ApiData;
 using Tippy.Core.Models;
 using Tippy.Filters;
@@ -13,13 +12,10 @@ using Tippy.Util;
 namespace Tippy.Pages.Blocks
 {
     [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class DetailsModel : PageModel
+    public class DetailsModel : PageModelBase
     {
-        private readonly Tippy.Core.Data.DbContext _context;
-
-        public DetailsModel(Tippy.Core.Data.DbContext context)
+        public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
         {
-            _context = context;
         }
 
         public Project? ActiveProject { get; set; }

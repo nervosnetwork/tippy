@@ -1,19 +1,15 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 
 namespace Tippy.Pages.Projects
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : PageModelBase
     {
-        private readonly Tippy.Core.Data.DbContext _context;
-
-        public DeleteModel(Tippy.Core.Data.DbContext context)
+        public DeleteModel(Tippy.Core.Data.DbContext context) : base(context)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -26,7 +22,7 @@ namespace Tippy.Pages.Projects
                 return NotFound();
             }
 
-            Project = await _context.Projects.FirstOrDefaultAsync(m => m.Id == id);
+            Project = await DbContext.Projects.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Project == null)
             {
@@ -42,13 +38,13 @@ namespace Tippy.Pages.Projects
                 return NotFound();
             }
 
-            Project = await _context.Projects.FindAsync(id);
+            Project = await DbContext.Projects.FindAsync(id);
 
             if (Project != null)
             {
                 ProcessManager.ResetData(Project);
-                _context.Projects.Remove(Project);
-                await _context.SaveChangesAsync();
+                DbContext.Projects.Remove(Project);
+                await DbContext.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");

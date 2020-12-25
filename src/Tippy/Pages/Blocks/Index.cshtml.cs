@@ -3,7 +3,6 @@ using System.Linq;
 using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tippy.ApiData;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
@@ -13,8 +12,12 @@ using Tippy.Util;
 namespace Tippy.Pages.Blocks
 {
     [ServiceFilter(typeof(ActiveProjectFilter))]
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelBase
     {
+        public IndexModel(Tippy.Core.Data.DbContext context) : base(context)
+        {
+        }
+
         public Project? ActiveProject { get; set; }
         public ArrayResult<BlockResult> Result = default!;
 

@@ -1,22 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Data;
 using Tippy.Core.Models;
 
 namespace Tippy.Pages.Projects
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : PageModelBase
     {
-        private readonly Tippy.Core.Data.DbContext _context;
-
-        public DetailsModel(Tippy.Core.Data.DbContext context)
+        public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
         {
-            _context = context;
         }
 
         public Project Project { get; set; } = default!;
@@ -28,7 +21,7 @@ namespace Tippy.Pages.Projects
                 return NotFound();
             }
 
-            Project = await _context.Projects.FirstOrDefaultAsync(m => m.Id == id);
+            Project = await DbContext.Projects.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Project == null)
             {

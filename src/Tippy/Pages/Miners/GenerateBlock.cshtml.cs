@@ -1,22 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 
 namespace Tippy.Pages.Miners
 {
-    public class GenerateBlockModel : PageModel
+    public class GenerateBlockModel : PageModelBase
     {
-        private readonly Tippy.Core.Data.DbContext _context;
-
-        public GenerateBlockModel(Tippy.Core.Data.DbContext context)
+        public GenerateBlockModel(Tippy.Core.Data.DbContext context) : base(context)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -32,7 +25,7 @@ namespace Tippy.Pages.Miners
                 return NotFound();
             }
 
-            Project = await _context.Projects.FindAsync(id);
+            Project = await DbContext.Projects.FindAsync(id);
 
             if (Project != null)
             {

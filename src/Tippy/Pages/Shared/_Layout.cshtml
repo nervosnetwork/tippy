@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model Tippy.Pages.PageModelBase
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -40,8 +41,7 @@
                     </a>
                     -->
 
-                    @if (Context.Items["ActiveProject"] is Tippy.Core.Models.Project activeProject &&
-                       Context.Items["Projects"] is IList<Tippy.Core.Models.Project> projects && projects.Count > 1)
+                    @if (Model.ActiveProject != null && Model.Projects.Count > 1)
                     {
                         <div class="navbar-item has-dropdown is-hoverable">
                             <span class="navbar-link">
@@ -49,9 +49,9 @@
                             </span>
 
                             <div class="navbar-dropdown is-right">
-                                @foreach (var item in projects)
+                                @foreach (var item in Model.Projects)
                                 {
-                                    @if (item.Id == activeProject.Id)
+                                    @if (item.Id == Model.ActiveProject.Id)
                                     {
                                         <span class="navbar-item"><strong>@item.Name</strong></span>
                                     }
