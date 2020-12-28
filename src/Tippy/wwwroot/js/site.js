@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // Toggle sidebar
-    var sidebarToggler = document.querySelector('#sidebar-toggler')
+    var sidebarToggler = document.querySelector('#sidebar-toggler-button')
     var sidebar = document.querySelector('#main-sidebar')
 
     sidebarToggler.addEventListener('click', function () {

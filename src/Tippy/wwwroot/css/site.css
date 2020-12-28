@@ -32,3 +32,48 @@ body {
 .hash-text {
     font-family: monospace;
 }
+
+.top-nav-bar {
+    height: 60px;
+}
+
+.navbar-brand, .navbar-tabs {
+    min-height: 44px;
+}
+
+.nav-separator {
+    width: 2px;
+    height: 100%;
+    display: inline-block;
+    border-left: 0.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.project-menu-container {
+    width: 168px;
+}
+
+.project-menu-container .navbar-link {
+    width: 160px;
+}
+
+.project-menu-container .navbar-dropdown {
+    height: calc(100vh - 60px);
+}
+
+.project-menu-container .navbar-dropdown .bottom-fixed {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+}
+
+#main-sidebar {
+    width: 180px;
+}
+
+.sidebar-toggler-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

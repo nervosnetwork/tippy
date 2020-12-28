@@ -1,4 +1,5 @@
 ﻿@model Tippy.Pages.PageModelBase
+@using Tippy.Ctrl;
 <!DOCTYPE html>
 
 <html>
@@ -15,17 +16,91 @@
 <body>
     <header class="hero">
         <div class="hero-head">
-            <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+            <nav class="navbar has-shadow top-nav-bar py-2" role="navigation" aria-label="main navigation">
                 <div class="navbar-brand">
-                    <span class="navbar-item is--brand">
-                        <span class="">
-                            <i class="fab fa-connectdevelop fa-2x has-text-success"></i>
-                            <strong>Tippy</strong>
+                    @if (Model.ActiveProject != null && Model.Projects.Count > 1)
+                    {
+                        <div class="navbar-item is--brand has-dropdown is-hoverable project-menu-container">
+                            <span class="navbar-link">
+                                Project
+                                <br/>
+                                TODO
+                            </span>
+
+                            <div class="navbar-dropdown is-right" style="height: 100vh;">
+                                @foreach (var item in Model.Projects)
+                                {
+                                    @if (item.Id == Model.ActiveProject.Id)
+                                    {
+                                        <span class="navbar-item"><strong>@item.Name</strong></span>
+                                    }
+                                    else
+                                    {
+                                        <a asp-page="/Home/SwitchProject" asp-route-id="@item.Id" class="navbar-item button-as-link">@item.Name</a>
+                                    }
+                                    <hr class="navbar-divider" />
+                                }
+                                <a asp-page="/Projects/Index" class="navbar-item">
+                                    <strong>Manage projects</strong>
+                                </a>
+                            </div>
+                        </div>
+                        <span class="=navbar-item">
+                            <span class="nav-separator"></span>
                         </span>
-                    </span>
+                    }
                 </div>
 
                 <div class="navbar-menu navbar-end" id="navMenu">
+                    @if (Model.ActiveProject != null && Model.Projects.Count > 1)
+                    {
+                        var isRunning = ProcessManager.IsRunning(Model.ActiveProject);
+                        <div class="py-2 mx-6">
+                            <div class="heading my-0">Status</div>
+                            @if (isRunning)
+                            {
+                                <div class="title is-6 has-text-success">running</div>
+                            }
+                            else
+                            {
+                                <div class="title is-6 has-text-danger">stopped</div>
+                            }
+                        </div>
+
+                        @if (isRunning)
+                        {
+                            <form method="post">
+                                <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-dark my-1 mx-2">
+                                    <span class="icon">
+                                        <i class="fas fa-pause"></i>
+                                    </span>
+                                </button>
+                            </form>
+                            <form method="post">
+                                <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.Id" class="button is-dark my-1 mx-2">
+                                    <span class="icon">
+                                        <i class="fas fa-redo"></i>
+                                    </span>
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.Id" method="post">
+                                <button class="button is-dark my-1 mx-2">
+                                    <span class="icon">
+                                        <i class="fas fa-play"></i>
+                                    </span>
+                                </button>
+                            </form>
+                        }
+                    }
+                    <span class="=navbar-item">
+                        <span class="nav-separator"></span>
+                    </span>
+                    <a class="button is-dark my-1 mx-2" asp-page="/Config/Index">
+                        <span class="icon is-small"><i class="fas fa-cog"></i></span>
+                    </a>
                     <!--
                     <a class="navbar-item nav-tag">
                         <span class="icon is-small">
@@ -41,32 +116,6 @@
                     </a>
                     -->
 
-                    @if (Model.ActiveProject != null && Model.Projects.Count > 1)
-                    {
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <span class="navbar-link">
-                                Switch project
-                            </span>
-
-                            <div class="navbar-dropdown is-right">
-                                @foreach (var item in Model.Projects)
-                                {
-                                    @if (item.Id == Model.ActiveProject.Id)
-                                    {
-                                        <span class="navbar-item"><strong>@item.Name</strong></span>
-                                    }
-                                    else
-                                    {
-                                        <a asp-page="/Home/SwitchProject" asp-route-id="@item.Id" class="navbar-item button-as-link">@item.Name</a>
-                                    }
-                                    <hr class="navbar-divider" />
-                                }
-                                <a asp-page="/Projects/Index" class="navbar-item">
-                                    Manage projects
-                                </a>
-                            </div>
-                        </div>
-                    }
                 </div>
             </nav>
         </div>
@@ -126,8 +175,22 @@
                     </ul>
                 </nav>
 
-                <div id="sidebar-toggler">
-                    <span class="icon is-small"><i class="fa fa-angle-double-left"></i></span>
+                <div class="sidebar-toggler-container p-4">
+                    <div class="level">
+                        <div class="level-left">
+                            <span class="">
+                                <i class="fab fa-connectdevelop has-text-success"></i>
+                                <strong>Tippy</strong>
+                            </span>
+                        </div>
+                        <div class="level-right">
+                            <!--
+                            <div id="sidebar-toggler-button">
+                                <span class="icon is-small"><i class="fa fa-angle-double-left"></i></span>
+                            </div>
+                            -->
+                        </div>
+                    </div>
                 </div>
             </aside>
 
