@@ -6,7 +6,10 @@
 
 <h1 class="title">Settings</h1>
 
-<form method="post">
+<div class="container">
+    <div class="columns">
+        <form method="post" class="column is-half is-offset-one-quarter">
+            <div class="box form-box">
     <div asp-validation-summary="All"></div>
 
     @if ((TempData["Message"]?.ToString() ?? "").Length > 0)
@@ -34,17 +37,14 @@
     </div>
     -->
 
-    <div class="field is-grouped">
+                </div>
+    <div class="field is-grouped is-grouped-right">
         <div class="control">
-            <button class="button is-primary">Save</button>
+            <button class="button is-primary is-primary-override">Save</button>
         </div>
-        <!--
-          <div class="control">
-            <button class="button is-link is-light">Cancel</button>
-          </div>
-        -->
     </div>
 </form>
+        </div></div>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
