@@ -5,60 +5,69 @@
 
 <h1 class="title">Project details</h1>
 
-<div class="field">
-    <div class="control">
-    <label class="label">
-        @Html.DisplayNameFor(model => model.Project.Name)
-    </label>
-        @Html.DisplayFor(model => model.Project.Name)
-    </div>
-</div>
-<div class="field">
-    <div class="control">
-    <label class="label">
-        @Html.DisplayNameFor(model => model.Project.Chain)
-    </label>
-        @Html.DisplayFor(model => model.Project.Chain)
-    </div>
-</div>
-<div class="field">
-    <div class="control">
-    <label class="label">
-        @Html.DisplayNameFor(model => model.Project.NodeRpcPort)
-    </label>
-        @Html.DisplayFor(model => model.Project.NodeRpcPort)
-    </div>
-</div>
-<div class="field">
-    <div class="control">
-    <label class="label">
-        @Html.DisplayNameFor(model => model.Project.NodeNetworkPort)
-    </label>
-        @Html.DisplayFor(model => model.Project.NodeNetworkPort)
-    </div>
-</div>
-<div class="field">
-    <div class="control">
-    <label class="label">
-        @Html.DisplayNameFor(model => model.Project.IndexerRpcPort)
-    </label>
-        @Html.DisplayFor(model => model.Project.IndexerRpcPort)
-    </div>
-</div>
-<div class="field">
-    <div class="control">
-    <label class="label">
-        @Html.DisplayNameFor(model => model.Project.LockArg)
-    </label>
-        @Html.DisplayFor(model => model.Project.LockArg)
-    </div>
-</div>
+<div class="container">
+    <div class="columns">
+        <form class="column is-half is-offset-one-quarter">
+            <div class="box form-box">
 
-<div class="field is-grouped">
-    <div class="control">
-        <a asp-page="./Edit" asp-route-id="@Model.Project.Id" class="button is-primary">Edit</a>
-    </div>
-    <div class="control">
-        <a asp-page="./Index" class="button is-link is-light">Back</a>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">
+                            @Html.DisplayNameFor(model => model.Project.Name)
+                        </label>
+                        @Html.DisplayFor(model => model.Project.Name)
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">
+                            @Html.DisplayNameFor(model => model.Project.Chain)
+                        </label>
+                        @Html.DisplayFor(model => model.Project.Chain)
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">
+                            @Html.DisplayNameFor(model => model.Project.NodeRpcPort)
+                        </label>
+                        @Html.DisplayFor(model => model.Project.NodeRpcPort)
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">
+                            @Html.DisplayNameFor(model => model.Project.NodeNetworkPort)
+                        </label>
+                        @Html.DisplayFor(model => model.Project.NodeNetworkPort)
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">
+                            @Html.DisplayNameFor(model => model.Project.IndexerRpcPort)
+                        </label>
+                        @Html.DisplayFor(model => model.Project.IndexerRpcPort)
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">
+                            @Html.DisplayNameFor(model => model.Project.LockArg)
+                        </label>
+                        @Html.DisplayFor(model => model.Project.LockArg)
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <a asp-page="./Edit" asp-route-id="@Model.Project.Id" class="button is-primary is-primary-override">Edit</a>
+                </div>
+                <div class="control">
+                    <a asp-page="./Index" class="button is-light">Back</a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

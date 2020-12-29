@@ -6,6 +6,14 @@ body {
     height: 100%;
 }
 
+.button.is-primary-override {
+    background-color: #00CC9B;
+}
+
+.button.is-primary-override:hover {
+    background: #0EDAA9;
+}
+
 .explorer-container {
     border: none;
     height: calc(100vh - 100px);
@@ -97,4 +105,8 @@ body {
 
 .menu-list a.is-active {
     background-color: #B43FFE;
+}
+
+.form-box {
+    background-color: #3E3F49
 }

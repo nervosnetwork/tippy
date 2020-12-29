@@ -5,60 +5,66 @@
 
 <h1 class="title">Edit project</h1>
 
-<form method="post">
-    <div asp-validation-summary="ModelOnly" class="has-text-danger-dark"></div>
-    <input type="hidden" asp-for="Project.Id" />
-    <div class="field">
-        <div class="control">
-            <label asp-for="Project.Name" class="label"></label>
-            <input asp-for="Project.Name" class="input" />
-            <span asp-validation-for="Project.Name" class="has-text-danger-dark"></span>
-        </div>
-    </div>
-    <div class="field">
-        <label asp-for="Project.Chain" class="label"></label>
-        <div class="control">
-            <span>@Html.DisplayFor(model => model.Project.Chain)</span>
-        </div>
-    </div>
-    <div class="field">
-        <div class="control">
-            <label asp-for="Project.NodeRpcPort" class="label"></label>
-            <input asp-for="Project.NodeRpcPort" class="input" />
-            <span asp-validation-for="Project.NodeRpcPort" class="has-text-danger-dark"></span>
-        </div>
-    </div>
-    <div class="field">
-        <div class="control">
-            <label asp-for="Project.NodeNetworkPort" class="label"></label>
-            <input asp-for="Project.NodeNetworkPort" class="input" />
-            <span asp-validation-for="Project.NodeNetworkPort" class="has-text-danger-dark"></span>
-        </div>
-    </div>
-    <div class="field">
-        <div class="control">
-            <label asp-for="Project.IndexerRpcPort" class="label"></label>
-            <input asp-for="Project.IndexerRpcPort" class="input" />
-            <span asp-validation-for="Project.IndexerRpcPort" class="has-text-danger-dark"></span>
-        </div>
-    </div>
-    <div class="field">
-        <div class="control">
-            <label asp-for="Project.LockArg" class="label"></label>
-            <input asp-for="Project.LockArg" class="input" />
-            <span asp-validation-for="Project.LockArg" class="has-text-danger-dark"></span>
-            <p class="help is-size-6">You can also input a CKB address, which will be converted to lock arg.</p>
-        </div>
-    </div>
-    <div class="field is-grouped">
-        <div class="control">
-            <input type="submit" value="Save" class="button is-primary" />
-        </div>
-        <div class="control">
-            <a asp-page="Index" class="button is-link is-light">Cancel</a>
-        </div>
-    </div>
-</form>
+<div class="container">
+    <div class="columns">
+        <form method="post" class="column is-half is-offset-one-quarter">
+            <div class="box form-box">
+                <div asp-validation-summary="ModelOnly" class="has-text-danger-dark"></div>
+                <input type="hidden" asp-for="Project.Id" />
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Project.Name" class="label"></label>
+                        <input asp-for="Project.Name" class="input" />
+                        <span asp-validation-for="Project.Name" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label asp-for="Project.Chain" class="label"></label>
+                    <div class="control">
+                        <span>@Html.DisplayFor(model => model.Project.Chain)</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Project.NodeRpcPort" class="label"></label>
+                        <input asp-for="Project.NodeRpcPort" class="input" />
+                        <span asp-validation-for="Project.NodeRpcPort" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Project.NodeNetworkPort" class="label"></label>
+                        <input asp-for="Project.NodeNetworkPort" class="input" />
+                        <span asp-validation-for="Project.NodeNetworkPort" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Project.IndexerRpcPort" class="label"></label>
+                        <input asp-for="Project.IndexerRpcPort" class="input" />
+                        <span asp-validation-for="Project.IndexerRpcPort" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Project.LockArg" class="label"></label>
+                        <input asp-for="Project.LockArg" class="input" />
+                        <span asp-validation-for="Project.LockArg" class="has-text-danger-dark"></span>
+                        <p class="help is-size-6">You can also input a CKB address, which will be converted to lock arg.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <input type="submit" value="Save" class="button is-primary is-primary-override" />
+                </div>
+                <div class="control">
+                    <a asp-page="Index" class="button is-light">Cancel</a>
+                </div>
+            </div>
+        </form>
+     </div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
