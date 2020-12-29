@@ -5,7 +5,7 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h1 class="title has-text-primary">Dashboard</h1>
+<h1 class="title">Dashboard</h1>
 
 @if ((TempData["Message"]?.ToString() ?? "").Length > 0)
 {
@@ -17,48 +17,35 @@
 
 @if (Model.Projects.Count == 0)
 {
-    <div class="columns is-multiline">
-        <div class="column">
-            <div class="box notification is-info">
-                <div class="heading">Quick launch</div>
-                <div class="subtitle">
-                    <span class="icon has-text-danger">
-                        <i class="fas fa-mug-hot"></i>
-                    </span>
-                    Launch a CKB devnet quickly.
-                </div>
-                <div>
-                    <form asp-page="./QuickStart" method="post">
-                        <button class="button is-primary is-large">
-                            <span class="icon">
-                                <i class="fas fa-magic"></i>
-                            </span>
-                            <span>Launch devnet instantly.</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="box notification is-warning">
-                <div class="heading">Custom setup</div>
-                <div class="subtitle">
-                    <span class="icon has-text-danger">
-                        <i class="fas fa-sliders-h"></i>
-                    </span>
-                    Customize a chain to run.
-                </div>
-                <div>
-                    <a class="button is-primary is-large" asp-page="/Projects/Create">
-                        <span class="icon">
-                            <i class="fas fa-magic"></i>
-                        </span>
-                        <span>Create and customize a project.</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+  <div class="container my-2" style="text-align: center;">
+    <div class="pt-6 pb-2">
+      <span class="icon">
+        <i class="fas fa-exclamation-triangle fa-6x"></i>
+      </span>
     </div>
+
+    <p class="mt-4 mb-6">You don’t have any chain/project. To get started, you can...</p>
+
+    <form class="my-4" asp-page="./QuickStart" method="post">
+        <button class="button is-primary">
+            <span class="icon">
+                <i class="fas fa-bolt"></i>
+            </span>
+            <strong>Launch a CKB devnet instantly</strong>
+        </button>
+    </form>
+
+    <p>or</p>
+
+    <div class="my-4">
+        <a class="button is-primary" asp-page="/Projects/Create">
+            <span class="icon">
+                <i class="fas fa-plus"></i>
+            </span>
+            <strong>Create a customized chain to run</strong>
+        </a>
+    </div>
+  </div>
 }
 
 @if (Model.ActiveProject != null)
