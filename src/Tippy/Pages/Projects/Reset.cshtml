@@ -13,10 +13,12 @@
             <p>Are you sure you want to reset all data for project <strong>@Html.DisplayFor(model => model.Project.Name)</strong>?</p>
         </section>
         <footer class="modal-card-foot">
-            <form method="post" class="mt-4">
-                <input type="hidden" asp-for="Project.Id" />
-                <input type="submit" value="Reset data" class="button is-danger" />
-                <a asp-page="./Index" class="button is-link is-light">Cancel</a>
+            <form method="post" class="mt-4" style="width: 100%;">
+                <div class="field is-grouped is-grouped-right">
+                  <input type="hidden" asp-for="Project.Id" />
+                  <input type="submit" value="Reset data" class="button is-danger" />
+                  <a asp-page="./Index" class="button is-light">Cancel</a>
+                </div>
             </form>
         </footer>
     </div>
