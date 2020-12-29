@@ -1,8 +1,6 @@
 ﻿@page
 @model Tippy.Pages.Config.IndexModel
-@{
-    ViewData["Title"] = "Settings";
-}
+@{ ViewData["Title"] = "Settings"; }
 
 <h1 class="title">Settings</h1>
 
@@ -10,41 +8,42 @@
     <div class="columns">
         <form method="post" class="column is-half is-offset-one-quarter">
             <div class="box form-box">
-    <div asp-validation-summary="All"></div>
+                <div asp-validation-summary="All"></div>
 
-    @if ((TempData["Message"]?.ToString() ?? "").Length > 0)
-    {
-        <div class="notification is-success">
-            <button class="delete"></button>
-            <div>@TempData["Message"]</div>
-        </div>
-    }
+                @if ((TempData["Message"]?.ToString() ?? "").Length > 0)
+                {
+                    <div class="notification is-success">
+                        <button class="delete"></button>
+                        <div>@TempData["Message"]</div>
+                    </div>
+                }
 
-    <div class="field">
-        <div class="control">
-            <label asp-for="OpenBrowserOnLaunch" class="checkbox">
-                <input asp-for="OpenBrowserOnLaunch" type="checkbox" />
-                @Html.DisplayNameFor(model => model.OpenBrowserOnLaunch)
-            </label>
-        </div>
-    </div>
-
-    <!--
-    <div class="field">
-        <div class="control">
-            <p class="help is-danger is-size-6">You need to <a asp-page="/Home" class="has-text-weight-semibold">restart the node</a> for the changes to take effect.</p>
-        </div>
-    </div>
-    -->
-
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="OpenBrowserOnLaunch" class="checkbox">
+                            <input asp-for="OpenBrowserOnLaunch" type="checkbox" />
+                            @Html.DisplayNameFor(model => model.OpenBrowserOnLaunch)
+                        </label>
+                    </div>
                 </div>
-    <div class="field is-grouped is-grouped-right">
-        <div class="control">
-            <button class="button is-primary is-primary-override">Save</button>
-        </div>
+
+                <!--
+                <div class="field">
+                    <div class="control">
+                        <p class="help is-danger is-size-6">You need to <a asp-page="/Home" class="has-text-weight-semibold">restart the node</a> for the changes to take effect.</p>
+                    </div>
+                </div>
+                -->
+
+            </div>
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <button class="button is-primary is-primary-override">Save</button>
+                </div>
+            </div>
+        </form>
     </div>
-</form>
-        </div></div>
+</div>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
