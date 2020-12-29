@@ -77,11 +77,11 @@
                             <div class="heading my-0">Status</div>
                             @if (isRunning)
                             {
-                                <div class="title is-6 has-text-success">running</div>
+                                <div class="title is-6 has-text-running">running</div>
                             }
                             else
                             {
-                                <div class="title is-6 has-text-danger">stopped</div>
+                                <div class="title is-6 has-text-stopped">stopped</div>
                             }
                         </div>
 
@@ -214,7 +214,7 @@
                 </div>
             </aside>
 
-            <main class="column main">
+            <main class="column main pr-5">
                 @if (ViewData["ErrorMessage"] is string errorMessage && errorMessage.Length > 0)
                 {
                     <div class=ontainer is-fullhd pt-5">

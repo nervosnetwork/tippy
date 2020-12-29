@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,7 +29,8 @@ namespace Tippy.Pages.Home
             project.IsActive = true;
             await DbContext.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();
+            return Redirect(referer);
         }
     }
 }

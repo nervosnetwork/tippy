@@ -10,6 +10,10 @@ body {
     background-color: #00CC9B;
 }
 
+.button.is-primary-button {
+    background-color: #9261F0;
+}
+
 .button.is-primary-override:hover {
     background: #0EDAA9;
 }
@@ -49,7 +53,7 @@ body {
     min-height: 44px;
 }
 
-.nav-separator {
+.nav-separator, .separator {
     width: 2px;
     height: 100%;
     display: inline-block;
@@ -108,5 +112,35 @@ body {
 }
 
 .form-box {
-    background-color: #3E3F49
+    background-color: #3E3F49;
+}
+
+.project-box {
+    background-color: #3E3F49;
+    padding: 10px;
+}
+
+.project-box.is-active {
+    background-color: #7F519C;
+}
+
+.project-box .button.is-dark {
+    background-color: transparent;
+}
+
+.project-box .button.is-dark:hover {
+    background-color: #606274;
+}
+
+.project-box .ghost-button {
+    opacity: 0;
+    cursor: default;
+}
+
+.has-text-running {
+    color: #00CC9B;
+}
+
+.has-text-stopped {
+    color: #FF696D;
 }

@@ -3,110 +3,115 @@
 
 @{ ViewData["Title"] = "Projects"; }
 
-<h1 class="title">Projects</h1>
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Projects</h1>
+    </div>
+    <div class="level-right">
+        <a asp-page="Create" class="button is-primary is-primary-button">
+            <span class="icon"> <i class="fa fa-plus"></i> </span><span>Create new project</span>
+        </a>
+    </div>
+</div>
 
-<p class="my-4">
-    <a asp-page="Create" class="button is-primary">
-        <span class="icon is-small"> <i class="fa fa-plus"></i> </span><span>Create new project</span>
-    </a>
-</p>
-
-<table class="table is-bordered is-striped is-narrow is-fullwidth is-hoverable">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Projects[0].Name)
-            </th>
-            <th>Status</th>
-            <th>
-                @Html.DisplayNameFor(model => model.Projects[0].Chain)
-            </th>
-            <th>RPC</th>
-            <th>Control</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Projects)
-        {
-            var className = item.IsActive ? "is-selected" : "";
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
+@foreach (var item in Model.Projects)
+{
+    var className = item.IsActive ? "is-active" : "";
+    <div class="box project-box @className">
+        <div class="columns">
+                <div class="column is-1">
+                    <div class="heading">@Html.DisplayNameFor(modelItem => item.Name)</div>
+                    <div class="title is-6">@Html.DisplayFor(modelItem => item.Name)</div>
+                </div>
+                <div class="column is-1">
+                    <div class="heading">Status</div>
                     @if (Model.RunningFlags[item])
                     {
-                        <span class="tag is-success is-medium">Running</span>
+                        <div class="title is-6 has-text-running">running</div>
                     }
                     else
                     {
-                        <span class="tag is-light is-medium">Stopped</span>
+                        <div class="title is-6 has-text-stopped">stopped</div>
                     }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Chain)
-                </td>
-                <td>
-                    http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)
-                </td>
-                <td>
+                </div>
+                <div class="column is-1">
+                    <div class="heading">@Html.DisplayNameFor(modelItem => item.Chain)</div>
+                    <div class="title is-6">@Html.DisplayFor(modelItem => item.Chain)</div>
+                </div>
+                <div class="column is-2">
+                    <div class="heading">RPC</div>
+                    <div class="title is-6">http://localhost:@Html.DisplayFor(modelItem => item.NodeRpcPort)</div>
+                </div>
+                <div class="column"></div>
+                <div class="column" style="text-align: right;">
                     @if (Model.RunningFlags[item])
                     {
-                        <form method="post">
-                            <button asp-page="./Stop" asp-route-id="@item.Id" class="button is-danger">
+                        <form method="post" style="display: inline;">
+                            <button asp-page="./Stop" asp-route-id="@item.Id" class="button is-dark" title="Stop">
                                 <span class="icon">
                                     <i class="fas fa-pause"></i>
                                 </span>
-                                <span>Stop</span>
                             </button>
-                            <button asp-page="./Restart" asp-route-id="@item.Id" class="button is-warning">
+                            <button asp-page="./Restart" asp-route-id="@item.Id" class="button is-dark" title="Restart">
                                 <span class="icon">
                                     <i class="fas fa-redo"></i>
                                 </span>
-                                <span>Restart</span>
                             </button>
                         </form>
                     }
                     else
                     {
-                        <form asp-page="./Start" asp-route-id="@item.Id" method="post">
-                            <button class="button is-success">
+                        <form asp-page="./Start" asp-route-id="@item.Id" method="post" style="display: inline;">
+                            <button class="button is-dark" title="Start">
                                 <span class="icon">
                                     <i class="fas fa-play"></i>
                                 </span>
-                                <span>Start</span>
+                            </button>
+                            <button class="button is-dark ghost-button" disabled>
+                                <span class="icon">
+                                    <i class="fas fa-"></i>
+                                </span>
                             </button>
                         </form>
                     }
-                </td>
-                <td>
-                    <a asp-page="./Details" asp-route-id="@item.Id" class="button is-info">
-                        <span>Details</span>
-                        <span class="icon is-small">
-                            <i class="fas fa-info-circle"></i>
+                    <div class="separator mx-4"></div>
+                    <a asp-page="./Details" asp-route-id="@item.Id" class="button is-dark" title="Details">
+                        <span class="icon">
+                            <i class="fas fa-info"></i>
                         </span>
                     </a>
-                    <a asp-page="./Edit" asp-route-id="@item.Id" class="button is-primary">
-                        <span>Edit</span>
-                        <span class="icon is-small">
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="button is-dark" title="Edit">
+                        <span class="icon">
                             <i class="far fa-edit"></i>
                         </span>
                     </a>
-                    <a asp-page="./Reset" asp-route-id="@item.Id" class="button is-warning">
-                        <span>Reset Data</span>
-                        <span class="icon is-small">
-                            <i class="fas fa-info-circle"></i>
+                    <a asp-page="./Reset" asp-route-id="@item.Id" class="button is-dark" title="Reset data">
+                        <span class="icon">
+                            <i class="fas fa-eraser"></i>
                         </span>
                     </a>
-                    <a asp-page="./Delete" asp-route-id="@item.Id" class="button is-danger">
-                        <span>Delete</span>
-                        <span class="icon is-small">
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="button is-dark" title="Delete">
+                        <span class="icon">
                             <i class="far fa-trash-alt"></i>
                         </span>
                     </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    @if (!item.IsActive)
+                    {
+                        <a asp-page="/Home/SwitchProject" asp-route-id="@item.Id" class="button is-dark" title="Switch to this project">
+                            <span class="icon">
+                                <i class="far fa-life-ring"></i>
+                            </span>
+                        </a>
+                    }
+                    else
+                    { 
+                        <button class="button is-dark ghost-button" disabled>
+                            <span class="icon">
+                                <i class="fas fa-"></i>
+                            </span>
+                        </button>
+                    }
+                </div>
+            </div>
+    </div>
+}
