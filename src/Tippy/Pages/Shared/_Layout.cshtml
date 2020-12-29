@@ -18,41 +18,59 @@
         <div class="hero-head">
             <nav class="navbar has-shadow top-nav-bar py-2" role="navigation" aria-label="main navigation">
                 <div class="navbar-brand">
-                    @if (Model.ActiveProject != null && Model.Projects.Count > 1)
-                    {
-                        <div class="navbar-item is--brand has-dropdown is-hoverable project-menu-container">
-                            <span class="navbar-link">
-                                Project
-                                <br/>
-                                TODO
-                            </span>
-
-                            <div class="navbar-dropdown is-right" style="height: 100vh;">
-                                @foreach (var item in Model.Projects)
-                                {
-                                    @if (item.Id == Model.ActiveProject.Id)
-                                    {
-                                        <span class="navbar-item"><strong>@item.Name</strong></span>
-                                    }
-                                    else
-                                    {
-                                        <a asp-page="/Home/SwitchProject" asp-route-id="@item.Id" class="navbar-item button-as-link">@item.Name</a>
-                                    }
-                                    <hr class="navbar-divider" />
+                    <div class="navbar-item is--brand has-dropdown is-hoverable project-menu-container">
+                        <div class="project-menu-link level m-2">
+                            <div class="level-left">
+                                <div>
+                                <div class="heading my-0">Project</div>
+                                @{ 
+                                    var projectName = Model.ActiveProject?.Name ?? "NA";
                                 }
-                                <a asp-page="/Projects/Index" class="navbar-item">
-                                    <strong>Manage projects</strong>
-                                </a>
+                                <div class="title is-6">@projectName</div>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <span class="icon"><i class="fas fa-caret-down"></i></span>
                             </div>
                         </div>
-                        <span class="=navbar-item">
-                            <span class="nav-separator"></span>
-                        </span>
-                    }
+
+                        <div class="navbar-dropdown is-right" style="height: 100vh;">
+                            @foreach (var item in Model.Projects)
+                            {
+                                @if (item.Id == Model.ActiveProject?.Id)
+                                {
+                                    <span class="navbar-item"><strong>@item.Name</strong></span>
+                                }
+                                else
+                                {
+                                    <a asp-page="/Home/SwitchProject" asp-route-id="@item.Id" class="navbar-item button-as-link">@item.Name</a>
+                                }
+                                <hr class="navbar-thin-divider" />
+                            }
+
+                            <div class="bottom-fixed">
+                              <hr class="navbar-thin-divider" />
+                              <form class="" asp-page="./QuickStart" method="post">
+                                  <button class="button is-dark">
+                                      <span class="icon"><i class="fas fa-bolt"></i></span>
+                                      <span>Instant Launch</span>
+                                  </button>
+                              </form>
+                              <hr class="navbar-thin-divider" />
+                              <a asp-page="/Projects/Index" class="button is-dark">
+                                  <span class="icon"><i class="fas fa-layer-group"></i></span>
+                                  <span>Manage Projects</span>
+                              </a>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="=navbar-item">
+                        <span class="nav-separator"></span>
+                    </span>
                 </div>
 
                 <div class="navbar-menu navbar-end" id="navMenu">
-                    @if (Model.ActiveProject != null && Model.Projects.Count > 1)
+                    @if (Model.ActiveProject != null)
                     {
                         var isRunning = ProcessManager.IsRunning(Model.ActiveProject);
                         <div class="py-2 mx-6">
@@ -125,7 +143,6 @@
         <div class="columns">
             <aside id="main-sidebar" class="column is-2 aside">
                 <nav class="menu active-menu--<%= activeMenu %>">
-                    <p class="menu-label">General</p>
                     <ul class="menu-list">
                         <li>
                             <a asp-page="/Home/Index">
@@ -165,7 +182,7 @@
                     <ul class="menu-list">
                         <li>
                             <a asp-page="/Projects/Index">
-                                <span class="icon is-small"><i class="fas fa-project-diagram"></i></span>
+                                <span class="icon is-small"><i class="fas fa-layer-group"></i></span>
                                 <span class="menu-text">Projects</span>
                             </a>
 

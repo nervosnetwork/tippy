@@ -48,8 +48,19 @@ body {
     border-left: 0.5px solid rgba(255, 255, 255, 0.2);
 }
 
+.navbar-thin-divider {
+    height: 1px;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
 .project-menu-container {
     width: 168px;
+    height: 50px;
+}
+
+.project-menu-container .project-menu-link {
+    width: 100%;
 }
 
 .project-menu-container .navbar-link {
@@ -67,6 +78,12 @@ body {
     right: 0;
 }
 
+.project-menu-container .navbar-dropdown .bottom-fixed .button {
+    font-size: 14px;
+    width: 100%;
+    justify-content: left;
+}
+
 #main-sidebar {
     width: 180px;
 }
@@ -76,4 +93,8 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
+}
+
+.menu-list a.is-active {
+    background-color: #B43FFE;
 }
