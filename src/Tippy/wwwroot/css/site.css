@@ -49,6 +49,10 @@ body {
     height: 60px;
 }
 
+.navbar-dropdown {
+    background-color: transparent;
+}
+
 .navbar-brand, .navbar-tabs {
     min-height: 44px;
 }
