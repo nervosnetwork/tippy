@@ -124,8 +124,14 @@ body {
     background-color: #7F519C;
 }
 
+.project-box:hover {
+    background-color: #4F5162;
+}
+
 .project-box .button.is-dark {
     background-color: transparent;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .project-box .button.is-dark:hover {
@@ -143,4 +149,40 @@ body {
 
 .has-text-stopped {
     color: #FF696D;
+}
+
+.table thead {
+    background-color: #4F5162;
+}
+
+.table tr {
+    height: 40px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.table td, .table th {
+    border-color: #323338;
+}
+
+.table.is-narrow td, .table.is-narrow th {
+    padding: 0.25em 1em;
+}
+
+.table.is-striped tbody tr:not(.is-selected) {
+    background-color: #454653;
+}
+
+.table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+    background-color: #3E3F49;
+}
+
+.table.is-striped tbody tr:hover {
+    background-color: #606274;
+}
+
+.table.is-striped tbody td a {
+    color: #18EFB1;
 }

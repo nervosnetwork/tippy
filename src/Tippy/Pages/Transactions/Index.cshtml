@@ -10,10 +10,10 @@
     <table class="table is-striped is-narrow is-fullwidth is-hoverable">
         <thead>
             <tr>
-                <th>Transaction hash</th>
-                <th>Height</th>
-                <th>Capacity</th>
-                <th>Time</th>
+                <th class="has-text-left">Transaction hash</th>
+                <th class="has-text-left">Height</th>
+                <th class="has-text-left">Capacity</th>
+                <th class="has-text-left">Time</th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
                         </a>
                     </td>
                     <td>
-                        <a asp-page="/Explorer" asp-route-ref="block/@tx.Attributes.BlockNumber">
+                        <a asp-page="/Blocks/Details" asp-route-id="@tx.Attributes.BlockNumber">
                             @tx.Attributes.BlockNumber
                         </a>
                     </td>

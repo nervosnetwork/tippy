@@ -10,12 +10,12 @@
     <table class="table is-striped is-narrow is-fullwidth is-hoverable">
         <thead>
             <tr>
-                <th>Height</th>
-                <th>Transactions</th>
-                <th>Reward</th>
-                <th>Miner</th>
-                <th>Time</th>
-                <th>Action</th>
+                <th class="has-text-left">Height</th>
+                <th class="has-text-left">Transactions</th>
+                <th class="has-text-left">Reward</th>
+                <th class="has-text-left">Miner</th>
+                <th class="has-text-left">Time</th>
+                <th class="has-text-left">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -47,11 +47,10 @@
                     <td>@block.Attributes.Date()</td>
                     <td>
                         <form method="post">
-                            <button asp-page="./RollBackTo" asp-route-hash="@block.Attributes.BlockHash" class="button is-danger is-small">
+                            <button asp-page="./RollBackTo" asp-route-hash="@block.Attributes.BlockHash" class="button is-danger is-small" title="Roll back to this block">
                                 <span class="icon">
-                                    <i class="fas fa-undo"></i>
+                                    <i class="fas fa-cut"></i>
                                 </span>
-                                <span>Roll back to</span>
                             </button>
                         </form>
                     </td>
