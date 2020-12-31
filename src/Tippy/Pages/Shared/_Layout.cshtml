@@ -1,5 +1,6 @@
 ﻿@model Tippy.Pages.PageModelBase
 @using Tippy.Ctrl;
+@using Tippy.Util;
 <!DOCTYPE html>
 
 <html>
@@ -67,6 +68,32 @@
                     <span class="=navbar-item">
                         <span class="nav-separator"></span>
                     </span>
+                </div>
+
+                <div class="mx-4 my-2">
+                    <div class="heading my-0">Current Block</div>
+                    @if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
+                    {
+                        <div class="title is-6">@Model.TipBlockNumber</div>
+                    }
+                    else
+                    { 
+                        <div class="title is-6">NA</div>
+                    }
+                </div>
+
+                <div class="mx-4"></div>
+
+                <div class="mx-4 my-2">
+                    <div class="heading my-0">Epoch</div>
+                    @if (Model.EpochView != null)
+                    {
+                        <div class="title is-6">@Hex.HexToUInt64(Model.EpochView!.Number)</div>
+                    }
+                    else
+                    {
+                      <div class="title is-6">NA</div>
+                    }
                 </div>
 
                 <div class="navbar-menu navbar-end" id="navMenu">
@@ -150,7 +177,7 @@
                                 <span class="menu-text">Dashboard</span>
                             </a>
                         </li>
-                        @if (Model.ActiveProject != null)
+                        @if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
                         { 
                             <li>
                                 <a asp-page="/Blocks/Index">
@@ -217,7 +244,7 @@
             <main class="column main pr-5">
                 @if (ViewData["ErrorMessage"] is string errorMessage && errorMessage.Length > 0)
                 {
-                    <div class=ontainer is-fullhd pt-5">
+                    <div class="is-fullhd pt-5 mb-3">
                         <div class="notification is-danger">
                             <p class="m-3">
                                 <span class="icon has-text-white">
@@ -225,8 +252,9 @@
                                 </span>
                             </p>
                             <p>@errorMessage</p>
-                        </div>ViewData.Remove("ErrorMessage");
+                        </div>
                     </div>
+                    { ViewData.Remove("ErrorMessage"); }
                 }
 
                 @RenderBody()

@@ -13,9 +13,7 @@ namespace Tippy.Pages.Home
         {
         }
 
-        public UInt64 TipBlockNumber { get; set; }
         public string MinerAddress { get; set; } = "";
-        public EpochView? EpochView { get; set; }
 
         [TempData]
         public string Message { get; set; } = "";
@@ -31,8 +29,6 @@ namespace Tippy.Pages.Home
             if (IsNodeRunning)
             {
                 Client rpc = new ($"http://localhost:{ActiveProject!.NodeRpcPort}");
-                EpochView = rpc.GetCurrentEpoch();
-                TipBlockNumber = rpc.GetTipBlockNumber();
                 MinerAddress = Address.GenerateAddress(
                     new Script
                     {

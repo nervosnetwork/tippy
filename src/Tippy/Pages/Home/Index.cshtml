@@ -50,220 +50,153 @@
 
 @if (Model.ActiveProject != null)
 {
-    <div class="columns is-multiline">
+    <div class="columns is-multiline dashboard-boxes">
         <div class="column">
-            <div class="box notification is-primary">
+            <div class="box" style="background-color: #7F519C;">
                 <div class="heading">Info</div>
                 <div class="title">@Model.ActiveProject.Name</div>
-                <div class="level">
-                    <div class="level-item">
-                        <div class="">
-                            <div class="heading">Chain type</div>
-                            <div class="title is-5">@Model.ActiveProject.Chain.ToString().ToLower()</div>
-                        </div>
-                    </div>
-                    <div class="level-item">
-                        <div class="">
-                            <div class="heading">RPC</div>
-                            <div class="title is-5">http://localhost:@Model.ActiveProject.NodeRpcPort</div>
-                        </div>
-                    </div>
-                </div>
+                <div class="heading">Chain type</div>
+                <div class="title is-5">@Model.ActiveProject.Chain.ToString().ToLower()</div>
+                <div class="heading">RPC</div>
+                <div class="title is-5">http://localhost:@Model.ActiveProject.NodeRpcPort</div>
             </div>
         </div>
         @if (Model.IsNodeRunning)
         {
             <div class="column">
-                <div class="box notification is-warning">
-                    <div class="heading">Actions</div>
+                <div class="box" style="background-color: #6d6f5b;">
+                    <div class="heading">Status</div>
                     <div class="title">Running</div>
-                    <div class="level">
-                        <div class="">
-                            <div class="heading"></div>
-                            <div class="title is-5">
-                                <form method="post">
-                                    <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-danger is-small my-1">
-                                        <span class="icon">
-                                            <i class="fas fa-pause"></i>
-                                        </span>
-                                        <span>Stop</span>
-                                    </button>
-                                    <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.Id" class="button is-info is-small my-1">
-                                        <span class="icon">
-                                            <i class="fas fa-redo"></i>
-                                        </span>
-                                        <span>Restart</span>
-                                    </button>
-                                </form>
-                            </div>
+                    <form method="post" class="columns">
+                        <div class="column is-half">
+                            <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #ff6960; width: 100%;">
+                                <span class="icon">
+                                    <i class="fas fa-pause"></i>
+                                </span>
+                                <span>Stop</span>
+                            </button>
                         </div>
-                    </div>
+                        <div class="column is-half">
+                            <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #9261f0; width: 100%;">
+                                <span class="icon">
+                                    <i class="fas fa-redo"></i>
+                                </span>
+                                <span>Restart</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="column">
-                <div class="box notification is-info">
+                <div class="box" style="background-color: #56787B">
                     <div class="heading">Current Block</div>
                     <div class="title">@Model.TipBlockNumber</div>
-                    <div class="level">
-                        @if (Model.ActiveProject.Chain == Tippy.Core.Models.Project.ChainType.Dev)
-                        {
-                            <div class="level-item">
-                                <div class="">
-                                    <div class="heading">Miner</div>
-                                    <div class="title is-5"><span style="font-size: 60%;">@Model.MinerAddress</span></div>
-                                    @if (Model.IsMinerRunning)
-                                    {
-                                        <form method="post">
-                                            <button asp-page="/Miners/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-danger is-small my-1">
-                                                <span class="icon">
-                                                    <i class="fas fa-pause"></i>
-                                                </span>
-                                                <span>Stop</span>
-                                            </button>
-                                        </form>
-                                    }
-                                    else
-                                    {
-                                        <form method="post">
-                                            <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" class="button is-success is-small my-1">
-                                                <span class="icon">
-                                                    <i class="fas fa-play"></i>
-                                                </span>
-                                                <span>Start</span>
-                                            </button>
-
-                                            <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" class="button is-success is-small my-1">
-                                                <span class="icon">
-                                                    <i class="fas fa-hammer"></i>
-                                                </span>
-                                                <span>Mine one block</span>
-                                            </button>
-                                        </form>
-
-                                    }
-                                </div>
+                    @if (Model.ActiveProject.Chain == Tippy.Core.Models.Project.ChainType.Dev)
+                    {
+                    <div class="heading">Miner</div>
+                    <div class="title is-5"><span style="font-size: 70%;">@Model.MinerAddress</span></div>
+                    @if (Model.IsMinerRunning)
+                    {
+                        <form method="post" class="columns">
+                            <div class="column is-half">
+                                <button asp-page="/Miners/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #ff6960; width: 100%;">
+                                    <span class="icon">
+                                        <i class="fas fa-pause"></i>
+                                    </span>
+                                    <span>Stop</span>
+                                </button>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="level-item">
-                                <div class="">
-                                    <div class="heading">Miner</div>
-                                    <div class="title is-5">Mining is disabled for @Model.ActiveProject.Chain.ToString().ToLower()</div>
-                                </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post" class="columns">
+                            <div class="column is-half">
+                                <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                    <span class="icon">
+                                        <i class="fas fa-play"></i>
+                                    </span>
+                                    <span>Start</span>
+                                </button>
                             </div>
-
-                        }
-                    </div>
+                            <div class="column is-half">
+                                <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                    <span class="icon">
+                                        <i class="fas fa-hammer"></i>
+                                    </span>
+                                    <span style="font-size: 80%;">Mine a block</span>
+                                </button>
+                            </div>
+                        </form>
+                    }
+                }
+                else
+                {
+                    <div class="heading">Miner</div>
+                    <div class="title is-5">Mining is disabled for @Model.ActiveProject.Chain.ToString().ToLower()</div>
+                }
                 </div>
             </div>
             <div class="column">
-                <div class="box notification is-danger">
+                <div class="box" style="background-color: #6C5054">
                     <div class="heading">Epoch</div>
                     <div class="title">@Hex.HexToUInt64(Model.EpochView!.Number)</div>
-                    <div class="level">
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">Current</div>
-                                @{ var current = Model.TipBlockNumber - Hex.HexToUInt64(Model.EpochView!.StartNumber) + 1; }
-                                <div class="title is-5">@current</div>
-                            </div>
-                        </div>
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">Length</div>
-                                <div class="title is-5">@Hex.HexToUInt64(Model.EpochView!.Length)</div>
-                            </div>
-                        </div>
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">Compact Target</div>
-                                <div class="title is-5">@Hex.HexToUInt32(Model.EpochView!.CompactTarget)</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="heading">Current</div>
+                    @{ var current = Model.TipBlockNumber - Hex.HexToUInt64(Model.EpochView!.StartNumber) + 1; }
+                    <div class="title is-5">@current</div>
+                    <div class="heading">Length</div>
+                    <div class="title is-5">@Hex.HexToUInt64(Model.EpochView!.Length)</div>
+                    <div class="heading">Compact Target</div>
+                    <div class="title is-5">@Hex.HexToUInt32(Model.EpochView!.CompactTarget)</div>
                 </div>
             </div>
         }
         else
         {
             <div class="column">
-                <div class="box notification is-warning">
-                    <div class="heading">Actions</div>
+                <div class="box" style="background-color: #6d6f5b;">
+                    <div class="heading">Status</div>
                     <div class="title">Stopped</div>
-                    <div class="level">
-                        <div class="">
-                            <div class="heading"></div>
-                            <div class="title is-5">
-                                <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.Id" method="post">
-                                    <button class="button is-success is-small my-1">
-                                        <span class="icon">
-                                            <i class="fas fa-play"></i>
-                                        </span>
-                                        <span>Start</span>
-                                    </button>
-                                </form>
-                            </div>
+                    <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.Id" method="post" class="columns">
+                        <div class="column is-half">
+                            <button class="button is-light is-medium my-1" style="color: #00cc9b; width: 100%;">
+                                <span class="icon">
+                                    <i class="fas fa-play"></i>
+                                </span>
+                                <span>Start</span>
+                            </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <div class="column">
-                <div class="box notification is-info">
+                <div class="box" style="background-color: #56787B">
                     <div class="heading">Current Block</div>
                     <div class="title">NA</div>
-                    <div class="level">
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">&nbsp;</div>
-                                <div class="title is-5">&nbsp;</div>
-                            </div>
-                        </div>
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">&nbsp;</div>
-                                <div class="title is-5">&nbsp;</div>
-                            </div>
-                        </div>
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">&nbsp;</div>
-                                <div class="title is-5">&nbsp;</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="heading">&nbsp;</div>
+                    <div class="title is-5">&nbsp;</div>
+                    <div class="heading">&nbsp;</div>
+                    <div class="title is-5">&nbsp;</div>
+                    <div class="heading">&nbsp;</div>
+                    <div class="title is-5">&nbsp;</div>
                 </div>
             </div>
             <div class="column">
-                <div class="box notification is-danger">
+                <div class="box" style="background-color: #6C5054">
                     <div class="heading">Epoch</div>
                     <div class="title">NA</div>
-                    <div class="level">
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">&nbsp;</div>
-                                <div class="title is-5">&nbsp;</div>
-                            </div>
-                        </div>
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">&nbsp;</div>
-                                <div class="title is-5">&nbsp;</div>
-                            </div>
-                        </div>
-                        <div class="level-item">
-                            <div class="">
-                                <div class="heading">&nbsp;</div>
-                                <div class="title is-5">&nbsp;</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="heading">&nbsp;</div>
+                    <div class="title is-5">&nbsp;</div>
+                    <div class="heading">&nbsp;</div>
+                    <div class="title is-5">&nbsp;</div>
+                    <div class="heading">&nbsp;</div>
+                    <div class="title is-5">&nbsp;</div>
                 </div>
             </div>
         }
     </div>
 
-    @if (Model.IsNodeRunning)
+    @if (Model.IsNodeRunning && false)
     {
         <div class="columns is-multiline">
             <div class="column is-6">

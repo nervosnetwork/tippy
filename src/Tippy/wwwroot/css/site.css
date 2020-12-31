@@ -29,6 +29,7 @@ body {
     height: calc(100vh - 160px);
     border: solid 1px #ccc;
     padding: 20px;
+    background-color: #3E3F49;
 }
 
 .button-as-link {
@@ -50,7 +51,6 @@ body {
 }
 
 .navbar-dropdown {
-    background-color: transparent;
 }
 
 .navbar-brand, .navbar-tabs {
@@ -193,4 +193,8 @@ body {
 
 .table.is-striped tbody td a {
     color: #18EFB1;
+}
+
+.dashboard-boxes .box {
+    min-height: 298px;
 }

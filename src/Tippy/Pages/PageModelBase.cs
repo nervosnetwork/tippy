@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ckb.Rpc;
+using Ckb.Types;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
+using Tippy.Ctrl;
 
 namespace Tippy.Pages
 {
@@ -18,6 +22,8 @@ namespace Tippy.Pages
 
         public IList<Project> Projects { get; set; } = new List<Project>();
         public Project? ActiveProject { get; set; }
+        public UInt64 TipBlockNumber { get; set; }
+        public EpochView? EpochView { get; set; }
 
         protected PageModelBase(Tippy.Core.Data.DbContext context)
         {
@@ -31,6 +37,13 @@ namespace Tippy.Pages
             if (ActiveProject == null && Projects.Count > 0)
             {
                 ActiveProject = Projects[0]; // Fall back to none active project
+            }
+
+            if (ActiveProject != null && ProcessManager.IsRunning(ActiveProject))
+            {
+                Client rpc = new($"http://localhost:{ActiveProject!.NodeRpcPort}");
+                EpochView = rpc.GetCurrentEpoch();
+                TipBlockNumber = rpc.GetTipBlockNumber();
             }
 
             await next();
