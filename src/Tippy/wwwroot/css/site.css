@@ -32,14 +32,22 @@ body {
     background-color: #3E3F49;
 }
 
+.ansi-black-fg {
+    color: black;
+}
+
+.ansi-blue-fg {
+    color: rgb(81, 129, 255);
+}
+
 .button-as-link {
-	background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }
 
 .hash-text {

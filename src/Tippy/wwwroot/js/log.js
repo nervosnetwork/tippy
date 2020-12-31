@@ -1,7 +1,8 @@
 "use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/loghub").build();
-var ansiUp = new AnsiUp;
+var ansiUp = new AnsiUp();
+ansiUp.use_classes = true;
 
 connection.on("ReceiveLog", function (id, log) {
     var activeId = document.getElementById("project-id").value;
