@@ -13,7 +13,8 @@ namespace Tippy.Util
             var connections = ipGlobalProperties.GetActiveTcpConnections().Select(c => c.LocalEndPoint);
             var tcpListeners = ipGlobalProperties.GetActiveTcpListeners();
             var udpListeners = ipGlobalProperties.GetActiveUdpListeners();
-            return connections.Concat(tcpListeners)
+            //return connections.Concat(tcpListeners)
+            return tcpListeners
                 .Concat(udpListeners)
                 .Select(e => e.Port)
                 .ToList();
