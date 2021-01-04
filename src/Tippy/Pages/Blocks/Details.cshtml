@@ -2,4 +2,192 @@
 @model Tippy.Pages.Blocks.DetailsModel
 @{ ViewData["Title"] = "Block"; }
 
-<h1 class="title">Block</h1>
+<h1 class="title">Block <span style="font-size:70%;">@Model.BlockDetail.BlockHash</span></h1>
+
+<div class="box block-box">
+    <div class="columns is-multiline">
+        <div class="column is-half p-6">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Block Height</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.Number</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Transactions</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.TransactionsCount</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Proposal Transactions</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.ProposalsCount</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Miner Reward</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.MinerReward &nbsp; @Model.BlockDetail.RewardStatus</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Difficulty</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.Difficulty</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Nonce</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.Nonce</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-half p-6" style="border-left: 1px solid #808080;">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Miner</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>
+                            <a asp-page="/Explorer" asp-route-ref="address/@Model.BlockDetail.MinerHash" class="hash-text">
+                                @Model.BlockDetail.MinerHash
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Epoch</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.Epoch</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Epoch Start Number</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.StartNumber</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Block Index</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.BlockIndexInEpoch/@Model.BlockDetail.Length</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Timestamp</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.Date()</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Uncle Count</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.BlockDetail.UnclesCount</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-12 px-6" style="border-top: 1px solid #808080;">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Transactions Root</label>
+                    </div>
+                </div>
+                <div class="level-left">
+                    <div class="level-item">
+                        <div><strong>@Model.BlockDetail.TransactionsRoot</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box block-box">
+    <h2>Transactions(@Model.BlockDetail.TransactionsCount)</h2>
+    <div>todo</div>
+</div>

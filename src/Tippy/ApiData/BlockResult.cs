@@ -85,5 +85,11 @@ namespace Tippy.ApiData
 
         [JsonPropertyName("miner_reward")]
         public string MinerReward { get; set; } = default!;
+
+        public DateTime Date()
+        {
+            DateTime date = new (1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            return date.AddSeconds(double.Parse(Timestamp) / 1000).ToLocalTime();
+        }
     }
 }

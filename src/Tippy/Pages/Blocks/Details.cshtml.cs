@@ -16,9 +16,9 @@ namespace Tippy.Pages.Blocks
         {
         }
 
-        public Result<BlockDetailResult> BlockResult { get; set; } = default!;
+        public BlockDetailResult BlockDetail { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGet(int? id)
         {
             // id could be either a number or a hash
             if (id == null)
@@ -39,43 +39,44 @@ namespace Tippy.Pages.Blocks
                 return NotFound();
             }
 
-            BlockDetailResult blockDetail = new();
-            blockDetail.BlockHash = block.Header.Hash;
-            blockDetail.TransactionsRoot = block.Header.TransactionsRoot;
-            blockDetail.Number = $"{id}";
-            blockDetail.Version = $"{Hex.HexToUInt32(block.Header.Version)}";
-            blockDetail.ProposalsCount = $"{block.Proposals.Length}";
-            blockDetail.UnclesCount = $"{block.Uncles.Length}";
-            blockDetail.Timestamp = $"{Hex.HexToUInt64(block.Header.Timestamp)}";
-            blockDetail.TransactionsCount = $"{block.Transactions.Length}";
-            blockDetail.Nonce = $"{Hex.HexToBigInteger(block.Header.Nonce)}";
-            uint compactTarget = Hex.HexToUInt32(block.Header.CompactTarget);
-            blockDetail.Difficulty = Difficulty.CompactToDifficulty(compactTarget).ToString();
+            BlockDetail = new()
+            {
+                BlockHash = block.Header.Hash,
+                TransactionsRoot = block.Header.TransactionsRoot,
+                Number = $"{id}",
+                Version = $"{Hex.HexToUInt32(block.Header.Version)}",
+                ProposalsCount = $"{block.Proposals.Length}",
+                UnclesCount = $"{block.Uncles.Length}",
+                Timestamp = $"{Hex.HexToUInt64(block.Header.Timestamp)}",
+                TransactionsCount = $"{block.Transactions.Length}",
+                Nonce = $"{Hex.HexToBigInteger(block.Header.Nonce)}",
+                Difficulty = Difficulty.CompactToDifficulty(Hex.HexToUInt32(block.Header.CompactTarget)).ToString()
+            };
 
             // Miner Address
             string prefix = ActiveProject.Chain == Project.ChainType.Mainnet ? "ckb" : "ckt";
             string cellbaseWitness = block.Transactions[0].Witnesses[0];
             Script script = CellbaseWitness.Parse(cellbaseWitness);
             string minerAddress = Ckb.Address.Address.GenerateAddress(script, prefix);
-            blockDetail.MinerHash = minerAddress;
+            BlockDetail.MinerHash = minerAddress;
 
             // Epoch info
             var epochInfo = EpochInfo.Parse(Hex.HexToUInt64(block.Header.Epoch));
-            blockDetail.StartNumber = "0";
-            blockDetail.Length = epochInfo.Length.ToString();
-            blockDetail.Epoch = epochInfo.Number.ToString();
-            blockDetail.BlockIndexInEpoch = epochInfo.Index.ToString();
+            BlockDetail.StartNumber = "0";
+            BlockDetail.Length = epochInfo.Length.ToString();
+            BlockDetail.Epoch = epochInfo.Number.ToString();
+            BlockDetail.BlockIndexInEpoch = epochInfo.Index.ToString();
 
             EpochView? epochView = client.GetEpochByNumber(epochInfo.Number);
             if (epochView != null)
             {
-                blockDetail.StartNumber = Hex.HexToUInt64(epochView.StartNumber).ToString();
+                BlockDetail.StartNumber = Hex.HexToUInt64(epochView.StartNumber).ToString();
             }
 
             // reward
             string blockHash = block.Header.Hash;
-            blockDetail.RewardStatus = "pending";
-            blockDetail.MinerReward = "";
+            BlockDetail.RewardStatus = "pending";
+            BlockDetail.MinerReward = "";
             BlockEconomicState? economicState = client.GetBlockEconomicState(blockHash);
             if (economicState != null)
             {
@@ -88,15 +89,10 @@ namespace Tippy.Pages.Blocks
                     reward.Committed,
                 };
                 UInt64 minerReward = rewards.Select(r => Hex.HexToUInt64(r)).Aggregate((sum, cur) => sum + cur);
-                blockDetail.MinerReward = minerReward.ToString();
-                blockDetail.RewardStatus = "issued";
+                BlockDetail.MinerReward = minerReward.ToString();
+                BlockDetail.RewardStatus = "issued";
             }
 
-            BlockResult = new("block", blockDetail);
-            if (BlockResult == null)
-            {
-                return NotFound();
-            }
             return Page();
         }
     }
