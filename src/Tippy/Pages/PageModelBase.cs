@@ -30,6 +30,10 @@ namespace Tippy.Pages
             DbContext = context;
         }
 
+        protected bool IsMainnet() => ActiveProject?.Chain == Project.ChainType.Mainnet;
+
+        protected Client Rpc() => new Client($"http://localhost:{ActiveProject!.NodeRpcPort}");
+
         public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
             Projects = await DbContext.Projects.ToListAsync();

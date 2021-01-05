@@ -4,9 +4,20 @@
 
 <h1 class="title">Block <span style="font-size:70%;">@Model.BlockDetail.BlockHash</span></h1>
 
+<div class="my-2">
+    <form method="post">
+        <button asp-page="./RollBackTo" asp-route-hash="@Model.BlockDetail.BlockHash" class="button is-danger is-small" title="Roll back to this block">
+            <span class="icon">
+                <i class="fas fa-cut"></i>
+            </span>
+            <span>Roll back to this block</span>
+        </button>
+    </form>
+</div>
+
 <div class="box block-box">
     <div class="columns is-multiline">
-        <div class="column is-half p-6">
+        <div class="column is-half">
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
@@ -86,7 +97,7 @@
             </div>
         </div>
 
-        <div class="column is-half p-6" style="border-left: 1px solid #808080;">
+        <div class="column is-half" style="border-left: 1px solid #808080;">
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
@@ -170,7 +181,7 @@
             </div>
         </div>
 
-        <div class="column is-12 px-6" style="border-top: 1px solid #808080;">
+        <div class="column is-12" style="border-top: 1px solid #808080;">
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
@@ -189,5 +200,13 @@
 
 <div class="box block-box">
     <h2>Transactions(@Model.BlockDetail.TransactionsCount)</h2>
-    <div>todo</div>
+    <div id="txs">Loading...</div>
 </div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#txs").load("/Blocks/Transactions?blockHash=@Model.BlockDetail.BlockHash");
+        });
+    </script>
+}

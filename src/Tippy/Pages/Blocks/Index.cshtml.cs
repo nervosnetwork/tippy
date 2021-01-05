@@ -44,10 +44,6 @@ namespace Tippy.Pages.Blocks
             Result = GetBlocks(client, startBlock, endBlock, meta);
         }
 
-        private Client Rpc() => new Client($"http://localhost:{ActiveProject!.NodeRpcPort}");
-
-        private bool IsMainnet() => ActiveProject?.Chain == Project.ChainType.Mainnet;
-
         private ArrayResult<BlockResult> GetBlocks(Client client, int startBlockNumber, int endBlockNumber, Meta? meta = null)
         {
             BlockResult[] blockResults = Enumerable.Range(startBlockNumber, endBlockNumber - startBlockNumber + 1)

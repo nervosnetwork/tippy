@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-using Ckb.Rpc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,17 +9,11 @@ namespace Tippy.Pages.Blocks
         {
         }
 
-        public async Task<IActionResult> OnPostAsync(string? hash)
+        public IActionResult OnPost(string hash)
         {
-            if (hash == null)
-            {
-                return NotFound();
-            }
-
             if (ActiveProject != null)
             {
-                Client rpc = new($"http://localhost:{ActiveProject.NodeRpcPort}");
-                rpc.Truncate(hash);
+                Rpc().Truncate(hash);
             }
 
             var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();

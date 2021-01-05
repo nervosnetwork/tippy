@@ -40,8 +40,6 @@ namespace Tippy.Pages.Transactions
             Result = GetTransactions(client, skipCount, (int)pageSize, tipBlockNumber, meta);
         }
 
-        private Client Rpc() => new Client($"http://localhost:{ActiveProject!.NodeRpcPort}");
-
         private static ArrayResult<TransactionResult> GetTransactions(Client client, ulong skipCount, int size, ulong tipBlockNumber, Meta? meta = null)
         {
             ulong currentSkipCount = 0;
