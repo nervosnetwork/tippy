@@ -26,7 +26,7 @@
                     <div class="level">
                         <div class="level-left">
                             <div class="level-item">
-                                <a asp-page="/Explorer" asp-route-ref="address/@input.AddressHash" class="hash-text">
+                                <a asp-page="/Addresses/Details" asp-route-address="@input.AddressHash" class="hash-text">
                                     @input.AddressHash.Substring(0, 12)...@input.AddressHash.Substring(input.AddressHash.Length - 12, 12)
                                 </a>
                             </div>
@@ -50,7 +50,7 @@
                 <div class="level">
                     <div class="level-left">
                         <div class="level-item">
-                            <a asp-page="/Explorer" asp-route-ref="address/@output.AddressHash" class="hash-text">
+                            <a asp-page="/Addresses/Details" asp-route-address="@output.AddressHash" class="hash-text">
                                 @output.AddressHash.Substring(0, 12)...@output.AddressHash.Substring(output.AddressHash.Length - 12, 12)
                             </a>
                         </div>

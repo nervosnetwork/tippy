@@ -31,8 +31,10 @@ namespace Tippy.Pages
         }
 
         protected bool IsMainnet() => ActiveProject?.Chain == Project.ChainType.Mainnet;
+        protected string AddressPrefix() => IsMainnet() ? "ckb" : "ckt";
 
         protected Client Rpc() => new Client($"http://localhost:{ActiveProject!.NodeRpcPort}");
+        protected IndexerClient IndexerRpc() => new IndexerClient($"http://localhost:{ActiveProject!.IndexerRpcPort}");
 
         public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {

@@ -40,7 +40,7 @@
                         }
                     </td>
                     <td>
-                        <a asp-page="/Explorer" asp-route-ref="address/@block.Attributes.MinerHash" class="hash-text">
+                        <a asp-page="/Addresses/Details" asp-route-address="@block.Attributes.MinerHash" class="hash-text">
                             @block.Attributes.MinerHash
                         </a>
                     </td>
