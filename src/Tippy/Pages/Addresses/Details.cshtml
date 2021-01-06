@@ -3,3 +3,92 @@
 @{ ViewData["Title"] = "Address"; }
 
 <h1 class="title">Addrerss <span style="font-size:70%;">@Model.AddressResult.AddressHash</span></h1>
+
+@{
+    var balance = decimal.Parse(Model.AddressResult.Balance) / 100_000_000;
+}
+
+<div class="box address-box">
+    <div class="columns is-multiline">
+        <div class="column is-half">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Balance</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@balance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-half" style="border-left: 1px solid #808080;">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Live Cells</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.AddressResult.LiveCellsCount</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-12">
+            <h2>Lock Script</h2>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Code Hash</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="input">
+                                @Model.AddressResult.LockScript.CodeHash
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Args</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="input">
+                                @Model.AddressResult.LockScript.Args
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Type</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="input">
+                                @Model.AddressResult.LockScript.HashType
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box block-box">
+    <h2>Transactions</h2>
+    <div id="txs">TODO, not implemented yet...</div>
+</div>
