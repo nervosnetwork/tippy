@@ -5,8 +5,25 @@ on:
     branches: [ ci-publish-job ]
 
 jobs:
-  publish-osx:
+  publish:
+    name: Publish ${{ matrix.runtime }}
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            short_name: linux
+            runtime: linux-x64
+            artifact_name: tippy-linux-x64
+          - os: windows-latest
+            short_name: win
+            runtime: win-x64
+            artifact_name: tippy-win-x64
+          - os: macos-latest
+            short_name: mac
+            runtime: osx-x64
+            artifact_name: tippy-osx-x64
 
     steps:
     - name: Create release
@@ -16,13 +33,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v0.1.1-setup #${{ github.ref }}
-        release_name: Tippy ${{ github.ref }}
+        release_name: ${{ github.ref }}
         body: |
           TODO
-          - TODO
-          - TODO
         draft: true
-
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -31,18 +45,18 @@ jobs:
       with:
         dotnet-version: 5.0.100
     - name: Fetch ckb binaries
-      run: ./tools/download-binaries.sh mac
+      run: ./tools/download-binaries.sh ${{ matrix.short_name }}
     - name: Build
       run: dotnet build -c Release
     - name: Publish
-      run: dotnet publish src/Tippy/Tippy.csproj -c Release -r osx-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/tippy-osx-x64
+      run: dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/${{ matrix.artifact_name }}
     - name: Archive files
       uses: papeloto/action-zip@v1
       with:
-        files: ./bin/publish/tippy-osx-x64
-        dest: tippy-osx-x64.zip
+        files: ./bin/publish/${{ matrix.artifact_name }}
+        dest: ${{ matrix.artifact_name }}.zip
     - name: Generate checksum
-      run: sha256sum tippy-osx-x64.zip > tippy-osx-x64.sha256.txt
+      run: sha256sum ${{ matrix.artifact_name }}.zip > ${{ matrix.artifact_name }}.sha256.txt
     - name: Upload binary
       id: upload-release-binary
       uses: actions/upload-release-asset@v1
@@ -50,8 +64,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/tippy-osx-x64.zip
-        asset_name: tippy-osx-x64.zip
+        asset_path: ${{ github.workspace }}/${{ matrix.artifact_name }}.zip
+        asset_name: $${ matrix.artifact_name }}.zip
         asset_content_type: application/zip
     - name: Upload checksum
       id: upload-release-checksum
@@ -60,6 +74,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/tippy-osx-x64.sha256.txt
-        asset_name: tippy-osx-x64.sha256.txt
+        asset_path: ${{ github.workspace }}/${{ matrix.artifact_name }}.sha256.txt
+        asset_name: $${ matrix.artifact_name }}.sha256.txt
         asset_content_type: text/plain
