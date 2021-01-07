@@ -49,6 +49,8 @@ jobs:
     - name: Draft release
       id: release_drafter
       uses: release-drafter/release-drafter@v5
+      with:
+        tag: v0.1.1-setup #${{ github.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload files
