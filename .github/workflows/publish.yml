@@ -7,8 +7,35 @@ on:
     types: [closed]
 
 jobs:
+  release:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get tag
+      id: get_tag
+      env:
+        HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      run: echo ::set-output name=tag::${HEAD_REF#release\/}
+    - name: Draft release
+      id: release_drafter
+      uses: release-drafter/release-drafter@v5
+      with:
+        tag: ${{ steps.get_tag.outputs.tag }}
+        name: ${{ steps.get_tag.outputs.tag }}
+        version: ${{ steps.get_tag.outputs.tag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Output upload URL file
+      run: echo "${{ steps.release_drafter.outputs.upload_url }}" > upload_url.txt
+    - name: Save upload URL file
+      uses: actions/upload-artifact@v1
+      with:
+        name: upload_url
+        path: upload_url.txt
+
   publish:
     name: Publish ${{ matrix.runtime }}
+    needs: [release]
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
 
@@ -29,20 +56,18 @@ jobs:
             artifact_name: tippy-osx-x64
 
     steps:
-    - name: Get tag
-      id: get_tag
-      env:
-        HEAD_REF: ${{ github.event.pull_request.head.ref }}
-      run: echo ::set-output name=tag::${HEAD_REF#release\/}
-    - name: Draft release
-      id: release_drafter
-      uses: release-drafter/release-drafter@v5
+    - name: Load upload URL file
+      uses: actions/download-artifact@v1
       with:
-        tag: ${{ steps.get_tag.outputs.tag }}
-        name: ${{ steps.get_tag.outputs.tag }}
-        version: ${{ steps.get_tag.outputs.tag }}
+        name: upload_url
+    - name: Get upload URL
+      id: get_upload_url
+      run: |
+        value=`cat upload_url/upload_url.txt`
+        echo ::set-output name=upload_url::$value
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG_REF_NAME: ${{ github.ref }}
+        REPOSITORY_NAME: ${{ github.repository }}
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -69,7 +94,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.release_drafter.outputs.upload_url }}
+        upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
         asset_path: release/${{ matrix.artifact_name }}.zip
         asset_name: ${{ matrix.artifact_name }}.zip
         asset_content_type: application/zip
