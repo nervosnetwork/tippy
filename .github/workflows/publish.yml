@@ -41,8 +41,10 @@ jobs:
       with:
         files: ./bin/publish/tippy-osx-x64
         dest: tippy-osx-x64.zip
-    - name: Upload release asset
-      id: upload-release-asset
+    - name: Generate checksum
+      run: sha256sum tippy-osx-x64.zip > tippy-osx-x64.sha256.txt
+    - name: Upload binary
+      id: upload-release-binary
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,3 +53,13 @@ jobs:
         asset_path: ${{ github.workspace }}/tippy-osx-x64.zip
         asset_name: tippy-osx-x64.zip
         asset_content_type: application/zip
+    - name: Upload checksum
+      id: upload-release-checksum
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ github.workspace }}/tippy-osx-x64.sha256.txt
+        asset_name: tippy-osx-x64.sha256.txt
+        asset_content_type: text/plain
