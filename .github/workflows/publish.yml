@@ -30,10 +30,10 @@ jobs:
 
     steps:
     - name: Get tag
-        id: get_tag
-        env:
-          HEAD_REF: ${{ github.event.pull_request.head.ref }}
-        run: echo ::set-output name=tag::${HEAD_REF#release\/}
+      id: get_tag
+      env:
+        HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      run: echo ::set-output name=tag::${HEAD_REF#release\/}
     - name: Draft release
       id: release_drafter
       uses: release-drafter/release-drafter@v5
