@@ -45,7 +45,7 @@ jobs:
         files: ./bin/publish/${{ matrix.artifact_name }}
         dest: release/${{ matrix.artifact_name }}.zip
     - name: Generate checksum
-      run: sha256sum ${{ matrix.artifact_name }}.zip > release/${{ matrix.artifact_name }}.sha256.txt
+      run: sha256sum release/${{ matrix.artifact_name }}.zip > release/${{ matrix.artifact_name }}.sha256.txt
     - name: Upload files
       uses: svenstaro/upload-release-action@v2
       with:
