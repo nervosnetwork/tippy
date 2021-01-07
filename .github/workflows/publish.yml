@@ -1,0 +1,81 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    name: Publish ${{ matrix.runtime }}
+    if: contains(github.ref, "release")
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            short_name: linux
+            runtime: linux-x64
+            artifact_name: tippy-linux-x64
+          - os: windows-latest
+            short_name: win
+            runtime: win-x64
+            artifact_name: tippy-win-x64
+          - os: macos-latest
+            short_name: mac
+            runtime: osx-x64
+            artifact_name: tippy-osx-x64
+
+    steps:
+    - name: Inject slug variables
+      uses: rlespinasse/github-slug-action@v3.x
+    - name: Draft release
+      id: release_drafter
+      uses: release-drafter/release-drafter@v5
+      with:
+        tag: ${{ env.GITHUB_REF_SLUG }}
+        name: ${{ env.GITHUB_REF_SLUG }}
+        version: ${{ env.GITHUB_REF_SLUG }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Fetch ckb binaries
+      run: ./tools/download-binaries.sh ${{ matrix.short_name }}
+    - name: Build
+      run: dotnet build -c Release
+    - name: Publish
+      run: dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/${{ matrix.artifact_name }}
+    - name: Archive files
+      uses: papeloto/action-zip@v1
+      with:
+        files: ./bin/publish/${{ matrix.artifact_name }}
+        dest: release/${{ matrix.artifact_name }}.zip
+    - name: Generate checksum
+      run: sha256sum release/${{ matrix.artifact_name }}.zip > release/${{ matrix.artifact_name }}.sha256.txt
+    - name: Upload binary
+      id: upload-release-binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release_drafter.outputs.upload_url }}
+        asset_path: release/${{ matrix.artifact_name }}.zip
+        asset_name: ${{ matrix.artifact_name }}.zip
+        asset_content_type: application/zip
+    - name: Upload checksum
+      id: upload-release-checksum
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release_drafter.outputs.upload_url }}
+        asset_path: release/${{ matrix.artifact_name }}.sha256.txt
+        asset_name: ${{ matrix.artifact_name }}.sha256.txt
+        asset_content_type: text/plain

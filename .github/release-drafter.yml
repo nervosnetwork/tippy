@@ -1,6 +1,6 @@
 template: |
   Platform  | Package | SHA256 Checksum
   --        | --      | --
-  Windows   | [tippy-win-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/v$RESOLVED_VERSION/tippy-win-x64.zip) | <code>todo</code>
-  macOS     | [tippy-osx-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/v$RESOLVED_VERSION/tippy-osx-x64.zip) | <code>todo</code>
-  Linux     | [tippy-linux-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/v$RESOLVED_VERSION/tippy-linux-x64.zip) | <code>todo</code>
+  Windows   | [tippy-win-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/$INPUT_VERSION/tippy-win-x64.zip) | <code>todo</code>
+  macOS     | [tippy-osx-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/$INPUT_VERSION/tippy-osx-x64.zip) | <code>todo</code>
+  Linux     | [tippy-linux-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/$INPUT_VERSION/tippy-linux-x64.zip) | <code>todo</code>
