@@ -2,11 +2,13 @@ name: publish
 
 on:
   push:
-    branches: [ ci-publish-job ]
+    branches:
+      - main
 
 jobs:
   publish:
     name: Publish ${{ matrix.runtime }}
+    if: contains(github.ref, "release")
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,6 +28,17 @@ jobs:
             artifact_name: tippy-osx-x64
 
     steps:
+    - name: Inject slug variables
+      uses: rlespinasse/github-slug-action@v3.x
+    - name: Draft release
+      id: release_drafter
+      uses: release-drafter/release-drafter@v5
+      with:
+        tag: ${{ env.GITHUB_REF_SLUG }}
+        name: ${{ env.GITHUB_REF_SLUG }}
+        version: ${{ env.GITHUB_REF_SLUG }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -46,14 +59,6 @@ jobs:
         dest: release/${{ matrix.artifact_name }}.zip
     - name: Generate checksum
       run: sha256sum release/${{ matrix.artifact_name }}.zip > release/${{ matrix.artifact_name }}.sha256.txt
-    - name: Draft release
-      id: release_drafter
-      uses: release-drafter/release-drafter@v5
-      with:
-        tag: v0.1.1-setup #${{ github.ref }}
-        name: v0.1.1-setup #${{ github.ref }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload binary
       id: upload-release-binary
       uses: actions/upload-release-asset@v1
