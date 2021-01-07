@@ -1,14 +1,15 @@
 name: publish
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
+  branches:
+    - main
 
 jobs:
   publish:
     name: Publish ${{ matrix.runtime }}
-    if: contains(github.ref, 'release')
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
 
     strategy:
@@ -28,15 +29,18 @@ jobs:
             artifact_name: tippy-osx-x64
 
     steps:
-    - name: Inject slug variables
-      uses: rlespinasse/github-slug-action@v3.x
+    - name: Get tag
+        id: get_tag
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: echo ::set-output name=tag::${HEAD_REF#release\/}
     - name: Draft release
       id: release_drafter
       uses: release-drafter/release-drafter@v5
       with:
-        tag: ${{ env.GITHUB_REF_SLUG }}
-        name: ${{ env.GITHUB_REF_SLUG }}
-        version: ${{ env.GITHUB_REF_SLUG }}
+        tag: ${{ steps.get_tag.outputs.tag }
+        name: ${{ steps.get_tag.outputs.tag }}
+        version: ${{ steps.get_tag.outputs.tag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
