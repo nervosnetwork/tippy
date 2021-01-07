@@ -53,11 +53,23 @@ jobs:
         tag: v0.1.1-setup #${{ github.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Upload files
-      uses: svenstaro/upload-release-action@v2
+    - name: Upload binary
+      id: upload-release-binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: release/${{ matrix.artifact_name }}*
-        tag: ${{ steps.release_drafter.outputs.tag_name }}
-        overwrite: true
-        file_glob: true
+        upload_url: ${{ steps.release_drafter.outputs.upload_url }}
+        asset_path: release/${{ matrix.artifact_name }}.zip
+        asset_name: $${ matrix.artifact_name }}.zip
+        asset_content_type: application/zip
+    - name: Upload checksum
+      id: upload-release-checksum
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release_drafter.outputs.upload_url }}
+        asset_path: release/${{ matrix.artifact_name }}.sha256.txt
+        asset_name: $${ matrix.artifact_name }}.sha256.txt
+        asset_content_type: text/plain
