@@ -68,7 +68,7 @@ namespace Tippy.Pages.Blocks
             int inputsCount = transactions.Select(tx => tx.Inputs.Length).Aggregate(0, (acc, cur) => acc + cur);
             int outputsCount = transactions.Select(tx => tx.Outputs.Length).Aggregate(0, (acc, cur) => acc + cur);
 
-            var number = $"{Hex.HexToUInt64(header.Number)}";
+            ulong number = Hex.HexToUInt64(header.Number);
             int transactionsCount = transactions.Length;
             string timestamp = $"{ Hex.HexToUInt64(header.Timestamp) }";
 
@@ -77,18 +77,24 @@ namespace Tippy.Pages.Blocks
             {
                 string blockHash = header.Hash;
                 BlockEconomicState? economicState = client.GetBlockEconomicState(blockHash);
-                if (economicState == null)
+                if (economicState != null)
                 {
-                    return "";
+                    MinerReward reward = economicState.MinerReward;
+                    return Hex.HexToUInt64(reward.Primary).ToString();
                 }
-
-                MinerReward reward = economicState.MinerReward;
-                string[] rewards = new string[]
+                else
                 {
-                    reward.Primary,
-                    reward.Secondary
-                };
-                return rewards.Select(r => Hex.HexToUInt64(r)).Aggregate((sum, cur) => sum + cur).ToString();
+                    EpochInfo epochInfo = EpochInfo.Parse(Hex.HexToUInt64(block.Header.Epoch));
+                    try
+                    {
+                        ulong primaryReward = PrimaryReward(client, number, epochInfo.Number);
+                        return primaryReward.ToString();
+                    }
+                    catch
+                    {
+                        return "";
+                    }
+                }
             }
 
             // Miner Address
@@ -99,7 +105,7 @@ namespace Tippy.Pages.Blocks
 
             BlockResult result = new()
             {
-                Number = number,
+                Number = number.ToString(),
                 BlockHash = header.Hash,
                 TransactionsCount = $"{transactionsCount}",
                 Timestamp = timestamp,
@@ -109,6 +115,32 @@ namespace Tippy.Pages.Blocks
             };
 
             return result;
+        }
+
+        private static ulong PrimaryReward(Client client, ulong blockNumber, ulong epochNumber)
+        {
+            if (blockNumber < 12)
+            {
+                return 0;
+            }
+
+            EpochView? epochInfo = client.GetEpochByNumber(epochNumber);
+            if (epochInfo == null)
+            {
+                throw new Exception($"No Epoch found by number: {epochNumber}");
+            }
+
+            ulong startNumber = Hex.HexToUInt64(epochInfo.StartNumber);
+            ulong length = Hex.HexToUInt64(epochInfo.Length);
+            ulong epochReward = 1_917_808_21917808;
+            ulong primaryReward = epochReward / length;
+            ulong remainderReward = epochReward % length;
+
+            if (blockNumber >= startNumber && blockNumber < startNumber + remainderReward)
+            {
+                return primaryReward + 1;
+            }
+            return primaryReward;
         }
     }
 }
