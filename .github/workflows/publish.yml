@@ -46,11 +46,16 @@ jobs:
         dest: release/${{ matrix.artifact_name }}.zip
     - name: Generate checksum
       run: sha256sum release/${{ matrix.artifact_name }}.zip > release/${{ matrix.artifact_name }}.sha256.txt
+    - name: Draft release
+      id: release_drafter
+      uses: release-drafter/release-drafter@v5
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload files
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: release/${{ matrix.artifact_name }}*
-        tag: v0.1.1-setup #${{ github.ref }}
+        tag: ${{ steps.release_drafter.outputs.tag_name }}
         overwrite: true
         file_glob: true
