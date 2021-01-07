@@ -22,3 +22,12 @@ jobs:
       run: dotnet build -c Release
     - name: Publish
       run: dotnet publish src/Tippy/Tippy.csproj -c Release -r osx-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/tippy-osx-x64
+    - name: Archive files
+      uses: papeloto/action-zip@v1
+      with:
+        files: ./bin/publish/tippy-osx-x64
+        dest: tippy-osx-x64.zip
+    - name: 'Upload artifact'
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ github.workspace }}/tippy-osx-x64.zip
