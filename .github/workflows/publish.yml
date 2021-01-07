@@ -26,17 +26,6 @@ jobs:
             artifact_name: tippy-osx-x64
 
     steps:
-    - name: Create release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v0.1.1-setup #${{ github.ref }}
-        release_name: ${{ github.ref }}
-        body: |
-          TODO
-        draft: true
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -54,26 +43,14 @@ jobs:
       uses: papeloto/action-zip@v1
       with:
         files: ./bin/publish/${{ matrix.artifact_name }}
-        dest: ${{ matrix.artifact_name }}.zip
+        dest: release/${{ matrix.artifact_name }}.zip
     - name: Generate checksum
-      run: sha256sum ${{ matrix.artifact_name }}.zip > ${{ matrix.artifact_name }}.sha256.txt
-    - name: Upload binary
-      id: upload-release-binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: sha256sum ${{ matrix.artifact_name }}.zip > release/${{ matrix.artifact_name }}.sha256.txt
+    - name: Upload files
+      uses: svenstaro/upload-release-action@v2
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/${{ matrix.artifact_name }}.zip
-        asset_name: $${ matrix.artifact_name }}.zip
-        asset_content_type: application/zip
-    - name: Upload checksum
-      id: upload-release-checksum
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/${{ matrix.artifact_name }}.sha256.txt
-        asset_name: $${ matrix.artifact_name }}.sha256.txt
-        asset_content_type: text/plain
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: release/${{ matrix.artifact_name }}*
+        tag: v0.1.1-setup #${{ github.ref }}
+        overwrite: true
+        file_glob: true
