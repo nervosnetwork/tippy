@@ -56,7 +56,7 @@ function download_ckb_indexer_macos() {
   curl -O -L "https://github.com/nervosnetwork/ckb-indexer/releases/download/v${CKB_INDEXER_VERSION}/${FILENAME}.zip"
   unzip -o ${FILENAME}.zip
   unzip -o ${INNER_ZIP_FILENAME} ckb-indexer
-  chomd +x ./ckb-indexer
+  chmod +x ./ckb-indexer
   rm ${FILENAME}.zip
   rm ${INNER_ZIP_FILENAME}
 }
