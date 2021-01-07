@@ -9,6 +9,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v0.1.1-setup #${{ github.ref }}
+        release_name: Tippy ${{ github.ref }}
+        body: |
+          TODO
+          - TODO
+          - TODO
+        draft: true
+
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -27,7 +41,13 @@ jobs:
       with:
         files: ./bin/publish/tippy-osx-x64
         dest: tippy-osx-x64.zip
-    - name: 'Upload artifact'
-      uses: actions/upload-artifact@v2
+    - name: Upload release asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        path: ${{ github.workspace }}/tippy-osx-x64.zip
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ github.workspace }}/tippy-osx-x64.zip
+        asset_name: tippy-osx-x64.zip
+        asset_content_type: application/zip
