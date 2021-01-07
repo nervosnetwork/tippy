@@ -12,7 +12,9 @@ function download_ckb_macos() {
   curl -O -L "https://github.com/nervosnetwork/ckb/releases/download/v${CKB_VERSION}/${CKB_FILENAME}.zip"
   unzip -o ${CKB_FILENAME}.zip ${CKB_FILENAME}/ckb ${CKB_FILENAME}/ckb-cli
   cp ${CKB_FILENAME}/ckb ./
+  chmod +x ./ckb
   cp ${CKB_FILENAME}/ckb-cli ./
+  chmod +x ./ckb-cli
   rm -rf $CKB_FILENAME
   rm ${CKB_FILENAME}.zip
 }
@@ -25,7 +27,9 @@ function download_ckb_linux() {
   curl -O -L "https://github.com/nervosnetwork/ckb/releases/download/v${CKB_VERSION}/${CKB_FILENAME}.tar.gz"
   tar xvzf ${CKB_FILENAME}.tar.gz ${CKB_FILENAME}/ckb ${CKB_FILENAME}/ckb-cli
   cp ${CKB_FILENAME}/ckb ./
+  chmod +x ./ckb
   cp ${CKB_FILENAME}/ckb-cli ./
+  chmod +x ./ckb-cli
   rm -rf $CKB_FILENAME
   rm ${CKB_FILENAME}.tar.gz
 }
@@ -52,6 +56,7 @@ function download_ckb_indexer_macos() {
   curl -O -L "https://github.com/nervosnetwork/ckb-indexer/releases/download/v${CKB_INDEXER_VERSION}/${FILENAME}.zip"
   unzip -o ${FILENAME}.zip
   unzip -o ${INNER_ZIP_FILENAME} ckb-indexer
+  chomd +x ./ckb-indexer
   rm ${FILENAME}.zip
   rm ${INNER_ZIP_FILENAME}
 }
@@ -65,6 +70,7 @@ function download_ckb_indexer_linux() {
   curl -O -L "https://github.com/nervosnetwork/ckb-indexer/releases/download/v${CKB_INDEXER_VERSION}/${FILENAME}.zip"
   unzip -o ${FILENAME}.zip
   tar xvzf $TAR_FILENAME ckb-indexer
+  chmod +x ./ckb-indexer
   rm -rf $TAR_FILENAME
   rm ${FILENAME}.zip
 }

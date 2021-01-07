@@ -1,0 +1,22 @@
+name: publish
+
+on:
+  push:
+    branches: [ ci-publish-job ]
+
+jobs:
+  publish-osx:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Fetch ckb binaries
+      run: ./tools/download-binaries.sh mac
+    - name: Build
+      run: dotnet build -c Release
+    - name: Publish
+      run: dotnet publish src/Tippy/Tippy.csproj -c Release -r osx-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/tippy-osx-x64
