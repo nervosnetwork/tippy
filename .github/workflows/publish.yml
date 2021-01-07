@@ -16,17 +16,24 @@ jobs:
       env:
         HEAD_REF: ${{ github.event.pull_request.head.ref }}
       run: echo ::set-output name=tag::${HEAD_REF#release\/}
-    - name: Draft release
-      id: release_drafter
-      uses: release-drafter/release-drafter@v5
-      with:
-        tag: ${{ steps.get_tag.outputs.tag }}
-        name: ${{ steps.get_tag.outputs.tag }}
-        version: ${{ steps.get_tag.outputs.tag }}
+    - name: Create draft release
+      id: create_release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_tag.outputs.tag }}
+        release_name: ${{ steps.get_tag.outputs.tag }}
+        body: |
+          Platform  | Package | SHA256 Checksum
+          --        | --      | --
+          Windows   | [tippy-win-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-win-x64.zip) | <code>TODO</code>
+          macOS     | [tippy-osx-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-osx-x64.zip) | <code>TODO</code>
+          Linux     | [tippy-linux-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-linux-x64.zip) | <code>TODO</code>
+        draft: true
+        prerelease: true
     - name: Output upload URL file
-      run: echo "${{ steps.release_drafter.outputs.upload_url }}" > upload_url.txt
+      run: echo "${{ steps.create_release.outputs.upload_url }}" > upload_url.txt
     - name: Save upload URL file
       uses: actions/upload-artifact@v1
       with:
@@ -80,7 +87,9 @@ jobs:
     - name: Build
       run: dotnet build -c Release
     - name: Publish
-      run: dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/${{ matrix.artifact_name }}
+      run: |
+        dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/${{ matrix.artifact_name }}
+        chmod +x ./bin/publish/${{ matrix.artifact_name }}/BinDeps/${{ matrix.short_name }}/ckb*
     - name: Archive files
       uses: papeloto/action-zip@v1
       with:
