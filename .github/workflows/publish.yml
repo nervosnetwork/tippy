@@ -30,7 +30,7 @@ jobs:
           --        | --      | --
           Windows   | [tippy-win-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-win-x64.zip) | <code>TODO</code>
           macOS     | [tippy-osx-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-osx-x64.zip) | <code>TODO</code>
-          Linux     | [tippy-linux-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-linux-x64.zip) | <code>TODO</code>
+          Linux     | [tippy-linux-x64.tar.gz](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-linux-x64.tar.gz) | <code>TODO</code>
         draft: true
         prerelease: true
     - name: Output upload URL file
@@ -54,14 +54,17 @@ jobs:
             short_name: linux
             runtime: linux-x64
             artifact_name: tippy-linux-x64
+            artifact_full_name: tippy-linux-x64.tar.gz
           - os: windows-latest
             short_name: win
             runtime: win-x64
             artifact_name: tippy-win-x64
+            artifact_full_name: tippy-win-x64.zip
           - os: macos-latest
             short_name: mac
             runtime: osx-x64
             artifact_name: tippy-osx-x64
+            artifact_full_name: tippy-osx-x64.zip
 
     steps:
     - name: Load upload URL file
@@ -89,15 +92,19 @@ jobs:
       run: dotnet build -c Release
     - name: Publish
       run: |
-        dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/${{ matrix.artifact_name }}
-        chmod +x ./bin/publish/${{ matrix.artifact_name }}/BinDeps/${{ matrix.short_name }}/ckb*
-    - name: Archive files
+        dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./${{ matrix.artifact_name }}
+        chmod +x ./${{ matrix.artifact_name }}/BinDeps/${{ matrix.short_name }}/ckb*
+    - name: Archive files zip
+      if: matrix.short_name != 'linux'
       uses: papeloto/action-zip@v1
       with:
-        files: ./bin/publish/${{ matrix.artifact_name }}
-        dest: release/${{ matrix.artifact_name }}.zip
+        files: ./${{ matrix.artifact_name }}
+        dest: ${{ matrix.artifact_full_name }}
+    - name: Archive files tar
+      if: matrix.short_name == 'linux'
+      run: tar -cvzf ${{ matrix.artifact_full_name }} ${{ matrix.artifact_name }}
     - name: Generate checksum
-      run: sha256sum release/${{ matrix.artifact_name }}.zip > release/${{ matrix.artifact_name }}.sha256.txt
+      run: sha256sum ${{ matrix.artifact_full_name }} > ${{ matrix.artifact_full_name }}.sha256.txt
     - name: Upload binary
       id: upload-release-binary
       uses: actions/upload-release-asset@v1
@@ -105,8 +112,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
-        asset_path: release/${{ matrix.artifact_name }}.zip
-        asset_name: ${{ matrix.artifact_name }}.zip
+        asset_path: ${{ matrix.artifact_full_name }}
+        asset_name: ${{ matrix.artifact_full_name }}
         asset_content_type: application/zip
     - name: Upload checksum
       id: upload-release-checksum
@@ -115,6 +122,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
-        asset_path: release/${{ matrix.artifact_name }}.sha256.txt
-        asset_name: ${{ matrix.artifact_name }}.sha256.txt
+        asset_path: ${{ matrix.artifact_full_name }}.sha256.txt
+        asset_name: ${{ matrix.artifact_full_name }}.sha256.txt
         asset_content_type: text/plain
