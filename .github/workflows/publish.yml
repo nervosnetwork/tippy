@@ -104,7 +104,7 @@ jobs:
         dest: ${{ matrix.artifact_full_name }}
     - name: Archive files tar
       if: matrix.short_name == 'linux'
-      run: tar -cvf ${{ matrix.artifact_full_name }} ./bin/publish/${{ matrix.artifact_name }}
+      run: tar cvzf ${{ matrix.artifact_full_name }} ./bin/publish/${{ matrix.artifact_name }}
     - name: Generate checksum
       run: sha256sum ${{ matrix.artifact_full_name }} > ${{ matrix.artifact_full_name }}.sha256.txt
     - name: Upload binary
