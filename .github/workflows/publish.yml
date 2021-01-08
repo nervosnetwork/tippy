@@ -94,17 +94,17 @@ jobs:
       run: dotnet build -c Release
     - name: Publish
       run: |
-        dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/${{ matrix.artifact_name }}
-        chmod +x ./bin/publish/${{ matrix.artifact_name }}/BinDeps/${{ matrix.short_name }}/ckb*
+        dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./${{ matrix.artifact_name }}
+        chmod +x ./${{ matrix.artifact_name }}/BinDeps/${{ matrix.short_name }}/ckb*
     - name: Archive files zip
       if: matrix.short_name != 'linux'
       uses: papeloto/action-zip@v1
       with:
-        files: ./bin/publish/${{ matrix.artifact_name }}
+        files: ./${{ matrix.artifact_name }}
         dest: ${{ matrix.artifact_full_name }}
     - name: Archive files tar
       if: matrix.short_name == 'linux'
-      run: tar cvzf ${{ matrix.artifact_full_name }} ./bin/publish/${{ matrix.artifact_name }}
+      run: tar -cvzf ${{ matrix.artifact_full_name }} ${{ matrix.artifact_name }}
     - name: Generate checksum
       run: sha256sum ${{ matrix.artifact_full_name }} > ${{ matrix.artifact_full_name }}.sha256.txt
     - name: Upload binary
