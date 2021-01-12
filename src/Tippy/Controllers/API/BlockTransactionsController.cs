@@ -5,6 +5,7 @@ using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
 using Tippy.Util;
+using static Tippy.ApiData.TransactionHelper;
 
 namespace Tippy.Controllers.API
 {
@@ -70,7 +71,7 @@ namespace Tippy.Controllers.API
 
                 if (isCellbase)
                 {
-                    var (displayInputs, displayOutputs) = TransactionsController.GenerateCellbaseDisplayInfos(client, txHash, tx.Outputs, blockNumber, prefix);
+                    var (displayInputs, displayOutputs) = GenerateCellbaseDisplayInfos(client, txHash, tx.Outputs, blockNumber, prefix);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
                 }
@@ -79,7 +80,7 @@ namespace Tippy.Controllers.API
                     Input[] inputs = tx.Inputs.Take(10).ToArray();
                     Output[] outputs = tx.Outputs.Take(10).ToArray();
                     Output[] previousOutptus = GetPreviousOutputs(client, inputs);
-                    var (displayInputs, displayOutputs) = TransactionsController.GenerateNotCellbaseDisplayInfos(inputs, outputs, previousOutptus, prefix, txHash);
+                    var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(inputs, outputs, previousOutptus, prefix, txHash);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
                 }
@@ -87,21 +88,6 @@ namespace Tippy.Controllers.API
             }).ToArray();
 
             return new ArrayResult<TransactionListResult>("ckb_transactions", result, meta);
-        }
-
-        private static Output[] GetPreviousOutputs(Client client, Input[] inputs)
-        {
-            return inputs.Select(input => GetPreviousOutput(client, input)).ToArray();
-        }
-
-        private static Output GetPreviousOutput(Client client, Input input)
-        {
-            TransactionWithStatus? txWithStatus = client.GetTransaction(input.PreviousOutput.TxHash);
-            if (txWithStatus == null)
-            {
-                throw new Exception("");
-            }
-            return txWithStatus.Transaction.Outputs[Hex.HexToUInt32(input.PreviousOutput.Index)];
         }
     }
 }

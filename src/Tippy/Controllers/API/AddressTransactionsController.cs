@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
 using Tippy.Util;
 using IndexerTypes = Ckb.Types.IndexrTypes;
+using static Tippy.ApiData.TransactionHelper;
 
 namespace Tippy.Controllers.API
 {
@@ -67,7 +68,7 @@ namespace Tippy.Controllers.API
                 }
                 Transaction tx = txWithStatus.Transaction;
 
-                bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == TransactionsController.EmptyHash;
+                bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == EmptyHash;
                 TransactionListResult txResult = new()
                 {
                     IsCellbase = isCellbase,
@@ -92,7 +93,7 @@ namespace Tippy.Controllers.API
 
                 if (isCellbase)
                 {
-                    var (displayInputs, displayOutputs) = TransactionsController.GenerateCellbaseDisplayInfos(client, txHash, tx.Outputs, blockNumber, prefix);
+                    var (displayInputs, displayOutputs) = GenerateCellbaseDisplayInfos(client, txHash, tx.Outputs, blockNumber, prefix);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
 
@@ -101,7 +102,7 @@ namespace Tippy.Controllers.API
                 else
                 {
                     Output[] previousOutputs = GetPreviousOutputs(client, tx.Inputs);
-                    var (displayInputs, displayOutputs) = TransactionsController.GenerateNotCellbaseDisplayInfos(
+                    var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(
                         tx.Inputs.Take(10).ToArray(),
                         tx.Outputs.Take(10).ToArray(),
                         previousOutputs.Take(10).ToArray(),
@@ -117,21 +118,6 @@ namespace Tippy.Controllers.API
                 results.Add(txResult);
             }
             return new ArrayResult<TransactionListResult>("ckb_transactions", results.ToArray(), meta);
-        }
-
-        private static Output[] GetPreviousOutputs(Client client, Input[] inputs)
-        {
-            return inputs.Select(input => GetPreviousOutput(client, input)).ToArray();
-        }
-
-        private static Output GetPreviousOutput(Client client, Input input)
-        {
-            TransactionWithStatus? txWithStatus = client.GetTransaction(input.PreviousOutput.TxHash);
-            if (txWithStatus == null)
-            {
-                throw new Exception("");
-            }
-            return txWithStatus.Transaction.Outputs[Hex.HexToUInt32(input.PreviousOutput.Index)];
         }
 
         private static string[] GetTransactionHashes(IndexerClient indexerClient, IndexerTypes.SearchKey searchKey)
