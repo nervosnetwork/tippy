@@ -107,7 +107,7 @@
                 <div class="level-right">
                     <div class="level-item">
                         <div>
-                            <a asp-page="/Explorer" asp-route-ref="address/@Model.BlockDetail.MinerHash" class="hash-text">
+                            <a asp-page="/Addresses/Details" asp-route-address="@Model.BlockDetail.MinerHash" class="hash-text">
                                 @Model.BlockDetail.MinerHash
                             </a>
                         </div>

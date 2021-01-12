@@ -21,7 +21,7 @@
             {
                 <tr>
                     <td>
-                        <a asp-page="/Explorer" asp-route-ref="transaction/@tx.Attributes.TransactionHash" class="hash-text">
+                        <a asp-page="/Transactions/Details" asp-route-txhash="@tx.Attributes.TransactionHash" class="hash-text">
                             @tx.Attributes.TransactionHash
                         </a>
                     </td>
