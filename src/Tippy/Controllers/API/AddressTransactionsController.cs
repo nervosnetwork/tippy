@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
 using Tippy.Util;
 using IndexerTypes = Ckb.Types.IndexrTypes;
-using static Tippy.ApiData.TransactionHelper;
+using static Tippy.Helpers.TransactionHelper;
 
 namespace Tippy.Controllers.API
 {

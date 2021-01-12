@@ -5,7 +5,7 @@ using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
 using Tippy.Util;
-using static Tippy.ApiData.TransactionHelper;
+using static Tippy.Helpers.TransactionHelper;
 
 namespace Tippy.Controllers.API
 {

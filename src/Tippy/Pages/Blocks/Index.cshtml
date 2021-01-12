@@ -35,7 +35,7 @@
                         }
                         else
                         {
-                            var reward = decimal.Parse(block.Attributes.Reward) / 100_000_000;
+                            var reward = Tippy.Helpers.TransactionHelper.CkbAmount(block.Attributes.Reward);
                             <span>@reward</span>
                         }
                     </td>

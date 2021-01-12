@@ -32,7 +32,7 @@
                     </td>
                     <td>
                         @{
-                            var capacity = decimal.Parse(tx.Attributes.CapacityInvolved) / 100_000_000;
+                            var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(tx.Attributes.CapacityInvolved);
                         }
                         <span>@capacity</span>
                     </td>

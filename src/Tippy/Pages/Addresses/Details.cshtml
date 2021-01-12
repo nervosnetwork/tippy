@@ -5,7 +5,7 @@
 <h1 class="title">Addrerss <span style="font-size:70%;">@Model.AddressResult.AddressHash</span></h1>
 
 @{
-    var balance = decimal.Parse(Model.AddressResult.Balance) / 100_000_000;
+    var balance = Tippy.Helpers.TransactionHelper.CkbAmount(Model.AddressResult.Balance);
 }
 
 <div class="box address-box">

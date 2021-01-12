@@ -3,13 +3,19 @@ using System.Linq;
 using Ckb.Rpc;
 using Ckb.Types;
 using Tippy.Util;
+using Tippy.ApiData;
 
-namespace Tippy.ApiData
+namespace Tippy.Helpers
 {
     public static class TransactionHelper
     {
         public const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
         private const int TxProposalWindow = 12;
+
+        public static string CkbAmount(string capacity)
+        {
+            return (decimal.Parse(capacity) / 100_000_000).ToString();
+        }
 
         // For not cellbase
         public static Output[] GetPreviousOutputs(Client client, Input[] inputs)

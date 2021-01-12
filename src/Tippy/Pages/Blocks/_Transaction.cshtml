@@ -22,7 +22,7 @@
             {
                 @foreach(var input in tx.DisplayInputs)
                 {
-                    var capacity = decimal.Parse(input.Capacity) / 100_000_000;
+                    var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity);
                     <div class="level">
                         <div class="level-left">
                             <div class="level-item">

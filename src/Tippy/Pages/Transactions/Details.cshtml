@@ -3,3 +3,123 @@
 @{ ViewData["Title"] = "Transaction"; }
 
 <h1 class="title">Transaction <span style="font-size:70%;">@Model.TransactionDetail.TransactionHash</span></h1>
+
+<div class="box transaction-box">
+    <div class="columns is-multiline">
+        <div class="column is-half">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Block Height</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>
+                            <a asp-page="/Blocks/Details" asp-route-id="@Model.TransactionDetail.BlockNumber">
+                                @Model.TransactionDetail.BlockNumber
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Transaction Fee</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.TransactionDetail.TransactionFee</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-half" style="border-left: 1px solid #808080;">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Timestamp</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.TransactionDetail.Date()</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <label>Status</label>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <div>@Model.TransactionDetail.TxStatus</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box transaction-box">
+    <h2>Inputs (@Model.TransactionDetail.DisplayInputs.Length)</h2>
+    <hr />
+    <div id="inputs">
+        @foreach(var input in Model.TransactionDetail.DisplayInputs)
+        {
+            @if (input.FromCellbase)
+            {
+                <div>
+                    Cellbase for Block
+                    <a asp-page="/Blocks/Details" asp-route-id="@input.TargetBlockNumber">
+                        @input.TargetBlockNumber
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="columns">
+                    <div class="column is-3">
+                        <a asp-page="/Addresses/Details" asp-route-address="@input.AddressHash" class="hash-text">
+                            @input.AddressHash.Substring(0, 12)...@input.AddressHash.Substring(input.AddressHash.Length - 12, 12)
+                        </a>
+                    </div>
+                    <div class="column is-3">
+                    </div>
+                    <div class="column is-3">
+                        @Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity)
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div class="box transaction-box">
+    <h2>Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</h2>
+    <hr />
+    <div id="outputs">
+        @foreach(var output in Model.TransactionDetail.DisplayOutputs)
+        {
+            <div class="columns">
+                <div class="column is-3">
+                    <a asp-page="/Addresses/Details" asp-route-address="@output.AddressHash" class="hash-text">
+                        @output.AddressHash.Substring(0, 12)...@output.AddressHash.Substring(output.AddressHash.Length - 12, 12)
+                    </a>
+                </div>
+                <div class="column is-3">
+                </div>
+                <div class="column is-3">
+                    @Tippy.Helpers.TransactionHelper.CkbAmount(output.Capacity)
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -5,7 +5,7 @@ using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
 using Tippy.Util;
-using static Tippy.ApiData.TransactionHelper;
+using static Tippy.Helpers.TransactionHelper;
 
 namespace Tippy.Pages.Transactions
 {
@@ -39,7 +39,7 @@ namespace Tippy.Pages.Transactions
 
             Transaction tx = transactionWithStatus.Transaction;
 
-            bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == TransactionHelper.EmptyHash;
+            bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == EmptyHash;
             string prefix = IsMainnet() ? "ckb" : "ckt";
 
             TransactionDetailResult detail = new()
