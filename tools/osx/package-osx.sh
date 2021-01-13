@@ -22,4 +22,7 @@ mkdir "$APP_NAME/Contents/Resources"
 cp "$INFO_PLIST" "$APP_NAME/Contents/Info.plist"
 cp "$ICON_FILE" "$APP_NAME/Contents/Resources/Tippy.icns"
 cp -a "$PUBLISH_OUTPUT_DIRECTORY/" "$APP_NAME/Contents/MacOS"
-
+cp "${ROOT_DIR}/tools/osx/main" "$APP_NAME/Contents/MacOS"
+chmod +x "$APP_NAME/Contents/MacOS/main"
+cp "${ROOT_DIR}/tools/osx/console" "$APP_NAME/Contents/MacOS"
+chmod +x "$APP_NAME/Contents/MacOS/console"
