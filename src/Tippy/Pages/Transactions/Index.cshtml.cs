@@ -27,7 +27,7 @@ namespace Tippy.Pages.Transactions
             Client client = Rpc();
 
             UInt64 page = 1;
-            UInt64 pageSize = 20;
+            UInt64 pageSize = 15;
             UInt64 tipBlockNumber = client.GetTipBlockNumber();
             UInt64 skipCount = (UInt64)((page - 1) * pageSize);
 

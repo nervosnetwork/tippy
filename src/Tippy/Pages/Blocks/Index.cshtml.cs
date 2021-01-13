@@ -27,7 +27,7 @@ namespace Tippy.Pages.Blocks
 
             var client = Rpc();
 
-            int pageSize = 20;
+            int pageSize = 15;
             int tipBlockNumber = (int)client.GetTipBlockNumber();
             int endBlock = end ?? tipBlockNumber;
             if (endBlock > tipBlockNumber)
