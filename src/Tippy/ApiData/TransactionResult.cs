@@ -49,6 +49,12 @@ namespace Tippy.ApiData
 
         [JsonPropertyName("income")]
         public string? Income { get; set; } = null;
+
+        public DateTime Date()
+        {
+            DateTime date = new (1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            return date.AddSeconds(double.Parse(BlockTimestamp) / 1000).ToLocalTime();
+        }
     }
 
 

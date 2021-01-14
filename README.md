@@ -16,15 +16,9 @@
   ```shell
   ./tools/download-binaries.sh
   ```
-4. Start the embed CKB explorer frontend:
-  ```shell
-  cd src/Tippy/ClientApp
-  npm install
-  npm start
-  ```
-5. Open `Tippy.sln` with Visual Studio 2019 (v16.8 or later), Visual Studio 2019 for Mac (v8.8 or later), or Visual Studio Code
-6. Select `Tippy` as startup project for the solution, then start debugging it
-7. Browse `http://localhost:5000/home` in your browser
+4. Open `Tippy.sln` with Visual Studio 2019 (v16.8 or later), Visual Studio 2019 for Mac (v8.8 or later), or Visual Studio Code
+5. Select `Tippy` as startup project for the solution, then start debugging it
+6. Browse `http://localhost:5000/home` in your browser (if it's not opened automatically)
 
 ## Design
 

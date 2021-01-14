@@ -7,7 +7,7 @@
     <hr />
 
     <div style="border-bottom:solid 1px #808080;" class="py-2 my-2">
-        <a asp-page="/Explorer" asp-route-ref="transaction/@tx.TransactionHash" class="hash-text">
+        <a asp-page="/Transactions/Details" asp-route-txhash="@tx.TransactionHash" class="hash-text">
             @tx.TransactionHash
         </a>
     </div>
@@ -22,7 +22,7 @@
             {
                 @foreach(var input in tx.DisplayInputs)
                 {
-                    var capacity = decimal.Parse(input.Capacity) / 100_000_000;
+                    var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity);
                     <div class="level">
                         <div class="level-left">
                             <div class="level-item">

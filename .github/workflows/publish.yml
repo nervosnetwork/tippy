@@ -8,7 +8,7 @@ on:
 
 jobs:
   release:
-    name: Publish
+    name: Create draft release
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
     steps:
@@ -29,8 +29,8 @@ jobs:
           Platform  | Package | SHA256 Checksum
           --        | --      | --
           Windows   | [tippy-win-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-win-x64.zip) | <code>TODO</code>
-          macOS     | [tippy-osx-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-osx-x64.zip) | <code>TODO</code>
-          Linux     | [tippy-linux-x64.zip](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-linux-x64.zip) | <code>TODO</code>
+          macOS     | [Tippy.dmg](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/Tippy.dmg) | <code>TODO</code>
+          Linux     | [tippy-linux-x64.tar.gz](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-linux-x64.tar.gz) | <code>TODO</code>
         draft: true
         prerelease: true
     - name: Output upload URL file
@@ -41,27 +41,11 @@ jobs:
         name: upload_url
         path: upload_url.txt
 
-  publish:
-    name: Publish ${{ matrix.runtime }}
+  publish-linux:
+    name: Publish Linux
     needs: [release]
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            short_name: linux
-            runtime: linux-x64
-            artifact_name: tippy-linux-x64
-          - os: windows-latest
-            short_name: win
-            runtime: win-x64
-            artifact_name: tippy-win-x64
-          - os: macos-latest
-            short_name: mac
-            runtime: osx-x64
-            artifact_name: tippy-osx-x64
 
     steps:
     - name: Load upload URL file
@@ -84,20 +68,17 @@ jobs:
       with:
         dotnet-version: 5.0.100
     - name: Fetch ckb binaries
-      run: ./tools/download-binaries.sh ${{ matrix.short_name }}
+      run: ./tools/download-binaries.sh linux
     - name: Build
       run: dotnet build -c Release
-    - name: Publish
+    - name: Publish dotnet
       run: |
-        dotnet publish src/Tippy/Tippy.csproj -c Release -r ${{ matrix.runtime }} /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./bin/publish/${{ matrix.artifact_name }}
-        chmod +x ./bin/publish/${{ matrix.artifact_name }}/BinDeps/${{ matrix.short_name }}/ckb*
+        dotnet publish src/Tippy/Tippy.csproj -c Release -r linux-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./tippy-linux-x64
+        chmod +x ./tippy-linux-x64/BinDeps/linux/ckb*
     - name: Archive files
-      uses: papeloto/action-zip@v1
-      with:
-        files: ./bin/publish/${{ matrix.artifact_name }}
-        dest: release/${{ matrix.artifact_name }}.zip
+      run: tar -cvzf tippy-linux-x64.tar.gz tippy-linux-x64
     - name: Generate checksum
-      run: sha256sum release/${{ matrix.artifact_name }}.zip > release/${{ matrix.artifact_name }}.sha256.txt
+      run: sha256sum tippy-linux-x64.tar.gz > tippy-linux-x64-sha256.txt
     - name: Upload binary
       id: upload-release-binary
       uses: actions/upload-release-asset@v1
@@ -105,8 +86,70 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
-        asset_path: release/${{ matrix.artifact_name }}.zip
-        asset_name: ${{ matrix.artifact_name }}.zip
+        asset_path: tippy-linux-x64.tar.gz
+        asset_name: tippy-linux-x64.tar.gz
+        asset_content_type: application/tar+gzip
+    - name: Upload checksum
+      id: upload-release-checksum
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
+        asset_path: tippy-linux-x64-sha256.txt
+        asset_name: tippy-linux-x64-sha256.txt
+        asset_content_type: text/plain
+
+  publish-win:
+    name: Publish Windows
+    needs: [release]
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Load upload URL file
+      uses: actions/download-artifact@v1
+      with:
+        name: upload_url
+    - name: Get upload URL
+      id: get_upload_url
+      run: |
+        value=`cat upload_url/upload_url.txt`
+        echo ::set-output name=upload_url::$value
+      env:
+        TAG_REF_NAME: ${{ github.ref }}
+        REPOSITORY_NAME: ${{ github.repository }}
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Fetch ckb binaries
+      run: ./tools/download-binaries.sh win
+    - name: Build
+      run: dotnet build -c Release
+    - name: Publish dotnet
+      run: |
+        dotnet publish src/Tippy/Tippy.csproj -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./tippy-win-x64
+        chmod +x ./tippy-win-x64/BinDeps/win/ckb*
+    - name: Archive files
+      uses: papeloto/action-zip@v1
+      with:
+        files: ./tippy-win-x64
+        dest: tippy-win-x64.zip
+    - name: Generate checksum
+      run: sha256sum tippy-win-x64.zip > tippy-win-x64-sha256.txt
+    - name: Upload binary
+      id: upload-release-binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
+        asset_path: tippy-win-x64.zip
+        asset_name: tippy-win-x64.zip
         asset_content_type: application/zip
     - name: Upload checksum
       id: upload-release-checksum
@@ -115,6 +158,63 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
-        asset_path: release/${{ matrix.artifact_name }}.sha256.txt
-        asset_name: ${{ matrix.artifact_name }}.sha256.txt
+        asset_path: tippy-win-x64-sha256.txt
+        asset_name: tippy-win-x64-sha256.txt
+        asset_content_type: text/plain
+
+  publish-mac:
+    name: Publish macOS
+    needs: [release]
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: macos-latest
+
+    steps:
+    - name: Load upload URL file
+      uses: actions/download-artifact@v1
+      with:
+        name: upload_url
+    - name: Get upload URL
+      id: get_upload_url
+      run: |
+        value=`cat upload_url/upload_url.txt`
+        echo ::set-output name=upload_url::$value
+      env:
+        TAG_REF_NAME: ${{ github.ref }}
+        REPOSITORY_NAME: ${{ github.repository }}
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Fetch ckb binaries
+      run: ./tools/download-binaries.sh mac
+    - name: Build
+      run: dotnet build -c Release
+    - name: Install create-dmg
+      run: brew install create-dmg
+    - name: Create dmg for macOS
+      run: ./tools/osx/package-osx.sh
+    - name: Generate checksum
+      run: shasum -a 256 Tippy.dmg > tippy-osx-x64-sha256.txt
+    - name: Upload binary
+      id: upload-release-binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
+        asset_path: Tippy.dmg
+        asset_name: Tippy.dmg
+        asset_content_type: application/x-apple-diskimage
+    - name: Upload checksum
+      id: upload-release-checksum
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
+        asset_path: tippy-osx-x64-sha256.txt
+        asset_name: tippy-osx-x64-sha256.txt
         asset_content_type: text/plain

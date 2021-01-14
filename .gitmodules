@@ -1,3 +1,0 @@
-[submodule "src/Tippy/ClientApp"]
-	path = src/Tippy/ClientApp
-	url = git@github.com:nervosnetwork/tippy-explorer-frontend.git

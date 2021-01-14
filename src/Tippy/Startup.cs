@@ -47,11 +47,6 @@ namespace Tippy
                 options.UseSqlite($"Data Source={dbPath}");
             });
             services.AddDatabaseDeveloperPageExceptionFilter();
-
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +58,6 @@ namespace Tippy
             }
 
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
 
             app.UseRouting();
 
@@ -79,18 +73,6 @@ namespace Tippy
                 endpoints.MapHub<LogHub>("/loghub");
 
                 // endpoints.MapFallbackToController("Index", "Home");
-            });
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    // Do not start ClientApp.
-                    // spa.UseReactDevelopmentServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
-                }
             });
         }
     }
