@@ -8,8 +8,8 @@ on:
 
 jobs:
   release:
-    name: Publish
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    name: Create draft release
+    #if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
     steps:
     - name: Get tag
