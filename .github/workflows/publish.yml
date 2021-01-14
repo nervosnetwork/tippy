@@ -44,7 +44,7 @@ jobs:
   publish-linux:
     name: Publish Linux
     needs: [release]
-    #if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
 
     steps:
@@ -103,7 +103,7 @@ jobs:
   publish-win:
     name: Publish Windows
     needs: [release]
-    #if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
 
     steps:
@@ -197,7 +197,7 @@ jobs:
     - name: Create dmg for macOS
       run: ./tools/osx/package-osx.sh
     - name: Generate checksum
-      run: sha256sum Tippy.dmg > tippy-osx-x64-sha256.txt
+      run: shasum -a 256 Tippy.dmg > tippy-osx-x64-sha256.txt
     - name: Upload binary
       id: upload-release-binary
       uses: actions/upload-release-asset@v1
