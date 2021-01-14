@@ -14,13 +14,15 @@ mkdir "$APP_NAME/Contents/MacOS"
 mkdir "$APP_NAME/Contents/Resources"
 
 cp "${ROOT_DIR}/tools/osx/Info.plist" "$APP_NAME/Contents/Info.plist"
-cp "${ROOT_DIR}/tools/osx/entitlements.plist" "$APP_NAME/Contents/entitlements.plist"
+cp "${ROOT_DIR}/tools/osx/Tippy.entitlements" "$APP_NAME/Contents/Tippy.entitlements"
 cp "${ROOT_DIR}/tools/osx/Tippy.icns" "$APP_NAME/Contents/Resources/Tippy.icns"
 cp -a "$PUBLISH_OUTPUT_DIRECTORY/" "$APP_NAME/Contents/MacOS"
 cp "${ROOT_DIR}/tools/osx/main" "$APP_NAME/Contents/MacOS"
 chmod +x "$APP_NAME/Contents/MacOS/main"
 cp "${ROOT_DIR}/tools/osx/console" "$APP_NAME/Contents/MacOS"
 chmod +x "$APP_NAME/Contents/MacOS/console"
+
+codesign --deep --force --options runtime --timestamp --entitlements "${ROOT_DIR}/tools/osx/Tippy.entitlements" -s "TODO" $APP_NAME
 
 # brew install create-dmg
 test -f Tippy.dmg && rm Tippy.dmg
@@ -31,3 +33,5 @@ create-dmg \
   --icon-size 100 \
   "Tippy.dmg" \
   "${ROOT_DIR}/dmg-source/"
+
+codesign --deep --force --options runtime --timestamp --entitlements "${ROOT_DIR}/tools/osx/Tippy.entitlements" -s "TODO" Tippy.dmg
