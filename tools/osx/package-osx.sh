@@ -22,3 +22,5 @@ cp "${ROOT_DIR}/tools/osx/main" "$APP_NAME/Contents/MacOS"
 chmod +x "$APP_NAME/Contents/MacOS/main"
 cp "${ROOT_DIR}/tools/osx/console" "$APP_NAME/Contents/MacOS"
 chmod +x "$APP_NAME/Contents/MacOS/console"
+
+echo "Created $APP_NAME"
