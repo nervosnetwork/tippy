@@ -25,7 +25,7 @@ cp "${ROOT_DIR}/tools/osx/console" "$APP_NAME/Contents/MacOS"
 chmod +x "$APP_NAME/Contents/MacOS/console"
 
 # $CERTIFICATE: base64 certificates.p12
-echo $CERTIFICATE | base64 —decode > certificate.p12
+echo $CERTIFICATE | base64 —-decode > certificate.p12
 security create-keychain -p $KEYCHAIN_PASSWORD sign.keychain
 security default-keychain -s sign.keychain
 security unlock-keychain -p $KEYCHAIN_PASSWORD sign.keychain
