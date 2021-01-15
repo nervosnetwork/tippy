@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ROOT_DIR=$(pwd) # Be sure to run this from root directory!
-APP_NAME="${ROOT_DIR}/dmg-source/Tippy.app"
+APP_NAME="${ROOT_DIR}/Tippy.app"
 PUBLISH_OUTPUT_DIRECTORY="${ROOT_DIR}/tippy-osx-x64"
 
 echo "Dotnet publishing..."
