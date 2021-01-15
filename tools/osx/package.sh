@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Package as .app bundle
+
 ROOT_DIR=$(pwd) # Be sure to run this from root directory!
 APP_NAME="${ROOT_DIR}/Tippy.app"
 PUBLISH_OUTPUT_DIRECTORY="${ROOT_DIR}/tippy-osx-x64"

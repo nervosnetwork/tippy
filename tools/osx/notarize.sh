@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Notarize dmg with Apple
+
 xcrun altool --notarize-app -t osx -f Tippy.dmg --primary-bundle-id "com.nervos.tippy" -u "$APPLE_ID" -p "$APPLE_ID_PASSWORD" --output-format xml | tee notarize_result
 request_id="$(cat notarize_result | grep -A1 "RequestUUID" | sed -n 's/\s*<string>\([^<]*\)<\/string>/\1/p' | xargs)"
 echo "Notarization in progress, request id: $request_id"
