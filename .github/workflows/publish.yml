@@ -216,6 +216,11 @@ jobs:
         mv Tippy.app dmg-source/
         create-dmg --volname "Tippy" --window-size 600 400 --icon-size 100 Tippy.dmg dmg-source/
         /usr/bin/codesign -s "$SIGN_IDENTITY" $SIGN_OPTIONS Tippy.dmg
+    - name: Notarize dmg
+      env:
+        APPLE_ID: ${{ secrets.APPLE_ID }}
+        APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+      run: ./tool/osx/notarize.sh
     - name: Generate checksum
       run: shasum -a 256 Tippy.dmg > tippy-osx-x64-sha256.txt
     - name: Upload binary
