@@ -202,7 +202,7 @@ jobs:
         CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
         KEYCHAIN_PASSWORD: WdDsypJi3*ZE
       run: |
-        echo "$CERTIFICATE" | base64 —-decode > certificate.p12
+        echo "$CERTIFICATE" | base64 --decode > certificate.p12
         security create-keychain -p "$KEYCHAIN_PASSWORD" sign.keychain
         security default-keychain -s sign.keychain
         security unlock-keychain -p "$KEYCHAIN_PASSWORD" sign.keychain
