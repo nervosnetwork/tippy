@@ -208,7 +208,7 @@ jobs:
       env:
         APPLE_ID: ${{ secrets.APPLE_ID }}
         APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
-      run: ./tool/osx/notarize.sh
+      run: ./tools/osx/notarize.sh
     - name: Generate checksum
       run: shasum -a 256 Tippy.dmg > tippy-osx-x64-sha256.txt
     - name: Upload binary
