@@ -194,7 +194,10 @@ jobs:
       run: dotnet build -c Release
     - name: Install create-dmg
       run: brew install create-dmg
-    - name: Create dmg for macOS
+    - name: Create signed dmg for macOS
+      env:
+          CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
       run: ./tools/osx/package-osx.sh
     - name: Generate checksum
       run: sha256sum Tippy.dmg > tippy-osx-x64-sha256.txt
