@@ -209,7 +209,7 @@ jobs:
         security import certificate.p12 -k sign.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" sign.keychain
         CERTIFICATE_IDENTITY=$(security find-identity -v -p codesigning sign.keychain | head -1 | grep '"' | sed -e 's/[^"]*"//' -e 's/".*//')
-        SIGN_OPTIONS="--force --deep --options runtime --timestamp --entitlements Tippy.app/Contents/Tippy.entitlements -v"
+        SIGN_OPTIONS="--force --deep --options runtime --timestamp --entitlements ./tools/osx/Tippy.entitlements -v"
         /usr/bin/codesign -s "$CERTIFICATE_IDENTITY" $SIGN_OPTIONS Tippy.app
         mkdir dmg-source
         mv Tippy.app dmg-source/
