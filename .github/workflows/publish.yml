@@ -193,6 +193,8 @@ jobs:
     - name: Build
       run: dotnet build -c Release
     - name: Install create-dmg
+      env:
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
       run: brew install create-dmg
     - name: Create macOS app
       run: ./tools/osx/package-osx.sh
