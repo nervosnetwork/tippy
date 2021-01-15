@@ -3,7 +3,7 @@
 ROOT_DIR=$(pwd) # Be sure to run this from root directory!
 APP_NAME="${ROOT_DIR}/dmg-source/Tippy.app"
 PUBLISH_OUTPUT_DIRECTORY="${ROOT_DIR}/tippy-osx-x64"
-KEYCHAIN_PASSWORD="whatever"
+KEYCHAIN_PASSWORD="WdDsypJi3*ZE"
 
 echo "Dotnet publishing..."
 dotnet publish src/Tippy/Tippy.csproj -c Release -r osx-x64 --self-contained true -o $PUBLISH_OUTPUT_DIRECTORY
