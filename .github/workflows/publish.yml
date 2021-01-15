@@ -198,23 +198,23 @@ jobs:
       run: ./tools/osx/package-osx.sh
     - name: Sign and create dmg
       env:
-          CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
-          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          KEYCHAIN_PASSWORD: WdDsypJi3*ZE
+        CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+        CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        KEYCHAIN_PASSWORD: WdDsypJi3*ZE
       run: |
-        echo $CERTIFICATE | base64 —-decode > certificate.p12
-        security create-keychain -p $KEYCHAIN_PASSWORD sign.keychain
+        echo "$CERTIFICATE" | base64 —-decode > certificate.p12
+        security create-keychain -p "$KEYCHAIN_PASSWORD" sign.keychain
         security default-keychain -s sign.keychain
-        security unlock-keychain -p $KEYCHAIN_PASSWORD sign.keychain
-        security import certificate.p12 -k sign.keychain -P $CERTIFICATE_PASSWORD -T /usr/bin/codesign
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD sign.keychain
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" sign.keychain
+        security import certificate.p12 -k sign.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" sign.keychain
         CERTIFICATE_IDENTITY=$(security find-identity -v -p codesigning sign.keychain | head -1 | grep '"' | sed -e 's/[^"]*"//' -e 's/".*//')
-        SIGN_OPTIONS = "--force -s $CERTIFICATE_IDENTITY --deep --options runtime --timestamp --entitlements Tippy.app/Contents/Tippy.entitlementsi -v"
-        /usr/bin/codesign $SIGN_OPTIONS Tippy.app
+        SIGN_OPTIONS = "--force --deep --options runtime --timestamp --entitlements Tippy.app/Contents/Tippy.entitlementsi -v"
+        /usr/bin/codesign -s "$CERTIFICATE_IDENTITY" $SIGN_OPTIONS Tippy.app
         mkdir dmg-source
         mv Tippy.app dmg-source/
         create-dmg --volname "Tippy" --window-size 600 400 --icon-size 100 Tippy.dmg dmg-source/
-        /usr/bin/codesign $SIGN_OPTIONS Tippy.dmg
+        /usr/bin/codesign -s "$CERTIFICATE_IDENTITY" $SIGN_OPTIONS Tippy.dmg
     - name: Generate checksum
       run: shasum -a 256 Tippy.dmg > tippy-osx-x64-sha256.txt
     - name: Upload binary
