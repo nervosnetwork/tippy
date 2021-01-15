@@ -8,7 +8,7 @@ on:
 
 jobs:
   release:
-    name: Publish
+    name: Create draft release
     #if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
     steps:
@@ -200,7 +200,7 @@ jobs:
           CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
       run: ./tools/osx/package-osx.sh
     - name: Generate checksum
-      run: sha256sum Tippy.dmg > tippy-osx-x64-sha256.txt
+      run: shasum -a 256 Tippy.dmg > tippy-osx-x64-sha256.txt
     - name: Upload binary
       id: upload-release-binary
       uses: actions/upload-release-asset@v1
