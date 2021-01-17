@@ -14,5 +14,5 @@ SIGN_OPTIONS="--force --deep --options runtime --timestamp --entitlements ./tool
 /usr/bin/codesign -s "$SIGN_IDENTITY" $SIGN_OPTIONS Tippy.app
 mkdir dmg-source
 mv Tippy.app dmg-source/
-create-dmg --volname "Tippy" --window-size 600 400 --icon-size 100 Tippy.dmg dmg-source/
+create-dmg --volname "Tippy" --window-size 500 300 --icon "Tippy.app" 100 100 --app-drop-link 400 100 --icon-size 100 Tippy.dmg dmg-source
 /usr/bin/codesign -s "$SIGN_IDENTITY" $SIGN_OPTIONS Tippy.dmg
