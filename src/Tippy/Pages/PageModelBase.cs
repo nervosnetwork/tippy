@@ -48,8 +48,23 @@ namespace Tippy.Pages
             if (ActiveProject != null && ProcessManager.IsRunning(ActiveProject))
             {
                 Client rpc = new($"http://localhost:{ActiveProject!.NodeRpcPort}");
-                EpochView = rpc.GetCurrentEpoch();
-                TipBlockNumber = rpc.GetTipBlockNumber();
+                try
+                {
+                    EpochView = rpc.GetCurrentEpoch();
+                    TipBlockNumber = rpc.GetTipBlockNumber();
+                }
+                catch
+                {
+                    // CKB node not respoding yet. Set default values.
+                    EpochView = new EpochView()
+                    {
+                        Number = "0x0",
+                        StartNumber = "0x0",
+                        Length = "0x0",
+                        CompactTarget = "0x0",
+                    };
+                    TipBlockNumber = 0;
+                }
             }
 
             await next();

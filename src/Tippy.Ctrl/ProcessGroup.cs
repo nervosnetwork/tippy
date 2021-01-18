@@ -38,7 +38,7 @@ namespace Tippy.Ctrl
                 node = new Process.NodeProcess(ProcessInfo);
                 node.LogReceived += OnLogReceived;
             }
-            node.Start();
+            //node.Start();
             // Wait for the RPC to get ready.
             // A better approach would be to catch ckb output to make sure it's already listening.
             System.Threading.Tasks.Task.Delay(1000).Wait();
@@ -49,7 +49,7 @@ namespace Tippy.Ctrl
             {
                 indexer = new Process.IndexerProcess(ProcessInfo);
             }
-            indexer.Start();
+            //indexer.Start();
             WriteLine("Started child processes.");
         }
 
