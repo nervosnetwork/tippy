@@ -193,9 +193,24 @@ jobs:
     - name: Build
       run: dotnet build -c Release
     - name: Install create-dmg
+      env:
+        HOMEBREW_NO_INSTALL_CLEANUP: 1
       run: brew install create-dmg
-    - name: Create dmg for macOS
-      run: ./tools/osx/package-osx.sh
+    - name: Create macOS app
+      run: ./tools/osx/package.sh
+    - name: Sign and create dmg
+      env:
+        CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+        CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        KEYCHAIN_PASSWORD: WdDsypJi3*ZE
+      run: ./tools/osx/sign.sh
+    - name: Notarize dmg
+      env:
+        APPLE_ID: ${{ secrets.APPLE_ID }}
+        APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+      run: ./tools/osx/notarize.sh
+    - name: Staple dmg
+      run: xcrun stapler staple Tippy.dmg
     - name: Generate checksum
       run: shasum -a 256 Tippy.dmg > tippy-osx-x64-sha256.txt
     - name: Upload binary
