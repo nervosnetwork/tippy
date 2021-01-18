@@ -4,12 +4,12 @@ on:
   pull_request:
     branches:
       - main
-    #types: [closed]
+    types: [closed]
 
 jobs:
   release:
     name: Create draft release
-    #if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
     steps:
     - name: Get tag
@@ -165,7 +165,7 @@ jobs:
   publish-mac:
     name: Publish macOS
     needs: [release]
-    #if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: macos-latest
 
     steps:
