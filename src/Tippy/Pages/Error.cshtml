@@ -1,0 +1,20 @@
+﻿@page
+@model Tippy.Pages.ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<h3>Try again.</h3>
+<p>
+    Click your browser's Back button to return to previous page and try again or refresh that page.
+</p>
