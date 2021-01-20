@@ -129,7 +129,7 @@
                             </div>
                         </form>
                         <p>
-                            <a asp-page="/Miners/Advanced" class="has-text-primary-dark">Advanced mining</a>
+                            <a asp-page="/Miners/Advanced" asp-route-id="@Model.ActiveProject.Id" class="has-text-primary-dark">Advanced mining</a>
                         </p>
                     }
                 }

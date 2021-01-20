@@ -1,4 +1,6 @@
-using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Tippy.Core.Models;
 using Tippy.Ctrl;
 
 namespace Tippy.Pages.Miners
@@ -11,9 +13,17 @@ namespace Tippy.Pages.Miners
         {
         }
 
-        public void OnGet()
+        [BindProperty]
+        public Project? Project { get; set; }
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            IsMinerRunning = ProcessManager.IsMinerRunning(ActiveProject!);
+            Project = await DbContext.Projects.FindAsync(id);
+            if (Project == null)
+            {
+                return NotFound();
+            }
+            IsMinerRunning = ProcessManager.IsMinerRunning(Project);
+            return Page();
         }
     }
 }
