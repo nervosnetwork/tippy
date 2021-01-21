@@ -3,9 +3,9 @@ using Ckb.Types;
 
 namespace Ckb.Molecule.Type
 {
-    public class CellInputSerializer : StructSerializer<Input>
+    public class CellInputSerializer : StructSerializer
     {
         public CellInputSerializer(Input input)
-            : base(input, new BaseSerializer[] { new UInt64Serializer(input.Since), new OutPointSerializer(input.PreviousOutput) }) { }
+            : base(new BaseSerializer[] { new UInt64Serializer(input.Since), new OutPointSerializer(input.PreviousOutput) }) { }
     }
 }

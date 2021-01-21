@@ -4,20 +4,20 @@ using System.Linq;
 
 namespace Ckb.Molecule.Base
 {
-    public class TableSerializer<T> : BaseSerializer<T>
+    public class TableSerializer : BaseSerializer
     {
         private readonly BaseSerializer[] FieldSerializers;
 
         private byte[] SerializedBody = Array.Empty<byte>();
         private readonly List<uint> Offsets = new List<uint>();
 
-        public TableSerializer(T value, BaseSerializer[] fieldSerializers) : base(value)
+        public TableSerializer(BaseSerializer[] fieldSerializers)
         {
             FieldSerializers = fieldSerializers;
             PreSerialize();
         }
 
-        public TableSerializer(T value) : base(value)
+        public TableSerializer()
         {
             FieldSerializers = Array.Empty<BaseSerializer>();
             PreSerialize();

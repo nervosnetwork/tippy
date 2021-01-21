@@ -4,10 +4,10 @@ using Ckb.Types;
 
 namespace Ckb.Molecule.Type
 {
-    public class RawTransactionSerializer : TableSerializer<Transaction>
+    public class RawTransactionSerializer : TableSerializer
     {
         public RawTransactionSerializer(Transaction tx)
-            : base(tx, new BaseSerializer[] {
+            : base(new BaseSerializer[] {
                 new UInt32Serializer(tx.Version),
                 new FixVecSerializer<CellDep, CellDepSerializer>(tx.CellDeps),
                 new FixVecSerializer<byte[], Byte32Serializer>(tx.HeaderDeps.Select(hd => HexStringToBytes(hd)).ToArray()),
@@ -18,10 +18,10 @@ namespace Ckb.Molecule.Type
         { }
     }
 
-    public class TransactionSerializer : TableSerializer<Transaction>
+    public class TransactionSerializer : TableSerializer
     {
         public TransactionSerializer(Transaction tx)
-            : base(tx, new BaseSerializer[]
+            : base(new BaseSerializer[]
             {
                 new RawTransactionSerializer(tx),
                 new DynVecSerializer<byte[], BytesSerializer>(tx.Witnesses.Select(wit => HexStringToBytes(wit)).ToArray()),

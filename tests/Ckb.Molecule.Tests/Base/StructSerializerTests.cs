@@ -25,7 +25,7 @@ namespace Ckb.Molecule.Tests.Base
         public void TestOnlyAByte()
         {
             var obj = new OnlyAByte(0xab);
-            var onlyAByteSerializer = new StructSerializer<OnlyAByte>(obj, new BaseSerializer[] { new ByteSerializer(obj.F1) });
+            var onlyAByteSerializer = new StructSerializer(new BaseSerializer[] { new ByteSerializer(obj.F1) });
             var expected = new byte[] { 0xab };
             Assert.Equal(expected, onlyAByteSerializer.Serialize());
         }
@@ -38,7 +38,7 @@ namespace Ckb.Molecule.Tests.Base
                 F1 = 0xab,
                 F2 = 0x010203,
             };
-            var byteAndUInt32Serializer = new StructSerializer<ByteAndUInt32>(obj, new BaseSerializer[] { new ByteSerializer(obj.F1), new UInt32Serializer(obj.F2) });
+            var byteAndUInt32Serializer = new StructSerializer(new BaseSerializer[] { new ByteSerializer(obj.F1), new UInt32Serializer(obj.F2) });
             byte[] expected = new byte[] { 0xab, 0x03, 0x02, 0x01, 0x00 };
             Assert.Equal(expected, byteAndUInt32Serializer.Serialize());
         }

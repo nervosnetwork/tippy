@@ -10,7 +10,7 @@ namespace Ckb.Molecule.Tests.Base
         [Fact]
         public void TestEmptyBytesVector()
         {
-            var emptySerializer = new BytesVecSerializer(new byte[][] { });
+            var emptySerializer = new BytesVecSerializer(System.Array.Empty<byte[]>());
             var expected = new byte[] { 4, 0, 0, 0 };
 
             Assert.Equal(emptySerializer.Serialize(), expected);
@@ -36,7 +36,7 @@ namespace Ckb.Molecule.Tests.Base
             var value = new byte[][]
             {
                 new byte[] { 0x12, 0x34 },
-                new byte[] { },
+                System.Array.Empty<byte>(),
                 new byte[] { 0x05, 0x67 },
                 new byte[] { 0x89 },
                 new byte[] { 0xab, 0xcd, 0xef },

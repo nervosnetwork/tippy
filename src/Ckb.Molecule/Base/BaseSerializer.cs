@@ -6,6 +6,8 @@ namespace Ckb.Molecule.Base
 {
     public abstract class BaseSerializer
     {
+        protected const uint Uint32Capacity = 4;
+
         public abstract byte[] Header { get; }
 
         public abstract byte[] Body { get; }
@@ -13,17 +15,6 @@ namespace Ckb.Molecule.Base
         public byte[] Serialize()
         {
             return new List<byte>(Header).Concat(new List<byte>(Body)).ToArray();
-        }
-    }
-
-    public abstract class BaseSerializer<T> : BaseSerializer
-    {
-        protected const uint Uint32Capacity = 4;
-        protected T Value;
-
-        public BaseSerializer(T value)
-        {
-            Value = value;
         }
 
         public static byte[] HexStringToBytes(string hex)
@@ -59,6 +50,16 @@ namespace Ckb.Molecule.Base
                 return BitConverter.GetBytes(num);
             }
             return BitConverter.GetBytes(num).Reverse().ToArray();
+        }
+    }
+
+    public abstract class BaseSerializer<T> : BaseSerializer
+    {
+        protected T Value;
+
+        public BaseSerializer(T value)
+        {
+            Value = value;
         }
     }
 }

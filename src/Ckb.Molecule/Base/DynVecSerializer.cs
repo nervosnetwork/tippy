@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Ckb.Molecule.Base
 {
-    public class DynVecSerializer<TItem, TItemSerializer> : BaseSerializer<TItem[]> where TItemSerializer : BaseSerializer<TItem>
+    public class DynVecSerializer<TItem, TItemSerializer> : BaseSerializer<TItem[]> where TItemSerializer : BaseSerializer
     {
         private byte[] SerializedBody = Array.Empty<byte>();
         private readonly List<uint> Offsets = new List<uint>();

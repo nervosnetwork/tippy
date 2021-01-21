@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Ckb.Molecule.Base
 {
-    public class FixVecSerializer<TItem, TItemSerializer> : BaseSerializer<TItem[]> where TItemSerializer : BaseSerializer<TItem>
+    public class FixVecSerializer<TItem, TItemSerializer> : BaseSerializer<TItem[]> where TItemSerializer : BaseSerializer
     {
         private uint ItemsCount() => (uint)Value.Length;
 

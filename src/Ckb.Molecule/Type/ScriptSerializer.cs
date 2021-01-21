@@ -3,10 +3,10 @@ using Ckb.Types;
 
 namespace Ckb.Molecule.Type
 {
-    public class ScriptSerializer : TableSerializer<Script>
+    public class ScriptSerializer : TableSerializer
     {
         public ScriptSerializer(Script script)
-            : base(script, new BaseSerializer[] {
+            : base(new BaseSerializer[] {
                 new Byte32Serializer(script.CodeHash),
                 new ByteSerializer(script.HashType == "data" ? 0x0 : 0x1),
                 new BytesSerializer(script.Args),

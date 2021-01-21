@@ -3,9 +3,9 @@ using Ckb.Types;
 
 namespace Ckb.Molecule.Type
 {
-    public class CellDepSerializer : StructSerializer<CellDep>
+    public class CellDepSerializer : StructSerializer
     {
         public CellDepSerializer(CellDep cellDep)
-            : base(cellDep, new BaseSerializer[] { new OutPointSerializer(cellDep.OutPoint), new ByteSerializer(cellDep.DepType == "code" ? 0x0 : 0x1) }) { }
+            : base(new BaseSerializer[] { new OutPointSerializer(cellDep.OutPoint), new ByteSerializer(cellDep.DepType == "code" ? 0x0 : 0x1) }) { }
     }
 }

@@ -19,13 +19,13 @@ namespace Ckb.Molecule.Tests.Base
         {
             var obj = new MixedType()
             {
-                F1 = new byte[] { },
+                F1 = System.Array.Empty<byte>(),
                 F2 = 0xab,
                 F3 = 0x123,
                 F4 = new byte[] { 0x45, 0x67, 0x89 },
                 F5 = new byte[] { 0xab, 0xcd, 0xef },
             };
-            var serialzier = new TableSerializer<MixedType>(obj, new BaseSerializer[]
+            var serialzier = new TableSerializer(new BaseSerializer[]
                 {
                     new BytesSerializer(obj.F1),
                     new ByteSerializer(obj.F2),

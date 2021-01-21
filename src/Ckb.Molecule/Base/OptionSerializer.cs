@@ -2,7 +2,7 @@ using System;
 
 namespace Ckb.Molecule.Base
 {
-    public class OptionSerializer<TItem, TItemSerializer> : BaseSerializer<TItem> where TItemSerializer : BaseSerializer<TItem>
+    public class OptionSerializer<TItem, TItemSerializer> : BaseSerializer<TItem> where TItemSerializer : BaseSerializer
     {
         private readonly TItemSerializer Serializer;
 

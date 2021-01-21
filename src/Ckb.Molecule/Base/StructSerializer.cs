@@ -3,16 +3,16 @@ using System.Linq;
 
 namespace Ckb.Molecule.Base
 {
-    public class StructSerializer<T> : BaseSerializer<T>
+    public class StructSerializer : BaseSerializer
     {
         private readonly BaseSerializer[] FieldSerializers;
 
-        public StructSerializer(T value) : base(value)
+        public StructSerializer()
         {
             FieldSerializers = Array.Empty<BaseSerializer>();
         }
 
-        public StructSerializer(T value, BaseSerializer[] fieldSerializers) : base(value)
+        public StructSerializer(BaseSerializer[] fieldSerializers)
         {
             FieldSerializers = fieldSerializers;
         }

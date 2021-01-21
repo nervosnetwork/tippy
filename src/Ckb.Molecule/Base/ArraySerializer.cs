@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Ckb.Molecule.Base
 {
-    public class ArraySerializer<TItem, TItemSerializer> : BaseSerializer<TItem[]> where TItemSerializer : BaseSerializer<TItem>
+    public class ArraySerializer<TItem, TItemSerializer> : BaseSerializer<TItem[]> where TItemSerializer : BaseSerializer
     {
         public override byte[] Header => Array.Empty<byte>();
 
