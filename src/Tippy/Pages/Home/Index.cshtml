@@ -110,9 +110,10 @@
                     }
                     else
                     {
+                        var disabled = !Model.CanStartMining;
                         <form method="post" class="columns">
                             <div class="column is-half">
-                                <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
                                     <span class="icon">
                                         <i class="fas fa-play"></i>
                                     </span>
@@ -120,7 +121,7 @@
                                 </button>
                             </div>
                             <div class="column is-half">
-                                <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
                                     <span class="icon">
                                         <i class="fas fa-hammer"></i>
                                     </span>

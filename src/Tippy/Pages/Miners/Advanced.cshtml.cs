@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
@@ -8,6 +9,7 @@ namespace Tippy.Pages.Miners
     public class AdvancedModel : PageModelBase
     {
         public bool IsMinerRunning = default;
+        public bool CanStartMining = false;
 
         public AdvancedModel(Tippy.Core.Data.DbContext context) : base(context)
         {
@@ -15,6 +17,13 @@ namespace Tippy.Pages.Miners
 
         [BindProperty]
         public Project? Project { get; set; }
+
+        [BindProperty]
+        public int BlocksToGenerate { get; set; } = 5;
+
+        [BindProperty]
+        public int Interval { get; set; } = 3;
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Project = await DbContext.Projects.FindAsync(id);
@@ -23,7 +32,27 @@ namespace Tippy.Pages.Miners
                 return NotFound();
             }
             IsMinerRunning = ProcessManager.IsMinerRunning(Project);
+            CanStartMining = ProcessManager.CanStartMining(Project);
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int id)
+        {
+            Project = await DbContext.Projects.FindAsync(id);
+            if (Project != null)
+            {
+                try
+                {
+                    ProcessManager.StartMiner(Project, ProcessManager.MinerMode.Sophisticated, BlocksToGenerate, Interval);
+                }
+                catch (System.InvalidOperationException e)
+                {
+                    TempData["ErrorMessage"] = e.Message;
+                }
+            }
+
+            var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();
+            return Redirect(referer);
         }
     }
 }

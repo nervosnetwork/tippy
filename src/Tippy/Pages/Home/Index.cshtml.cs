@@ -20,11 +20,13 @@ namespace Tippy.Pages.Home
 
         public bool IsNodeRunning { get; set; }
         public bool IsMinerRunning { get; set; }
+        public bool CanStartMining { get; set; }
 
         public void OnGet()
         {
             IsNodeRunning = ActiveProject != null && ProcessManager.IsRunning(ActiveProject);
             IsMinerRunning = IsNodeRunning && ProcessManager.IsMinerRunning(ActiveProject!);
+            CanStartMining = IsNodeRunning && ProcessManager.CanStartMining(ActiveProject!);
 
             if (IsNodeRunning)
             {

@@ -13,6 +13,10 @@
 
 <h1 class="title">Advanced mining</h1>
 
+@{
+    var startButtonDisabled = !Model.CanStartMining;
+}
+
 <h2>Mine with default miner</h2>
 @if (Model.IsMinerRunning)
 {
@@ -34,7 +38,7 @@ else
     <form method="post">
         <div class="field">
             <div class="control">
-                <button asp-page="/Miners/Start" asp-route-id="@Model.Project!.Id" class="button is-light" style="color: #b33ffe;">
+                <button asp-page="/Miners/Start" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
                     <span class="icon">
                         <i class="fas fa-play"></i>
                     </span>
@@ -50,7 +54,7 @@ else
 <h2>Mine a single block manually</h2>
 <form method="post">
     <div class="control">
-        <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.Project!.Id" disabled=@Model.IsMinerRunning class="button is-light" style="color: #b33ffe;">
+        <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
             <span class="icon">
                 <i class="fas fa-hammer"></i>
             </span>
@@ -62,22 +66,22 @@ else
 <hr />
 
 <h2>Mine a few blocks</h2>
-<form method="post" asp-page="/Miners/GenerateMultipleBlocks" asp-route-id="@Model.Project!.Id" >
+<form method="post" asp-route-id="@Model.Project!.Id" >
     <div class="field">
         <div class="control">
             <div class="field">
                 <label class="label">Number of blocks to mine</label>
-                <input class="input" type="text" placeholder="5">
+                <input class="input" type="text" asp-for="BlocksToGenerate">
             </div>
             <div class="field">
                 <label class="label">Interval (secs)</label>
-                <input class="input" type="text" placeholder="3">
+                <input class="input" type="text" asp-for="Interval">
             </div>
         </div>
     </div>
     <div class="field is-grouped">
         <div class="control">
-            <button disabled=@Model.IsMinerRunning class="button is-light" style="color: #b33ffe;">
+            <button disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
                 <span class="icon">
                     <i class="fas fa-play"></i>
                 </span>

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Ckb.Rpc;
+using System.Timers;
+using System;
 
 namespace Tippy.Ctrl
 {
@@ -21,8 +23,13 @@ namespace Tippy.Ctrl
 
         internal event NodeLogEventHandler? NodeLogReceived;
 
+        private Timer? advancedMiningTimer;
+        private int remainingBlocksToMine = 0;
+
         internal bool IsRunning => node?.IsRunning ?? false;
         internal bool IsMinerRunning => miner?.IsRunning ?? false;
+        internal bool IsAdvancedMinerRunning => advancedMiningTimer != null;
+        internal bool CanStartMining => IsRunning && !(IsMinerRunning || IsAdvancedMinerRunning);
 
         internal string LogFolder()
         {
@@ -103,6 +110,49 @@ namespace Tippy.Ctrl
             Client rpc = new($"http://localhost:{ProcessInfo.NodeRpcPort}");
             var block = rpc.GenerateBlock();
             WriteLine($"Generated block {block}");
+        }
+
+        // Advanced mining
+        internal void StartAdvancedMining(int blocks, int interval)
+        {
+            if (ProcessInfo.Chain != Core.Models.Project.ChainType.Dev || !IsRunning)
+            {
+                return;
+            }
+
+            if (IsAdvancedMinerRunning)
+            {
+                return;
+            }
+
+            advancedMiningTimer = new(interval * 1000);
+            advancedMiningTimer.Elapsed += OnMiningNextBlock;
+            advancedMiningTimer.AutoReset = true;
+            advancedMiningTimer.Enabled = true;
+            remainingBlocksToMine = blocks;
+
+            WriteLine($"Generating {blocks} blocks...");
+        }
+
+        internal void StopAdvancedMining()
+        {
+            if (advancedMiningTimer != null)
+            {
+                advancedMiningTimer.Stop();
+                advancedMiningTimer.Dispose();
+                advancedMiningTimer = null;
+                WriteLine($"Generated blocks.");
+            }
+        }
+
+        private void OnMiningNextBlock(Object source, ElapsedEventArgs e)
+        {
+            MineOneBlock();
+            remainingBlocksToMine -= 1;
+            if (remainingBlocksToMine == 0)
+            {
+                StopAdvancedMining();
+            }
         }
 
         internal List<int> PortsInUse()

@@ -20,6 +20,7 @@ namespace Tippy.Ctrl
         {
             Default,
             SingleBlock,
+            Sophisticated,
         }
 
         static List<ProcessGroup> processGroups = new List<ProcessGroup>();
@@ -33,6 +34,22 @@ namespace Tippy.Ctrl
             if (project != null && GroupFor(project) is ProcessGroup group)
             {
                 return group.IsMinerRunning;
+            }
+            return false;
+        }
+        public static bool IsAdvancedMinerRunning(Project project)
+        {
+            if (project != null && GroupFor(project) is ProcessGroup group)
+            {
+                return group.IsAdvancedMinerRunning;
+            }
+            return false;
+        }
+        public static bool CanStartMining(Project project)
+        {
+            if (project != null && GroupFor(project) is ProcessGroup group)
+            {
+                return group.CanStartMining;
             }
             return false;
         }
@@ -89,7 +106,7 @@ namespace Tippy.Ctrl
             Start(project);
         }
 
-        public static void StartMiner(Project project, MinerMode mode)
+        public static void StartMiner(Project project, MinerMode mode, int blocks = 1, int interval = 1)
         {
             var group = GroupFor(project);
             if (group == null)
@@ -104,6 +121,10 @@ namespace Tippy.Ctrl
             else if (mode == MinerMode.SingleBlock)
             {
                 group.MineOneBlock();
+            }
+            else if (mode == MinerMode.Sophisticated)
+            {
+                group.StartAdvancedMining(blocks, interval);
             }
         }
 
