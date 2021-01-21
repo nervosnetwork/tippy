@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Ckb.Molecule.Base
 {
@@ -18,5 +16,6 @@ namespace Ckb.Molecule.Base
     public class BytesSerializer : FixVecSerializer<byte, ByteSerializer>
     {
         public BytesSerializer(byte[] value) : base(value) { }
+        public BytesSerializer(string value) : base(HexStringToBytes(value)) { }
     }
 }

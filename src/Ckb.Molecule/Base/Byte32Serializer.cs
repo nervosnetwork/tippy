@@ -15,5 +15,7 @@ namespace Ckb.Molecule.Base
             }
             Value = data;
         }
+
+        public Byte32Serializer(byte[] bytes) : base(bytes) { }
     }
 }
