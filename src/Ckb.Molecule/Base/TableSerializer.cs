@@ -6,12 +6,12 @@ namespace Ckb.Molecule.Base
 {
     public class TableSerializer<T> : BaseSerializer<T>
     {
-        private readonly List<BaseSerializer> FieldSerializers;
+        private readonly BaseSerializer[] FieldSerializers;
 
-        private byte[] SerializedBody = new byte[] { };
+        private byte[] SerializedBody = Array.Empty<byte>();
         private readonly List<uint> Offsets = new List<uint>();
 
-        public TableSerializer(T value, List<BaseSerializer> fieldSerializers) : base(value)
+        public TableSerializer(T value, BaseSerializer[] fieldSerializers) : base(value)
         {
             FieldSerializers = fieldSerializers;
             PreSerialize();
@@ -19,11 +19,11 @@ namespace Ckb.Molecule.Base
 
         public TableSerializer(T value) : base(value)
         {
-            FieldSerializers = new List<BaseSerializer>();
+            FieldSerializers = Array.Empty<BaseSerializer>();
             PreSerialize();
         }
 
-        private uint HeaderSize() => Convert.ToUInt32(1 + FieldSerializers.Count) * Uint32Capacity;
+        private uint HeaderSize() => Convert.ToUInt32(1 + FieldSerializers.Length) * Uint32Capacity;
 
         private uint BytesSize() => HeaderSize() + (uint)Body.Length;
 
@@ -32,7 +32,7 @@ namespace Ckb.Molecule.Base
 
         private void PreSerialize()
         {
-            if (FieldSerializers.Count == 0)
+            if (FieldSerializers.Length == 0)
             {
                 return;
             }

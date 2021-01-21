@@ -6,8 +6,8 @@ namespace Ckb.Molecule.Base
 {
     public class DynVecSerializer<TItem, TItemSerializer> : BaseSerializer<TItem[]> where TItemSerializer : BaseSerializer<TItem>
     {
-        private byte[] SerializedBody = new byte[] { };
-        private List<uint> Offsets = new List<uint>();
+        private byte[] SerializedBody = Array.Empty<byte>();
+        private readonly List<uint> Offsets = new List<uint>();
 
         public DynVecSerializer(TItem[] items) : base(items)
         {

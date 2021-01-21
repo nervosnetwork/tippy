@@ -5,7 +5,7 @@ namespace Ckb.Molecule.Base
 {
     public class UInt32Serializer : BaseSerializer<uint>
     {
-        public override byte[] Header => new byte[0];
+        public override byte[] Header => Array.Empty<byte>();
         public override byte[] Body => UInt32ToLEBytes(Value);
 
         public UInt32Serializer(uint value) : base(value) { }
@@ -18,7 +18,7 @@ namespace Ckb.Molecule.Base
 
     public class UInt64Serializer : BaseSerializer<ulong>
     {
-        public override byte[] Header => new byte[0];
+        public override byte[] Header => Array.Empty<byte>();
         public override byte[] Body => UInt64ToLEBytes(Value);
 
         public UInt64Serializer(uint value) : base(value) { }

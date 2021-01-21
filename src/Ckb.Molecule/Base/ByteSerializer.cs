@@ -4,9 +4,9 @@ namespace Ckb.Molecule.Base
 {
     public class ByteSerializer : BaseSerializer<byte>
     {
-        public override byte[] Header => new Byte[0];
+        public override byte[] Header => Array.Empty<byte>();
 
-        public override byte[] Body => new byte[1] { Value };
+        public override byte[] Body => new byte[] { Value };
 
         public ByteSerializer(byte value) : base(value) { }
 

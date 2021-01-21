@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Ckb.Molecule.Base;
 using Xunit;
 
@@ -26,7 +25,7 @@ namespace Ckb.Molecule.Tests.Base
                 F4 = new byte[] { 0x45, 0x67, 0x89 },
                 F5 = new byte[] { 0xab, 0xcd, 0xef },
             };
-            var serialzier = new TableSerializer<MixedType>(obj, new List<BaseSerializer>(new BaseSerializer[]
+            var serialzier = new TableSerializer<MixedType>(obj, new BaseSerializer[]
                 {
                     new BytesSerializer(obj.F1),
                     new ByteSerializer(obj.F2),
@@ -34,7 +33,7 @@ namespace Ckb.Molecule.Tests.Base
                     new ArraySerializer<byte, ByteSerializer>(obj.F4),
                     new BytesSerializer(obj.F5),
                 }
-            ));
+            );
             var expected = new byte[]
             {
                 0x2b, 0, 0, 0,

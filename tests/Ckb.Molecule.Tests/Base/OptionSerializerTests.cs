@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Ckb.Molecule.Base;
 using Xunit;
 
@@ -15,7 +14,7 @@ namespace Ckb.Molecule.Tests.Base
             F2 = f2;
         }
 
-        public TableSerializer<TableType> Serializer => new TableSerializer<TableType>(this, new List<BaseSerializer>(new BaseSerializer[] { new ByteSerializer(F1), new UInt32Serializer(F2) }));
+        public TableSerializer<TableType> Serializer => new TableSerializer<TableType>(this, new BaseSerializer[] { new ByteSerializer(F1), new UInt32Serializer(F2) });
     }
 
     public class OptionSerializerTests
@@ -24,7 +23,7 @@ namespace Ckb.Molecule.Tests.Base
         public void TestNonEmptyObject()
         {
             var obj = new TableType(0x01, 2);
-            var serializer = new TableSerializer<TableType>(obj, new List<BaseSerializer>(new BaseSerializer[] { new ByteSerializer(obj.F1), new UInt32Serializer(obj.F2) }));
+            var serializer = new TableSerializer<TableType>(obj, new BaseSerializer[] { new ByteSerializer(obj.F1), new UInt32Serializer(obj.F2) });
             var optionSerializer = new OptionSerializer<TableType, TableSerializer<TableType>>(obj, serializer);
             var expected = new byte[]
             {
@@ -37,9 +36,9 @@ namespace Ckb.Molecule.Tests.Base
         public void TestEmptyObject()
         {
             TableType obj = null;
-            var serializer = new TableSerializer<TableType>(obj, new List<BaseSerializer>(new BaseSerializer[] { new ByteSerializer(1), new UInt32Serializer(2) }));
+            var serializer = new TableSerializer<TableType>(obj, new BaseSerializer[] { new ByteSerializer(1), new UInt32Serializer(2) });
             var optionSerializer = new OptionSerializer<TableType, TableSerializer<TableType>>(obj, serializer);
-            var expected = new byte[] { };
+            var expected = System.Array.Empty<byte>();
             Assert.Equal(expected, optionSerializer.Serialize());
         }
     }

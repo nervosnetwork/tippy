@@ -1,3 +1,5 @@
+using System;
+
 namespace Ckb.Molecule.Base
 {
     public class OptionSerializer<TItem, TItemSerializer> : BaseSerializer<TItem> where TItemSerializer : BaseSerializer<TItem>
@@ -14,7 +16,7 @@ namespace Ckb.Molecule.Base
             Serializer = null;
         }
 
-        public override byte[] Header => new byte[0];
+        public override byte[] Header => Array.Empty<byte>();
         public override byte[] Body
         {
             get
@@ -23,7 +25,7 @@ namespace Ckb.Molecule.Base
                 {
                     return Serializer.Serialize();
                 }
-                return new byte[0];
+                return Array.Empty<byte>();
             }
         }
     }
