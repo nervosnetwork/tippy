@@ -1,73 +1,74 @@
-using System.Text.Json.Serialization;
+using System;
+using Newtonsoft.Json;
 
 namespace Ckb.Types.IndexrTypes
 {
     public class CellCapacity
     {
-        [JsonPropertyName("block_hash")]
-        public string BlockHash { get; set; } = default!;
+        [JsonProperty(PropertyName = "block_hash")]
+        public string BlockHash { get; set; }
 
-        [JsonPropertyName("block_number")]
-        public string BlockNumber { get; set; } = default!;
+        [JsonProperty(PropertyName = "block_number")]
+        public string BlockNumber { get; set; }
 
-        [JsonPropertyName("capacity")]
-        public string Capacity { get; set; } = default!;
+        [JsonProperty(PropertyName = "capacity")]
+        public string Capacity { get; set; }
     }
 
 
     public class Cell
     {
-        [JsonPropertyName("block_number")]
-        public string BlockNumber { get; set; } = default!;
+        [JsonProperty(PropertyName = "block_number")]
+        public string BlockNumber { get; set; }
 
-        [JsonPropertyName("out_point")]
-        public OutPoint OutPoint { get; set; } = default!;
+        [JsonProperty(PropertyName = "out_point")]
+        public OutPoint OutPoint { get; set; }
 
-        [JsonPropertyName("output")]
-        public Output Output { get; set; } = default!;
+        [JsonProperty(PropertyName = "output")]
+        public Output Output { get; set; }
 
-        [JsonPropertyName("output_data")]
-        public string OutputData { get; set; } = default!;
+        [JsonProperty(PropertyName = "output_data")]
+        public string OutputData { get; set; }
 
-        [JsonPropertyName("tx_index")]
-        public string TxIndex { get; set; } = default!;
+        [JsonProperty(PropertyName = "tx_index")]
+        public string TxIndex { get; set; }
     }
 
 
     public class Transaction
     {
-        [JsonPropertyName("block_number")]
-        public string BlockNumber { get; set; } = default!;
+        [JsonProperty(PropertyName = "block_number")]
+        public string BlockNumber { get; set; }
 
-        [JsonPropertyName("io_index")]
-        public string IoIndex { get; set; } = default!;
+        [JsonProperty(PropertyName = "io_index")]
+        public string IoIndex { get; set; }
 
-        [JsonPropertyName("io_type")]
-        public string IoType { get; set; } = default!;
+        [JsonProperty(PropertyName = "io_type")]
+        public string IoType { get; set; }
 
-        [JsonPropertyName("tx_hash")]
-        public string TxHash { get; set; } = default!;
+        [JsonProperty(PropertyName = "tx_hash")]
+        public string TxHash { get; set; }
 
-        [JsonPropertyName("tx_index")]
-        public string TxIndex { get; set; } = default!;
+        [JsonProperty(PropertyName = "tx_index")]
+        public string TxIndex { get; set; }
     }
 
     public class Result<T>
     {
-        [JsonPropertyName("last_cursor")]
-        public string LastCursor { get; set; } = default!;
+        [JsonProperty(PropertyName = "last_cursor")]
+        public string LastCursor { get; set; }
 
-        [JsonPropertyName("objects")]
-        public T[] Objects { get; set; } = default!;
+        [JsonProperty(PropertyName = "objects")]
+        public T[] Objects { get; set; }
     }
 
     public class SearchKey
     {
-        [JsonPropertyName("script")]
-        public Script Script { get; set; } = default!;
+        [JsonProperty(PropertyName = "script")]
+        public Script Script { get; set; }
 
-        [JsonPropertyName("script_type")]
-        public string ScriptType { get; set; } = default!;
+        [JsonProperty(PropertyName = "script_type")]
+        public string ScriptType { get; set; }
 
         public SearchKey(Script script, string scriptType)
         {

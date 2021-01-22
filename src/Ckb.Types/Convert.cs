@@ -24,23 +24,34 @@ namespace Ckb.Types
 
         public static string UInt64ToHex(UInt64 num) => $"0x{num:x}";
 
+        public static string Int32ToHex(int num) => $"0x{num:x}";
+
         public static byte[] HexStringToBytes(string hex)
         {
-            return System.Convert.FromHexString(hex.Remove(0, 2));
+            //return System.Convert.FromHexString(hex.Remove(0, 2));
+            string hexWithoutPrefix = hex.StartsWith("0x") ? hex.Remove(0, 2) : hex;
+            int NumberChars = hexWithoutPrefix.Length;
+            byte[] bytes = new byte[NumberChars / 2];
+            for (int i = 0; i < NumberChars; i += 2)
+            {
+                bytes[i / 2] = System.Convert.ToByte(hexWithoutPrefix.Substring(i, 2), 16);
+            }
+            return bytes;
         }
 
         public static string BytesToHexString(byte[] bytes)
         {
-            return "0x" + System.Convert.ToHexString(bytes).ToLower();
+            //return "0x" + System.Convert.ToHexString(bytes).ToLower();
+            return "0x" + BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
 
         public static UInt32 LEBytesToUInt32(byte[] bytes)
         {
             if (BitConverter.IsLittleEndian)
             {
-                return BitConverter.ToUInt32(bytes);
+                return BitConverter.ToUInt32(bytes, 0);
             }
-            return BitConverter.ToUInt32(bytes.Reverse().ToArray());
+            return BitConverter.ToUInt32(bytes.Reverse().ToArray(), 0);
         }
     }
 }

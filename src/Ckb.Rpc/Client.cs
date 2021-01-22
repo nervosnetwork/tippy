@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Tippy.Util;
+using Hex = Ckb.Types.Convert;
 
 namespace Ckb.Rpc
 {

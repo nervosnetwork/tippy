@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -11,7 +11,7 @@ namespace Ckb.Address
         {
             int acc = 0;
             uint bits = 0;
-            List<int> ret = new();
+            List<int> ret = new List<int>();
             int maxv = (1 << (int)toBits) - 1;
             foreach (int value in data)
             {

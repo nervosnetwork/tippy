@@ -6,6 +6,6 @@ namespace Ckb.Molecule.Type
     public class CellDepSerializer : StructSerializer
     {
         public CellDepSerializer(CellDep cellDep)
-            : base(new BaseSerializer[] { new OutPointSerializer(cellDep.OutPoint), new ByteSerializer(cellDep.DepType == "code" ? 0x0 : 0x1) }) { }
+            : base(new BaseSerializer[] { new OutPointSerializer(cellDep.OutPoint), new ByteSerializer((byte)(cellDep.DepType == "code" ? 0x0 : 0x1)) }) { }
     }
 }

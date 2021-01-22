@@ -43,7 +43,8 @@ namespace Ckb.Molecule.Base
 
         public static byte[] UInt128ToLEBytes(BigInteger num)
         {
-            byte[] bytes = num.ToByteArray(true, false);
+            // ToByteArray return bytes in little-endian order
+            byte[] bytes = num.ToByteArray();
             byte[] uint128 = new byte[16];
             foreach (var (v, i) in bytes.Select((value, i) => (value, i)))
             {
