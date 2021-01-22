@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Tippy.Util;
 using IndexerTypes = Ckb.Types.IndexrTypes;
+using Hex = Ckb.Types.Convert;
 
 namespace Ckb.Rpc
 {

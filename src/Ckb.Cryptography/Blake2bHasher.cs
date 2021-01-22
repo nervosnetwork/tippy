@@ -1,4 +1,3 @@
-using System;
 using Isopoh.Cryptography.Blake2b;
 using Isopoh.Cryptography.SecureArray;
 
@@ -10,12 +9,12 @@ namespace Ckb.Cryptography
 
         public static byte[] ComputeHash(byte[] data)
         {
-            Blake2BConfig config = new()
+            Blake2BConfig config = new Blake2BConfig
             {
                 Personalization = personalization,
                 OutputSizeInBytes = 32
             };
-            SecureArrayCall secureArrayCall = default!;
+            SecureArrayCall secureArrayCall = default;
             return Blake2B.ComputeHash(data, config, secureArrayCall);
         }
     }

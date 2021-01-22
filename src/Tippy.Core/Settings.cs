@@ -1,9 +1,7 @@
-using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using System.Reflection;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Tippy.Core
 {

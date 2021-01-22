@@ -35,7 +35,7 @@ namespace Ckb.Address
 
         static int[] HrpExpand(string hrp)
         {
-            List<int> ret = new();
+            List<int> ret = new List<int>();
             foreach (char c in hrp)
             {
                 ret.Add(c >> 5);
@@ -90,7 +90,7 @@ namespace Ckb.Address
             hrp = hrp.ToLower();
             int[] combined = data.Concat(CreateChecksum(hrp, data)).ToArray();
 
-            StringBuilder ret = new();
+            StringBuilder ret = new StringBuilder();
             ret.Append(hrp);
             ret.Append('1');
 
@@ -134,7 +134,7 @@ namespace Ckb.Address
                     throw new Exception("invalid character human-readable part");
                 }
             }
-            List<int> data = new();
+            List<int> data = new List<int>();
             for (int p = pos + 1; p < bechString.Length; p++)
             {
                 int d = CHARSET.IndexOf(bechString[p]);
