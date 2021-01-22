@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Types.Tests", "tests\Ck
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Molecule", "src\Ckb.Molecule\Ckb.Molecule.csproj", "{E4480FE4-4405-4419-BB2C-5F2A3A814140}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ckb.Molecule.Tests", "tests\Ckb.Molecule.Tests\Ckb.Molecule.Tests.csproj", "{3BD402C3-D2DC-4DA3-A3A2-AA880427FCF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Molecule.Tests", "tests\Ckb.Molecule.Tests\Ckb.Molecule.Tests.csproj", "{3BD402C3-D2DC-4DA3-A3A2-AA880427FCF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +98,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6A00AF35-991B-4C4E-81CA-4609E517B867} = {A1F1E8C7-788C-4C63-AC9C-5D44D618E437}
 		{9A6E7450-A456-4DDE-9FF1-A489B6E93FA5} = {A1F1E8C7-788C-4C63-AC9C-5D44D618E437}
+		{3BD402C3-D2DC-4DA3-A3A2-AA880427FCF2} = {A1F1E8C7-788C-4C63-AC9C-5D44D618E437}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08BF23BE-7259-4673-A227-6480B6DF808C}
