@@ -1,5 +1,8 @@
 using System;
 using System.Globalization;
+using System.Linq;
+using System.Numerics;
+using Ckb.Types;
 
 namespace Ckb.Molecule.Base
 {
@@ -26,6 +29,27 @@ namespace Ckb.Molecule.Base
         public UInt64Serializer(string hex) : base(0)
         {
             Value = UInt64.Parse(hex.Remove(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+        }
+    }
+
+    public class UInt128Serializer : BaseSerializer<BigInteger>
+    {
+        public override byte[] Header => Array.Empty<byte>();
+        public override byte[] Body => UInt128ToLEBytes(Value);
+
+        public UInt128Serializer(BigInteger value) : base(value) { }
+
+        public UInt128Serializer(string hex) : base(Types.Convert.HexToBigInteger(hex)) { }
+
+        public static byte[] UInt128ToLEBytes(BigInteger num)
+        {
+            byte[] bytes = num.ToByteArray(true, false);
+            byte[] uint128 = new byte[16];
+            foreach (var (v, i) in bytes.Select((value, i) => (value, i)))
+            {
+                uint128[i] = v;
+            }
+            return uint128;
         }
     }
 }
