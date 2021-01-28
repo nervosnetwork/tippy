@@ -12,7 +12,6 @@
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
     <Folder Include="Properties\" />
-    <Folder Include="Process\" />
   </ItemGroup>
 
   <ItemGroup>

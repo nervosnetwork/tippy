@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Tippy.Core.Models;
+using Tippy.Ctrl.Process;
 
 namespace Tippy.Ctrl
 {
@@ -15,6 +16,11 @@ namespace Tippy.Ctrl
     public class ProcessManager
     {
         public static event NodeLogEventHandler? NodeLogReceived;
+
+        /// <summary>
+        /// CKB related binaries version info
+        /// </summary>
+        public static string Info { get; private set; } = "";
 
         public enum MinerMode
         {
@@ -58,6 +64,13 @@ namespace Tippy.Ctrl
         {
             ProcessGroup group = new(ProcessInfo.FromProject(project));
             return group.LogFolder();
+        }
+
+        public static void FetchInfo()
+        {
+            BinariesInfo binariesInfo = new();
+            binariesInfo.Refresh();
+            Info = binariesInfo.Info;
         }
 
         /// If any port is already in use, throw InvalidOperationException.
