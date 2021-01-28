@@ -24,6 +24,7 @@ namespace Tippy.Pages
         public Project? ActiveProject { get; set; }
         public UInt64 TipBlockNumber { get; set; }
         public EpochView? EpochView { get; set; }
+        public String ProcessInfo { get; set; } = "";
 
         protected PageModelBase(Tippy.Core.Data.DbContext context)
         {
@@ -38,6 +39,8 @@ namespace Tippy.Pages
 
         public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
+            ProcessInfo = ProcessManager.Info;
+
             Projects = await DbContext.Projects.ToListAsync();
             ActiveProject = await DbContext.Projects.FirstOrDefaultAsync(p => p.IsActive);
             if (ActiveProject == null && Projects.Count > 0)
