@@ -1,0 +1,16 @@
+﻿@page
+@model Tippy.Pages.TxPool.IndexModel
+@using Tippy.Ctrl 
+@{ ViewData["Title"] = "Tx Pool"; }
+
+<h1 class="title">Tx Pool</h1>
+
+@if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
+{
+    <p>TODO</p>
+}
+else
+{
+    <Partial name="_NoActiveProject" />
+}
+
