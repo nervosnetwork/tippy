@@ -305,7 +305,7 @@ namespace Ckb.Types
         public string AncestorsCount { get; set; }
     }
 
-    public class TxRawInfo
+    public class RawTxPool
     {
         [JsonProperty(PropertyName = "pending")]
         public Dictionary<string, TxVerbosity> Pending { get; set; }

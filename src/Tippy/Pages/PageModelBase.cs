@@ -50,7 +50,7 @@ namespace Tippy.Pages
 
             if (ActiveProject != null && ProcessManager.IsRunning(ActiveProject))
             {
-                Client rpc = new($"http://localhost:{ActiveProject!.NodeRpcPort}");
+                Client rpc = Rpc();
                 try
                 {
                     EpochView = rpc.GetCurrentEpoch();

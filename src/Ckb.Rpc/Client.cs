@@ -84,9 +84,9 @@ namespace Ckb.Rpc
             Call<String>("clear_tx_pool");
         }
 
-        public Types.TxRawInfo? GetRawTxPool()
+        public Types.RawTxPool? GetRawTxPool()
         {
-            return Call<Types.TxRawInfo>("get_raw_tx_pool", new bool[] { true });
+            return Call<Types.RawTxPool>("get_raw_tx_pool", true);
         }
     }
 }
