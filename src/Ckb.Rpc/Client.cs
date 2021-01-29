@@ -73,5 +73,20 @@ namespace Ckb.Rpc
         {
             Call<String>("truncate", new string[] { targetTipHash });
         }
+
+        public Types.TxPoolInfo? TxPoolInfo()
+        {
+            return Call<Types.TxPoolInfo>("tx_pool_info");
+        }
+
+        public void ClearTxPool()
+        {
+            Call<String>("clear_tx_pool");
+        }
+
+        public Types.TxRawInfo? GetRawTxPool()
+        {
+            return Call<Types.TxRawInfo>("get_raw_tx_pool", new bool[] { true });
+        }
     }
 }
