@@ -82,7 +82,9 @@
                     <label>Hash</label>
                 </div>
                 <div class="column is-11">
-                    @hash
+                    <a asp-page="/Transactions/Details" asp-route-txhash="@hash" class="hash-text">
+                        @hash
+                    </a>
                 </div>
             </div>
             <partial name="_TxVerbosity" model="tx" />
@@ -99,7 +101,9 @@
                     <label>Hash</label>
                 </div>
                 <div class="column is-11">
-                    @hash
+                    <a asp-page="/Transactions/Details" asp-route-txhash="@hash" class="hash-text">
+                        @hash
+                    </a>
                 </div>
             </div>
             <partial name="_TxVerbosity" model="tx" />
