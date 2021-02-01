@@ -1,0 +1,46 @@
+﻿@model Ckb.Types.TxVerbosity
+@using Tippy.Helpers
+
+<div class="columns is-multiline">
+    <div class="column is-1">
+        <label>Cycles</label>
+    </div>
+    <div class="column is-11">
+        @NumberHelper.HexToNumber(Model.Cycles)
+    </div>
+
+    <div class="column is-1">
+        <label>Size</label>
+    </div>
+    <div class="column is-11">
+        @NumberHelper.HexToNumber(Model.Size)
+    </div>
+
+    <div class="column is-1">
+        <label>Fee</label>
+    </div>
+    <div class="column is-11">
+        @NumberHelper.HexToNumber(Model.Fee)
+    </div>
+
+    <div class="column is-1">
+        <label>Ancestors Count</label>
+    </div>
+    <div class="column is-11">
+        @NumberHelper.HexToNumber(Model.AncestorsCount)
+    </div>
+
+    <div class="column is-1">
+        <label>Ancestors Cycles</label>
+    </div>
+    <div class="column is-11">
+        @NumberHelper.HexToNumber(Model.AncestorsCycles)
+    </div>
+
+    <div class="column is-1">
+        <label>Ancestors Size</label>
+    </div>
+    <div class="column is-11">
+        @NumberHelper.HexToNumber(Model.AncestorsSize)
+    </div>
+</div>

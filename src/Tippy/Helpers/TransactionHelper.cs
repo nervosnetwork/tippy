@@ -12,10 +12,7 @@ namespace Tippy.Helpers
         public const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
         private const int TxProposalWindow = 12;
 
-        public static string CkbAmount(string capacity)
-        {
-            return (decimal.Parse(capacity) / 100_000_000).ToString();
-        }
+        public static string CkbAmount(string capacity) => NumberHelper.CkbAmount(capacity);
 
         // For not cellbase
         public static Output[] GetPreviousOutputs(Client client, Input[] inputs)

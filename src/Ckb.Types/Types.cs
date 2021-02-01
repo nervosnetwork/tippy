@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Ckb.Types
@@ -251,5 +252,65 @@ namespace Ckb.Types
 
         [JsonProperty(PropertyName = "start_number")]
         public string StartNumber { get; set; }
+    }
+
+    public class TxPoolInfo
+    {
+        [JsonProperty(PropertyName = "tip_hash")]
+        public string TipHash { get; set; }
+
+        [JsonProperty(PropertyName = "tip_number")]
+        public string TipNumber { get; set; }
+
+        [JsonProperty(PropertyName = "pending")]
+        public string Pending { get; set; }
+
+        [JsonProperty(PropertyName = "proposed")]
+        public string Proposed { get; set; }
+
+        [JsonProperty(PropertyName = "orphan")]
+        public string Orphan { get; set; }
+
+        [JsonProperty(PropertyName = "total_tx_size")]
+        public string TotalTxSize { get; set; }
+
+        [JsonProperty(PropertyName = "total_tx_cycles")]
+        public string TotalTxCycles { get; set; }
+
+        [JsonProperty(PropertyName = "min_fee_rate")]
+        public string MinFeeRate { get; set; }
+
+        [JsonProperty(PropertyName = "last_txs_updated_at")]
+        public string LastTxsUpdatedAt { get; set; }
+    }
+
+    public class TxVerbosity
+    {
+        [JsonProperty(PropertyName = "cycles")]
+        public string Cycles { get; set; }
+
+        [JsonProperty(PropertyName = "size")]
+        public string Size { get; set; }
+
+        [JsonProperty(PropertyName = "fee")]
+        public string Fee { get; set; }
+
+        [JsonProperty(PropertyName = "ancestors_size")]
+        public string AncestorsSize { get; set; }
+
+        [JsonProperty(PropertyName = "ancestors_cycles")]
+        public string AncestorsCycles { get; set; }
+
+        [JsonProperty(PropertyName = "ancestors_count")]
+        public string AncestorsCount { get; set; }
+    }
+
+    public class RawTxPool
+    {
+        [JsonProperty(PropertyName = "pending")]
+        public Dictionary<string, TxVerbosity> Pending { get; set; }
+
+        [JsonProperty(PropertyName = "proposed")]
+        public Dictionary<string, TxVerbosity> Proposed { get; set; }
     }
 }
