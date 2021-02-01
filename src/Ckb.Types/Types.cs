@@ -311,6 +311,6 @@ namespace Ckb.Types
         public Dictionary<string, TxVerbosity> Pending { get; set; }
 
         [JsonProperty(PropertyName = "proposed")]
-        public Dictionary<string, TxVerbosity> Prposed { get; set; }
+        public Dictionary<string, TxVerbosity> Proposed { get; set; }
     }
 }

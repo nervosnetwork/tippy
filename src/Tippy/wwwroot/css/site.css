@@ -135,7 +135,7 @@ body {
     background-color: #B43FFE;
 }
 
-.form-box, .block-box, .address-box, .transaction-box {
+.form-box, .block-box, .address-box, .transaction-box, .info-box {
     background-color: #3E3F49;
 }
 

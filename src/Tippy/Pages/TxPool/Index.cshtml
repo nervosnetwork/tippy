@@ -1,6 +1,8 @@
 ﻿@page
 @model Tippy.Pages.TxPool.IndexModel
-@using Tippy.Ctrl 
+@using Tippy.Ctrl
+@using Tippy.Helpers
+@using Ckb.Types
 @{ ViewData["Title"] = "Tx Pool"; }
 
 <h1 class="title">Tx Pool</h1>
@@ -17,9 +19,95 @@
             </button>
         </form>
     </div>
+
+    <div class="box info-box">
+        <div class="columns is-multiline">
+            <div class="column is-1">
+                <label>Last updated</label>
+            </div>
+            <div class="column is-11">
+                @DateHelper.HexTimestampToDate(Model.TxPoolInfo!.LastTxsUpdatedAt)
+            </div>
+
+            <div class="column is-1">
+                <label>Tip Hash</label>
+            </div>
+            <div class="column is-11">
+                @Model.TxPoolInfo!.TipHash
+            </div>
+
+            <div class="column is-1">
+                <label>Tip Number</label>
+            </div>
+            <div class="column is-11">
+                @NumberHelper.HexToNumber(Model.TxPoolInfo!.TipNumber)
+            </div>
+
+            <div class="column is-1">
+                <label>Min Fee Rate</label>
+            </div>
+            <div class="column is-11">
+                @NumberHelper.HexToNumber(Model.TxPoolInfo!.MinFeeRate)
+            </div>
+
+            <div class="column is-1">
+                <label>Orphan</label>
+            </div>
+            <div class="column is-11">
+                @NumberHelper.HexToNumber(Model.TxPoolInfo!.Orphan)
+            </div>
+
+            <div class="column is-1">
+                <label>Total Tx Cycles</label>
+            </div>
+            <div class="column is-11">
+                @NumberHelper.HexToNumber(Model.TxPoolInfo!.TotalTxCycles)
+            </div>
+
+            <div class="column is-1">
+                <label>Total Tx Size</label>
+            </div>
+            <div class="column is-11">
+                @NumberHelper.HexToNumber(Model.TxPoolInfo!.TotalTxSize)
+            </div>
+        </div>
+    </div>
+
+    <div class="box info-box">
+        <h2 class="title">Pending Txs (@NumberHelper.HexToNumber(Model.TxPoolInfo!.Pending))</h2>
+        @foreach (var (hash, tx) in Model.RawTxPool!.Pending)
+        {
+            <div class="columns is-multiline">
+                <div class="column is-1">
+                    <label>Hash</label>
+                </div>
+                <div class="column is-11">
+                    @hash
+                </div>
+            </div>
+            <partial name="_TxVerbosity" model="tx" />
+            <hr />
+        }
+    </div>
+
+    <div class="box info-box">
+        <h2 class="title">Proposed Txs (@NumberHelper.HexToNumber(Model.TxPoolInfo!.Proposed))</h2>
+        @foreach (var (hash, tx) in Model.RawTxPool!.Proposed)
+        {
+            <div class="columns is-multiline">
+                <div class="column is-1">
+                    <label>Hash</label>
+                </div>
+                <div class="column is-11">
+                    @hash
+                </div>
+            </div>
+            <partial name="_TxVerbosity" model="tx" />
+            <hr />
+        }
+    </div>
 }
 else
 {
     <Partial name="_NoActiveProject" />
 }
-
