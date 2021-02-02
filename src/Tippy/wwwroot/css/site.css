@@ -6,6 +6,11 @@ body {
     height: 100%;
 }
 
+.break-all-text {
+    word-break: break-all;
+    table-layout: fixed;
+}
+
 .hero .navbar {
     background-color: #44475a;
 }
