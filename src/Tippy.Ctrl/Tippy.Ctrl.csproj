@@ -11,6 +11,7 @@
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
+	<Folder Include="BinDeps\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
@@ -25,10 +26,5 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChainSpecTemplate.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="BinDeps\mac\ckb.toml" />
-    <Content Remove="BinDeps\mac\ckb-miner.toml" />
-    <Content Remove="BinDeps\mac\default.db-options" />
   </ItemGroup>
 </Project>

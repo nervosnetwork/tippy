@@ -13,8 +13,8 @@ function download_ckb_macos() {
   unzip -o ${CKB_FILENAME}.zip ${CKB_FILENAME}/ckb ${CKB_FILENAME}/ckb-cli
   cp ${CKB_FILENAME}/ckb ./
   chmod +x ./ckb
-  cp ${CKB_FILENAME}/ckb-cli ./
-  chmod +x ./ckb-cli
+  # cp ${CKB_FILENAME}/ckb-cli ./
+  # chmod +x ./ckb-cli
   rm -rf $CKB_FILENAME
   rm ${CKB_FILENAME}.zip
 }
@@ -28,8 +28,8 @@ function download_ckb_linux() {
   tar xvzf ${CKB_FILENAME}.tar.gz ${CKB_FILENAME}/ckb ${CKB_FILENAME}/ckb-cli
   cp ${CKB_FILENAME}/ckb ./
   chmod +x ./ckb
-  cp ${CKB_FILENAME}/ckb-cli ./
-  chmod +x ./ckb-cli
+  # cp ${CKB_FILENAME}/ckb-cli ./
+  # chmod +x ./ckb-cli
   rm -rf $CKB_FILENAME
   rm ${CKB_FILENAME}.tar.gz
 }
@@ -42,7 +42,7 @@ function download_ckb_windows() {
   curl -O -L "https://github.com/nervosnetwork/ckb/releases/download/v${CKB_VERSION}/${CKB_FILENAME}.zip"
   unzip -o ${CKB_FILENAME}.zip ${CKB_FILENAME}/ckb.exe ${CKB_FILENAME}/ckb-cli.exe
   cp ${CKB_FILENAME}/ckb.exe ./
-  cp ${CKB_FILENAME}/ckb-cli.exe ./
+  # cp ${CKB_FILENAME}/ckb-cli.exe ./
   rm -rf $CKB_FILENAME
   rm ${CKB_FILENAME}.zip
 }

@@ -12,7 +12,7 @@ function DownloadCkb {
   Invoke-WebRequest "https://github.com/nervosnetwork/ckb/releases/download/v${CkbVersion}/${CkbFilename}.zip" -OutFile "${CkbFilename}.zip"
   Expand-Archive -Force "${CkbFilename}.zip" -DestinationPath ./
   Copy-Item $CkbFilename/ckb.exe ./
-  Copy-Item $CkbFilename/ckb-cli.exe ./
+  # Copy-Item $CkbFilename/ckb-cli.exe ./
   Remove-Item -Force -Recurse $CkbFilename
   Remove-Item "${CkbFilename}.zip"
 }
