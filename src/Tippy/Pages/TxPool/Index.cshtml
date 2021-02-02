@@ -74,9 +74,10 @@
     </div>
 
     <div class="box info-box">
-        <h2 class="title">Pending Txs (@NumberHelper.HexToNumber(Model.TxPoolInfo!.Pending))</h2>
+        <h2>Pending Txs (@NumberHelper.HexToNumber(Model.TxPoolInfo!.Pending))</h2>
         @foreach (var (hash, tx) in Model.RawTxPool!.Pending)
         {
+            <hr />
             <div class="columns is-multiline">
                 <div class="column is-1">
                     <label>Hash</label>
@@ -88,14 +89,14 @@
                 </div>
             </div>
             <partial name="_TxVerbosity" model="tx" />
-            <hr />
         }
     </div>
 
     <div class="box info-box">
-        <h2 class="title">Proposed Txs (@NumberHelper.HexToNumber(Model.TxPoolInfo!.Proposed))</h2>
+        <h2>Proposed Txs (@NumberHelper.HexToNumber(Model.TxPoolInfo!.Proposed))</h2>
         @foreach (var (hash, tx) in Model.RawTxPool!.Proposed)
         {
+            <hr />
             <div class="columns is-multiline">
                 <div class="column is-1">
                     <label>Hash</label>
@@ -107,7 +108,6 @@
                 </div>
             </div>
             <partial name="_TxVerbosity" model="tx" />
-            <hr />
         }
     </div>
 }
