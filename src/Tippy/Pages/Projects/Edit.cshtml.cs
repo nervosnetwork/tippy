@@ -4,6 +4,7 @@ using Ckb.Address;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
+using Tippy.Ctrl;
 
 namespace Tippy.Pages.Projects
 {
@@ -44,6 +45,7 @@ namespace Tippy.Pages.Projects
                 "project",
                 p => p.Name, p => p.NodeRpcPort, p => p.NodeNetworkPort, p => p.IndexerRpcPort, p => p.LockArg))
             {
+                ProcessManager.Stop(toUpdate);
 
                 if (toUpdate.LockArg.StartsWith("ckb") || toUpdate.LockArg.StartsWith("ckt"))
                 {
