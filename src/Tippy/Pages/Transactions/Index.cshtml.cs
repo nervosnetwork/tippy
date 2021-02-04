@@ -49,7 +49,7 @@ namespace Tippy.Pages.Transactions
             {
                 blockNumber -= 1;
                 Block? block = client.GetBlockByNumber(blockNumber);
-                if (block == null || block.Transactions.Length == 0)
+                if (block == null || block.Transactions.Length <= 1) // Filter out cellbase tx
                 {
                     continue;
                 }
