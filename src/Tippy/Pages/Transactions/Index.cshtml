@@ -17,27 +17,27 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var tx in Model.Result.Data)
+            @foreach (var tx in Model.Result)
             {
                 <tr>
                     <td>
-                        <a asp-page="/Transactions/Details" asp-route-txhash="@tx.Attributes.TransactionHash" class="hash-text">
-                            @tx.Attributes.TransactionHash
+                        <a asp-page="/Transactions/Details" asp-route-txhash="@tx.TransactionHash" class="hash-text">
+                            @tx.TransactionHash
                         </a>
                     </td>
                     <td>
-                        <a asp-page="/Blocks/Details" asp-route-id="@tx.Attributes.BlockNumber">
-                            @tx.Attributes.BlockNumber
+                        <a asp-page="/Blocks/Details" asp-route-id="@tx.BlockNumber">
+                            @tx.BlockNumber
                         </a>
                     </td>
                     <td>
                         @{
-                            var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(tx.Attributes.CapacityInvolved);
+                            var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(tx.CapacityInvolved);
                         }
                         <span>@capacity</span>
                     </td>
                     <td>
-                        @tx.Attributes.Date()
+                        @tx.Date()
                     </td>
                 </tr>
             }

@@ -15,9 +15,12 @@ namespace Tippy.Pages.Transactions
         {
         }
 
-        public ArrayResult<TransactionResult> Result = default!;
+        public List<TransactionResult> Result = default!;
+        public ArrayResult<TransactionResult> TheResult = default!;
+        public UInt64 FromBlock { get; set; } = 0; // Upper, default to tip number
+        public UInt64 ToBlock { get; set; } = 0; // Lower
 
-        public void OnGet()
+        public void OnGet(int? fromBlock)
         {
             if (ActiveProject == null || !ProcessManager.IsRunning(ActiveProject))
             {
@@ -25,50 +28,34 @@ namespace Tippy.Pages.Transactions
             }
 
             Client client = Rpc();
-
-            UInt64 page = 1;
-            UInt64 pageSize = 15;
-            UInt64 tipBlockNumber = client.GetTipBlockNumber();
-            UInt64 skipCount = (UInt64)((page - 1) * pageSize);
-
-            Meta meta = new()
+            if (fromBlock != null)
             {
-                // TODO: update this
-                Total = 1000,
-                PageSize = (int)pageSize
-            };
-            Result = GetTransactions(client, skipCount, (int)pageSize, tipBlockNumber, meta);
+                FromBlock = (UInt64)fromBlock;
+            }
+            else
+            {
+                FromBlock = client.GetTipBlockNumber();
+            }
+
+            Result = GetTransactions(client);
         }
 
-        private static ArrayResult<TransactionResult> GetTransactions(Client client, ulong skipCount, int size, ulong tipBlockNumber, Meta? meta = null)
+        private List<TransactionResult> GetTransactions(Client client)
         {
-            ulong currentSkipCount = 0;
-            List<TransactionResult> transactionResults = new();
-            ulong currentBlockNumber = tipBlockNumber + 1;
-            while (currentBlockNumber > 0)
+            int minTxsCount = 15;
+            List<TransactionResult> result = new();
+            UInt64 blockNumber = FromBlock;
+            while (blockNumber > 0)
             {
-                currentBlockNumber -= 1;
-                Block? block = client.GetBlockByNumber(currentBlockNumber);
-                if (block == null)
+                blockNumber -= 1;
+                Block? block = client.GetBlockByNumber(blockNumber);
+                if (block == null || block.Transactions.Length == 0)
                 {
                     continue;
                 }
 
-                int transactionsLength = block.Transactions.Length;
-                if (transactionsLength <= 1)
+                foreach (var tx in block.Transactions)
                 {
-                    continue;
-                }
-
-                for (int i = transactionsLength - 1; i > 0; i--)
-                {
-                    if (currentSkipCount < skipCount)
-                    {
-                        currentSkipCount += 1;
-                        continue;
-                    }
-                    Transaction tx = block.Transactions[i];
-
                     UInt64 capacityInvolved = GetInputsCapacities(client, tx);
 
                     TransactionResult txResult = new()
@@ -79,23 +66,16 @@ namespace Tippy.Pages.Transactions
                         CapacityInvolved = capacityInvolved.ToString(),
                         LiveCellChanges = (tx.Outputs.Length - tx.Inputs.Length).ToString()
                     };
-                    transactionResults.Add(txResult);
-
-                    if (transactionResults.Count >= size)
-                    {
-                        break;
-                    }
+                    result.Add(txResult);
                 }
 
-                if (transactionResults.Count >= size)
+                if (result.Count >= minTxsCount)
                 {
                     break;
                 }
             }
-
-            ArrayResult<TransactionResult> arrayResult = new("ckb_transaction_list", transactionResults.ToArray(), meta);
-
-            return arrayResult;
+            ToBlock = blockNumber;
+            return result;
         }
 
         private static UInt64 GetInputsCapacities(Client client, Transaction tx)
@@ -108,11 +88,7 @@ namespace Tippy.Pages.Transactions
         private static UInt64 GetInputCapacity(Client client, string txHash, uint index)
         {
             TransactionWithStatus? transactionWithStatus = client.GetTransaction(txHash);
-            if (transactionWithStatus == null)
-            {
-                return 0;
-            }
-            string capacity = transactionWithStatus.Transaction.Outputs[index].Capacity;
+            string capacity = transactionWithStatus?.Transaction.Outputs[index].Capacity ?? "0x0";
             return Hex.HexToUInt64(capacity);
         }
     }
