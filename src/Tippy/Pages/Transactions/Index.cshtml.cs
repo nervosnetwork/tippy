@@ -17,48 +17,78 @@ namespace Tippy.Pages.Transactions
 
         public List<TransactionResult> Result = default!;
         public ArrayResult<TransactionResult> TheResult = default!;
-        public UInt64 FromBlock { get; set; } = 0; // Upper, default to tip number
-        public UInt64 ToBlock { get; set; } = 0; // Lower
+        public int FromBlock { get; set; } = 0; // Upper, default to tip number
+        public int ToBlock { get; set; } = 0; // Lower
 
-        public void OnGet(int? fromBlock)
+        public void OnGet(int? fromBlock, int? toBlock)
         {
             if (ActiveProject == null || !ProcessManager.IsRunning(ActiveProject))
             {
                 return;
             }
 
-            Client client = Rpc();
+            bool descending = true; // From higher to lower
+            if (fromBlock == null && toBlock == null)
+            {
+                fromBlock = (int)TipBlockNumber;
+            }
+
             if (fromBlock != null)
             {
-                FromBlock = (UInt64)fromBlock;
+                FromBlock = (int)fromBlock;
             }
             else
             {
-                FromBlock = client.GetTipBlockNumber();
+                descending = false;
+                ToBlock = (int)toBlock!;
             }
 
-            Result = GetTransactions(client);
+            Result = GetTransactions(descending);
         }
 
-        private List<TransactionResult> GetTransactions(Client client)
+        private List<TransactionResult> GetTransactions(bool descending)
         {
+            Client client = Rpc();
+
             int minTxsCount = 15;
             List<TransactionResult> result = new();
-            UInt64 blockNumber = FromBlock;
-            while (blockNumber > 0)
+            int blockNumber = descending ? FromBlock : ToBlock;
+            bool condition()
             {
-                blockNumber -= 1;
-                Block? block = client.GetBlockByNumber(blockNumber);
-                if (block == null || block.Transactions.Length <= 1) // Filter out cellbase tx
+                if (descending)
+                {
+                    return blockNumber >= 0;
+                }
+                return blockNumber <= (int)TipBlockNumber;
+            }
+            void stepper()
+            {
+                if (descending)
+                {
+                    ToBlock = blockNumber;
+                    blockNumber -= 1;
+                }
+                else
+                {
+                    FromBlock = blockNumber;
+                    blockNumber += 1;
+                }
+            }
+
+            while (condition())
+            {
+                Block? block = client.GetBlockByNumber((UInt64)blockNumber);
+                stepper();
+                if (block == null || (block.Transactions.Length <= 1 && blockNumber >0)) // Filter out cellbase tx
                 {
                     continue;
                 }
 
-                foreach (var tx in block.Transactions)
+                var txs = block.Transactions.Skip(1).Select(tx =>
                 {
                     UInt64 capacityInvolved = GetInputsCapacities(client, tx);
 
-                    TransactionResult txResult = new()
+                    return new TransactionResult()
                     {
                         TransactionHash = tx.Hash ?? "0x",
                         BlockNumber = Hex.HexToUInt64(block.Header.Number).ToString(),
@@ -66,15 +96,20 @@ namespace Tippy.Pages.Transactions
                         CapacityInvolved = capacityInvolved.ToString(),
                         LiveCellChanges = (tx.Outputs.Length - tx.Inputs.Length).ToString()
                     };
-                    result.Add(txResult);
+                }).ToList();
+                if (descending)
+                {
+                    result.AddRange(txs);
                 }
-
+                else
+                {
+                    result.InsertRange(0, txs);
+                }
                 if (result.Count >= minTxsCount)
                 {
                     break;
                 }
             }
-            ToBlock = blockNumber;
             return result;
         }
 
