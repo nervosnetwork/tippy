@@ -2,6 +2,7 @@
 
 CKB_VERSION=$(cat .ckb-version)
 CKB_INDEXER_VERSION=$(cat .ckb-indexer-version)
+CKB_DEBUGGER_VERSION=$(cat .ckb-debugger-version)
 ROOT_DIR=$(pwd) # Be sure to run this from root directory!
 
 function download_ckb_macos() {
@@ -88,19 +89,49 @@ function download_ckb_indexer_windows() {
   rm ${INNER_ZIP_FILENAME}
 }
 
+function download_ckb_debugger_macos() {
+  FILENAME="ckb-debugger-macos-x64.tar.gz"
+  mkdir -p $ROOT_DIR/src/Tippy.Ctrl/BinDeps/mac
+  cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/mac
+
+  curl -O -L "https://github.com/nervosnetwork/ckb-standalone-debugger/releases/download/v${CKB_DEBUGGER_VERSION}/${FILENAME}"
+  tar xvzf $FILENAME ckb-debugger
+  chmod +x ./ckb-debugger
+  rm -rf $FILENAME
+}
+
+function download_ckb_debugger_linux() {
+  FILENAME="ckb-debugger-linux-x64.tar.gz"
+  mkdir -p $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
+  cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
+
+  curl -O -L "https://github.com/nervosnetwork/ckb-standalone-debugger/releases/download/v${CKB_DEBUGGER_VERSION}/${FILENAME}"
+  tar xvzf $FILENAME ckb-debugger
+  chmod +x ./ckb-debugger
+  rm -rf $FILENAME
+}
+
+function download_ckb_debugger_windows() {
+  # TODO: debugger not supported on win yet.
+  echo "ckb-debugger not supported on Windows ATM."
+}
+
 function download_macos() {
   download_ckb_macos
   download_ckb_indexer_macos
+  download_ckb_debugger_macos
 }
 
 function download_linux() {
   download_ckb_linux
   download_ckb_indexer_linux
+  download_ckb_debugger_linux
 }
 
 function download_windows() {
   download_ckb_windows
   download_ckb_indexer_windows
+  download_ckb_debugger_windows
 }
 
 case $1 in
