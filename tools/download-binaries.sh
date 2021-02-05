@@ -98,8 +98,6 @@ function download_ckb_debugger_macos() {
   tar xvzf $FILENAME ckb-debugger
   chmod +x ./ckb-debugger
   rm -rf $FILENAME
-  chmod +x ./ckb-debugger
-  rm $FILENAME
 }
 
 function download_ckb_debugger_linux() {
@@ -111,12 +109,11 @@ function download_ckb_debugger_linux() {
   tar xvzf $FILENAME ckb-debugger
   chmod +x ./ckb-debugger
   rm -rf $FILENAME
-  chmod +x ./ckb-debugger
-  rm $FILENAME
 }
 
 function download_ckb_debugger_windows() {
   # TODO: debugger not supported on win yet.
+  echo "ckb-debugger not supported on Windows ATM."
 }
 
 function download_macos() {
