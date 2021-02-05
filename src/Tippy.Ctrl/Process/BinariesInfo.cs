@@ -6,7 +6,7 @@ namespace Tippy.Ctrl.Process
     internal class BinariesInfo
     {
         internal string Info { get; private set; } = "";
-        List<string> binaries = new List<string> { "ckb", "ckb-indexer"/*, "ckb-cli"*/ };
+        List<string> binaries = new List<string> { "ckb", "ckb-indexer", "ckb-debugger"/*, "ckb-cli"*/ };
 
         internal void Refresh()
         {
