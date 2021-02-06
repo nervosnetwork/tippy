@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using Tippy.Helpers;
 
 namespace Tippy.ApiData
 {
@@ -20,11 +21,7 @@ namespace Tippy.ApiData
         [JsonPropertyName("live_cell_changes")]
         public string LiveCellChanges { get; set; } = default!;
 
-        public DateTime Date()
-        {
-            DateTime date = new (1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            return date.AddSeconds(double.Parse(BlockTimestamp) / 1000).ToLocalTime();
-        }
+        public DateTime Date() => DateHelper.TimestampToDate(BlockTimestamp);
     }
 
     public class TransactionListResult
@@ -50,11 +47,7 @@ namespace Tippy.ApiData
         [JsonPropertyName("income")]
         public string? Income { get; set; } = null;
 
-        public DateTime Date()
-        {
-            DateTime date = new (1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            return date.AddSeconds(double.Parse(BlockTimestamp) / 1000).ToLocalTime();
-        }
+        public DateTime Date() => DateHelper.TimestampToDate(BlockTimestamp);
     }
 
 

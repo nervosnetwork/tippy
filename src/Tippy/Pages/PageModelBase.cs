@@ -24,6 +24,7 @@ namespace Tippy.Pages
         public Project? ActiveProject { get; set; }
         public UInt64 TipBlockNumber { get; set; }
         public EpochView? EpochView { get; set; }
+        public String ProcessInfo { get; set; } = "";
 
         protected PageModelBase(Tippy.Core.Data.DbContext context)
         {
@@ -38,6 +39,8 @@ namespace Tippy.Pages
 
         public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
+            ProcessInfo = ProcessManager.Info;
+
             Projects = await DbContext.Projects.ToListAsync();
             ActiveProject = await DbContext.Projects.FirstOrDefaultAsync(p => p.IsActive);
             if (ActiveProject == null && Projects.Count > 0)
@@ -47,9 +50,24 @@ namespace Tippy.Pages
 
             if (ActiveProject != null && ProcessManager.IsRunning(ActiveProject))
             {
-                Client rpc = new($"http://localhost:{ActiveProject!.NodeRpcPort}");
-                EpochView = rpc.GetCurrentEpoch();
-                TipBlockNumber = rpc.GetTipBlockNumber();
+                Client rpc = Rpc();
+                try
+                {
+                    EpochView = rpc.GetCurrentEpoch();
+                    TipBlockNumber = rpc.GetTipBlockNumber();
+                }
+                catch
+                {
+                    // CKB node not respoding yet. Set default values.
+                    EpochView = new EpochView()
+                    {
+                        Number = "0x0",
+                        StartNumber = "0x0",
+                        Length = "0x0",
+                        CompactTarget = "0x0",
+                    };
+                    TipBlockNumber = 0;
+                }
             }
 
             await next();

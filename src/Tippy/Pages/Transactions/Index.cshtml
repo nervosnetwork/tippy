@@ -17,35 +17,49 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var tx in Model.Result.Data)
+            @foreach (var tx in Model.Result)
             {
                 <tr>
                     <td>
-                        <a asp-page="/Transactions/Details" asp-route-txhash="@tx.Attributes.TransactionHash" class="hash-text">
-                            @tx.Attributes.TransactionHash
+                        <a asp-page="/Transactions/Details" asp-route-txhash="@tx.TransactionHash" class="hash-text">
+                            @tx.TransactionHash
                         </a>
                     </td>
                     <td>
-                        <a asp-page="/Blocks/Details" asp-route-id="@tx.Attributes.BlockNumber">
-                            @tx.Attributes.BlockNumber
+                        <a asp-page="/Blocks/Details" asp-route-id="@tx.BlockNumber">
+                            @tx.BlockNumber
                         </a>
                     </td>
                     <td>
                         @{
-                            var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(tx.Attributes.CapacityInvolved);
+                            var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(tx.CapacityInvolved);
                         }
                         <span>@capacity</span>
                     </td>
                     <td>
-                        @tx.Attributes.Date()
+                        @tx.Date()
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 
+    <div class="my-2">@Model.Result.Count tx(s) for block @Model.ToBlock - @Model.FromBlock. </div>
+
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <a class="pagination-next">More(TODO)</a>
+        @{
+            int previous = Model.FromBlock + 1;
+            int next = Model.ToBlock > 1 ? Model.ToBlock - 1 : 0;
+        }
+        @if (previous < (int)Model.TipBlockNumber)
+        {
+            <a asp-page="./Index" asp-route-toBlock="@previous" class="pagination-previous">Previous</a>
+        }
+        @if (Model.ToBlock > 1)
+        {
+            <a asp-page="./Index" asp-route-fromBlock="@next" class="pagination-next">Next</a>
+        }
+        <ul class="pagination-list"></ul>
     </nav>
 }
 else

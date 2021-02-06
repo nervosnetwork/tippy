@@ -16,7 +16,7 @@ namespace Ckb.Address
 
         public static string GenerateAddress(Types.Script script, string prefix)
         {
-            List<int> data = new();
+            List<int> data = new List<int>();
             int? shortId = null;
             if (script.CodeHash == SecpCodeHash && script.HashType == SecpHashType)
             {

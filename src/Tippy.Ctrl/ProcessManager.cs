@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Tippy.Core.Models;
+using Tippy.Ctrl.Process;
 
 namespace Tippy.Ctrl
 {
@@ -16,10 +17,16 @@ namespace Tippy.Ctrl
     {
         public static event NodeLogEventHandler? NodeLogReceived;
 
+        /// <summary>
+        /// CKB related binaries version info
+        /// </summary>
+        public static string Info { get; private set; } = "";
+
         public enum MinerMode
         {
             Default,
             SingleBlock,
+            Sophisticated,
         }
 
         static List<ProcessGroup> processGroups = new List<ProcessGroup>();
@@ -36,11 +43,34 @@ namespace Tippy.Ctrl
             }
             return false;
         }
+        public static bool IsAdvancedMinerRunning(Project project)
+        {
+            if (project != null && GroupFor(project) is ProcessGroup group)
+            {
+                return group.IsAdvancedMinerRunning;
+            }
+            return false;
+        }
+        public static bool CanStartMining(Project project)
+        {
+            if (project != null && GroupFor(project) is ProcessGroup group)
+            {
+                return group.CanStartMining;
+            }
+            return false;
+        }
 
         public static string GetLogFolder(Project project)
         {
             ProcessGroup group = new(ProcessInfo.FromProject(project));
             return group.LogFolder();
+        }
+
+        public static void FetchInfo()
+        {
+            BinariesInfo binariesInfo = new();
+            binariesInfo.Refresh();
+            Info = binariesInfo.Info;
         }
 
         /// If any port is already in use, throw InvalidOperationException.
@@ -89,7 +119,7 @@ namespace Tippy.Ctrl
             Start(project);
         }
 
-        public static void StartMiner(Project project, MinerMode mode)
+        public static void StartMiner(Project project, MinerMode mode, int blocks = 1, int interval = 1)
         {
             var group = GroupFor(project);
             if (group == null)
@@ -104,6 +134,10 @@ namespace Tippy.Ctrl
             else if (mode == MinerMode.SingleBlock)
             {
                 group.MineOneBlock();
+            }
+            else if (mode == MinerMode.Sophisticated)
+            {
+                group.StartAdvancedMining(blocks, interval);
             }
         }
 

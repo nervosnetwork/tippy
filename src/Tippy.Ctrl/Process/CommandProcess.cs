@@ -99,7 +99,7 @@ namespace Tippy.Ctrl.Process
         internal string WorkingDirectory() =>
             Path.Combine(Core.Environment.GetAppDataFolder(), $"chain-{ProcessInfo.ID}");
 
-        protected static string BinaryFullPath(string binary) =>
+        internal static string BinaryFullPath(string binary) =>
             Path.Combine(Path.Combine(BinDepsDirectory()), binary);
 
         protected static string[] BinDepsDirectory()

@@ -26,6 +26,7 @@ namespace Tippy
 
             _hubContext = host.Services.GetService(typeof(IHubContext<LogHub>)) as IHubContext<LogHub>;
             ProcessManager.NodeLogReceived += OnNodeLogReceived;
+            ProcessManager.FetchInfo();
 
             if (Settings.GetSettings().AppSettings.OpenBrowserOnLaunch)
             {

@@ -1,10 +1,8 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Ckb.Rpc
 {
@@ -29,7 +27,7 @@ namespace Ckb.Rpc
                 Method = method,
                 Params = methodParams
             };
-            var serialized = JsonSerializer.Serialize(request);
+            var serialized = JsonConvert.SerializeObject(request);
             var bytes = Encoding.UTF8.GetBytes(serialized);
             webRequest.ContentLength = bytes.Length;
             using Stream body = webRequest.GetRequestStream();
@@ -38,7 +36,7 @@ namespace Ckb.Rpc
             using WebResponse webResponse = webRequest.GetResponse();
             using Stream responseStream = webResponse.GetResponseStream();
             using StreamReader responseReader = new StreamReader(responseStream);
-            var response = JsonSerializer.Deserialize<ResponseObject<T>>(responseReader.ReadToEnd());
+            var response = JsonConvert.DeserializeObject<ResponseObject<T>>(responseReader.ReadToEnd());
             if (response != null)
             {
                 return response.Result;
@@ -49,35 +47,28 @@ namespace Ckb.Rpc
 
     class RequestObject
     {
-        [JsonPropertyName("jsonrpc")]
+        [JsonProperty(PropertyName = "jsonrpc")]
         public string Jsonrpc { get; } = "2.0";
 
-        [JsonPropertyName("id")]
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; } = "1";
 
-        [JsonPropertyName("method")]
+        [JsonProperty(PropertyName = "method")]
         public string Method { get; set; } = "";
 
-        [JsonPropertyName("params")]
+        [JsonProperty(PropertyName = "params")]
         public object[]? Params { get; set; }
     }
 
     class ResponseObject<T>
     {
-        [JsonPropertyName("jsonrpc")]
+        [JsonProperty(PropertyName = "jsonrpc")]
         public string Jsonrpc { get; set; } = "2.0";
 
-        [JsonPropertyName("id")]
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; } = "1";
 
-        [JsonPropertyName("result")]
+        [JsonProperty(PropertyName = "result")]
         public T? Result { get; set; }
-    }
-
-    public class SnakeCaseJsonNamingPolicy : JsonNamingPolicy
-    {
-        public override string ConvertName(string name) =>
-            string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString()))
-                .ToLower();
     }
 }

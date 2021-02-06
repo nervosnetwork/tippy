@@ -24,7 +24,7 @@
       </span>
     </div>
 
-    <p class="mt-4 mb-6">You don’t have any chain/project. To get started, you can...</p>
+    <p class="mt-4 mb-6">You haven't set up any chain yet. To get started, you can...</p>
 
     <form class="my-4" asp-page="./QuickStart" method="post">
         <button class="button is-primary is-primary-button">
@@ -110,9 +110,10 @@
                     }
                     else
                     {
+                        var disabled = !Model.CanStartMining;
                         <form method="post" class="columns">
                             <div class="column is-half">
-                                <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
                                     <span class="icon">
                                         <i class="fas fa-play"></i>
                                     </span>
@@ -120,7 +121,7 @@
                                 </button>
                             </div>
                             <div class="column is-half">
-                                <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
                                     <span class="icon">
                                         <i class="fas fa-hammer"></i>
                                     </span>
@@ -128,6 +129,9 @@
                                 </button>
                             </div>
                         </form>
+                        <p>
+                            <a asp-page="/Miners/Advanced" asp-route-id="@Model.ActiveProject.Id" class="has-text-primary-dark">Advanced mining</a>
+                        </p>
                     }
                 }
                 else
@@ -141,7 +145,7 @@
                 <div class="box" style="background-color: #6C5054">
                     <div class="heading">Epoch</div>
                     <div class="title">@Hex.HexToUInt64(Model.EpochView!.Number)</div>
-                    <div class="heading">Current</div>
+                    <div class="heading">Block Index</div>
                     @{ var current = Model.TipBlockNumber - Hex.HexToUInt64(Model.EpochView!.StartNumber) + 1; }
                     <div class="title is-5">@current</div>
                     <div class="heading">Length</div>
