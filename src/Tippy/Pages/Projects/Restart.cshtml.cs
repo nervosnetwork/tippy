@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Tippy.Ctrl;
 using Tippy.Core.Models;
-using Microsoft.AspNetCore.Http;
+using Tippy.Ctrl;
 
 namespace Tippy.Pages.Projects
 {

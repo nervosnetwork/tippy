@@ -1,8 +1,8 @@
 using System;
-using Ckb.Types;
-using Ckb.Types.IndexrTypes;
 using Ckb.Address;
 using Ckb.Rpc;
+using Ckb.Types;
+using Ckb.Types.IndexrTypes;
 using Tippy.ApiData;
 using Tippy.Util;
 

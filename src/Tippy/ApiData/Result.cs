@@ -1,6 +1,5 @@
-using System.Text.Json.Serialization;
 using System.Linq;
-
+using System.Text.Json.Serialization;
 using DefaultAttributesType = System.Collections.Generic.Dictionary<string, object>;
 
 namespace Tippy.ApiData
@@ -42,7 +41,7 @@ namespace Tippy.ApiData
     }
 
     public class Data<T>
-    { 
+    {
         public Data(string type, T attrs)
         {
             Type = type;

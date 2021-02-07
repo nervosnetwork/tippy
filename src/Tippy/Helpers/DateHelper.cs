@@ -4,14 +4,14 @@ namespace Tippy.Helpers
     public static class DateHelper
     {
         public static DateTime TimestampToDate(string timestamp)
-        { 
+        {
             if (String.IsNullOrEmpty(timestamp))
             {
                 return DateTime.UnixEpoch;
             }
             else
             {
-                DateTime date = new (1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+                DateTime date = new(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
                 return date.AddSeconds(double.Parse(timestamp) / 1000).ToLocalTime();
             }
         }
@@ -19,7 +19,7 @@ namespace Tippy.Helpers
         public static DateTime HexTimestampToDate(string hex)
         {
             var timestamp = NumberHelper.HexToNumber(hex);
-            DateTime date = new (1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            DateTime date = new(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             return date.AddSeconds(double.Parse(timestamp) / 1000).ToLocalTime();
         }
     }
