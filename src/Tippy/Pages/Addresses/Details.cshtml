@@ -102,14 +102,15 @@
 @section scripts{
     <script>
         var page = 1;
+        const pageSize = 15;
         function loadTxs() {
-            $("#txs").load("/Addresses/Transactions?address=@Model.AddressResult.AddressHash&page=" + page, function () {
+            $("#txs").load("/Addresses/Transactions?address=@Model.AddressResult.AddressHash&pageSize=" + pageSize + "&page=" + page, function () {
                 if (page > 1) {
                     $(".pagination-previous").show();
                 } else {
                     $(".pagination-previous").hide();
                 }
-                if ($("#txs .tx").length >= 20) {
+                if ($("#txs .tx").length >= pageSize) {
                     $(".pagination-next").show();
                 } else {
                     $(".pagination-next").hide();

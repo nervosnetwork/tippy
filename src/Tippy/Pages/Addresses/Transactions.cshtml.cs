@@ -20,9 +20,7 @@ namespace Tippy.Pages.Addresses
         {
         }
 
-        public int PageSize = 20;
-
-        public PartialViewResult OnGet(string address, [FromQuery(Name = "page")] int? page)
+        public PartialViewResult OnGet(string address, [FromQuery(Name = "page")] int page, [FromQuery(Name = "pageSize")] int pageSize)
         {
             if (ActiveProject == null || !ProcessManager.IsRunning(ActiveProject))
             {
@@ -36,16 +34,16 @@ namespace Tippy.Pages.Addresses
             Script lockScript = Address.ParseAddress(address, prefix);
             IndexerTypes.SearchKey searchKey = new(lockScript, "lock");
 
-            int skipCount = (page ?? 1 - 1) * PageSize;
+            int skipCount = (page - 1) * pageSize;
             string[] allTxHashes = GetTransactionHashes(indexerClient, searchKey);
             int totalCount = allTxHashes.Length;
 
-            string[] txHashes = allTxHashes.Skip(skipCount).Take(PageSize).ToArray();
+            string[] txHashes = allTxHashes.Skip(skipCount).Take(pageSize).ToArray();
 
             Meta meta = new()
             {
                 Total = (UInt64)totalCount,
-                PageSize = PageSize,
+                PageSize = pageSize,
             };
 
             ArrayResult<TransactionListResult> result = GetTransactions(client, txHashes, lockScript, meta);
