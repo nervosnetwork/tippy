@@ -203,10 +203,43 @@
     <div id="txs">Loading...</div>
 </div>
 
+<nav class="pagination is-centered mb-4" role="navigation" aria-label="pagination">
+    <a class="pagination-previous" style="display: none;">Previous</a>
+    <a class="pagination-next" style="display: none;">Next</a>
+    <ul class="pagination-list"></ul>
+</nav>
+
 @section scripts{
     <script>
+        var page = 1;
+        const pageSize = 15;
+        function loadTxs() {
+            $("#txs").load("/Blocks/Transactions?blockHash=@Model.BlockDetail.BlockHash&pageSize=" + pageSize + "&page=" + page, function () {
+                if (page > 1) {
+                    $(".pagination-previous").show();
+                } else {
+                    $(".pagination-previous").hide();
+                }
+                if ($("#txs .tx").length >= pageSize) {
+                    $(".pagination-next").show();
+                } else {
+                    $(".pagination-next").hide();
+                }
+           });
+        }
         $(function () {
-            $("#txs").load("/Blocks/Transactions?blockHash=@Model.BlockDetail.BlockHash");
+            $(".pagination-previous").click(function (e) {
+                page -= 1;
+                loadTxs();
+                e.preventDefault();
+            });
+            $(".pagination-next").click(function (e) {
+                page += 1;
+                loadTxs();
+                e.preventDefault();
+            });
+
+            loadTxs();
         });
     </script>
 }
