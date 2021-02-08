@@ -9,7 +9,7 @@ namespace Tippy.Pages.Home
 {
     public class IndexModel : PageModelBase
     {
-        public IndexModel(Tippy.Core.Data.DbContext context) :base(context)
+        public IndexModel(Tippy.Core.Data.DbContext context) : base(context)
         {
         }
 
@@ -30,13 +30,13 @@ namespace Tippy.Pages.Home
 
             if (IsNodeRunning)
             {
-                Client rpc = new ($"http://localhost:{ActiveProject!.NodeRpcPort}");
+                Client rpc = new($"http://localhost:{ActiveProject!.NodeRpcPort}");
                 MinerAddress = Address.GenerateAddress(
                     new Script
                     {
                         Args = ActiveProject.LockArg,
                         CodeHash = Address.SecpCodeHash,
-                        HashType = Address.SecpHashType 
+                        HashType = Address.SecpHashType
                     },
                     "ckt");
             }

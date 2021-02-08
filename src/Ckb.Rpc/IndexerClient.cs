@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using IndexerTypes = Ckb.Types.IndexrTypes;
 using Hex = Ckb.Types.Convert;
+using IndexerTypes = Ckb.Types.IndexrTypes;
 
 namespace Ckb.Rpc
 {

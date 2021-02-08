@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
-using System.Numerics;
 using System.Linq;
+using System.Numerics;
 
 namespace Ckb.Types
 {
@@ -52,6 +52,38 @@ namespace Ckb.Types
                 return BitConverter.ToUInt32(bytes, 0);
             }
             return BitConverter.ToUInt32(bytes.Reverse().ToArray(), 0);
+        }
+
+        public static UInt64 LEBytesToUInt64(byte[] bytes)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                return BitConverter.ToUInt64(bytes, 0);
+            }
+            return BitConverter.ToUInt64(bytes.Reverse().ToArray(), 0);
+        }
+
+        public static BigInteger LEBytesToUInt128(byte[] bytes)
+        {
+            if (!BitConverter.IsLittleEndian)
+            {
+                bytes = bytes.Reverse().ToArray();
+            }
+            var high = BitConverter.ToUInt64(bytes, 0);
+            var low = BitConverter.ToUInt64(bytes, 8);
+            return (new BigInteger(low) << 64) + new BigInteger(high);
+        }
+
+        public static byte[] UInt128ToLEBytes(BigInteger num)
+        {
+            // ToByteArray return bytes in little-endian order
+            byte[] bytes = num.ToByteArray();
+            byte[] uint128 = new byte[16];
+            foreach (var (v, i) in bytes.Select((value, i) => (value, i)))
+            {
+                uint128[i] = v;
+            }
+            return uint128;
         }
     }
 }

@@ -38,6 +38,10 @@ namespace Tippy.Pages.Transactions
             }
 
             Transaction tx = transactionWithStatus.Transaction;
+            foreach (var (output, i) in tx.Outputs.Select((o, i) => (o, i)))
+            {
+                output.Data = tx.OutputsData[i];
+            }
 
             bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == EmptyHash;
             string prefix = IsMainnet() ? "ckb" : "ckt";

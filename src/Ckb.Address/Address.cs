@@ -21,7 +21,8 @@ namespace Ckb.Address
             if (script.CodeHash == SecpCodeHash && script.HashType == SecpHashType)
             {
                 shortId = SecpShortId;
-            } else if (script.CodeHash == MultisigCodeHash && script.HashType == MultisigHashType)
+            }
+            else if (script.CodeHash == MultisigCodeHash && script.HashType == MultisigHashType)
             {
                 shortId = MultisigShortId;
             }
@@ -71,11 +72,13 @@ namespace Ckb.Address
                 {
                     codeHash = SecpCodeHash;
                     hashType = SecpHashType;
-                } else if (data[1] == MultisigShortId)
+                }
+                else if (data[1] == MultisigShortId)
                 {
                     codeHash = MultisigCodeHash;
                     hashType = MultisigHashType;
-                } else
+                }
+                else
                 {
                     throw new Exception("Short address format error!");
                 }

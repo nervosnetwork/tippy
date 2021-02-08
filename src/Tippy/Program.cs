@@ -70,7 +70,7 @@ namespace Tippy
         }
 
         static async void OnNodeLogReceived(object? sender, LogReceivedEventArgs e)
-        { 
+        {
             if (_hubContext != null)
             {
                 await _hubContext.Clients.All.SendAsync("ReceiveLog", e.ID, e.Log);

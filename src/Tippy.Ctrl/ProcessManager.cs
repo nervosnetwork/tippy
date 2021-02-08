@@ -6,7 +6,7 @@ using Tippy.Ctrl.Process;
 namespace Tippy.Ctrl
 {
     public class LogReceivedEventArgs : EventArgs
-    { 
+    {
         public int ID { get; init; }
         public string? Log { get; init; }
     }
@@ -82,7 +82,7 @@ namespace Tippy.Ctrl
                 var portsInUse = group.PortsInUse();
                 if (portsInUse.Count > 0)
                 {
-                    var message = $"Port(s) {string.Join(", " , portsInUse)} already used. Please update project to use other ports.";
+                    var message = $"Port(s) {string.Join(", ", portsInUse)} already used. Please update project to use other ports.";
                     throw new System.InvalidOperationException(message);
                 }
 
@@ -106,7 +106,7 @@ namespace Tippy.Ctrl
             var group = GroupFor(project);
             if (group == null)
             {
-                return; 
+                return;
             }
             group.Stop();
             group.NodeLogReceived -= OnLogReceived;

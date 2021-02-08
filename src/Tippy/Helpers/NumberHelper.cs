@@ -6,7 +6,7 @@ namespace Tippy.Helpers
     public static class NumberHelper
     {
         public static string CkbAmount(string capacity)
-        { 
+        {
             return (decimal.Parse(capacity) / 100_000_000).ToString();
         }
 

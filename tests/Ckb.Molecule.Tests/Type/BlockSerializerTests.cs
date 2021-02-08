@@ -1,8 +1,8 @@
 using System.IO;
 using Ckb.Molecule.Type;
 using Ckb.Types;
-using Xunit;
 using Newtonsoft.Json;
+using Xunit;
 
 namespace Ckb.Molecule.Tests.Type
 {
