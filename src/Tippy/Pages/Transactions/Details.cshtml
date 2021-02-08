@@ -157,14 +157,14 @@
                         @if (input.SudtInfo != null)
                         {
                             @input.SudtInfo?.SudtScriptArgs
-                            <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo.Amount))</span>
+                            <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo!.Amount))</span>
                         }
                     </div>
                     <div class="column is-3">
                         @Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity)
 
                         <span>/</span>
-                        <span>@Tippy.Helpers.TransactionHelper.CkbAmount(input.OccupiedCapacity)</span>
+                        <span>@Tippy.Helpers.TransactionHelper.CkbAmount(input.OccupiedCapacity ?? "0")</span>
                     </div>
                 </div>
             }
@@ -199,14 +199,14 @@
                     @if (output.SudtInfo != null)
                     {
                         <span>@output.SudtInfo?.SudtScriptArgs</span>
-                        <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo.Amount))</span>
+                        <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo!.Amount))</span>
                     }
                 </div>
                 <div class="column is-3">
                     @Tippy.Helpers.TransactionHelper.CkbAmount(output.Capacity)
 
                     <span>/</span>
-                    <span>@Tippy.Helpers.TransactionHelper.CkbAmount(output.OccupiedCapacity)</span>
+                    <span>@Tippy.Helpers.TransactionHelper.CkbAmount(output.OccupiedCapacity ?? "0")</span>
                 </div>
             </div>
         }
