@@ -88,7 +88,15 @@
     </div>
 </div>
 
-<div class="box block-box">
+<div class="box transaction-box">
     <h2>Transactions</h2>
-    <div id="txs">TODO, not implemented yet...</div>
+    <div id="txs">Loading...</div>
 </div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#txs").load("/Addresses/Transactions?address=@Model.AddressResult.AddressHash");
+        });
+    </script>
+}
