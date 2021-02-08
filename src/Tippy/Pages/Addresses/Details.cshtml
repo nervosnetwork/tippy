@@ -88,7 +88,47 @@
     </div>
 </div>
 
-<div class="box block-box">
+<div class="box transaction-box">
     <h2>Transactions</h2>
-    <div id="txs">TODO, not implemented yet...</div>
+    <div id="txs">Loading...</div>
 </div>
+
+<nav class="pagination is-centered mb-4" role="navigation" aria-label="pagination">
+    <a class="pagination-previous" style="display: none;">Previous</a>
+    <a class="pagination-next" style="display: none;">Next</a>
+    <ul class="pagination-list"></ul>
+</nav>
+
+@section scripts{
+    <script>
+        var page = 1;
+        function loadTxs() {
+            $("#txs").load("/Addresses/Transactions?address=@Model.AddressResult.AddressHash&page=" + page, function () {
+                if (page > 1) {
+                    $(".pagination-previous").show();
+                } else {
+                    $(".pagination-previous").hide();
+                }
+                if ($("#txs .tx").length >= 20) {
+                    $(".pagination-next").show();
+                } else {
+                    $(".pagination-next").hide();
+                }
+           });
+        }
+        $(function () {
+            $(".pagination-previous").click(function (e) {
+                page -= 1;
+                loadTxs();
+                e.preventDefault();
+            });
+            $(".pagination-next").click(function (e) {
+                page += 1;
+                loadTxs();
+                e.preventDefault();
+            });
+
+            loadTxs();
+        });
+    </script>
+}
