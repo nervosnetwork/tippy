@@ -153,7 +153,8 @@ namespace Ckb.Types
         {
             if (Data == null)
             {
-                throw new Exception("Data can't be null!");
+                // throw new Exception("Data can't be null!");
+                return 0;
             }
             int bytes = 8;
             bytes += Convert.HexStringToBytes(Lock.CodeHash).Length;
