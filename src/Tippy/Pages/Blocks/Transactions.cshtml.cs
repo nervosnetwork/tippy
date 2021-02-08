@@ -46,7 +46,7 @@ namespace Tippy.Pages.Blocks
 
             return new PartialViewResult
             {
-                ViewName = "_Transaction",
+                ViewName = "Transactions/_Transaction",
                 ViewData = new ViewDataDictionary<List<TransactionListResult>>(ViewData, result.Data.Select(d => d.Attributes).ToList())
             };
         }
