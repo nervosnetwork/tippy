@@ -31,6 +31,15 @@
                                     @input.AddressHash.Substring(0, 12)...@input.AddressHash.Substring(input.AddressHash.Length - 12, 12)
                                 </a>
                             </div>
+                            @if (input.SudtInfo != null)
+                            {
+                                <div class="level-item">
+                                    <span>
+                                        @input.SudtInfo!.SudtScriptArgs.Substring(0, 8)
+                                    </span>
+                                    <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo!.Amount))</span>
+                                </div>
+                            }
                         </div>
                         <div class="level-right">
                             <div class="level-item">
@@ -55,6 +64,15 @@
                                 @output.AddressHash.Substring(0, 12)...@output.AddressHash.Substring(output.AddressHash.Length - 12, 12)
                             </a>
                         </div>
+                        @if (output.SudtInfo != null)
+                        {
+                            <div class="level-item">
+                                <span>
+                                    @output.SudtInfo!.SudtScriptArgs.Substring(0, 8)
+                                </span>
+                                <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo!.Amount))</span>
+                            </div>
+                        }
                     </div>
                     <div class="level-right">
                         <div class="level-item">

@@ -38,7 +38,7 @@ namespace Ckb.Types.Tests
                 },
             };
 
-            Assert.Throws<Exception>(() => output.MinimalCellCapacity());
+            Assert.Equal((ulong)0, output.MinimalCellCapacity());
         }
 
         [Fact]
