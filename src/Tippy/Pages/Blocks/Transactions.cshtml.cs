@@ -40,19 +40,19 @@ namespace Tippy.Pages.Blocks
             };
 
             int skipCount = (page - 1) * pageSize;
-            ArrayResult<TransactionListResult> result = GetTransactions(client, block, skipCount, pageSize, meta);
-
             return new PartialViewResult
             {
                 ViewName = "Transactions/_Transaction",
-                ViewData = new ViewDataDictionary<List<TransactionListResult>>(ViewData, result.Data.Select(d => d.Attributes).ToList())
+                ViewData = new ViewDataDictionary<List<TransactionListResult>>(
+                    ViewData,
+                    GetTransactions(client, block, skipCount, pageSize, meta))
             };
         }
 
-        private ArrayResult<TransactionListResult> GetTransactions(Client client, Block block, int skipCount, int size, Meta? meta = null)
+        private List<TransactionListResult> GetTransactions(Client client, Block block, int skipCount, int size, Meta? meta = null)
         {
             string prefix = IsMainnet() ? "ckb" : "ckt";
-            TransactionListResult[] result = block.Transactions.Skip(skipCount).Take(size).Select((tx, i) =>
+            List<TransactionListResult> result = block.Transactions.Skip(skipCount).Take(size).Select((tx, i) =>
             {
                 string txHash = tx.Hash ?? "0x";
                 bool isCellbase = i == 0 && skipCount == 0;
@@ -82,9 +82,9 @@ namespace Tippy.Pages.Blocks
                     txResult.DisplayOutputs = displayOutputs;
                 }
                 return txResult;
-            }).ToArray();
+            }).ToList();
 
-            return new ArrayResult<TransactionListResult>("ckb_transactions", result, meta);
+            return result;
         }
     }
 }

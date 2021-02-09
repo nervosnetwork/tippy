@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ckb.Rpc;
 using Ckb.Types;
@@ -16,7 +17,9 @@ namespace Tippy.Pages.Blocks
         {
         }
 
-        public ArrayResult<BlockResult> Result = default!;
+        public List<BlockResult> Result = default!;
+        public int PageSize = 15;
+        public int Total { get; set; } = 0;
 
         public void OnGet([FromQuery(Name = "e")] int? end)
         {
@@ -27,31 +30,24 @@ namespace Tippy.Pages.Blocks
 
             var client = Rpc();
 
-            int pageSize = 15;
             int tipBlockNumber = (int)client.GetTipBlockNumber();
+            Total = (int)tipBlockNumber + 1;
             int endBlock = end ?? tipBlockNumber;
             if (endBlock > tipBlockNumber)
             {
                 endBlock = tipBlockNumber;
             }
-            int startBlock = Math.Max(0, endBlock - pageSize + 1);
-
-            Meta meta = new()
-            {
-                Total = (UInt64)tipBlockNumber + 1,
-                PageSize = pageSize
-            };
-            Result = GetBlocks(client, startBlock, endBlock, meta);
+            int startBlock = Math.Max(0, endBlock - PageSize + 1);
+            Result = GetBlocks(client, startBlock, endBlock);
         }
 
-        private ArrayResult<BlockResult> GetBlocks(Client client, int startBlockNumber, int endBlockNumber, Meta? meta = null)
+        private List<BlockResult> GetBlocks(Client client, int startBlockNumber, int endBlockNumber)
         {
-            BlockResult[] blockResults = Enumerable.Range(startBlockNumber, endBlockNumber - startBlockNumber + 1)
+            return Enumerable.Range(startBlockNumber, endBlockNumber - startBlockNumber + 1)
                 .Select(num => GetBlock(client, num))
                 .OfType<BlockResult>()
                 .Reverse()
-                .ToArray();
-            return new ArrayResult<BlockResult>("block_list", blockResults, meta);
+                .ToList();
         }
 
         private BlockResult? GetBlock(Client client, int num)

@@ -20,21 +20,6 @@ namespace Tippy.ApiData
         public Data<T> Data { get; set; }
     }
 
-    public class ArrayResult<T>
-    {
-        public ArrayResult(string type, T[] attrs, Meta? meta = null)
-        {
-            Data = attrs.Select(attr => new Data<T>(type, attr)).ToArray();
-            Meta = meta;
-        }
-
-        [JsonPropertyName("data")]
-        public Data<T>[] Data { get; set; }
-
-        [JsonPropertyName("meta")]
-        public Meta? Meta { get; set; }
-    }
-
     public class Result : Result<DefaultAttributesType>
     {
         public Result(Data data) : base(data) { }

@@ -46,16 +46,16 @@ namespace Tippy.Pages.Addresses
                 PageSize = pageSize,
             };
 
-            ArrayResult<TransactionListResult> result = GetTransactions(client, txHashes, lockScript, meta);
-
             return new PartialViewResult
             {
                 ViewName = "Transactions/_Transaction",
-                ViewData = new ViewDataDictionary<List<TransactionListResult>>(ViewData, result.Data.Select(d => d.Attributes).ToList())
+                ViewData = new ViewDataDictionary<List<TransactionListResult>>(
+                    ViewData,
+                    GetTransactions(client, txHashes, lockScript, meta))
             };
         }
 
-        private ArrayResult<TransactionListResult> GetTransactions(Client client, string[] txHashes, Script lockScript, Meta meta)
+        private List<TransactionListResult> GetTransactions(Client client, string[] txHashes, Script lockScript, Meta meta)
         {
             string prefix = AddressPrefix();
 
@@ -120,7 +120,7 @@ namespace Tippy.Pages.Addresses
 
                 results.Add(txResult);
             }
-            return new ArrayResult<TransactionListResult>("ckb_transactions", results.ToArray(), meta);
+            return results;
         }
 
         private static string[] GetTransactionHashes(IndexerClient indexerClient, IndexerTypes.SearchKey searchKey)

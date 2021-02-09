@@ -19,35 +19,35 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var block in Model.Result.Data)
+            @foreach (var block in Model.Result)
             {
                 <tr>
                     <td>
-                        <a asp-page="./Details" asp-route-id="@block.Attributes.Number">
-                            @block.Attributes.Number
+                        <a asp-page="./Details" asp-route-id="@block.Number">
+                            @block.Number
                         </a>
                     </td>
-                    <td>@block.Attributes.TransactionsCount</td>
+                    <td>@block.TransactionsCount</td>
                     <td>
-                        @if (string.IsNullOrEmpty(block.Attributes.Reward))
+                        @if (string.IsNullOrEmpty(block.Reward))
                         {
                             <span>0+</span>
                         }
                         else
                         {
-                            var reward = Tippy.Helpers.TransactionHelper.CkbAmount(block.Attributes.Reward);
+                            var reward = Tippy.Helpers.TransactionHelper.CkbAmount(block.Reward);
                             <span>@reward</span>
                         }
                     </td>
                     <td>
-                        <a asp-page="/Addresses/Details" asp-route-address="@block.Attributes.MinerHash" class="hash-text">
-                            @block.Attributes.MinerHash
+                        <a asp-page="/Addresses/Details" asp-route-address="@block.MinerHash" class="hash-text">
+                            @block.MinerHash
                         </a>
                     </td>
-                    <td>@block.Attributes.Date()</td>
+                    <td>@block.Date()</td>
                     <td>
                         <form method="post">
-                            <button asp-page="./RollBackTo" asp-route-hash="@block.Attributes.BlockHash" class="button is-danger is-small" title="Roll back to this block">
+                            <button asp-page="./RollBackTo" asp-route-hash="@block.BlockHash" class="button is-danger is-small" title="Roll back to this block">
                                 <span class="icon">
                                     <i class="fas fa-cut"></i>
                                 </span>
@@ -60,12 +60,12 @@
     </table>
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
         @{
-            int? previousPageEnd = int.Parse(Model.Result.Data.First().Attributes.Number) + Model.Result.Meta!.PageSize;
-            if ((UInt64)previousPageEnd > Model.Result.Meta!.Total)
+            int? previousPageEnd = int.Parse(Model.Result.First().Number) + Model.PageSize;
+            if (previousPageEnd > Model.Total)
             {
                 previousPageEnd = null;
             }
-            var nextPageEnd = int.Parse(Model.Result.Data.Last().Attributes.Number) - 1;
+            var nextPageEnd = int.Parse(Model.Result.Last().Number) - 1;
         }
         @if (previousPageEnd != null)
         {
