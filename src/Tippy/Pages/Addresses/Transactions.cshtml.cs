@@ -40,22 +40,16 @@ namespace Tippy.Pages.Addresses
 
             string[] txHashes = allTxHashes.Skip(skipCount).Take(pageSize).ToArray();
 
-            Meta meta = new()
-            {
-                Total = (UInt64)totalCount,
-                PageSize = pageSize,
-            };
-
             return new PartialViewResult
             {
                 ViewName = "Transactions/_Transaction",
                 ViewData = new ViewDataDictionary<List<TransactionListResult>>(
                     ViewData,
-                    GetTransactions(client, txHashes, lockScript, meta))
+                    GetTransactions(client, txHashes, lockScript))
             };
         }
 
-        private List<TransactionListResult> GetTransactions(Client client, string[] txHashes, Script lockScript, Meta meta)
+        private List<TransactionListResult> GetTransactions(Client client, string[] txHashes, Script lockScript)
         {
             string prefix = AddressPrefix();
 

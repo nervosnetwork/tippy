@@ -47,13 +47,4 @@ namespace Tippy.ApiData
     {
         public Data(string type, DefaultAttributesType attrs) : base(type, attrs) { }
     }
-
-    public class Meta
-    {
-        [JsonPropertyName("total")]
-        public ulong Total { get; set; }
-
-        [JsonPropertyName("page_size")]
-        public int PageSize { get; set; }
-    }
 }

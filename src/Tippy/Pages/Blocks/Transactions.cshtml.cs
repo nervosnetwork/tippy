@@ -33,23 +33,17 @@ namespace Tippy.Pages.Blocks
                 throw new ArgumentNullException("Block");
             }
 
-            Meta meta = new()
-            {
-                Total = (UInt64)block.Transactions.Length,
-                PageSize = pageSize,
-            };
-
             int skipCount = (page - 1) * pageSize;
             return new PartialViewResult
             {
                 ViewName = "Transactions/_Transaction",
                 ViewData = new ViewDataDictionary<List<TransactionListResult>>(
                     ViewData,
-                    GetTransactions(client, block, skipCount, pageSize, meta))
+                    GetTransactions(client, block, skipCount, pageSize))
             };
         }
 
-        private List<TransactionListResult> GetTransactions(Client client, Block block, int skipCount, int size, Meta? meta = null)
+        private List<TransactionListResult> GetTransactions(Client client, Block block, int skipCount, int size)
         {
             string prefix = IsMainnet() ? "ckb" : "ckt";
             List<TransactionListResult> result = block.Transactions.Skip(skipCount).Take(size).Select((tx, i) =>
