@@ -15,7 +15,8 @@ namespace Ckb.Types
             {
                 mantissa >>= 8 * (3 - (int)exponent);
                 ret = mantissa;
-            } else
+            }
+            else
             {
                 ret = mantissa;
                 ret <<= (int)(8 * (exponent - 3));

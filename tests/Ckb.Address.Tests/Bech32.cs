@@ -139,7 +139,7 @@ namespace Ckb.Address.Tests.Address
         [Fact]
         public void TestInvalidAddresses()
         {
-            foreach(var info in InvalidAddresses)
+            foreach (var info in InvalidAddresses)
             {
                 var exception = Assert.Throws<Exception>(() => ConvertAddress.Decode(info.Address));
                 Assert.Equal(info.ErrorMessage, exception.Message);

@@ -1,11 +1,11 @@
-using static System.Console;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using Ckb.Rpc;
-using System.Timers;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Timers;
+using Ckb.Rpc;
+using static System.Console;
 
 namespace Tippy.Ctrl
 {

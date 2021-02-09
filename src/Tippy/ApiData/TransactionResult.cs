@@ -50,6 +50,15 @@ namespace Tippy.ApiData
         public DateTime Date() => DateHelper.TimestampToDate(BlockTimestamp);
     }
 
+    public class SudtInfo
+    {
+        [JsonPropertyName("amount")]
+        public string Amount { get; set; } = default!;
+
+        [JsonPropertyName("sudt_script_args")]
+        public string SudtScriptArgs { get; set; } = default!;
+    }
+
 
     public class TransactionDetailResult : TransactionListResult
     {
@@ -119,6 +128,12 @@ namespace Tippy.ApiData
         // $"{txHash}:{index(int)}"
         [JsonPropertyName("id")]
         public string? Id { get; set; } = default!;
+
+        [JsonPropertyName("sudt_info")]
+        public SudtInfo? SudtInfo { get; set; } = null;
+
+        [JsonPropertyName("occupied_capacity")]
+        public string? OccupiedCapacity { get; set; } = null;
     }
 
     public class DisplayOutput
@@ -158,5 +173,11 @@ namespace Tippy.ApiData
         // $"{txHash}:{index(int)}"
         [JsonPropertyName("id")]
         public string? Id { get; set; } = default!;
+
+        [JsonPropertyName("sudt_info")]
+        public SudtInfo? SudtInfo = null;
+
+        [JsonPropertyName("occupied_capacity")]
+        public string? OccupiedCapacity { get; set; } = null;
     }
 }

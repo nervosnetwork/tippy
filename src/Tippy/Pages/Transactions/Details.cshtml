@@ -120,10 +120,21 @@
 </div>
 
 <div class="box transaction-box">
-    <h2>Inputs (@Model.TransactionDetail.DisplayInputs.Length)</h2>
+    @*<h2>Inputs (@Model.TransactionDetail.DisplayInputs.Length)</h2>*@
+    <div class="columns">
+        <div class="column is-3">
+            <h2>Inputs (@Model.TransactionDetail.DisplayInputs.Length)</h2>
+        </div>
+        <div class="column is-6">
+            <h2>Sudt Script Args (sUDT amount)</h2>
+        </div>
+        <div class="column is-3">
+            <h2>CKB / Occupied CKB</h2>
+        </div>
+    </div>
     <hr />
     <div id="inputs">
-        @foreach(var input in Model.TransactionDetail.DisplayInputs)
+        @foreach (var input in Model.TransactionDetail.DisplayInputs)
         {
             @if (input.FromCellbase)
             {
@@ -142,10 +153,18 @@
                             @input.AddressHash.Substring(0, 12)...@input.AddressHash.Substring(input.AddressHash.Length - 12, 12)
                         </a>
                     </div>
-                    <div class="column is-3">
+                    <div class="column is-6">
+                        @if (input.SudtInfo != null)
+                        {
+                            @input.SudtInfo?.SudtScriptArgs
+                            <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo!.Amount))</span>
+                        }
                     </div>
                     <div class="column is-3">
                         @Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity)
+
+                        <span>/</span>
+                        <span>@Tippy.Helpers.TransactionHelper.CkbAmount(input.OccupiedCapacity ?? "0")</span>
                     </div>
                 </div>
             }
@@ -154,7 +173,18 @@
 </div>
 
 <div class="box transaction-box">
-    <h2>Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</h2>
+    @*<h2>Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</h2>*@
+    <div class="columns">
+        <div class="column is-3">
+            <h2>Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</h2>
+        </div>
+        <div class="column is-6">
+            <h2>Sudt Script Args (sUDT amount)</h2>
+        </div>
+        <div class="column is-3">
+            <h2>CKB / Occupied CKB</h2>
+        </div>
+    </div>
     <hr />
     <div id="outputs">
         @foreach(var output in Model.TransactionDetail.DisplayOutputs)
@@ -165,10 +195,18 @@
                         @output.AddressHash.Substring(0, 12)...@output.AddressHash.Substring(output.AddressHash.Length - 12, 12)
                     </a>
                 </div>
-                <div class="column is-3">
+                <div class="column is-6">
+                    @if (output.SudtInfo != null)
+                    {
+                        <span>@output.SudtInfo?.SudtScriptArgs</span>
+                        <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo!.Amount))</span>
+                    }
                 </div>
                 <div class="column is-3">
                     @Tippy.Helpers.TransactionHelper.CkbAmount(output.Capacity)
+
+                    <span>/</span>
+                    <span>@Tippy.Helpers.TransactionHelper.CkbAmount(output.OccupiedCapacity ?? "0")</span>
                 </div>
             </div>
         }

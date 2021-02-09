@@ -12,6 +12,12 @@ namespace Tippy.Ctrl.Process
         {
             foreach (var binary in binaries)
             {
+                // ckb-debugger not supported on Windows yet.
+                if (OperatingSystem.IsWindows() && binary == "ckb-debugger")
+                {
+                    continue;
+                }
+
                 System.Diagnostics.Process process = new();
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.FileName = CommandProcess.BinaryFullPath(binary);

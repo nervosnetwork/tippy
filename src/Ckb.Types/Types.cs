@@ -144,6 +144,34 @@ namespace Ckb.Types
         // can be null
         [JsonProperty(PropertyName = "type")]
         public Script Type { get; set; } = null;
+
+        [JsonProperty(PropertyName = "data")]
+        public string Data { get; set; } = null;
+
+        // return shannon
+        public ulong MinimalCellCapacity()
+        {
+            if (Data == null)
+            {
+                // throw new Exception("Data can't be null!");
+                return 0;
+            }
+            int bytes = 8;
+            bytes += Convert.HexStringToBytes(Lock.CodeHash).Length;
+            bytes += Convert.HexStringToBytes(Lock.Args).Length;
+            // hash_type field
+            bytes += 1;
+
+            if (Type != null)
+            {
+                bytes += Convert.HexStringToBytes(Type.CodeHash).Length;
+                bytes += Convert.HexStringToBytes(Type.Args).Length;
+                // hash_type
+                bytes += 1;
+            }
+            bytes += Convert.HexStringToBytes(Data).Length;
+            return (ulong)bytes * (ulong)100000000;
+        }
     }
 
     public class Script

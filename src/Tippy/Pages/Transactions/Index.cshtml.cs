@@ -16,7 +16,6 @@ namespace Tippy.Pages.Transactions
         }
 
         public List<TransactionResult> Result = default!;
-        public ArrayResult<TransactionResult> TheResult = default!;
         public int FromBlock { get; set; } = 0; // Upper, default to tip number
         public int ToBlock { get; set; } = 0; // Lower
 
