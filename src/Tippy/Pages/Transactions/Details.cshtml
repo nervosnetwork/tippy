@@ -198,7 +198,9 @@
                 <div class="column is-6">
                     @if (output.SudtInfo != null)
                     {
-                        <span>@output.SudtInfo?.SudtScriptArgs</span>
+                        <a asp-page="/Sudt/Details" asp-route-sudtScriptArgs="@output.SudtInfo!.SudtScriptArgs" class="hash-text">
+                            @output.SudtInfo?.SudtScriptArgs
+                        </a>
                         <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo!.Amount))</span>
                     }
                 </div>

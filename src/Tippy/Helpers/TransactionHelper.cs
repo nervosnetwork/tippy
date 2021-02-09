@@ -10,15 +10,15 @@ namespace Tippy.Helpers
     public static class TransactionHelper
     {
         // TODO: read from config file
-        private const string SudtCodeHash = "0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4";
-        private const string SudtHashType = "type";
+        public const string SudtCodeHash = "0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4";
+        public const string SudtHashType = "type";
 
         public const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
         private const int TxProposalWindow = 12;
 
         public static string CkbAmount(string capacity) => NumberHelper.CkbAmount(capacity);
 
-        public static string SudtAmount(string amount) => NumberHelper.HexToNumber(amount);
+        public static string SudtAmount(string amount) => amount;
 
         public static string SudtDataToNumberStr(string data) => Ckb.Types.Convert.LEBytesToUInt128(Ckb.Types.Convert.HexStringToBytes(data)).ToString();
 
