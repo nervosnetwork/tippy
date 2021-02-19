@@ -17,76 +17,78 @@
     var startButtonDisabled = !Model.CanStartMining;
 }
 
-<h2>Mine with default miner</h2>
-@if (Model.IsMinerRunning)
-{
-    <form method="post">
-        <div class="field">
-            <div class="control">
-                <button asp-page="/Miners/Stop" asp-route-id="@Model.Project!.Id" class="button is-light" style="color: #ff6960;">
-                    <span class="icon">
-                        <i class="fas fa-pause"></i>
-                    </span>
-                    <span>Stop</span>
-                </button>
+<div class="box miner-box">
+    <h2 class="title is-4">Mine with default miner</h2>
+    @if (Model.IsMinerRunning)
+    {
+        <form method="post">
+            <div class="field">
+                <div class="control">
+                    <button asp-page="/Miners/Stop" asp-route-id="@Model.Project!.Id" class="button is-light" style="color: #ff6960;">
+                        <span class="icon">
+                            <i class="fas fa-pause"></i>
+                        </span>
+                        <span>Stop</span>
+                    </button>
+                </div>
             </div>
+        </form>
+    }
+    else
+    {
+        <form method="post">
+            <div class="field">
+                <div class="control">
+                    <button asp-page="/Miners/Start" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
+                        <span class="icon">
+                            <i class="fas fa-play"></i>
+                        </span>
+                        <span>Start</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
+<div class="box miner-box">
+    <h2 class="title is-4">Mine a single block manually</h2>
+    <form method="post">
+        <div class="control">
+            <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
+                <span class="icon">
+                    <i class="fas fa-hammer"></i>
+                </span>
+                <span style="font-size: 80%;">Mine a block</span>
+            </button>
         </div>
     </form>
-}
-else
-{
-    <form method="post">
+</div>
+
+<div class="box miner-box">
+    <h2 class="title is-4">Mine a few blocks</h2>
+    <form method="post" asp-route-id="@Model.Project!.Id" >
         <div class="field">
             <div class="control">
-                <button asp-page="/Miners/Start" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
+                <div class="field">
+                    <label class="label">Number of blocks to mine</label>
+                    <input class="input" type="text" asp-for="BlocksToGenerate" style="width: 100px;">
+                </div>
+                <div class="field">
+                    <label class="label">Interval (secs)</label>
+                    <input class="input" type="text" asp-for="Interval" style="width: 100px;">
+                </div>
+            </div>
+        </div>
+        <div class="field is-grouped">
+            <div class="control">
+                <button disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
                     <span class="icon">
                         <i class="fas fa-play"></i>
                     </span>
-                    <span>Start</span>
+                    <span>Start mining</span>
                 </button>
             </div>
         </div>
     </form>
-}
-
-<hr />
-
-<h2>Mine a single block manually</h2>
-<form method="post">
-    <div class="control">
-        <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
-            <span class="icon">
-                <i class="fas fa-hammer"></i>
-            </span>
-            <span style="font-size: 80%;">Mine a block</span>
-        </button>
-    </div>
-</form>
-
-<hr />
-
-<h2>Mine a few blocks</h2>
-<form method="post" asp-route-id="@Model.Project!.Id" >
-    <div class="field">
-        <div class="control">
-            <div class="field">
-                <label class="label">Number of blocks to mine</label>
-                <input class="input" type="text" asp-for="BlocksToGenerate">
-            </div>
-            <div class="field">
-                <label class="label">Interval (secs)</label>
-                <input class="input" type="text" asp-for="Interval">
-            </div>
-        </div>
-    </div>
-    <div class="field is-grouped">
-        <div class="control">
-            <button disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
-                <span class="icon">
-                    <i class="fas fa-play"></i>
-                </span>
-                <span>Start mining</span>
-            </button>
-        </div>
-    </div>
-</form>
+</div>
