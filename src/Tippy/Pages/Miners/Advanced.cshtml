@@ -24,7 +24,7 @@
         <form method="post">
             <div class="field">
                 <div class="control">
-                    <button asp-page="/Miners/Stop" asp-route-id="@Model.Project!.Id" class="button is-light" style="color: #ff6960;">
+                    <button asp-page="/Miners/Stop" asp-route-id="@Model.Project!.Id" class="button is-light" style="color: #ff6960; width: 200px;">
                         <span class="icon">
                             <i class="fas fa-pause"></i>
                         </span>
@@ -39,7 +39,7 @@
         <form method="post">
             <div class="field">
                 <div class="control">
-                    <button asp-page="/Miners/Start" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
+                    <button asp-page="/Miners/Start" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe; width: 200px;">
                         <span class="icon">
                             <i class="fas fa-play"></i>
                         </span>
@@ -55,7 +55,7 @@
     <h2 class="title is-4">Mine a single block manually</h2>
     <form method="post">
         <div class="control">
-            <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
+            <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.Project!.Id" disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe; width: 200px;">
                 <span class="icon">
                     <i class="fas fa-hammer"></i>
                 </span>
@@ -82,7 +82,7 @@
         </div>
         <div class="field is-grouped">
             <div class="control">
-                <button disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe;">
+                <button disabled=@startButtonDisabled class="button is-light" style="color: #b33ffe; width: 200px;">
                     <span class="icon">
                         <i class="fas fa-play"></i>
                     </span>
