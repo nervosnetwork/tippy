@@ -66,61 +66,19 @@
             </div>
         </div>
     </div>
-
-    <div>
-        <h2 class="title is-4">CellDeps</h2>
-        <div>
-            @foreach(var dep in Model.TransactionDetail.CellDeps)
-            {
-                <div class="columns is-multiline m-4">
-                    <div class="column is-2 p-0">OutPoint.TxHash</div>
-                    <div class="column is-10 p-0">
-                        <a asp-page="/Transactions/Details" asp-route-txhash="@dep.OutPoint.TxHash" class="hash-text">
-                            @dep.OutPoint.TxHash
-                        </a>
-                    </div>
-
-                    <div class="column is-2 p-0">OutPoint.Index</div>
-                    <div class="column is-10 p-0">@dep.OutPoint.Index</div>
-
-                    <div class="column is-2 p-0">DepType</div>
-                    <div class="column is-10 p-0">@dep.DepType</div>
-                </div>
-            }
-        </div>
-
-        <h2 class="title is-4">HeaderDeps</h2>
-        <div>
-            <div class="columns is-multiline m-4">
-                @foreach (var dep in Model.TransactionDetail.HeaderDeps)
-                {
-                    <div class="column is-2 p-0">HeaderDep</div>
-                    <div class="column is-10 p-0">
-                        <a asp-page="/Blocks/Details" asp-route-id="@dep">
-                            @dep
-                        </a>
-                    </div>
-                }
-            </div>
-        </div>
-
-        <h2 class="title is-4">Witnesses</h2>
-        <div>
-            <div class="columns is-multiline m-4">
-                @foreach (var witness in Model.TransactionDetail.Witnesses)
-                {
-                    <div class="column is-2 p-0">Witness</div>
-                    <div class="column is-10 p-0 break-all-text">
-                        @witness
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
 </div>
 
-<div class="box transaction-box">
-    @*<h2>Inputs (@Model.TransactionDetail.DisplayInputs.Length)</h2>*@
+<div class="tabs is-medium">
+    <ul>
+        <li class="is-active"><a href="#panel-inputs">Inputs</a></li>
+        <li><a href="#panel-outputs">Outputs</a></li>
+        <li><a href="#panel-cell-deps">Cell Deps</a></li>
+        <li><a href="#panel-header-deps">Header Deps</a></li>
+        <li><a href="#panel-witnesses">Witnesses</a></li>
+    </ul>
+</div>
+
+<div class="box transaction-box tab-panel" id="panel-inputs">
     <div class="columns">
         <div class="column is-3">
             <h2>Inputs (@Model.TransactionDetail.DisplayInputs.Length)</h2>
@@ -172,8 +130,7 @@
     </div>
 </div>
 
-<div class="box transaction-box">
-    @*<h2>Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</h2>*@
+<div class="box transaction-box tab-panel" id="panel-outputs">
     <div class="columns">
         <div class="column is-3">
             <h2>Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</h2>
@@ -214,3 +171,65 @@
         }
     </div>
 </div>
+
+<div class="box dark-box tab-panel" id="panel-cell-deps">
+    @foreach(var dep in Model.TransactionDetail.CellDeps)
+    {
+        <div class="columns is-multiline mb-4">
+            <div class="column is-2 p-0">OutPoint.TxHash</div>
+            <div class="column is-10 p-0">
+                <a asp-page="/Transactions/Details" asp-route-txhash="@dep.OutPoint.TxHash" class="hash-text">
+                    @dep.OutPoint.TxHash
+                </a>
+            </div>
+
+            <div class="column is-2 p-0">OutPoint.Index</div>
+            <div class="column is-10 p-0">@dep.OutPoint.Index</div>
+
+            <div class="column is-2 p-0">DepType</div>
+            <div class="column is-10 p-0">@dep.DepType</div>
+        </div>
+    }
+</div>
+
+<div class="box dark-box tab-panel" id="panel-header-deps">
+    <div class="columns is-multiline">
+        @foreach (var dep in Model.TransactionDetail.HeaderDeps)
+        {
+            <div class="column is-2 p-0">HeaderDep</div>
+            <div class="column is-10 p-0">
+                <a asp-page="/Blocks/Details" asp-route-id="@dep">
+                    @dep
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="box dark-box tab-panel" id="panel-witnesses">
+    <div class="columns is-multiline">
+        @foreach (var witness in Model.TransactionDetail.Witnesses)
+        {
+            <div class="column is-2 p-0">Witness</div>
+            <div class="column is-10 p-0 break-all-text">
+                @witness
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(".tabs li a").click((e) => {
+            $(".tabs li").removeClass("is-active");
+            $(".tab-panel").hide();
+
+            $(e.target).parent("li").addClass("is-active");
+            $($(e.target).attr("href")).show();
+
+            e.preventDefault();
+        });
+
+        $(".tabs li a").first().trigger("click");
+    </script>
+}
