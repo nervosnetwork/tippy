@@ -84,29 +84,53 @@
         {
             @if (input.FromCellbase)
             {
-                <div>
-                    Cellbase for Block
-                    <a asp-page="/Blocks/Details" asp-route-id="@input.TargetBlockNumber">
-                        @input.TargetBlockNumber
-                    </a>
+                <div class="columns">
+                    <div class="column is-2">
+                        Cellbase for Block
+                    </div>
+                    <div class="column is-10">
+                        <a asp-page="/Blocks/Details" asp-route-id="@input.TargetBlockNumber">
+                            @input.TargetBlockNumber
+                        </a>
+                    </div>
                 </div>
             }
             else
             {
-                <div class="columns">
-                    <div class="column is-3">
+                <div class="columns is-multiline">
+                    <div class="column is-2">
+                        Address
+                    </div>
+                    <div class="column is-10">
                         <a asp-page="/Addresses/Details" asp-route-address="@input.AddressHash" class="hash-text">
-                            @input.AddressHash.Substring(0, 12)...@input.AddressHash.Substring(input.AddressHash.Length - 12, 12)
+                            @input.AddressHash
                         </a>
                     </div>
-                    <div class="column is-6">
+
+                    <div class="column is-2">
+                        Tx
+                    </div>
+                    <div class="column is-10">
+                        <a asp-page="/Transactions/Details" asp-route-txhash="@input.GeneratedTxHash" class="hash-text">
+                            @input.GeneratedTxHash
+                        </a>
+                    </div>
+
+                    <div class="column is-2">
+                        Sudt Script Args<br />(sUDT amount)
+                    </div>
+                    <div class="column is-10">
                         @if (input.SudtInfo != null)
                         {
                             @input.SudtInfo?.SudtScriptArgs
                             <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo!.Amount))</span>
                         }
                     </div>
-                    <div class="column is-3">
+
+                    <div class="column is-2">
+                        CKB / Occupied CKB
+                    </div>
+                    <div class="column is-10">
                         @Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity)
 
                         <span>/</span>
@@ -114,6 +138,7 @@
                     </div>
                 </div>
             }
+            <hr />
         }
     </div>
 </div>

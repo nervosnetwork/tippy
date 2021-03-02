@@ -16,6 +16,7 @@ namespace Tippy.Pages.Transactions
         {
         }
 
+        public Transaction Transaction = default!;
         public TransactionDetailResult TransactionDetail = default!;
         public List<String> OutputsData = default!;
         public List<Script> OutputLockScripts = default!;
@@ -105,6 +106,7 @@ namespace Tippy.Pages.Transactions
                 detail.DisplayOutputs = displayOutputs;
             }
 
+            Transaction = tx;
             TransactionDetail = detail;
 
             return Page();
