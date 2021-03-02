@@ -66,101 +66,71 @@
             </div>
         </div>
     </div>
-
-    <div>
-        <h2 class="title is-4">CellDeps</h2>
-        <div>
-            @foreach(var dep in Model.TransactionDetail.CellDeps)
-            {
-                <div class="columns is-multiline m-4">
-                    <div class="column is-2 p-0">OutPoint.TxHash</div>
-                    <div class="column is-10 p-0">
-                        <a asp-page="/Transactions/Details" asp-route-txhash="@dep.OutPoint.TxHash" class="hash-text">
-                            @dep.OutPoint.TxHash
-                        </a>
-                    </div>
-
-                    <div class="column is-2 p-0">OutPoint.Index</div>
-                    <div class="column is-10 p-0">@dep.OutPoint.Index</div>
-
-                    <div class="column is-2 p-0">DepType</div>
-                    <div class="column is-10 p-0">@dep.DepType</div>
-                </div>
-            }
-        </div>
-
-        <h2 class="title is-4">HeaderDeps</h2>
-        <div>
-            <div class="columns is-multiline m-4">
-                @foreach (var dep in Model.TransactionDetail.HeaderDeps)
-                {
-                    <div class="column is-2 p-0">HeaderDep</div>
-                    <div class="column is-10 p-0">
-                        <a asp-page="/Blocks/Details" asp-route-id="@dep">
-                            @dep
-                        </a>
-                    </div>
-                }
-            </div>
-        </div>
-
-        <h2 class="title is-4">Witnesses</h2>
-        <div>
-            <div class="columns is-multiline m-4">
-                @foreach (var witness in Model.TransactionDetail.Witnesses)
-                {
-                    <div class="column is-2 p-0">Witness</div>
-                    <div class="column is-10 p-0 break-all-text">
-                        @witness
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
 </div>
 
-<div class="box transaction-box">
-    @*<h2>Inputs (@Model.TransactionDetail.DisplayInputs.Length)</h2>*@
-    <div class="columns">
-        <div class="column is-3">
-            <h2>Inputs (@Model.TransactionDetail.DisplayInputs.Length)</h2>
-        </div>
-        <div class="column is-6">
-            <h2>Sudt Script Args (sUDT amount)</h2>
-        </div>
-        <div class="column is-3">
-            <h2>CKB / Occupied CKB</h2>
-        </div>
-    </div>
-    <hr />
+<div class="tabs is-medium">
+    <ul>
+        <li class="is-active"><a href="#panel-inputs">Inputs (@Model.TransactionDetail.DisplayInputs.Length)</a></li>
+        <li><a href="#panel-outputs">Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</a></li>
+        <li><a href="#panel-cell-deps">Cell Deps</a></li>
+        <li><a href="#panel-header-deps">Header Deps</a></li>
+        <li><a href="#panel-witnesses">Witnesses</a></li>
+    </ul>
+</div>
+
+<div class="box transaction-box tab-panel" id="panel-inputs">
     <div id="inputs">
-        @foreach (var input in Model.TransactionDetail.DisplayInputs)
+        @foreach (var (input, index) in Model.TransactionDetail.DisplayInputs.Select((o, i) => (o, i)))
         {
             @if (input.FromCellbase)
             {
-                <div>
-                    Cellbase for Block
-                    <a asp-page="/Blocks/Details" asp-route-id="@input.TargetBlockNumber">
-                        @input.TargetBlockNumber
-                    </a>
+                <div class="columns">
+                    <div class="column is-2">
+                        Cellbase for Block
+                    </div>
+                    <div class="column is-10">
+                        <a asp-page="/Blocks/Details" asp-route-id="@input.TargetBlockNumber">
+                            @input.TargetBlockNumber
+                        </a>
+                    </div>
                 </div>
             }
             else
             {
-                <div class="columns">
-                    <div class="column is-3">
+                <div class="columns is-multiline">
+                    <div class="column is-2">
+                        Address
+                    </div>
+                    <div class="column is-10">
                         <a asp-page="/Addresses/Details" asp-route-address="@input.AddressHash" class="hash-text">
-                            @input.AddressHash.Substring(0, 12)...@input.AddressHash.Substring(input.AddressHash.Length - 12, 12)
+                            @input.AddressHash
                         </a>
                     </div>
-                    <div class="column is-6">
+
+                    <div class="column is-2">
+                        Generated Tx
+                    </div>
+                    <div class="column is-10">
+                        <a asp-page="/Transactions/Details" asp-route-txhash="@input.GeneratedTxHash" class="hash-text">
+                            @input.GeneratedTxHash
+                        </a>
+                    </div>
+
+                    <div class="column is-2">
+                        Sudt Script Args<br />(sUDT amount)
+                    </div>
+                    <div class="column is-10">
                         @if (input.SudtInfo != null)
                         {
                             @input.SudtInfo?.SudtScriptArgs
                             <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo!.Amount))</span>
                         }
                     </div>
-                    <div class="column is-3">
+
+                    <div class="column is-2">
+                        CKB / Occupied CKB
+                    </div>
+                    <div class="column is-10">
                         @Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity)
 
                         <span>/</span>
@@ -168,34 +138,29 @@
                     </div>
                 </div>
             }
+            <hr />
         }
     </div>
 </div>
 
-<div class="box transaction-box">
-    @*<h2>Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</h2>*@
-    <div class="columns">
-        <div class="column is-3">
-            <h2>Outputs (@Model.TransactionDetail.DisplayOutputs.Length)</h2>
-        </div>
-        <div class="column is-6">
-            <h2>Sudt Script Args (sUDT amount)</h2>
-        </div>
-        <div class="column is-3">
-            <h2>CKB / Occupied CKB</h2>
-        </div>
-    </div>
-    <hr />
+<div class="box transaction-box tab-panel" id="panel-outputs">
     <div id="outputs">
-        @foreach(var output in Model.TransactionDetail.DisplayOutputs)
+        @foreach(var (output, index) in Model.TransactionDetail.DisplayOutputs.Select((o, i) => (o, i)))
         {
-            <div class="columns">
-                <div class="column is-3">
+            <div class="columns is-multiline">
+                <div class="column is-2">
+                    Address
+                </div>
+                <div class="column is-10">
                     <a asp-page="/Addresses/Details" asp-route-address="@output.AddressHash" class="hash-text">
-                        @output.AddressHash.Substring(0, 12)...@output.AddressHash.Substring(output.AddressHash.Length - 12, 12)
+                        @output.AddressHash
                     </a>
                 </div>
-                <div class="column is-6">
+
+                <div class="column is-2">
+                    Sudt Script Args<br />(sUDT amount)
+                </div>
+                <div class="column is-10">
                     @if (output.SudtInfo != null)
                     {
                         <a asp-page="/Sudt/Details" asp-route-sudtScriptArgs="@output.SudtInfo!.SudtScriptArgs" class="hash-text">
@@ -204,13 +169,123 @@
                         <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo!.Amount))</span>
                     }
                 </div>
-                <div class="column is-3">
+
+                <div class="column is-2">
+                    CKB / Occupied CKB
+                </div>
+                <div class="column is-10">
                     @Tippy.Helpers.TransactionHelper.CkbAmount(output.Capacity)
 
                     <span>/</span>
                     <span>@Tippy.Helpers.TransactionHelper.CkbAmount(output.OccupiedCapacity ?? "0")</span>
                 </div>
+
+                <div class="column is-2">
+                    Lock Script
+                </div>
+                <div class="column is-12">
+                    @{ var lockScript = Model.OutputLockScripts[index]; }
+                    <pre>
+{
+    code_hash: @lockScript.CodeHash,
+    args: @lockScript.Args,
+    hash_type: @lockScript.HashType
+}</pre>
+                </div>
+
+                <div class="column is-2">
+                    Type Script
+                </div>
+                <div class="column is-12">
+                    @{ var typeScrit = Model.OutputTypeScripts[index]; }
+                    @if (typeScrit != null)
+                    {
+                        <pre>
+{
+    code_hash: @typeScrit.CodeHash,
+    args: @typeScrit.Args,
+    hash_type: @typeScrit.HashType
+}</pre>
+                    }
+                    else
+                    {
+                        <pre>null</pre>
+                    }
+                </div>
+
+                <div class="column is-2">
+                    Data
+                </div>
+                <div class="column is-12">
+                    <pre>@Model.OutputsData[index]</pre>
+                </div>
             </div>
+            <hr />
         }
     </div>
 </div>
+
+<div class="box dark-box tab-panel" id="panel-cell-deps">
+    @foreach(var dep in Model.TransactionDetail.CellDeps)
+    {
+        <div class="columns is-multiline mb-4">
+            <div class="column is-2">OutPoint.TxHash</div>
+            <div class="column is-10">
+                <a asp-page="/Transactions/Details" asp-route-txhash="@dep.OutPoint.TxHash" class="hash-text">
+                    @dep.OutPoint.TxHash
+                </a>
+            </div>
+
+            <div class="column is-2">OutPoint.Index</div>
+            <div class="column is-10">@dep.OutPoint.Index</div>
+
+            <div class="column is-2">DepType</div>
+            <div class="column is-10">@dep.DepType</div>
+        </div>
+        <hr />
+    }
+</div>
+
+<div class="box dark-box tab-panel" id="panel-header-deps">
+    <div class="columns is-multiline">
+        @foreach (var dep in Model.TransactionDetail.HeaderDeps)
+        {
+            <div class="column is-2">HeaderDep</div>
+            <div class="column is-10">
+                <a asp-page="/Blocks/Details" asp-route-id="@dep">
+                    @dep
+                </a>
+            </div>
+            <hr />
+        }
+    </div>
+</div>
+
+<div class="box dark-box tab-panel" id="panel-witnesses">
+    <div class="columns is-multiline">
+        @foreach (var witness in Model.TransactionDetail.Witnesses)
+        {
+            <div class="column is-2">Witness</div>
+            <div class="column is-10 break-all-text">
+                @witness
+            </div>
+            <hr />
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(".tabs li a").click((e) => {
+            $(".tabs li").removeClass("is-active");
+            $(".tab-panel").hide();
+
+            $(e.target).parent("li").addClass("is-active");
+            $($(e.target).attr("href")).show();
+
+            e.preventDefault();
+        });
+
+        $(".tabs li a").first().trigger("click");
+    </script>
+}

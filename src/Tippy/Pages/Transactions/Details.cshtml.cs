@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ckb.Rpc;
 using Ckb.Types;
@@ -15,7 +16,11 @@ namespace Tippy.Pages.Transactions
         {
         }
 
+        public Transaction Transaction = default!;
         public TransactionDetailResult TransactionDetail = default!;
+        public List<String> OutputsData = default!;
+        public List<Script> OutputLockScripts = default!;
+        public List<Script?> OutputTypeScripts = default!;
 
         public IActionResult OnGet(string? txhash)
         {
@@ -38,10 +43,9 @@ namespace Tippy.Pages.Transactions
             }
 
             Transaction tx = transactionWithStatus.Transaction;
-            foreach (var (output, i) in tx.Outputs.Select((o, i) => (o, i)))
-            {
-                output.Data = tx.OutputsData[i];
-            }
+            OutputsData = tx.Outputs.Select((o, i) => tx.OutputsData[i]).ToList();
+            OutputLockScripts = tx.Outputs.Select((o) => o.Lock).ToList();
+            OutputTypeScripts = tx.Outputs.Select<Output, Script?>((o) => o.Type).ToList();
 
             bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == EmptyHash;
             string prefix = IsMainnet() ? "ckb" : "ckt";
@@ -102,6 +106,7 @@ namespace Tippy.Pages.Transactions
                 detail.DisplayOutputs = displayOutputs;
             }
 
+            Transaction = tx;
             TransactionDetail = detail;
 
             return Page();
