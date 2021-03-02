@@ -17,8 +17,9 @@ namespace Tippy.Pages.Transactions
         }
 
         public TransactionDetailResult TransactionDetail = default!;
-        public List<String> InputsData = default!;
         public List<String> OutputsData = default!;
+        public List<Script> OutputLockScripts = default!;
+        public List<Script?> OutputTypeScripts = default!;
 
         public IActionResult OnGet(string? txhash)
         {
@@ -41,9 +42,9 @@ namespace Tippy.Pages.Transactions
             }
 
             Transaction tx = transactionWithStatus.Transaction;
-            OutputsData = tx.Outputs.Select((o, i) => {
-                return tx.OutputsData[i];
-            }).ToList();
+            OutputsData = tx.Outputs.Select((o, i) => tx.OutputsData[i]).ToList();
+            OutputLockScripts = tx.Outputs.Select((o) => o.Lock).ToList();
+            OutputTypeScripts = tx.Outputs.Select<Output, Script?>((o) => o.Type).ToList();
 
             bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == EmptyHash;
             string prefix = IsMainnet() ? "ckb" : "ckt";

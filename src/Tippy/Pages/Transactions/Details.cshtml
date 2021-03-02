@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="column is-2">
-                    Sudt Script Args (sUDT amount)
+                    Sudt Script Args<br />(sUDT amount)
                 </div>
                 <div class="column is-10">
                     @if (output.SudtInfo != null)
@@ -159,14 +159,33 @@
                     Lock Script
                 </div>
                 <div class="column is-12">
-                    TODO
+                    @{ var lockScript = Model.OutputLockScripts[index]; }
+                    <pre>
+{
+    code_hash: @lockScript.CodeHash,
+    args: @lockScript.Args,
+    hash_type: @lockScript.HashType
+}</pre>
                 </div>
 
                 <div class="column is-2">
                     Type Script
                 </div>
                 <div class="column is-12">
-                    TODO
+                    @{ var typeScrit = Model.OutputTypeScripts[index]; }
+                    @if (typeScrit != null)
+                    {
+                        <pre>
+{
+    code_hash: @typeScrit.CodeHash,
+    args: @typeScrit.Args,
+    hash_type: @typeScrit.HashType
+}</pre>
+                    }
+                    else
+                    {
+                        <pre>null</pre>
+                    }
                 </div>
 
                 <div class="column is-2">
