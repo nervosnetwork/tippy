@@ -1,0 +1,25 @@
+﻿@page
+@model Tippy.Pages.NotFoundModel
+@{
+    ViewData["Title"] = Model.Is404 ? "Not Found" : "Something went wrong";
+}
+
+@if (Model.Is404)
+{
+    <h1 class="title">Not Found</h1>
+
+    <p>The page or search string you entered was not found.</p>
+    <p><a asp-page="/Home/Index" id="back-button">Go back</a> and try another one.</p>
+    <script>
+        $("back-button").click(function (e) {
+            if (history.length > 1) {
+                history.back();
+                e.preventDefault();
+            }
+        });
+    </script>
+}
+else
+{
+    <h1 class="title">Something went wrong</h1>
+}

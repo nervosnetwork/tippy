@@ -61,6 +61,8 @@ namespace Tippy
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseStatusCodePagesWithReExecute("/NotFound", "?statusCode={0}");
+
             app.UseStaticFiles();
 
             app.UseRouting();
