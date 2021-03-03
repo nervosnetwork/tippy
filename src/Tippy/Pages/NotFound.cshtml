@@ -10,14 +10,17 @@
 
     <p>The page or search string you entered was not found.</p>
     <p><a asp-page="/Home/Index" id="back-button">Go back</a> and try another one.</p>
-    <script>
-        $("back-button").click(function (e) {
-            if (history.length > 1) {
-                history.back();
-                e.preventDefault();
-            }
-        });
-    </script>
+
+    @section Scripts {
+        <script>
+            $("#back-button").click(function (e) {
+                if (history.length > 1) {
+                    history.back();
+                    e.preventDefault();
+                }
+            });
+        </script>
+    }
 }
 else
 {

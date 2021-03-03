@@ -2,68 +2,52 @@
 @model Tippy.Pages.Transactions.DetailsModel
 @{ ViewData["Title"] = "Transaction"; }
 
-<h1 class="title">Transaction <span style="font-size:70%;">@Model.TransactionDetail.TransactionHash</span></h1>
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Transaction</h1>
+    </div>
+    <div class="level-right">
+        <Partial name="_Search" />
+    </div>
+</div>
 
 <div class="box transaction-box">
     <div class="columns is-multiline">
-        <div class="column is-half">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Block Height</label>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>
-                            <a asp-page="/Blocks/Details" asp-route-id="@Model.TransactionDetail.BlockNumber">
-                                @Model.TransactionDetail.BlockNumber
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Transaction Fee</label>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>@Model.TransactionDetail.TransactionFee</div>
-                    </div>
-                </div>
-            </div>
+        <div class="column is-2">
+            <label>Hash</label>
+        </div>
+        <div class="column is-10">
+            <span class="hash-text">@Model.TransactionDetail.TransactionHash</span>
         </div>
 
-        <div class="column is-half" style="border-left: 1px solid #808080;">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Timestamp</label>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>@Model.TransactionDetail.Date()</div>
-                    </div>
-                </div>
-            </div>
+        <div class="column is-2">
+            <label>Block Height</label>
+        </div>
+        <div class="column is-10">
+            <a asp-page="/Blocks/Details" asp-route-id="@Model.TransactionDetail.BlockNumber">
+                @Model.TransactionDetail.BlockNumber
+            </a>
+        </div>
 
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Status</label>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>@Model.TransactionDetail.TxStatus</div>
-                    </div>
-                </div>
-            </div>
+        <div class="column is-2">
+            <label>Transaction Fee</label>
+        </div>
+        <div class="column is-10">
+            @Model.TransactionDetail.TransactionFee
+        </div>
+
+        <div class="column is-2">
+            <label>Timestamp</label>
+        </div>
+        <div class="column is-10">
+            @Model.TransactionDetail.Date()
+        </div>
+
+        <div class="column is-2">
+            <label>Status</label>
+        </div>
+        <div class="column is-10">
+            @Model.TransactionDetail.TxStatus
         </div>
     </div>
 </div>
