@@ -34,7 +34,7 @@ namespace Tippy.Pages.Transactions
                 return NotFound();
             }
 
-            Client client = new($"http://localhost:{ActiveProject.NodeRpcPort}");
+            Client client = Rpc();
 
             TransactionWithStatus? transactionWithStatus = client.GetTransaction(txhash);
             if (transactionWithStatus == null)
