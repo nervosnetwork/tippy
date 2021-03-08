@@ -141,9 +141,6 @@
                     </a>
                 </div>
                 <div class="column is-2">
-                    <form method="post">
-                        <button asp-page="./MarkSudt" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button is-pulled-right">Mark as sUDT Script</button>
-                    </form>
                 </div>
 
                 <div class="column is-2">
@@ -195,6 +192,9 @@
     args: @typeScrit.Args,
     hash_type: @typeScrit.HashType
 }</pre>
+                        <form method="post" class="my-4">
+                            <button asp-page="./MarkSudt" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button">Mark as sUDT Script</button>
+                        </form>
                     }
                     else
                     {

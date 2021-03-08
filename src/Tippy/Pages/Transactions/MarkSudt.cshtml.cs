@@ -16,7 +16,13 @@ namespace Tippy.Pages.Transactions
         {
             Client client = Rpc();
             TransactionWithStatus? transactionWithStatus = client.GetTransaction(txhash);
-            // TODO: mark as sudt
+            if (transactionWithStatus != null)
+            {
+                Transaction tx = transactionWithStatus.Transaction;
+                var data = tx.OutputsData[index];
+                var typeScript = tx.Outputs[index].Type;
+                // TODO: mark as sudt script
+            }
 
             var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();
             return Redirect(referer);
