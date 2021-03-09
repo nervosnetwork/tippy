@@ -192,9 +192,9 @@
     args: @typeScrit.Args,
     hash_type: @typeScrit.HashType
 }</pre>
-                        <form method="post" class="my-4">
-                            <button asp-page="./MarkSudt" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button">Mark as sUDT Script</button>
-                        </form>
+                        <div post" class="my-4">
+                            <a asp-page="/Tokens/Create" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button">Mark as sUDT Script</a>
+                        </div>
                     }
                     else
                     {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Tippy.Core.Models
@@ -41,5 +42,7 @@ namespace Tippy.Core.Models
 
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
+
+        public List<Token> Tokens { get; set; } = default!;
     }
 }
