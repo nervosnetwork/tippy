@@ -6,6 +6,7 @@ using Ckb.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.Core.Models;
+using Tippy.Helpers;
 
 namespace Tippy.Pages.Tokens
 {
@@ -41,11 +42,17 @@ namespace Tippy.Pages.Tokens
         public async Task<IActionResult> OnPostAsync()
         {
             Token.Project = ActiveProject!;
-            Token.Hash = "0x"; // TODO: compute type script hash
+            Token.Hash = ScriptHelper.ComputeHash(
+                new Script
+                {
+                    CodeHash = Token.TypeScriptCodeHash,
+                    Args = Token.TypeScriptArgs,
+                    HashType = Token.TypeScriptHashType
+                });
             DbContext.Tokens.Add(Token);
             await DbContext.SaveChangesAsync();
 
-            return RedirectToPage("./Index", new { id = Token.Id });
+            return RedirectToPage("./Details", new { id = Token.Id });
         }
     }
 }

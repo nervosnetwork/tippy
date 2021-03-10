@@ -2,9 +2,9 @@ using System;
 
 namespace Tippy.Pages.Tokens
 {
-    public class IndexModel : PageModelBase
+    public class DetailsModel : PageModelBase
     {
-        public IndexModel(Tippy.Core.Data.DbContext context) : base(context)
+        public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
         {
         }
 
