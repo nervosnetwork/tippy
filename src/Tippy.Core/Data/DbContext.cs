@@ -25,7 +25,8 @@ namespace Tippy.Core.Data
 
             modelBuilder.Entity<Token>()
                 .HasOne(t => t.Project)
-                .WithMany(p => p.Tokens);
+                .WithMany(p => p.Tokens)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

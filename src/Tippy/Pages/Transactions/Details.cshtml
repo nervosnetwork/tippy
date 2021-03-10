@@ -1,5 +1,7 @@
 ﻿@page
 @model Tippy.Pages.Transactions.DetailsModel
+@using Tippy.Core.Models; 
+@using Tippy.Helpers; 
 @{ ViewData["Title"] = "Transaction"; }
 
 <div class="level">
@@ -179,22 +181,39 @@
 }</pre>
                 </div>
 
+                @{ var typeScript = Model.OutputTypeScripts[index]; }
                 <div class="column is-2">
                     Type Script
                 </div>
+                @if (typeScript != null)
+                {
+                    var hash = ScriptHelper.ComputeHash(typeScript);
+                    Token? token = Model.Tokens[hash] as Token;
+                    <div class="column is-10">
+                        @if (token != null)
+                        {
+                            <div>
+                                sUDT Script for token <strong><a asp-page="/Tokens/Details" asp-route-id=@token.Id>@token.Name</a></strong>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <a asp-page="/Tokens/Create" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button">Mark as sUDT Script</a>
+                            </div>
+                        }
+
+                    </div>
+                }
                 <div class="column is-12">
-                    @{ var typeScrit = Model.OutputTypeScripts[index]; }
-                    @if (typeScrit != null)
+                    @if (typeScript != null)
                     {
                         <pre>
 {
-    code_hash: @typeScrit.CodeHash,
-    args: @typeScrit.Args,
-    hash_type: @typeScrit.HashType
+    code_hash: @typeScript.CodeHash,
+    args: @typeScript.Args,
+    hash_type: @typeScript.HashType
 }</pre>
-                        <div post" class="my-4">
-                            <a asp-page="/Tokens/Create" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button">Mark as sUDT Script</a>
-                        </div>
                     }
                     else
                     {

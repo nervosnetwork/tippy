@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
+using Tippy.Core.Models;
 using Tippy.Util;
 using static Tippy.Helpers.TransactionHelper;
 
@@ -21,6 +23,7 @@ namespace Tippy.Pages.Transactions
         public List<String> OutputsData = default!;
         public List<Script> OutputLockScripts = default!;
         public List<Script?> OutputTypeScripts = default!;
+        public Hashtable Tokens = new();
 
         public IActionResult OnGet(string? txhash)
         {
@@ -40,6 +43,14 @@ namespace Tippy.Pages.Transactions
             if (transactionWithStatus == null)
             {
                 return NotFound();
+            }
+
+            foreach (var token in ActiveProject!.Tokens)
+            {
+                if (!Tokens.Contains(token.Hash))
+                {
+                    Tokens.Add(token.Hash, token);
+                }
             }
 
             Transaction tx = transactionWithStatus.Transaction;

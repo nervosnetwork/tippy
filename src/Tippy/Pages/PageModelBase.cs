@@ -41,7 +41,7 @@ namespace Tippy.Pages
         {
             ProcessInfo = ProcessManager.Info;
 
-            Projects = await DbContext.Projects.ToListAsync();
+            Projects = await DbContext.Projects.Include(p => p.Tokens).ToListAsync();
             ActiveProject = await DbContext.Projects.FirstOrDefaultAsync(p => p.IsActive);
             if (ActiveProject == null && Projects.Count > 0)
             {
