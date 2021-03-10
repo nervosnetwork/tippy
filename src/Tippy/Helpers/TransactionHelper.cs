@@ -139,7 +139,7 @@ namespace Tippy.Helpers
             var displayOutputs = outputs.Select((output, i) =>
             {
                 SudtInfo? sudtInfo = null;
-                if (output.Type != null && output.Type.CodeHash == SudtCodeHash && output.Type.HashType == SudtHashType)
+                if (output.Type != null && output.Data != null && output.Type.CodeHash == SudtCodeHash && output.Type.HashType == SudtHashType)
                 {
                     sudtInfo = new SudtInfo
                     {

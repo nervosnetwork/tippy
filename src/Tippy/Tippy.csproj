@@ -28,6 +28,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ckb.Address\Ckb.Address.csproj" />
+    <ProjectReference Include="..\Ckb.Cryptography\Ckb.Cryptography.csproj" />
+    <ProjectReference Include="..\Ckb.Molecule\Ckb.Molecule.csproj" />
     <ProjectReference Include="..\Tippy.Core\Tippy.Core.csproj" />
     <ProjectReference Include="..\Tippy.Ctrl\Tippy.Ctrl.csproj" />
     <ProjectReference Include="..\Ckb.Rpc\Ckb.Rpc.csproj">
