@@ -109,7 +109,8 @@ namespace Tippy.Pages.Tokens
                         tx.Outputs.Take(10).ToArray(),
                         previousOutputs.Take(10).ToArray(),
                         prefix,
-                        txHash);
+                        txHash,
+                        Tokens);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
 

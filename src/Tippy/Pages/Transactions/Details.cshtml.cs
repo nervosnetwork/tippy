@@ -103,7 +103,7 @@ namespace Tippy.Pages.Transactions
                     tx.Outputs.Select(o => Hex.HexToUInt64(o.Capacity)).Aggregate((sum, cur) => sum + cur);
                 detail.TransactionFee = transactionFee.ToString();
 
-                var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(tx.Inputs, tx.Outputs, previousOutputs, prefix, txhash);
+                var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(tx.Inputs, tx.Outputs, previousOutputs, prefix, txhash, Tokens);
                 detail.DisplayInputs = displayInputs;
                 detail.DisplayOutputs = displayOutputs;
             }

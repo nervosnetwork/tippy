@@ -57,6 +57,10 @@ namespace Tippy.ApiData
 
         [JsonPropertyName("sudt_script_args")]
         public string SudtScriptArgs { get; set; } = default!;
+
+        public string Name { get; set; } = "";
+
+        public int Id { get; set; } = 0;
     }
 
 
