@@ -11,7 +11,7 @@ using Tippy.Util;
 using static Tippy.Helpers.TransactionHelper;
 using IndexerTypes = Ckb.Types.IndexrTypes;
 
-namespace Tippy.Pages.Sudt
+namespace Tippy.Pages.Tokens
 {
     public class TransactionsModel : PageModelBase
     {
@@ -19,21 +19,22 @@ namespace Tippy.Pages.Sudt
         {
         }
 
-        public PartialViewResult OnGet(string sudtScriptArgs, [FromQuery(Name = "page")] int page, [FromQuery(Name = "pageSize")] int pageSize)
+        public PartialViewResult OnGet(int id, [FromQuery(Name = "page")] int page, [FromQuery(Name = "pageSize")] int pageSize)
         {
             if (ActiveProject == null || !ProcessManager.IsRunning(ActiveProject))
             {
                 throw new InvalidOperationException();
             }
 
+            var token = ActiveProject.Tokens.Find(t => t.Id == id)!;
             var client = Rpc();
             var indexerClient = IndexerRpc();
 
-            Script sudtScript = new Script
+            Script sudtScript = new()
             {
-                CodeHash = SudtCodeHash,
-                HashType = SudtHashType,
-                Args = sudtScriptArgs,
+                CodeHash = token.TypeScriptCodeHash,
+                HashType = token.TypeScriptHashType,
+                Args = token.TypeScriptArgs,
             };
             IndexerTypes.SearchKey searchKey = new(sudtScript, "type");
 
