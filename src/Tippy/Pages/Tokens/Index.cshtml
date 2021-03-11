@@ -1,5 +1,40 @@
 ﻿@page
 @model Tippy.Pages.Tokens.IndexModel
+@using Tippy.Ctrl 
 @{ ViewData["Title"] = "sUDT Tokens"; }
 
 <h1 class="title">sUDT Tokens</h1>
+
+@if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
+{
+    <table class="table is-striped is-narrow is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th class="has-text-left">Name</th>
+                <th class="has-text-left">Symbol</th>
+                <th class="has-text-left"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var token in Model.ActiveProject.Tokens)
+            {
+                <tr>
+                    <td>
+                        <a asp-page="./Details" asp-route-id="@token.Id">
+                            @token.Name
+                        </a>
+                    </td>
+                    <td>
+                        @token.Symbol
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <Partial name="_NoActiveProject" />
+}
