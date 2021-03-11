@@ -188,7 +188,9 @@
                 @if (typeScript != null)
                 {
                     var hash = ScriptHelper.ComputeHash(typeScript);
-                    Token? token = Model.Tokens[hash] as Token;
+                    Token? token;
+                    Model.Tokens.TryGetValue(hash, out token);
+                    //= Model.Tokens[hash] as Token;
                     <div class="column is-10">
                         @if (token != null)
                         {
