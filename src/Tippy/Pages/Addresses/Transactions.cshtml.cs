@@ -64,6 +64,10 @@ namespace Tippy.Pages.Addresses
                     throw new Exception("No TransactionWithStatus found!");
                 }
                 Transaction tx = txWithStatus.Transaction;
+                foreach (var (output, i) in tx.Outputs.Select((o, i) => (o, i)))
+                {
+                    output.Data = tx.OutputsData[i];
+                }
 
                 bool isCellbase = tx.Inputs[0].PreviousOutput.TxHash == EmptyHash;
                 TransactionListResult txResult = new()
@@ -104,7 +108,8 @@ namespace Tippy.Pages.Addresses
                         tx.Outputs.Take(10).ToArray(),
                         previousOutputs.Take(10).ToArray(),
                         prefix,
-                        txHash);
+                        txHash,
+                        Tokens);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
 

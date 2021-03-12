@@ -23,7 +23,6 @@
             {
                 @foreach(var input in tx.DisplayInputs)
                 {
-                    var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity);
                     <div class="level">
                         <div class="level-left">
                             <div class="level-item">
@@ -34,7 +33,21 @@
                         </div>
                         <div class="level-right">
                             <div class="level-item">
-                                @capacity
+                                @if (input.SudtInfo != null)
+                                {
+                                    <span>
+                                        @Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo.Amount)
+                                        <a asp-page="/Tokens/Details" asp-route-id="@input.SudtInfo.Id">@input.SudtInfo.Name</a>
+                                    </span>
+                                }
+                                else
+                                {
+                                    var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity);
+                                    <span>
+                                        @capacity
+                                        CKB
+                                    </span>
+                                }
                             </div>
                         </div>
                     </div>
@@ -47,7 +60,6 @@
         <div class="column is-5">
             @foreach(var output in tx.DisplayOutputs)
             {
-                var capacity = decimal.Parse(output.Capacity) / 100_000_000;
                 <div class="level">
                     <div class="level-left">
                         <div class="level-item">
@@ -58,7 +70,21 @@
                     </div>
                     <div class="level-right">
                         <div class="level-item">
-                            @capacity
+                            @if (output.SudtInfo != null)
+                            {
+                                <span>
+                                    @Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo.Amount)
+                                    <a asp-page="/Tokens/Details" asp-route-id="@output.SudtInfo.Id">@output.SudtInfo.Name</a>
+                                </span>
+                            }
+                            else
+                            {
+                                var capacity = decimal.Parse(output.Capacity) / 100_000_000;
+                                <span>
+                                    @capacity
+                                    CKB
+                                </span>
+                            }
                         </div>
                     </div>
                 </div>

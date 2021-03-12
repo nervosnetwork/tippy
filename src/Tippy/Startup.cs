@@ -43,7 +43,7 @@ namespace Tippy
 
             services.AddDbContext<Core.Data.DbContext>(options =>
             {
-                var dbPath = Path.Combine(Core.Environment.GetAppDataFolder(), "project.db");
+                var dbPath = Path.Combine(Core.Environment.GetAppDataFolder(), "tippy-db.db");
                 options.UseSqlite($"Data Source={dbPath}");
             });
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -60,6 +60,8 @@ namespace Tippy
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            app.UseStatusCodePagesWithReExecute("/NotFound", "?statusCode={0}");
 
             app.UseStaticFiles();
 

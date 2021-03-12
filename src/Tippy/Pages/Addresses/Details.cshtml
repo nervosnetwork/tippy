@@ -2,7 +2,14 @@
 @model Tippy.Pages.Addresses.DetailsModel
 @{ ViewData["Title"] = "Address"; }
 
-<h1 class="title">Addrerss <span style="font-size:70%;">@Model.AddressResult.AddressHash</span></h1>
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Address</h1>
+    </div>
+    <div class="level-right">
+        <Partial name="_Search" />
+    </div>
+</div>
 
 @{
     var balance = Tippy.Helpers.TransactionHelper.CkbAmount(Model.AddressResult.Balance);
@@ -10,31 +17,50 @@
 
 <div class="box address-box">
     <div class="columns is-multiline">
-        <div class="column is-half">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Balance</label>
-                    </div>
+        <div class="column is-12">
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">
+                        Address
+                    </label>
                 </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>@balance</div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div>@Model.AddressResult.AddressHash</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="column is-half" style="border-left: 1px solid #808080;">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Live Cells</label>
+        <div class="column is-12">
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">
+                        Balance
+                    </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div>@balance</div>
+                        </div>
                     </div>
                 </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>@Model.AddressResult.LiveCellsCount</div>
+            </div>
+        </div>
+        <div class="column is-12">
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">
+                        Live Cells
+                    </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div>@Model.AddressResult.LiveCellsCount</div>
+                        </div>
                     </div>
                 </div>
             </div>
