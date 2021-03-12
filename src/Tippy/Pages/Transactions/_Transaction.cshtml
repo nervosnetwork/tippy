@@ -36,7 +36,7 @@
                                 @if (input.SudtInfo != null)
                                 {
                                     <span>
-                                        @Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo!.Amount)
+                                        @Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo.Amount)
                                         <a asp-page="/Tokens/Details" asp-route-id="@input.SudtInfo.Id">@input.SudtInfo.Name</a>
                                     </span>
                                 }

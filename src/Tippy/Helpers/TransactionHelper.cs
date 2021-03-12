@@ -124,7 +124,6 @@ namespace Tippy.Helpers
                         sudtInfo = new SudtInfo
                         {
                             Amount = SudtDataToNumberStr(previousOutput.Data),
-                            SudtScriptArgs = previousOutput.Type.Args,
                             Name = symbol,
                             Id = token.Id
                         };
@@ -165,7 +164,6 @@ namespace Tippy.Helpers
                         sudtInfo = new SudtInfo
                         {
                             Amount = SudtDataToNumberStr(output.Data),
-                            SudtScriptArgs = output.Type.Args,
                             Name = symbol,
                             Id = token.Id
                         };

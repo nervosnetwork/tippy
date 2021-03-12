@@ -89,7 +89,14 @@
                     </div>
                     <div class="column is-10">
                         <a asp-page="/Addresses/Details" asp-route-address="@input.AddressHash" class="hash-text">
-                            @input.AddressHash
+                            @if (input.AddressHash.Length > 46)
+                            {
+                                <span>@input.AddressHash.Substring(0, 21)...@input.AddressHash.Substring(input.AddressHash.Length - 22, 22)</span>
+                            }
+                            else
+                            {
+                                @input.AddressHash
+                            }
                         </a>
                     </div>
 
@@ -103,23 +110,26 @@
                     </div>
 
                     <div class="column is-2">
-                        Sudt Script Args<br />(sUDT amount)
+                        Amount
                     </div>
                     <div class="column is-10">
                         @if (input.SudtInfo != null)
                         {
-                            @input.SudtInfo?.SudtScriptArgs
-                            <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo!.Amount))</span>
+                            <span>
+                                @Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo.Amount)
+                                <a asp-page="/Tokens/Details" asp-route-id="@input.SudtInfo.Id">@input.SudtInfo.Name</a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span>@Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity) CKB</span>
                         }
                     </div>
 
                     <div class="column is-2">
-                        CKB / Occupied CKB
+                        Occupied CKB
                     </div>
                     <div class="column is-10">
-                        @Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity)
-
-                        <span>/</span>
                         <span>@Tippy.Helpers.TransactionHelper.CkbAmount(input.OccupiedCapacity ?? "0")</span>
                     </div>
                 </div>
@@ -139,32 +149,41 @@
                 </div>
                 <div class="column is-8">
                     <a asp-page="/Addresses/Details" asp-route-address="@output.AddressHash" class="hash-text">
-                        @output.AddressHash
+                        @if (output.AddressHash.Length > 46)
+                        {
+                            <span>@output.AddressHash.Substring(0, 21)...@output.AddressHash.Substring(output.AddressHash.Length - 22, 22)</span>
+                        }
+                        else
+                        {
+                            @output.AddressHash
+                        }
+
                     </a>
                 </div>
                 <div class="column is-2">
                 </div>
 
                 <div class="column is-2">
-                    Sudt Script Args<br />(sUDT amount)
+                    Amount
                 </div>
                 <div class="column is-10">
                     @if (output.SudtInfo != null)
                     {
-                        <a asp-page="/Sudt/Details" asp-route-sudtScriptArgs="@output.SudtInfo!.SudtScriptArgs" class="hash-text">
-                            @output.SudtInfo?.SudtScriptArgs
-                        </a>
-                        <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo!.Amount))</span>
+                        <span>
+                            @Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo.Amount)
+                            <a asp-page="/Tokens/Details" asp-route-id="@output.SudtInfo.Id">@output.SudtInfo.Name</a>
+                        </span>
+                    }
+                    else
+                    {
+                        <span>@Tippy.Helpers.TransactionHelper.CkbAmount(output.Capacity) CKB</span>
                     }
                 </div>
 
                 <div class="column is-2">
-                    CKB / Occupied CKB
+                    Occupied CKB
                 </div>
                 <div class="column is-10">
-                    @Tippy.Helpers.TransactionHelper.CkbAmount(output.Capacity)
-
-                    <span>/</span>
                     <span>@Tippy.Helpers.TransactionHelper.CkbAmount(output.OccupiedCapacity ?? "0")</span>
                 </div>
 

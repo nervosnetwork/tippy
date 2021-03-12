@@ -45,7 +45,11 @@ namespace Tippy.Pages.Transactions
             }
 
             Transaction tx = transactionWithStatus.Transaction;
-            OutputsData = tx.Outputs.Select((o, i) => tx.OutputsData[i]).ToList();
+            OutputsData = tx.Outputs.Select((o, i) =>
+            {
+                o.Data = tx.OutputsData[i];
+                return tx.OutputsData[i];
+            }).ToList();
             OutputLockScripts = tx.Outputs.Select((o) => o.Lock).ToList();
             OutputTypeScripts = tx.Outputs.Select<Output, Script?>((o) => o.Type).ToList();
 
