@@ -33,6 +33,8 @@
     <ProjectReference Include="..\Ckb.Rpc\Ckb.Rpc.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Ckb.Molecule\Ckb.Molecule.csproj" />
+    <ProjectReference Include="..\Ckb.Cryptography\Ckb.Cryptography.csproj" />
   </ItemGroup>
 
 

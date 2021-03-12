@@ -1,0 +1,17 @@
+@page
+@model Tippy.Pages.Debugger.DetailsModel
+@{ ViewData["Title"] = "Debugger"; }
+
+<h1 class="title">Debugger</h1>
+
+<div>
+  <iframe width="640" height="640" src="http://localhost:7681"></iframe>
+</div>
+
+<div style="margin-top: 20px;">
+  <iframe width="640" height="320" src="http://localhost:7682"></iframe>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
