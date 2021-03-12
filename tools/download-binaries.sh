@@ -116,22 +116,32 @@ function download_ckb_debugger_windows() {
   echo "ckb-debugger not supported on Windows ATM."
 }
 
+function download_gdb_dashboard() {
+  mkdir -p $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
+  cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
+
+  curl -O -L "https://github.com/cyrus-and/gdb-dashboard/blob/v0.11.4/.gdbinit"
+}
+
 function download_macos() {
   download_ckb_macos
   download_ckb_indexer_macos
   download_ckb_debugger_macos
+  download_gdb_dashboard
 }
 
 function download_linux() {
   download_ckb_linux
   download_ckb_indexer_linux
   download_ckb_debugger_linux
+  download_gdb_dashboard
 }
 
 function download_windows() {
   download_ckb_windows
   download_ckb_indexer_windows
   download_ckb_debugger_windows
+  download_gdb_dashboard
 }
 
 case $1 in
