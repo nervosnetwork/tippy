@@ -182,6 +182,7 @@
 
                 <div class="column is-2">
                     Lock Script
+                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-outputIndex="@index" asp-route-scriptType="0">(Debug)</a>
                 </div>
                 <div class="column is-12">
                     @{ var lockScript = Model.OutputLockScripts[index]; }
@@ -195,6 +196,10 @@
 
                 <div class="column is-2">
                     Type Script
+                    @if (Model.OutputTypeScripts[index] != null)
+                    {
+                        <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-outputIndex="@index" asp-route-scriptType="1">(Debug)</a>
+                    }
                 </div>
                 <div class="column is-12">
                     @{ var typeScrit = Model.OutputTypeScripts[index]; }

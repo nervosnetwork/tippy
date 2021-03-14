@@ -75,6 +75,7 @@ namespace Tippy.Pages.Debugger
             }
         }
 
+        // TODO: Output.Lock may no cell dep, throw a more friendly error.
         private static string GetCellDepData(MockTransaction mockTx, Script script)
         {
             if (script.HashType == "data") {
@@ -248,24 +249,26 @@ namespace Tippy.Pages.Debugger
             int index = (int)TypesConvert.HexToUInt32(cellDep.OutPoint.Index);
 
             string data = txWithStatus.Transaction.OutputsData[index];
+            Output output = txWithStatus.Transaction.Outputs[index];
 
-            List<CellDep> cellDeps = new();
-            cellDeps.Add(cellDep);
+            List<MockCellDep> mockCellDeps = new();
+            mockCellDeps.Add(new MockCellDep()
+            {
+                CellDep = cellDep,
+                Output = output,
+                Data = data,
+            });
+
             if (cellDep.DepType == "dep_group")
             {
-                cellDeps.AddRange(UnpackDepGroup(data));
+                CellDep[] cellDeps = UnpackDepGroup(data);
+                foreach (CellDep dep in cellDeps)
+                {
+                    mockCellDeps.AddRange(GetMockCellDep(client, dep));
+                }
             }
 
-            MockCellDep[] mockCellDeps = cellDeps.Select((cellDep) => {
-                return new MockCellDep()
-                    {
-                        CellDep = cellDep,
-                        Output = txWithStatus.Transaction.Outputs[index],
-                        Data = data,
-                    };
-            }).ToArray();
-
-            return mockCellDeps;
+            return mockCellDeps.ToArray();
         }
 
         private static CellDep[] UnpackDepGroup(string data)
