@@ -120,7 +120,7 @@ function download_gdb_dashboard() {
   mkdir -p $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
   cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
 
-  curl -O -L "https://github.com/cyrus-and/gdb-dashboard/blob/v0.11.4/.gdbinit"
+  curl -O -L "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/f09356e264121fabdde125aa8838bcfcaf1d13c7/.gdbinit"
 }
 
 function download_macos() {
