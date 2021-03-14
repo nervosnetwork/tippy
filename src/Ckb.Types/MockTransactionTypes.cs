@@ -49,9 +49,20 @@ namespace Ckb.Types.MockTransactionTypes
 
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings {
-                                NullValueHandling = NullValueHandling.Ignore
-                            });
+            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+        }
+
+        public static MockTransaction FromJson(string json)
+        {
+            var obj = JsonConvert.DeserializeObject<MockTransaction>(json);
+            if (obj == null)
+            {
+                throw new Exception("Deserialize MockTransaction Failed!");
+            }
+            return obj;
         }
     }
 }

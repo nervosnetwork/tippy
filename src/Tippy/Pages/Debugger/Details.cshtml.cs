@@ -19,7 +19,7 @@ namespace Tippy.Pages.Debugger
         {
         }
 
-        public void OnGet(string? txHash, int? outputIndex, int? scriptType)
+        public void OnGet(string? txHash, int? outputIndex, int? scriptType, string? filePath)
         {
             if (txHash == null)
             {
@@ -54,6 +54,14 @@ namespace Tippy.Pages.Debugger
             string targetContractData = GetCellDepData(mockTx, script);
 
             string binaryFilePath = WriteToFile(scriptHash, targetContractData);
+
+            if (filePath != null)
+            {
+                string binaryFileData = ReadHexFromBinaryFile(filePath);
+                mockTx = ReplaceMockTxData(mockTx, script, binaryFileData);
+                binaryFilePath = filePath;
+            }
+
             string mockTxFilePath = WriteMockTx(scriptHash, mockTx.ToJson());
 
             string scriptGroupType = scriptType == 0 ? "lock" : "type";
@@ -67,7 +75,7 @@ namespace Tippy.Pages.Debugger
             }
         }
 
-        private string GetCellDepData(MockTransaction mockTx, Script script)
+        private static string GetCellDepData(MockTransaction mockTx, Script script)
         {
             if (script.HashType == "data") {
                 return GetCellDepDataByDataHash(mockTx, script.CodeHash);
@@ -75,7 +83,7 @@ namespace Tippy.Pages.Debugger
             return GetCellDepDataByTypeHash(mockTx, script.CodeHash);
         }
 
-        private string GetCellDepDataByDataHash(MockTransaction mockTx, string codeHash)
+        private static string GetCellDepDataByDataHash(MockTransaction mockTx, string codeHash)
         {
             foreach (MockCellDep cellDep in mockTx.MockInfo.CellDeps)
             {
@@ -88,7 +96,53 @@ namespace Tippy.Pages.Debugger
             throw new Exception("CellDep not found!");
         }
 
-        private string GetCellDepDataByTypeHash(MockTransaction mockTx, string codeHash)
+        private static string ReadHexFromBinaryFile(string filePath)
+        {
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            string hex = TypesConvert.BytesToHexString(fileBytes);
+            return hex;
+        }
+
+        private static MockTransaction ReplaceMockTxData(MockTransaction mockTx, Script script, string newData)
+        {
+            // find cell dep
+            int mockCellDepIndex = -1;
+            MockCellDep[] mockCellDeps = mockTx.MockInfo.CellDeps;
+            for (int i = 0; i < mockCellDeps.Length; i++)
+            {
+                MockCellDep mockCellDep = mockCellDeps[i];
+                if (script.HashType == "data")
+                {
+                    string dataHash = ComputeDataHash(mockCellDep.Data);
+                    if (script.CodeHash == dataHash)
+                    {
+                        mockCellDepIndex = i;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (mockCellDep.Output.Type != null)
+                    {
+                        string typeHash = ComputeScriptHash(mockCellDep.Output.Type);
+                        if (script.CodeHash == typeHash)
+                        {
+                            mockCellDepIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mockCellDepIndex == -1)
+            {
+                throw new Exception("No cell dep match!");
+            }
+
+            mockTx.MockInfo.CellDeps[mockCellDepIndex].Data = newData;
+            return mockTx;
+        }
+
+        private static string GetCellDepDataByTypeHash(MockTransaction mockTx, string codeHash)
         {
             foreach (MockCellDep cellDep in mockTx.MockInfo.CellDeps)
             {
@@ -104,17 +158,17 @@ namespace Tippy.Pages.Debugger
             throw new Exception("CellDep not found!");
         }
 
-        private string ComputeScriptHash(Script script)
+        private static string ComputeScriptHash(Script script)
         {
             return TypesConvert.BytesToHexString(Blake2bHasher.ComputeHash(new ScriptSerializer(script).Serialize()));
         }
 
-        private string ComputeDataHash(string data)
+        private static string ComputeDataHash(string data)
         {
             return TypesConvert.BytesToHexString(Blake2bHasher.ComputeHash(TypesConvert.HexStringToBytes(data)));
         }
 
-        private string WriteMockTx(string name, string jsonData)
+        private static string WriteMockTx(string name, string jsonData)
         {
             string tempPath = Path.GetTempPath();
             string filePath = Path.Join(tempPath, "Tippy", "DebuggerBinaries", $"{name}.json");
@@ -124,7 +178,7 @@ namespace Tippy.Pages.Debugger
             return filePath;
         }
 
-        private string WriteToFile(string name, string data)
+        private static string WriteToFile(string name, string data)
         {
             string tempPath = Path.GetTempPath();
             string filePathWithoutName = Path.Join(tempPath, "Tippy", "DebuggerBinaries");
@@ -146,7 +200,7 @@ namespace Tippy.Pages.Debugger
             return filePath;
         }
 
-        private MockTransaction DumpTransaction(Client client, string txHash, Transaction tx)
+        private static MockTransaction DumpTransaction(Client client, string txHash, Transaction tx)
         {
             MockInput[] mockInputs = tx.Inputs.Select((input) => GetMockInput(client, input)).ToArray();
             MockCellDep[] mockCellDeps = tx.CellDeps.SelectMany((cellDep) => GetMockCellDep(client, cellDep)).ToArray();
@@ -165,7 +219,7 @@ namespace Tippy.Pages.Debugger
             return mockTx;
         }
 
-        private MockInput GetMockInput(Client client, Input input)
+        private static MockInput GetMockInput(Client client, Input input)
         {
             TransactionWithStatus? txWithStatus = client.GetTransaction(input.PreviousOutput.TxHash);
             if (txWithStatus == null)
@@ -184,7 +238,7 @@ namespace Tippy.Pages.Debugger
             return mockInput;
         }
 
-        private MockCellDep[] GetMockCellDep(Client client, CellDep cellDep)
+        private static MockCellDep[] GetMockCellDep(Client client, CellDep cellDep)
         {
             TransactionWithStatus? txWithStatus = client.GetTransaction(cellDep.OutPoint.TxHash);
             if (txWithStatus == null)
@@ -214,7 +268,7 @@ namespace Tippy.Pages.Debugger
             return mockCellDeps;
         }
 
-        private CellDep[] UnpackDepGroup(string data)
+        private static CellDep[] UnpackDepGroup(string data)
         {
             var outPoints = DeserializeOutPointVec(data);
             return outPoints.Select((outPoint) => {
@@ -226,7 +280,7 @@ namespace Tippy.Pages.Debugger
             }).ToArray();
         }
 
-        private Header GetMockHeader(Client client, string headerDep)
+        private static Header GetMockHeader(Client client, string headerDep)
         {
             Header? header = client.GetHeader(headerDep);
             if (header == null)
@@ -236,7 +290,7 @@ namespace Tippy.Pages.Debugger
             return header;
         }
 
-        private OutPoint[] DeserializeOutPointVec(string data)
+        private static OutPoint[] DeserializeOutPointVec(string data)
         {
             byte[] bytes = TypesConvert.HexStringToBytes(data);
             int size = (int)BitConverter.ToUInt32(bytes.Take(4).ToArray());
@@ -256,7 +310,7 @@ namespace Tippy.Pages.Debugger
             return outPoints.ToArray();
         }
 
-        private OutPoint DeserializeOutPoint(byte[] bytes)
+        private static OutPoint DeserializeOutPoint(byte[] bytes)
         {
             byte[] txHashBytes = bytes.Take(32).ToArray();
             int index = (int)BitConverter.ToUInt32(bytes.Skip(32).Take(4).ToArray());
