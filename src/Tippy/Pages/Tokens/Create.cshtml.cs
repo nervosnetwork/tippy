@@ -26,7 +26,6 @@ namespace Tippy.Pages.Tokens
             if (transactionWithStatus != null)
             {
                 Transaction tx = transactionWithStatus.Transaction;
-                var data = tx.OutputsData[index];
                 var typeScript = tx.Outputs[index].Type;
                 Debug.Assert(typeScript != null);
                 Token = new Token
