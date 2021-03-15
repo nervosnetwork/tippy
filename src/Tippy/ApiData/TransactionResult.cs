@@ -52,6 +52,7 @@ namespace Tippy.ApiData
 
     public class SudtInfo
     {
+        // Assuming decimal is always 8 for now
         public string Amount { get; set; } = default!;
 
         public string Name { get; set; } = "";
