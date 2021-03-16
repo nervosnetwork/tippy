@@ -7,6 +7,7 @@ namespace Tippy.Ctrl.Process.Debugger
 
         public static void Start(string scriptGroupType, string scriptHash, string txFilePath, string debugFilePath)
         {
+            Stop();
             // TODO: Replace with ActiveProject or remove it.
             ProcessInfo processInfo = new ProcessInfo(1, Tippy.Core.Models.Project.ChainType.Dev, 8114, 8115, 8116, "");
             GdbProcessInstance = new GdbProcess(processInfo, debugFilePath);

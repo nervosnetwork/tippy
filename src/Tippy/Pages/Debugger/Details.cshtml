@@ -5,6 +5,16 @@
 <h1 class="title">Debugger</h1>
 
 <div>
+    Upload Binary
+    <form method="post">
+        <input type="text" asp-for="FilePath" />
+        <button asp-page="./Debugger/Details" >
+            <span>Upload!</span>
+        </button>
+    </form>
+</div>
+
+<div>
   <iframe width="640" height="640" src="http://localhost:7681"></iframe>
 </div>
 

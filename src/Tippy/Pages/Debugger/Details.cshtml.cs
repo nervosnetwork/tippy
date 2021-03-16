@@ -7,9 +7,11 @@ using Ckb.Molecule.Type;
 using Ckb.Cryptography;
 using System.IO;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 using DebuggerProcessManager = Tippy.Ctrl.Process.Debugger.ProcessManager;
 using TypesConvert = Ckb.Types.Convert;
+
 
 namespace Tippy.Pages.Debugger
 {
@@ -17,6 +19,20 @@ namespace Tippy.Pages.Debugger
     {
         public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
         {
+        }
+
+        // TODO: upload file
+        [BindProperty]
+        public string? FilePath { get; set; }
+        public IActionResult OnPost(string? txHash, int? outputIndex, int? scriptType)
+        {
+            if (FilePath == null)
+            {
+                throw new Exception("No file path provided!");
+            }
+
+            string url = $"/Debugger/Details?txHash={txHash}&outputIndex={outputIndex}&scriptType={scriptType}&filePath={FilePath}";
+            return Redirect(url);
         }
 
         public void OnGet(string? txHash, int? outputIndex, int? scriptType, string? filePath)
