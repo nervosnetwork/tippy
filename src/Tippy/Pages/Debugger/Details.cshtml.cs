@@ -24,26 +24,30 @@ namespace Tippy.Pages.Debugger
         // TODO: upload file
         [BindProperty]
         public string? FilePath { get; set; }
-        public IActionResult OnPost(string? txHash, int? outputIndex, int? scriptType)
+        public IActionResult OnPost(string? txHash, string? ioType, int? ioIndex, int? scriptType)
         {
             if (FilePath == null)
             {
                 throw new Exception("No file path provided!");
             }
 
-            string url = $"/Debugger/Details?txHash={txHash}&outputIndex={outputIndex}&scriptType={scriptType}&filePath={FilePath}";
+            string url = $"/Debugger/Details?txHash={txHash}&ioType={ioType}&ioIndex={ioIndex}&scriptType={scriptType}&filePath={FilePath}";
             return Redirect(url);
         }
 
-        public void OnGet(string? txHash, int? outputIndex, int? scriptType, string? filePath)
+        public void OnGet(string? txHash, string? ioType, int? ioIndex, int? scriptType, string? filePath)
         {
             if (txHash == null)
             {
                 throw new Exception("txHash cannot be null!");
             }
-            if (outputIndex == null)
+            if (ioType != "input" && ioType != "output")
             {
-                throw new Exception("outputIndex cannot be null!");
+                throw new Exception("ioType must be `input` or `output`!");
+            }
+            if (ioIndex == null)
+            {
+                throw new Exception("ioIndex cannot be null!");
             }
             if (scriptType == null)
             {
@@ -57,11 +61,19 @@ namespace Tippy.Pages.Debugger
             {
                 throw new Exception($"Transaction not found: {txHash}");
             }
-            Output output = txWithStatus.Transaction.Outputs[(int)outputIndex];
+
+            Output output = txWithStatus.Transaction.Outputs[(int)ioIndex];
+            if (ioType == "input")
+            {
+                Input input = txWithStatus.Transaction.Inputs[(int)ioIndex];
+                TransactionWithStatus originTx = client.GetTransaction(input.PreviousOutput.TxHash)!;
+                output = originTx.Transaction.Outputs[TypesConvert.HexToUInt32(input.PreviousOutput.Index)];
+            }
             if (scriptType == 1 && output.Type == null)
             {
-                throw new Exception($"Type script not found in {{tx_hash: {txHash}, index: {outputIndex}}}");
+                throw new Exception($"Type script not found in {{tx_hash: {txHash}, index: {ioIndex}, ioType: {ioType}}}");
             }
+
             Script script = scriptType == 0 ? output.Lock : output.Type;
             string scriptHash = ComputeScriptHash(script);
             MockTransaction mockTx = DumpTransaction(client, txHash, txWithStatus.Transaction);
@@ -83,7 +95,7 @@ namespace Tippy.Pages.Debugger
             string scriptGroupType = scriptType == 0 ? "lock" : "type";
             try
             {
-                DebuggerProcessManager.Start(scriptGroupType, scriptHash, mockTxFilePath, binaryFilePath);
+                DebuggerProcessManager.Start(scriptGroupType, scriptHash, mockTxFilePath, binaryFilePath, ioType, (int)ioIndex);
             }
             catch (System.InvalidOperationException e)
             {
