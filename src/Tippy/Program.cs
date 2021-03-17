@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -54,7 +55,7 @@ namespace Tippy
             try
             {
                 var context = services.GetRequiredService<Core.Data.TippyDbContext>();
-                context.Database.EnsureCreated();
+                context.Database.Migrate();
             }
             catch (Exception ex)
             {
