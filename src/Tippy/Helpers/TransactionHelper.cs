@@ -123,6 +123,7 @@ namespace Tippy.Helpers
                         sudtInfo = new SudtInfo
                         {
                             Amount = SudtDataToAmount(previousOutput.Data),
+                            Decimals = token.Decimals,
                             Name = symbol,
                             Id = token.Id
                         };
@@ -163,6 +164,7 @@ namespace Tippy.Helpers
                         sudtInfo = new SudtInfo
                         {
                             Amount = SudtDataToAmount(output.Data),
+                            Decimals = token.Decimals,
                             Name = symbol,
                             Id = token.Id
                         };

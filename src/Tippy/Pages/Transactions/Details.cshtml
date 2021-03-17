@@ -117,7 +117,7 @@
                         @if (input.SudtInfo != null)
                         {
                             <span>
-                                @Tippy.Helpers.NumberHelper.Amount(input.SudtInfo.Amount)
+                                @Tippy.Helpers.NumberHelper.Amount(input.SudtInfo.Amount, input.SudtInfo.Decimals)
                                 <a asp-page="/Tokens/Details" asp-route-id="@input.SudtInfo.Id">@input.SudtInfo.Name</a>
                             </span>
                         }
@@ -171,7 +171,7 @@
                     @if (output.SudtInfo != null)
                     {
                         <span>
-                            @Tippy.Helpers.NumberHelper.Amount(output.SudtInfo.Amount)
+                            @Tippy.Helpers.NumberHelper.Amount(output.SudtInfo.Amount, output.SudtInfo.Decimals)
                             <a asp-page="/Tokens/Details" asp-route-id="@output.SudtInfo.Id">@output.SudtInfo.Name</a>
                         </span>
                     }
