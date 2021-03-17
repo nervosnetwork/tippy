@@ -35,6 +35,12 @@ namespace Tippy.Pages.Debugger
             return Redirect(url);
         }
 
+        public IActionResult OnPostClose()
+        {
+            DebuggerProcessManager.Stop();
+            return Redirect("/Home");
+        }
+
         public void OnGet(string? txHash, string? ioType, int? ioIndex, int? scriptType, string? filePath)
         {
             if (txHash == null)
