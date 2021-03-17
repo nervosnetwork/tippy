@@ -3,9 +3,9 @@ using Tippy.Core.Models;
 
 namespace Tippy.Core.Data
 {
-    public class DbContext : Microsoft.EntityFrameworkCore.DbContext
+    public class TippyDbContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        public DbContext(DbContextOptions<DbContext> options)
+        public TippyDbContext(DbContextOptions<TippyDbContext> options)
             : base(options)
         {
         }

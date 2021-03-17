@@ -12,7 +12,7 @@ namespace Tippy.Pages.Tokens
 {
     public class CreateModel : PageModelBase
     {
-        public CreateModel(Tippy.Core.Data.DbContext context) : base(context)
+        public CreateModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

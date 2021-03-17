@@ -5,7 +5,7 @@ namespace Tippy.Pages.Blocks
 {
     public class RollBackToModel : PageModelBase
     {
-        public RollBackToModel(Tippy.Core.Data.DbContext context) : base(context)
+        public RollBackToModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

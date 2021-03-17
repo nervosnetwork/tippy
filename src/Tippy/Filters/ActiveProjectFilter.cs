@@ -7,9 +7,9 @@ namespace Tippy.Filters
 {
     public class ActiveProjectFilter : Attribute, IAsyncResourceFilter
     {
-        private readonly Tippy.Core.Data.DbContext _context;
+        private readonly Tippy.Core.Data.TippyDbContext _context;
 
-        public ActiveProjectFilter(Tippy.Core.Data.DbContext context)
+        public ActiveProjectFilter(Tippy.Core.Data.TippyDbContext context)
         {
             _context = context;
         }

@@ -6,7 +6,7 @@ namespace Tippy.Pages.Cells
 {
     public class DetailsModel : PageModelBase
     {
-        public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
+        public DetailsModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

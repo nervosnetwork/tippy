@@ -19,7 +19,7 @@ namespace Tippy.Pages
     /// </summary>
     public class PageModelBase : PageModel
     {
-        protected readonly Tippy.Core.Data.DbContext DbContext;
+        protected readonly Tippy.Core.Data.TippyDbContext DbContext;
 
         public IList<Project> Projects { get; set; } = new List<Project>();
         public Project? ActiveProject { get; set; }
@@ -28,7 +28,7 @@ namespace Tippy.Pages
         public String ProcessInfo { get; set; } = "";
         public Dictionary<string, Token> Tokens { get; set; } = new(); // Token.Hash -> Token
 
-        protected PageModelBase(Tippy.Core.Data.DbContext context)
+        protected PageModelBase(Tippy.Core.Data.TippyDbContext context)
         {
             DbContext = context;
         }

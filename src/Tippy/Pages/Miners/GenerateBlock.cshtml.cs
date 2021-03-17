@@ -8,7 +8,7 @@ namespace Tippy.Pages.Miners
 {
     public class GenerateBlockModel : PageModelBase
     {
-        public GenerateBlockModel(Tippy.Core.Data.DbContext context) : base(context)
+        public GenerateBlockModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 
