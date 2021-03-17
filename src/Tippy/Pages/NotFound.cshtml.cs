@@ -6,7 +6,7 @@ namespace Tippy.Pages
     {
         public bool Is404 = false;
 
-        public NotFoundModel(Tippy.Core.Data.DbContext context) : base(context)
+        public NotFoundModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

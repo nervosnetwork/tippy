@@ -8,7 +8,7 @@ namespace Tippy.Pages.Projects
 {
     public class DeleteModel : PageModelBase
     {
-        public DeleteModel(Tippy.Core.Data.DbContext context) : base(context)
+        public DeleteModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

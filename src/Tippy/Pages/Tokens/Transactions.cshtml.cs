@@ -15,7 +15,7 @@ namespace Tippy.Pages.Tokens
 {
     public class TransactionsModel : PageModelBase
     {
-        public TransactionsModel(Tippy.Core.Data.DbContext context) : base(context)
+        public TransactionsModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

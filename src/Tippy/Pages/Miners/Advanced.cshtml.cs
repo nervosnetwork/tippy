@@ -11,7 +11,7 @@ namespace Tippy.Pages.Miners
         public bool IsMinerRunning = default;
         public bool CanStartMining = false;
 
-        public AdvancedModel(Tippy.Core.Data.DbContext context) : base(context)
+        public AdvancedModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

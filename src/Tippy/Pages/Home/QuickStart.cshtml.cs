@@ -9,7 +9,7 @@ namespace Tippy.Pages.Home
 {
     public class QuickStartModel : PageModelBase
     {
-        public QuickStartModel(Tippy.Core.Data.DbContext context) : base(context)
+        public QuickStartModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 
