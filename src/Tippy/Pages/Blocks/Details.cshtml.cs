@@ -12,28 +12,30 @@ namespace Tippy.Pages.Blocks
 {
     public class DetailsModel : PageModelBase
     {
-        public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
+        public DetailsModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 
         public BlockDetailResult BlockDetail { get; set; } = default!;
 
-        public IActionResult OnGet(int? id)
+        public IActionResult OnGet(string id)
         {
-            // id could be either a number or a hash
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             if (ActiveProject == null)
             {
                 return NotFound();
             }
 
-            Client client = new($"http://localhost:{ActiveProject.NodeRpcPort}");
+            Client client = Rpc();
 
-            Block? block = client.GetBlockByNumber((ulong)id);
+            Block? block;
+            if (id.StartsWith("0x"))
+            {
+                block = client.GetBlock(id);
+            }
+            else
+            {
+                block = client.GetBlockByNumber(UInt64.Parse(id));
+            }
             if (block == null)
             {
                 return NotFound();
@@ -43,7 +45,7 @@ namespace Tippy.Pages.Blocks
             {
                 BlockHash = block.Header.Hash,
                 TransactionsRoot = block.Header.TransactionsRoot,
-                Number = $"{id}",
+                Number = $"{Hex.HexToUInt64(block.Header.Number)}",
                 Version = $"{Hex.HexToUInt32(block.Header.Version)}",
                 ProposalsCount = $"{block.Proposals.Length}",
                 UnclesCount = $"{block.Uncles.Length}",

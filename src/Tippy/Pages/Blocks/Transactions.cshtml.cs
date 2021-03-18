@@ -14,7 +14,7 @@ namespace Tippy.Pages.Blocks
 {
     public class TransactionsModel : PageModelBase
     {
-        public TransactionsModel(Tippy.Core.Data.DbContext context) : base(context)
+        public TransactionsModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 
@@ -71,7 +71,7 @@ namespace Tippy.Pages.Blocks
                     Input[] inputs = tx.Inputs.Take(10).ToArray();
                     Output[] outputs = tx.Outputs.Take(10).ToArray();
                     Output[] previousOutptus = GetPreviousOutputs(client, inputs);
-                    var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(inputs, outputs, previousOutptus, prefix, txHash);
+                    var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(inputs, outputs, previousOutptus, prefix, txHash, Tokens);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
                 }

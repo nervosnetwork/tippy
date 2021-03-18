@@ -52,11 +52,13 @@ namespace Tippy.ApiData
 
     public class SudtInfo
     {
-        [JsonPropertyName("amount")]
         public string Amount { get; set; } = default!;
 
-        [JsonPropertyName("sudt_script_args")]
-        public string SudtScriptArgs { get; set; } = default!;
+        public int Decimals { get; set; } = 8;
+
+        public string Name { get; set; } = "";
+
+        public int Id { get; set; } = 0;
     }
 
 

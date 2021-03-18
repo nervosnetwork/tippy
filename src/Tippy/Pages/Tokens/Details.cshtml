@@ -1,0 +1,97 @@
+﻿@page
+@model Tippy.Pages.Tokens.DetailsModel
+@{ ViewData["Title"] = "sUDT Token"; }
+
+<h1 class="title">sUDT Token</h1>
+
+<div class="my-2">
+    <a asp-page="./Delete" asp-route-id="@Model.Token.Id" class="button is-danger" title="Delete token">
+        <span class="icon">
+            <i class="fas fa-trash"></i>
+        </span>
+        <span>Delete token</span>
+    </a>
+</div>
+
+<div class="box transaction-box">
+    <div class="columns is-multiline">
+        <div class="column is-2">
+            <label>Name</label>
+        </div>
+        <div class="column is-10">
+            <span>@Model.Token.Name</span>
+        </div>
+
+        <div class="column is-2">
+            <label>Symbol</label>
+        </div>
+        <div class="column is-10">
+            <span>@Model.Token.Symbol</span>
+        </div>
+
+        <div class="column is-2">
+            <label>Decimals</label>
+        </div>
+        <div class="column is-10">
+            <span>@Model.Token.Decimals</span>
+        </div>
+
+        <div class="column is-2">
+            <label>Type Script</label>
+        </div>
+        <div class="column is-10">
+                    <pre>
+{
+    code_hash: @Model.Token.TypeScriptCodeHash,
+    args: @Model.Token.TypeScriptArgs,
+    hash_type: @Model.Token.TypeScriptHashType
+}</pre>
+        </div>
+    </div>
+</div>
+
+<div class="box transaction-box">
+    <h2>Transactions</h2>
+    <div id="txs">Loading...</div>
+</div>
+
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    <a class="pagination-previous" style="display: none;">Previous</a>
+    <a class="pagination-next" style="display: none;">Next</a>
+    <ul class="pagination-list"></ul>
+</nav>
+
+@section scripts{
+    <script>
+        var page = 1;
+        const pageSize = 15;
+        function loadTxs() {
+            $("#txs").load("/Tokens/Transactions?id=@Model.Token.Id&pageSize=" + pageSize + "&page=" + page, function () {
+                if (page > 1) {
+                    $(".pagination-previous").show();
+                } else {
+                    $(".pagination-previous").hide();
+                }
+                if ($("#txs .tx").length >= pageSize) {
+                    $(".pagination-next").show();
+                } else {
+                    $(".pagination-next").hide();
+                }
+           });
+        }
+        $(function () {
+            $(".pagination-previous").click(function (e) {
+                page -= 1;
+                loadTxs();
+                e.preventDefault();
+            });
+            $(".pagination-next").click(function (e) {
+                page += 1;
+                loadTxs();
+                e.preventDefault();
+            });
+
+            loadTxs();
+        });
+    </script>
+}

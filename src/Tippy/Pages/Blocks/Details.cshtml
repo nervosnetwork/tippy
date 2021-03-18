@@ -2,7 +2,14 @@
 @model Tippy.Pages.Blocks.DetailsModel
 @{ ViewData["Title"] = "Block"; }
 
-<h1 class="title">Block <span style="font-size:70%;">@Model.BlockDetail.BlockHash</span></h1>
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Block</h1>
+    </div>
+    <div class="level-right">
+        <Partial name="_Search" />
+    </div>
+</div>
 
 <div class="my-2">
     <form method="post">
@@ -34,12 +41,12 @@
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
-                        <label>Transactions</label>
+                        <label>Hash</label>
                     </div>
                 </div>
                 <div class="level-right">
                     <div class="level-item">
-                        <div>@Model.BlockDetail.TransactionsCount</div>
+                        <div>@Model.BlockDetail.BlockHash</div>
                     </div>
                 </div>
             </div>

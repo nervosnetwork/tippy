@@ -8,7 +8,7 @@ namespace Tippy.Pages.TxPool
         public TxPoolInfo? TxPoolInfo { get; set; }
         public RawTxPool? RawTxPool { get; set; }
 
-        public IndexModel(Tippy.Core.Data.DbContext context) : base(context)
+        public IndexModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

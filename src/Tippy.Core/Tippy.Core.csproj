@@ -17,8 +17,4 @@
   <ItemGroup>
     <EmbeddedResource Include="Settings.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Data\" />
-  </ItemGroup>
 </Project>

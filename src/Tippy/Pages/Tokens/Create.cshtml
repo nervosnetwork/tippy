@@ -1,0 +1,61 @@
+﻿@page
+@model Tippy.Pages.Tokens.CreateModel
+@{ ViewData["Title"] = "Mark as sUDT Script"; }
+
+<h1 class="title">Mark as sUDT Script</h1>
+
+<div class="container">
+    <div class="columns">
+        <form method="post" class="column is-half is-offset-one-quarter">
+            <div class="box form-box">
+                <div asp-validation-summary="ModelOnly" class="has-text-danger-dark"></div>
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Token.Name" class="label"></label>
+                        <input asp-for="Token.Name" class="input" />
+                        <span asp-validation-for="Token.Name" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Token.Symbol" class="label"></label>
+                        <input asp-for="Token.Symbol" class="input" />
+                        <span asp-validation-for="Token.Symbol" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Token.Decimals" class="label"></label>
+                        <input asp-for="Token.Decimals" class="input" />
+                        <span asp-validation-for="Token.Decimals" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <input asp-for="Token.TypeScriptCodeHash" type="hidden" />
+                    <input asp-for="Token.TypeScriptArgs" type="hidden" />
+                    <input asp-for="Token.TypeScriptHashType" type="hidden" />
+                    <pre>
+{
+    code_hash: @Model.Token.TypeScriptCodeHash,
+    args: @Model.Token.TypeScriptArgs,
+    hash_type: @Model.Token.TypeScriptHashType
+}</pre>
+
+                </div>
+            </div>
+            <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                    <input type="submit" value="Submit" class="button is-primary is-primary-override" />
+                </div>
+                <div class="control">
+                    <a asp-page="/Home/Index" class="button is-light">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -6,7 +6,7 @@ namespace Tippy.Pages.TxPool
 {
     public class ClearModel : PageModelBase
     {
-        public ClearModel(Tippy.Core.Data.DbContext context) : base(context)
+        public ClearModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

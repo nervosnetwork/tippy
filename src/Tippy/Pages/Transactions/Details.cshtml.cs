@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.ApiData;
+using Tippy.Core.Models;
 using Tippy.Util;
 using static Tippy.Helpers.TransactionHelper;
 
@@ -12,7 +14,7 @@ namespace Tippy.Pages.Transactions
 {
     public class DetailsModel : PageModelBase
     {
-        public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
+        public DetailsModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 
@@ -34,7 +36,7 @@ namespace Tippy.Pages.Transactions
                 return NotFound();
             }
 
-            Client client = new($"http://localhost:{ActiveProject.NodeRpcPort}");
+            Client client = Rpc();
 
             TransactionWithStatus? transactionWithStatus = client.GetTransaction(txhash);
             if (transactionWithStatus == null)
@@ -43,7 +45,11 @@ namespace Tippy.Pages.Transactions
             }
 
             Transaction tx = transactionWithStatus.Transaction;
-            OutputsData = tx.Outputs.Select((o, i) => tx.OutputsData[i]).ToList();
+            OutputsData = tx.Outputs.Select((o, i) =>
+            {
+                o.Data = tx.OutputsData[i];
+                return tx.OutputsData[i];
+            }).ToList();
             OutputLockScripts = tx.Outputs.Select((o) => o.Lock).ToList();
             OutputTypeScripts = tx.Outputs.Select<Output, Script?>((o) => o.Type).ToList();
 
@@ -101,7 +107,7 @@ namespace Tippy.Pages.Transactions
                     tx.Outputs.Select(o => Hex.HexToUInt64(o.Capacity)).Aggregate((sum, cur) => sum + cur);
                 detail.TransactionFee = transactionFee.ToString();
 
-                var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(tx.Inputs, tx.Outputs, previousOutputs, prefix, txhash);
+                var (displayInputs, displayOutputs) = GenerateNotCellbaseDisplayInfos(tx.Inputs, tx.Outputs, previousOutputs, prefix, txhash, Tokens);
                 detail.DisplayInputs = displayInputs;
                 detail.DisplayOutputs = displayOutputs;
             }

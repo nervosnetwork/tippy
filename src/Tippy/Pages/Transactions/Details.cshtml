@@ -1,69 +1,56 @@
 ﻿@page
 @model Tippy.Pages.Transactions.DetailsModel
+@using Tippy.Core.Models; 
+@using Tippy.Helpers; 
 @{ ViewData["Title"] = "Transaction"; }
 
-<h1 class="title">Transaction <span style="font-size:70%;">@Model.TransactionDetail.TransactionHash</span></h1>
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Transaction</h1>
+    </div>
+    <div class="level-right">
+        <Partial name="_Search" />
+    </div>
+</div>
 
 <div class="box transaction-box">
     <div class="columns is-multiline">
-        <div class="column is-half">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Block Height</label>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>
-                            <a asp-page="/Blocks/Details" asp-route-id="@Model.TransactionDetail.BlockNumber">
-                                @Model.TransactionDetail.BlockNumber
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Transaction Fee</label>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>@Model.TransactionDetail.TransactionFee</div>
-                    </div>
-                </div>
-            </div>
+        <div class="column is-2">
+            <label>Hash</label>
+        </div>
+        <div class="column is-10">
+            <span class="hash-text">@Model.TransactionDetail.TransactionHash</span>
         </div>
 
-        <div class="column is-half" style="border-left: 1px solid #808080;">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Timestamp</label>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>@Model.TransactionDetail.Date()</div>
-                    </div>
-                </div>
-            </div>
+        <div class="column is-2">
+            <label>Block Height</label>
+        </div>
+        <div class="column is-10">
+            <a asp-page="/Blocks/Details" asp-route-id="@Model.TransactionDetail.BlockNumber">
+                @Model.TransactionDetail.BlockNumber
+            </a>
+        </div>
 
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <label>Status</label>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <div>@Model.TransactionDetail.TxStatus</div>
-                    </div>
-                </div>
-            </div>
+        <div class="column is-2">
+            <label>Transaction Fee</label>
+        </div>
+        <div class="column is-10">
+            @Tippy.Helpers.NumberHelper.CkbAmount(Model.TransactionDetail.TransactionFee)
+            CKB
+        </div>
+
+        <div class="column is-2">
+            <label>Timestamp</label>
+        </div>
+        <div class="column is-10">
+            @Model.TransactionDetail.Date()
+        </div>
+
+        <div class="column is-2">
+            <label>Status</label>
+        </div>
+        <div class="column is-10">
+            @Model.TransactionDetail.TxStatus
         </div>
     </div>
 </div>
@@ -107,7 +94,14 @@
                     </div>
                     <div class="column is-10">
                         <a asp-page="/Addresses/Details" asp-route-address="@input.AddressHash" class="hash-text">
-                            @input.AddressHash
+                            @if (input.AddressHash.Length > 46)
+                            {
+                                <span>@input.AddressHash.Substring(0, 21)...@input.AddressHash.Substring(input.AddressHash.Length - 22, 22)</span>
+                            }
+                            else
+                            {
+                                @input.AddressHash
+                            }
                         </a>
                     </div>
 
@@ -121,24 +115,27 @@
                     </div>
 
                     <div class="column is-2">
-                        Sudt Script Args<br />(sUDT amount)
+                        Amount
                     </div>
                     <div class="column is-10">
                         @if (input.SudtInfo != null)
                         {
-                            @input.SudtInfo?.SudtScriptArgs
-                            <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(input.SudtInfo!.Amount))</span>
+                            <span>
+                                @Tippy.Helpers.NumberHelper.Amount(input.SudtInfo.Amount, input.SudtInfo.Decimals)
+                                <a asp-page="/Tokens/Details" asp-route-id="@input.SudtInfo.Id">@input.SudtInfo.Name</a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span>@Tippy.Helpers.NumberHelper.CkbAmount(input.Capacity) CKB</span>
                         }
                     </div>
 
                     <div class="column is-2">
-                        CKB / Occupied CKB
+                        Occupied CKB
                     </div>
                     <div class="column is-10">
-                        @Tippy.Helpers.TransactionHelper.CkbAmount(input.Capacity)
-
-                        <span>/</span>
-                        <span>@Tippy.Helpers.TransactionHelper.CkbAmount(input.OccupiedCapacity ?? "0")</span>
+                        <span>@Tippy.Helpers.NumberHelper.CkbAmount(input.OccupiedCapacity ?? "0")</span>
                     </div>
                 </div>
             }
@@ -155,33 +152,44 @@
                 <div class="column is-2">
                     Address
                 </div>
-                <div class="column is-10">
+                <div class="column is-8">
                     <a asp-page="/Addresses/Details" asp-route-address="@output.AddressHash" class="hash-text">
-                        @output.AddressHash
+                        @if (output.AddressHash.Length > 46)
+                        {
+                            <span>@output.AddressHash.Substring(0, 21)...@output.AddressHash.Substring(output.AddressHash.Length - 22, 22)</span>
+                        }
+                        else
+                        {
+                            @output.AddressHash
+                        }
+
                     </a>
+                </div>
+                <div class="column is-2">
                 </div>
 
                 <div class="column is-2">
-                    Sudt Script Args<br />(sUDT amount)
+                    Amount
                 </div>
                 <div class="column is-10">
                     @if (output.SudtInfo != null)
                     {
-                        <a asp-page="/Sudt/Details" asp-route-sudtScriptArgs="@output.SudtInfo!.SudtScriptArgs" class="hash-text">
-                            @output.SudtInfo?.SudtScriptArgs
-                        </a>
-                        <span>(@Tippy.Helpers.TransactionHelper.SudtAmount(output.SudtInfo!.Amount))</span>
+                        <span>
+                            @Tippy.Helpers.NumberHelper.Amount(output.SudtInfo.Amount, output.SudtInfo.Decimals)
+                            <a asp-page="/Tokens/Details" asp-route-id="@output.SudtInfo.Id">@output.SudtInfo.Name</a>
+                        </span>
+                    }
+                    else
+                    {
+                        <span>@Tippy.Helpers.NumberHelper.CkbAmount(output.Capacity) CKB</span>
                     }
                 </div>
 
                 <div class="column is-2">
-                    CKB / Occupied CKB
+                    Occupied CKB
                 </div>
                 <div class="column is-10">
-                    @Tippy.Helpers.TransactionHelper.CkbAmount(output.Capacity)
-
-                    <span>/</span>
-                    <span>@Tippy.Helpers.TransactionHelper.CkbAmount(output.OccupiedCapacity ?? "0")</span>
+                    <span>@Tippy.Helpers.NumberHelper.CkbAmount(output.OccupiedCapacity ?? "0")</span>
                 </div>
 
                 <div class="column is-2">
@@ -198,6 +206,7 @@
 }</pre>
                 </div>
 
+                @{ var typeScript = Model.OutputTypeScripts[index]; }
                 <div class="column is-2">
                     Type Script
                     @if (Model.OutputTypeScripts[index] != null)
@@ -205,15 +214,35 @@
                         <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1">(Debug)</a>
                     }
                 </div>
+                @if (typeScript != null)
+                {
+                    var hash = ScriptHelper.ComputeHash(typeScript);
+                    Token? token;
+                    Model.Tokens.TryGetValue(hash, out token);
+                    <div class="column is-10">
+                        @if (token != null)
+                        {
+                            <div>
+                                sUDT Script for token <strong><a asp-page="/Tokens/Details" asp-route-id=@token.Id>@token.Name</a></strong>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <a asp-page="/Tokens/Create" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button">Mark as sUDT Script</a>
+                            </div>
+                        }
+
+                    </div>
+                }
                 <div class="column is-12">
-                    @{ var typeScrit = Model.OutputTypeScripts[index]; }
-                    @if (typeScrit != null)
+                    @if (typeScript != null)
                     {
                         <pre>
 {
-    code_hash: @typeScrit.CodeHash,
-    args: @typeScrit.Args,
-    hash_type: @typeScrit.HashType
+    code_hash: @typeScript.CodeHash,
+    args: @typeScript.Args,
+    hash_type: @typeScript.HashType
 }</pre>
                     }
                     else

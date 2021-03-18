@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ckb.Address;
@@ -9,7 +10,7 @@ namespace Tippy.Pages.Projects
 {
     public class CreateModel : PageModelBase
     {
-        public CreateModel(Tippy.Core.Data.DbContext context) : base(context)
+        public CreateModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 
@@ -37,16 +38,12 @@ namespace Tippy.Pages.Projects
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
             if (Project.LockArg.StartsWith("ckb") || Project.LockArg.StartsWith("ckt"))
             {
                 Project.LockArg = Address.ParseAddress(Project.LockArg, Project.LockArg.Substring(0, 3)).Args;
             }
 
+            Project.Tokens = new List<Token>();
             Project.IsActive = !Projects.Any(p => p.IsActive);
             DbContext.Projects.Add(Project);
             await DbContext.SaveChangesAsync();

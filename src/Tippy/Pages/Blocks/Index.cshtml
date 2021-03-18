@@ -3,7 +3,14 @@
 @using Tippy.Ctrl 
 @{ ViewData["Title"] = "Blocks"; }
 
-<h1 class="title">Blocks</h1>
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Blocks</h1>
+    </div>
+    <div class="level-right">
+        <Partial name="_Search" />
+    </div>
+</div>
 
 @if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
 {
@@ -35,7 +42,7 @@
                         }
                         else
                         {
-                            var reward = Tippy.Helpers.TransactionHelper.CkbAmount(block.Reward);
+                            var reward = Tippy.Helpers.NumberHelper.CkbAmount(block.Reward);
                             <span>@reward</span>
                         }
                     </td>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ckb.Rpc;
@@ -18,15 +19,16 @@ namespace Tippy.Pages
     /// </summary>
     public class PageModelBase : PageModel
     {
-        protected readonly Tippy.Core.Data.DbContext DbContext;
+        protected readonly Tippy.Core.Data.TippyDbContext DbContext;
 
         public IList<Project> Projects { get; set; } = new List<Project>();
         public Project? ActiveProject { get; set; }
         public UInt64 TipBlockNumber { get; set; }
         public EpochView? EpochView { get; set; }
         public String ProcessInfo { get; set; } = "";
+        public Dictionary<string, Token> Tokens { get; set; } = new(); // Token.Hash -> Token
 
-        protected PageModelBase(Tippy.Core.Data.DbContext context)
+        protected PageModelBase(Tippy.Core.Data.TippyDbContext context)
         {
             DbContext = context;
         }
@@ -41,7 +43,7 @@ namespace Tippy.Pages
         {
             ProcessInfo = ProcessManager.Info;
 
-            Projects = await DbContext.Projects.ToListAsync();
+            Projects = await DbContext.Projects.Include(p => p.Tokens).ToListAsync();
             ActiveProject = await DbContext.Projects.FirstOrDefaultAsync(p => p.IsActive);
             if (ActiveProject == null && Projects.Count > 0)
             {
@@ -50,6 +52,14 @@ namespace Tippy.Pages
 
             if (ActiveProject != null && ProcessManager.IsRunning(ActiveProject))
             {
+                foreach (var token in ActiveProject.Tokens)
+                {
+                    if (!Tokens.ContainsKey(token.Hash))
+                    {
+                        Tokens.Add(token.Hash, token);
+                    }
+                }
+
                 Client rpc = Rpc();
                 try
                 {

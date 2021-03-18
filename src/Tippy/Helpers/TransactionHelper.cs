@@ -1,26 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ckb.Rpc;
 using Ckb.Types;
 using Tippy.ApiData;
+using Tippy.Core.Models;
 using Tippy.Util;
 
 namespace Tippy.Helpers
 {
     public static class TransactionHelper
     {
-        // TODO: read from config file
-        public const string SudtCodeHash = "0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4";
-        public const string SudtHashType = "type";
-
         public const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
         private const int TxProposalWindow = 12;
 
-        public static string CkbAmount(string capacity) => NumberHelper.CkbAmount(capacity);
-
-        public static string SudtAmount(string amount) => amount;
-
-        public static string SudtDataToNumberStr(string data) => Ckb.Types.Convert.LEBytesToUInt128(Ckb.Types.Convert.HexStringToBytes(data)).ToString();
+        public static string SudtDataToAmount(string data)
+        {
+            return Ckb.Types.Convert.LEBytesToUInt128(Ckb.Types.Convert.HexStringToBytes(data)).ToString();
+        }
 
         // For not cellbase
         public static Output[] GetPreviousOutputs(Client client, Input[] inputs)
@@ -104,20 +101,33 @@ namespace Tippy.Helpers
             return (displayInputs, displayOutputs);
         }
 
-        public static (DisplayInput[] DisplayInputs, DisplayOutput[] DisplayOutputs) GenerateNotCellbaseDisplayInfos(Input[] inputs, Output[] outputs, Output[] previousOutputs, string prefix, string txHash)
+        public static (DisplayInput[] DisplayInputs, DisplayOutput[] DisplayOutputs) GenerateNotCellbaseDisplayInfos(Input[] inputs, Output[] outputs, Output[] previousOutputs, string prefix, string txHash, Dictionary<string, Token>? tokens = default)
         {
             var displayInputs = inputs.Select((input, idx) =>
             {
                 Output previousOutput = previousOutputs[idx];
 
                 SudtInfo? sudtInfo = null;
-                if (previousOutput.Type != null && previousOutput.Type.CodeHash == SudtCodeHash && previousOutput.Type.HashType == SudtHashType)
+                if (previousOutput.Type != null && previousOutput.Data != null && tokens != null)
                 {
-                    sudtInfo = new SudtInfo
+                    var hash = ScriptHelper.ComputeHash(previousOutput.Type);
+                    Token? token;
+                    tokens.TryGetValue(hash, out token);
+                    if (token != null)
                     {
-                        Amount = SudtDataToNumberStr(previousOutput.Data),
-                        SudtScriptArgs = previousOutput.Type.Args,
-                    };
+                        var symbol = token.Symbol;
+                        if (String.IsNullOrEmpty(symbol))
+                        {
+                            symbol = token.Name;
+                        }
+                        sudtInfo = new SudtInfo
+                        {
+                            Amount = SudtDataToAmount(previousOutput.Data),
+                            Decimals = token.Decimals,
+                            Name = symbol,
+                            Id = token.Id
+                        };
+                    }
                 }
 
                 return new DisplayInput
@@ -139,13 +149,26 @@ namespace Tippy.Helpers
             var displayOutputs = outputs.Select((output, i) =>
             {
                 SudtInfo? sudtInfo = null;
-                if (output.Type != null && output.Type.CodeHash == SudtCodeHash && output.Type.HashType == SudtHashType)
+                if (output.Type != null && output.Data != null && tokens != null)
                 {
-                    sudtInfo = new SudtInfo
+                    var hash = ScriptHelper.ComputeHash(output.Type);
+                    Token? token;
+                    tokens.TryGetValue(hash, out token);
+                    if (token != null)
                     {
-                        Amount = SudtDataToNumberStr(output.Data),
-                        SudtScriptArgs = output.Type.Args,
-                    };
+                        var symbol = token.Symbol;
+                        if (String.IsNullOrEmpty(symbol))
+                        {
+                            symbol = token.Name;
+                        }
+                        sudtInfo = new SudtInfo
+                        {
+                            Amount = SudtDataToAmount(output.Data),
+                            Decimals = token.Decimals,
+                            Name = symbol,
+                            Id = token.Id
+                        };
+                    }
                 }
 
                 return new DisplayOutput

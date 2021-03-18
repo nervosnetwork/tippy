@@ -3,7 +3,14 @@
 @using Tippy.Ctrl
 @{ ViewData["Title"] = "Transactions"; }
 
-<h1 class="title">Transactions</h1>
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Transactions</h1>
+    </div>
+    <div class="level-right">
+        <Partial name="_Search" />
+    </div>
+</div>
 
 @if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
 {
@@ -32,7 +39,7 @@
                     </td>
                     <td>
                         @{
-                            var capacity = Tippy.Helpers.TransactionHelper.CkbAmount(tx.CapacityInvolved);
+                            var capacity = Tippy.Helpers.NumberHelper.CkbAmount(tx.CapacityInvolved);
                         }
                         <span>@capacity</span>
                     </td>

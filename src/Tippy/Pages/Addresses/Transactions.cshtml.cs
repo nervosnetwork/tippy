@@ -16,7 +16,7 @@ namespace Tippy.Pages.Addresses
 {
     public class TransactionsModel : PageModelBase
     {
-        public TransactionsModel(Tippy.Core.Data.DbContext context) : base(context)
+        public TransactionsModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 
@@ -108,7 +108,8 @@ namespace Tippy.Pages.Addresses
                         tx.Outputs.Take(10).ToArray(),
                         previousOutputs.Take(10).ToArray(),
                         prefix,
-                        txHash);
+                        txHash,
+                        Tokens);
                     txResult.DisplayInputs = displayInputs;
                     txResult.DisplayOutputs = displayOutputs;
 
