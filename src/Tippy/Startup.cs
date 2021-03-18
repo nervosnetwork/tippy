@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,11 @@ namespace Tippy
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+
             services.AddSignalR();
 
             var mvcBuilder = services.AddRazorPages()
@@ -40,6 +46,8 @@ namespace Tippy
 #endif
 
             services.AddScoped<ActiveProjectFilter>();
+
+            services.AddJsonRpc();
 
             services.AddDbContext<Core.Data.TippyDbContext>(options =>
             {
@@ -80,6 +88,8 @@ namespace Tippy
 
                 // endpoints.MapFallbackToController("Index", "Home");
             });
+
+            app.UseJsonRpc();
         }
     }
 }
