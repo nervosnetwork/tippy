@@ -36,13 +36,21 @@ namespace Tippy.Api
             // Tippy APIs
             if (methods.Contains(request.Method))
             {
-                return Ok(new ApiHandler(request, activeProject).Handle());
+                try
+                {
+                    var result = new ApiHandler(request, activeProject).Handle();
+                    return Ok(ResponseObject.Result(result, request.Id));
+                }
+                catch (Exception ex)
+                {
+                    return Ok(ResponseObject.Error(ex.Message, request.Id));
+                }
             }
 
             // Pass through to CKB RPC
             if (activeProject == null || !ProcessManager.IsRunning(activeProject))
             {
-                return Ok(ResponseObject.Error(request.Id, "Start a chain first to call JSON-RPC api"));
+                return Ok(ResponseObject.Error("Start a chain first to call JSON-RPC api.", request.Id));
             }
             var ckbRpcClient = RawRpcClient.GetClient(activeProject)!;
             return Ok(ckbRpcClient.Call(request));
@@ -60,11 +68,48 @@ namespace Tippy.Api
             this.project = project;
         }
 
-        internal string Handle()
+        internal object Handle()
         {
             // TODO: dispatch and run api
             // TODO: capture `send_transaction`, save and re-send to CKB RPC
-            return "TODO";
+            return request.Method switch
+            {
+                "start_chain" => StartChain(),
+                "stop_chain" => StopChain(),
+                _ => "TODO",
+            };
+        }
+
+        object StartChain()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (ProcessManager.IsRunning(project))
+            {
+                throw new Exception("Active chain is alredy running.");
+            }
+
+            ProcessManager.Start(project);
+            return "ok";
+        }
+
+        object StopChain()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (!ProcessManager.IsRunning(project))
+            {
+                throw new Exception("Active chain is not running.");
+            }
+
+            ProcessManager.Stop(project);
+            return "ok";
         }
     }
 
@@ -85,13 +130,23 @@ namespace Tippy.Api
 
     class ResponseObject
     {
-        internal static object Error(object? id = null, string? error = null)
+        internal static object Error(string? error = null, object? id = null)
         {
             return new
             {
                 jsonrpc = "2.0",
                 id,
                 error = error ?? "Bad JSON-RPC Request",
+            };
+        }
+
+        internal static object Result(object result, object? id = null)
+        {
+            return new
+            {
+                jsonrpc = "2.0",
+                id,
+                result,
             };
         }
     }
