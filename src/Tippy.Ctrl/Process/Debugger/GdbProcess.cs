@@ -20,7 +20,7 @@ namespace Tippy.Ctrl.Process.Debugger
                 throw new Exception("No file path found!");
             }
             string gdbInitFile = BinaryFullPath(".gdbinit");
-            string arguments = $"gdb {DebugFilePath} -iex \"source {gdbInitFile}\" -iex \"target remote 127.0.0.1:2000\"";
+            string arguments = $"gdb {DebugFilePath} -iex \"source {gdbInitFile}\" -ex \"target remote 127.0.0.1:2000\"";
             process = new System.Diagnostics.Process();
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.FileName = "ttyd";
