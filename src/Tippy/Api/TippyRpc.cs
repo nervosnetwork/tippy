@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -12,16 +13,13 @@ using Tippy.Filters;
 
 namespace Tippy.Api
 {
-
-    // TODO:
-    //    1. Add tippy api
-    //    2. Capture send tx rpc method
-    //    3. Pass other to CKB rpc
     [Route("api")]
     [ApiController]
     [ServiceFilter(typeof(ActiveProjectFilter))]
     public class TippyRpc : ControllerBase
     {
+        readonly HashSet<string> methods = new() { "create_chain", "start_chain", "stop_chain", "mine_blocks", "revert_blocks"/*, "send_transaction"*/ };
+
         [HttpPost]
         public ActionResult Index()
         {
@@ -30,52 +28,43 @@ namespace Tippy.Api
             var request = JsonSerializer.Deserialize<RequestObject>(requestBody);
             if (request == null)
             {
-                return Ok(RpcError());
+                return Ok(ResponseObject.Error());
             }
 
-            // TODO: apis that don't require ckb node to be running
+            Project? activeProject = HttpContext.Items["ActiveProject"] as Project;
 
-            var ckbRpcClient = CkbRpcClient();
-            if (ckbRpcClient == null)
+            // Tippy APIs
+            if (methods.Contains(request.Method))
             {
-                return Ok(RpcError(request.Id, "Start a chain first to call JSON-RPC api"));
+                return Ok(new ApiHandler(request, activeProject).Handle());
             }
-
-            // TODO: apis that require dkb node to be running
 
             // Pass through to CKB RPC
+            if (activeProject == null || !ProcessManager.IsRunning(activeProject))
+            {
+                return Ok(ResponseObject.Error(request.Id, "Start a chain first to call JSON-RPC api"));
+            }
+            var ckbRpcClient = RawRpcClient.GetClient(activeProject)!;
             return Ok(ckbRpcClient.Call(request));
         }
+    }
 
+    class ApiHandler
+    {
+        readonly RequestObject request;
+        readonly Project? project;
 
-        static object RpcError(object? id = null, string? error = null)
+        internal ApiHandler(RequestObject request, Project? project)
         {
-            return new
-            {
-                jsonrpc = "2.0",
-                id,
-                error = error ?? "Bad JSON-RPC Request",
-            };
+            this.request = request;
+            this.project = project;
         }
 
-        RawRpcClient? CkbRpcClient()
+        internal string Handle()
         {
-            Project? activeProject = CurrentRunningProject();
-            if (activeProject != null)
-            {
-                return new RawRpcClient($"http://localhost:{activeProject.NodeRpcPort}");
-            }
-
-            return null;
-        }
-
-        Project? CurrentRunningProject()
-        {
-            if (HttpContext.Items["ActiveProject"] is Project activeProject && ProcessManager.IsRunning(activeProject))
-            {
-                return activeProject;
-            }
-            return null;
+            // TODO: dispatch and run api
+            // TODO: capture `send_transaction`, save and re-send to CKB RPC
+            return "TODO";
         }
     }
 
@@ -92,6 +81,19 @@ namespace Tippy.Api
 
         [JsonPropertyName("params")]
         public object[]? Params { get; set; }
+    }
+
+    class ResponseObject
+    {
+        internal static object Error(object? id = null, string? error = null)
+        {
+            return new
+            {
+                jsonrpc = "2.0",
+                id,
+                error = error ?? "Bad JSON-RPC Request",
+            };
+        }
     }
 
     class RawRpcClient
@@ -119,6 +121,16 @@ namespace Tippy.Api
             using Stream responseStream = webResponse.GetResponseStream();
             using StreamReader responseReader = new(responseStream);
             return responseReader.ReadToEnd();
+        }
+
+        internal static RawRpcClient? GetClient(Project? project)
+        {
+            if (project != null)
+            {
+                return new RawRpcClient($"http://localhost:{project.NodeRpcPort}");
+            }
+
+            return null;
         }
     }
 }
