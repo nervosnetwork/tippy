@@ -69,10 +69,15 @@
     <div id="inputs">
         @foreach (var (input, index) in Model.TransactionDetail.DisplayInputs.Select((o, i) => (o, i)))
         {
-        <div>
-            <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0">(Debug Lock)</a>
-            <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1">(Debug Type)</a>
-        </div>
+            <div class="columns">
+                <div class="column is-3">
+                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0" class="button">Debug Lock Script</a>
+
+                </div>
+                <div class="column is-3">
+                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug Type Script</a>
+                </div>
+            </div>
             @if (input.FromCellbase)
             {
                 <div class="columns">
@@ -148,116 +153,120 @@
     <div id="outputs">
         @foreach(var (output, index) in Model.TransactionDetail.DisplayOutputs.Select((o, i) => (o, i)))
         {
-            <div class="columns is-multiline">
-                <div class="column is-2">
-                    Address
-                </div>
-                <div class="column is-8">
-                    <a asp-page="/Addresses/Details" asp-route-address="@output.AddressHash" class="hash-text">
-                        @if (output.AddressHash.Length > 46)
-                        {
-                            <span>@output.AddressHash.Substring(0, 21)...@output.AddressHash.Substring(output.AddressHash.Length - 22, 22)</span>
-                        }
-                        else
-                        {
-                            @output.AddressHash
-                        }
-
-                    </a>
-                </div>
-                <div class="column is-2">
-                </div>
-
-                <div class="column is-2">
-                    Amount
-                </div>
-                <div class="column is-10">
-                    @if (output.SudtInfo != null)
+        <div class="columns is-multiline">
+            <div class="column is-2">
+                Address
+            </div>
+            <div class="column is-8">
+                <a asp-page="/Addresses/Details" asp-route-address="@output.AddressHash" class="hash-text">
+                    @if (output.AddressHash.Length > 46)
                     {
-                        <span>
-                            @Tippy.Helpers.NumberHelper.Amount(output.SudtInfo.Amount, output.SudtInfo.Decimals)
-                            <a asp-page="/Tokens/Details" asp-route-id="@output.SudtInfo.Id">@output.SudtInfo.Name</a>
-                        </span>
+                        <span>@output.AddressHash.Substring(0, 21)...@output.AddressHash.Substring(output.AddressHash.Length - 22, 22)</span>
                     }
                     else
                     {
-                        <span>@Tippy.Helpers.NumberHelper.CkbAmount(output.Capacity) CKB</span>
+                        @output.AddressHash
                     }
-                </div>
 
-                <div class="column is-2">
-                    Occupied CKB
-                </div>
-                <div class="column is-10">
-                    <span>@Tippy.Helpers.NumberHelper.CkbAmount(output.OccupiedCapacity ?? "0")</span>
-                </div>
+                </a>
+            </div>
+            <div class="column is-2">
+            </div>
 
-                <div class="column is-2">
-                    Lock Script
-                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="0">(Debug)</a>
-                </div>
-                <div class="column is-12">
-                    @{ var lockScript = Model.OutputLockScripts[index]; }
-                    <pre>
+            <div class="column is-2">
+                Amount
+            </div>
+            <div class="column is-10">
+                @if (output.SudtInfo != null)
+                {
+                    <span>
+                        @Tippy.Helpers.NumberHelper.Amount(output.SudtInfo.Amount, output.SudtInfo.Decimals)
+                        <a asp-page="/Tokens/Details" asp-route-id="@output.SudtInfo.Id">@output.SudtInfo.Name</a>
+                    </span>
+                }
+                else
+                {
+                    <span>@Tippy.Helpers.NumberHelper.CkbAmount(output.Capacity) CKB</span>
+                }
+            </div>
+
+            <div class="column is-2">
+                Occupied CKB
+            </div>
+            <div class="column is-10">
+                <span>@Tippy.Helpers.NumberHelper.CkbAmount(output.OccupiedCapacity ?? "0")</span>
+            </div>
+
+            <div class="column is-2">
+                Lock Script
+                <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="0">(Debug)</a>
+            </div>
+            <div class="column is-12">
+                @{ var lockScript = Model.OutputLockScripts[index]; }
+                <pre>
 {
     code_hash: @lockScript.CodeHash,
     args: @lockScript.Args,
     hash_type: @lockScript.HashType
 }</pre>
+            </div>
+
+            @{ var typeScript = Model.OutputTypeScripts[index]; }
+            <div class="column is-2">
+                Type Script
+                @if (Model.OutputTypeScripts[index] != null)
+                {
+                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1">(Debug)</a>
+                }
+            </div>
+            @if (typeScript != null)
+            {
+                var hash = ScriptHelper.ComputeHash(typeScript);
+                Token? token;
+                Model.Tokens.TryGetValue(hash, out token);
+                <div class="column is-5">
+                    @if (token != null)
+                    {
+                        <div>
+                            sUDT Script for token <strong><a asp-page="/Tokens/Details" asp-route-id=@token.Id>@token.Name</a></strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a asp-page="/Tokens/Create" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button">Mark as sUDT Script</a>
+                        </div>
+                    }
+
                 </div>
 
-                @{ var typeScript = Model.OutputTypeScripts[index]; }
-                <div class="column is-2">
-                    Type Script
-                    @if (Model.OutputTypeScripts[index] != null)
-                    {
-                        <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1">(Debug)</a>
-                    }
+                <div class="column is-5">
+                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1" class="button">Debug this script</a>
                 </div>
+            }
+            <div class="column is-12">
                 @if (typeScript != null)
                 {
-                    var hash = ScriptHelper.ComputeHash(typeScript);
-                    Token? token;
-                    Model.Tokens.TryGetValue(hash, out token);
-                    <div class="column is-10">
-                        @if (token != null)
-                        {
-                            <div>
-                                sUDT Script for token <strong><a asp-page="/Tokens/Details" asp-route-id=@token.Id>@token.Name</a></strong>
-                            </div>
-                        }
-                        else
-                        {
-                            <div>
-                                <a asp-page="/Tokens/Create" asp-route-txhash="@Model.TransactionDetail.TransactionHash" asp-route-index="@index" class="button">Mark as sUDT Script</a>
-                            </div>
-                        }
-
-                    </div>
-                }
-                <div class="column is-12">
-                    @if (typeScript != null)
-                    {
-                        <pre>
+                    <pre>
 {
     code_hash: @typeScript.CodeHash,
     args: @typeScript.Args,
     hash_type: @typeScript.HashType
 }</pre>
-                    }
-                    else
-                    {
-                        <pre>null</pre>
-                    }
-                </div>
-
-                <div class="column is-2">
-                    Data
-                </div>
-                <div class="column is-12">
-                    <pre>@Model.OutputsData[index]</pre>
-                </div>
+                }
+                else
+                {
+                    <pre>null</pre>
+                }
             </div>
+
+            <div class="column is-2">
+                Data
+            </div>
+            <div class="column is-12">
+                <pre>@Model.OutputsData[index]</pre>
+            </div>
+        </div>
             <hr />
         }
     </div>
