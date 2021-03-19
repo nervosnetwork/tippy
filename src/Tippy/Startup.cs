@@ -47,8 +47,6 @@ namespace Tippy
 
             services.AddScoped<ActiveProjectFilter>();
 
-            services.AddJsonRpc();
-
             services.AddDbContext<Core.Data.TippyDbContext>(options =>
             {
                 var dbPath = Path.Combine(Core.Environment.GetAppDataFolder(), "tippy-db.db");
@@ -88,8 +86,6 @@ namespace Tippy
 
                 // endpoints.MapFallbackToController("Index", "Home");
             });
-
-            app.UseJsonRpc();
         }
     }
 }
