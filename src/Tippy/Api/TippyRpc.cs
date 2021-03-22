@@ -5,7 +5,6 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Ckb.Rpc;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
@@ -18,7 +17,7 @@ namespace Tippy.Api
     [ServiceFilter(typeof(ActiveProjectFilter))]
     public class TippyRpc : ControllerBase
     {
-        readonly HashSet<string> methods = new() { "create_chain", "start_chain", "stop_chain", "mine_blocks", "revert_blocks"/*, "send_transaction"*/ };
+        readonly HashSet<string> methods = new() { "create_chain", "start_chain", "stop_chain", "mine_blocks", "revert_blocks" };
 
         [HttpPost]
         public ActionResult Index()
@@ -53,7 +52,12 @@ namespace Tippy.Api
                 return Ok(ResponseObject.Error("Start a chain first to call JSON-RPC api.", request.Id));
             }
             var ckbRpcClient = RawRpcClient.GetClient(activeProject)!;
-            return Ok(ckbRpcClient.Call(request));
+            var ckbResult = ckbRpcClient.Call(request);
+            if (request.Method == "send_transaction")
+            {
+                TransactionRecorder.RecordIfNecessary(request, ckbResult, activeProject);
+            }
+            return Ok(ckbResult);
         }
     }
 
@@ -70,12 +74,12 @@ namespace Tippy.Api
 
         internal object Handle()
         {
-            // TODO: dispatch and run api
-            // TODO: capture `send_transaction`, save and re-send to CKB RPC
+            // Dispatch and run api
             return request.Method switch
             {
                 "start_chain" => StartChain(),
                 "stop_chain" => StopChain(),
+                // TODO: other apis
                 _ => "TODO",
             };
         }
@@ -151,6 +155,21 @@ namespace Tippy.Api
         }
     }
 
+    class Error
+    {
+        [JsonPropertyName("code")]
+        public int Code { get; set; } = 0;
+
+        [JsonPropertyName("message")]
+        public String Message { get; set; } = "";
+    }
+
+    class ErrorResponseObject
+    {
+        [JsonPropertyName("error")]
+        public Error Error { get; set; } = default!;
+    }
+
     class RawRpcClient
     {
         readonly string Url;
@@ -186,6 +205,18 @@ namespace Tippy.Api
             }
 
             return null;
+        }
+    }
+
+    class TransactionRecorder
+    {
+        internal static void RecordIfNecessary(RequestObject request, string result, Project project)
+        {
+            var error = JsonSerializer.Deserialize<ErrorResponseObject>(result);
+            if (error != null)
+            {
+                // TODO: persist to DB
+            }
         }
     }
 }
