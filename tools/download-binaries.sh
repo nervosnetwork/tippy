@@ -116,32 +116,44 @@ function download_ckb_debugger_windows() {
   echo "ckb-debugger not supported on Windows ATM."
 }
 
-function download_gdb_dashboard() {
+function download_gdb_dashboard_linux() {
   mkdir -p $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
   cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
 
   curl -O -L "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/f09356e264121fabdde125aa8838bcfcaf1d13c7/.gdbinit"
 }
 
+function download_gdb_dashboard_macos() {
+  mkdir -p $ROOT_DIR/src/Tippy.Ctrl/BinDeps/mac
+  cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/mac
+
+  curl -O -L "https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/f09356e264121fabdde125aa8838bcfcaf1d13c7/.gdbinit"
+}
+
+function download_gdb_dashboard_windows() {
+  # TODO: gdb not supported on win yet.
+  echo "gdb not supported on Windows ATM."
+}
+
 function download_macos() {
   download_ckb_macos
   download_ckb_indexer_macos
   download_ckb_debugger_macos
-  download_gdb_dashboard
+  download_gdb_dashboard_macos
 }
 
 function download_linux() {
   download_ckb_linux
   download_ckb_indexer_linux
   download_ckb_debugger_linux
-  download_gdb_dashboard
+  download_gdb_dashboard_linux
 }
 
 function download_windows() {
   download_ckb_windows
   download_ckb_indexer_windows
   download_ckb_debugger_windows
-  download_gdb_dashboard
+  download_gdb_dashboard_windows
 }
 
 case $1 in
