@@ -1,0 +1,47 @@
+@page
+@model Tippy.Pages.Debugger.DetailsModel
+@{ ViewData["Title"] = "Debugger"; }
+
+<div class="level">
+    <h1 class="title level-left">Debugger</h1>
+
+    <div class="lavel-right">
+        <form asp-page-handler="close" method="post">
+            <div class="field">
+                <div class="control">
+                    <button class="button is-link is-light">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="columns">
+    <div class="column is-10 is-offset-1">
+        <form method="post">
+            <div class="field">
+                <label class="label">Upload a binary to replace this script.</label>
+                <div class="control">
+                    <input asp-for="FilePath" class="input is-info" type="text" placeholder="File Path" />
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button asp-page="./Debugger/Details" class="button is-link is-light">Replace</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="columns">
+    <iframe class="column is-10 is-offset-1" height="640" src="http://localhost:7681"></iframe>
+</div>
+
+<div class="columns" style="margin-top: 20px;">
+    <iframe class="column is-10 is-offset-1" height="320" src="http://localhost:7682"></iframe>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

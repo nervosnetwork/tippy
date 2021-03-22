@@ -143,6 +143,9 @@ namespace Tippy.Helpers
 
                     SudtInfo = sudtInfo,
                     OccupiedCapacity = previousOutput.MinimalCellCapacity().ToString(),
+
+                    Lock = previousOutput.Lock,
+                    Type = previousOutput.Type,
                 };
             }).ToArray();
 
