@@ -21,7 +21,6 @@ namespace Tippy.Pages.Debugger
         {
         }
 
-        // TODO: upload file
         [BindProperty]
         public string? FilePath { get; set; }
         public IActionResult OnPost(string? txHash, string? ioType, int? ioIndex, int? scriptType)
@@ -101,7 +100,7 @@ namespace Tippy.Pages.Debugger
             string scriptGroupType = scriptType == 0 ? "lock" : "type";
             try
             {
-                DebuggerProcessManager.Start(scriptGroupType, scriptHash, mockTxFilePath, binaryFilePath, ioType, (int)ioIndex);
+                DebuggerProcessManager.Start(ActiveProject!, scriptGroupType, scriptHash, mockTxFilePath, binaryFilePath, ioType, (int)ioIndex);
             }
             catch (System.InvalidOperationException e)
             {
