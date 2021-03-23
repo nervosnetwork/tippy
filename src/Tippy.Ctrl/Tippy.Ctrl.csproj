@@ -23,8 +23,10 @@
 
   <ItemGroup>
     <None Remove="ChainSpecTemplate.txt" />
+    <None Remove="GdbDashboard.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChainSpecTemplate.txt" />
+    <EmbeddedResource Include="GdbDashboard.txt" />
   </ItemGroup>
 </Project>
