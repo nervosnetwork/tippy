@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Tippy.Core.Data;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 using Tippy.Filters;
@@ -17,6 +18,13 @@ namespace Tippy.Api
     [ServiceFilter(typeof(ActiveProjectFilter))]
     public class TippyRpc : ControllerBase
     {
+        public TippyRpc(TippyDbContext context)
+        {
+            dbContext = context;
+        }
+
+        readonly TippyDbContext dbContext;
+
         readonly HashSet<string> methods = new() { "create_chain", "start_chain", "stop_chain", "mine_blocks", "revert_blocks" };
 
         [HttpPost]
@@ -55,7 +63,7 @@ namespace Tippy.Api
             var ckbResult = ckbRpcClient.Call(request);
             if (request.Method == "send_transaction")
             {
-                TransactionRecorder.RecordIfNecessary(request, ckbResult, activeProject);
+                TransactionRecorder.RecordIfNecessary(dbContext, request, ckbResult, activeProject);
             }
             return Ok(ckbResult);
         }
@@ -210,12 +218,21 @@ namespace Tippy.Api
 
     class TransactionRecorder
     {
-        internal static void RecordIfNecessary(RequestObject request, string result, Project project)
+        internal static async void RecordIfNecessary(TippyDbContext dbContext, RequestObject request, string result, Project project)
         {
             var error = JsonSerializer.Deserialize<ErrorResponseObject>(result);
             if (error != null)
             {
-                // TODO: persist to DB
+                var tx = new FailedTransaction
+                {
+                    ProjectId = project.Id,
+                    RawTransaction = JsonSerializer.Serialize(request.Params),
+                    Error = error.Error.Message,
+                    CreatedAt = DateTime.Now
+                };
+
+                dbContext.FailedTransactions.Add(tx);
+                await dbContext.SaveChangesAsync();
             }
         }
     }

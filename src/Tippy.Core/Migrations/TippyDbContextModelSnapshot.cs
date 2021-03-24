@@ -41,7 +41,7 @@ namespace Tippy.Core.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("FailedTransaction");
+                    b.ToTable("FailedTransactions");
                 });
 
             modelBuilder.Entity("Tippy.Core.Models.Project", b =>

@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tippy.Core.Models
 {
@@ -12,8 +10,7 @@ namespace Tippy.Core.Models
 
         public string Error { get; set; } = "";
 
-        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = default!;
 
         public int ProjectId { get; set; }
         public Project Project { get; set; } = default!;

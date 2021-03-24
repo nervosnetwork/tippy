@@ -8,7 +8,7 @@ namespace Tippy.Core.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FailedTransaction",
+                name: "FailedTransactions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -20,9 +20,9 @@ namespace Tippy.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FailedTransaction", x => x.Id);
+                    table.PrimaryKey("PK_FailedTransactions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FailedTransaction_Projects_ProjectId",
+                        name: "FK_FailedTransactions_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
@@ -30,15 +30,15 @@ namespace Tippy.Core.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FailedTransaction_ProjectId",
-                table: "FailedTransaction",
+                name: "IX_FailedTransactions_ProjectId",
+                table: "FailedTransactions",
                 column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FailedTransaction");
+                name: "FailedTransactions");
         }
     }
 }

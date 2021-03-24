@@ -9,7 +9,7 @@ using Tippy.Core.Data;
 namespace Tippy.Core.Migrations
 {
     [DbContext(typeof(TippyDbContext))]
-    [Migration("20210324014534_AddFailedTransactions")]
+    [Migration("20210324020958_AddFailedTransactions")]
     partial class AddFailedTransactions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace Tippy.Core.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("FailedTransaction");
+                    b.ToTable("FailedTransactions");
                 });
 
             modelBuilder.Entity("Tippy.Core.Models.Project", b =>
