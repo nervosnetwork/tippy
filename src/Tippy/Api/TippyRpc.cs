@@ -167,14 +167,48 @@ namespace Tippy.Api
             return "ok";
         }
 
+        // Mine N blocks at the default 1sec interval.
         object MineBlocks()
         { 
-            // TODO
-            throw new Exception("Not implemented!");
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (!ProcessManager.IsRunning(project))
+            {
+                throw new Exception("Active chain is not running.");
+            }
+
+            if (request.Params == null || request.Params.Length != 1)
+            {
+                throw new Exception("Must provide a param as number of blocks to mine.");
+            }
+
+            try
+            {
+                var number = int.Parse(request.Params[0].ToString()!);
+                ProcessManager.StartMiner(project, ProcessManager.MinerMode.Sophisticated, number, 1);
+            }
+            catch (System.InvalidOperationException e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return $"Wait for blocks to be mined.";
         }
 
         object RevertBlocks()
         { 
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (!ProcessManager.IsRunning(project))
+            {
+                throw new Exception("Active chain is not running.");
+            }
             // TODO
             throw new Exception("Not implemented!");
         }
