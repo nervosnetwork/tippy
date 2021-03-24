@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Data;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
@@ -45,8 +48,8 @@ namespace Tippy.Api
             {
                 try
                 {
-                    var result = new ApiHandler(request, activeProject).Handle();
-                    return Ok(ResponseObject.Result(result, request.Id));
+                    var result = new ApiHandler(dbContext, request, activeProject).Handle();
+                    return Ok(ResponseObject.Result(result.Result, request.Id));
                 }
                 catch (Exception ex)
                 {
@@ -71,27 +74,66 @@ namespace Tippy.Api
 
     class ApiHandler
     {
+        readonly TippyDbContext dbContext;
         readonly RequestObject request;
         readonly Project? project;
 
-        internal ApiHandler(RequestObject request, Project? project)
+        internal ApiHandler(TippyDbContext dbContext, RequestObject request, Project? project)
         {
+            this.dbContext = dbContext;
             this.request = request;
             this.project = project;
         }
 
-        internal object Handle()
+        internal async Task<object> Handle()
         {
             // Dispatch and run api
             return request.Method switch
             {
+                "create_chain" => await CreateChain(),
                 "start_chain" => StartChain(),
                 "stop_chain" => StopChain(),
+                "mine_blocks" => MineBlocks(),
+                "revert_bloks" => RevertBlocks(),
                 // TODO: other apis
                 _ => "TODO",
             };
         }
 
+        // Create a dev chain and set as active chain
+        async Task<object> CreateChain()
+        {
+            // TODO: support assembler lock arg param
+            // TODO: support type scripts param
+
+            var projects = await dbContext.Projects.ToListAsync();
+            var calculatingFromUsed = projects.Count > 0;
+            var rpcPorts = projects.Select(p => p.NodeRpcPort);
+            var networkPorts = projects.Select(p => p.NodeNetworkPort);
+            var indexerPorts = projects.Select(p => p.IndexerRpcPort);
+
+            var project = new Project
+            {
+                Name = $"CKB devchain",
+                Chain = Project.ChainType.Dev,
+                NodeRpcPort = calculatingFromUsed ? rpcPorts.Max() + 3 : 8114,
+                NodeNetworkPort = calculatingFromUsed ? networkPorts.Max() + 3 : 8115,
+                IndexerRpcPort = calculatingFromUsed ? indexerPorts.Max() + 3 : 8116,
+                LockArg = "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
+            };
+            projects.ForEach(p => p.IsActive = false);
+            project.IsActive = true;
+            dbContext.Projects.Add(project);
+            await dbContext.SaveChangesAsync();
+
+            return new 
+            {
+                id = project.Id,
+                name = project.Name
+            };
+        }
+
+        // Start the active chain
         object StartChain()
         {
             if (project == null)
@@ -108,6 +150,7 @@ namespace Tippy.Api
             return "ok";
         }
 
+        // Stop the running active chain
         object StopChain()
         {
             if (project == null)
@@ -122,6 +165,18 @@ namespace Tippy.Api
 
             ProcessManager.Stop(project);
             return "ok";
+        }
+
+        object MineBlocks()
+        { 
+            // TODO
+            throw new Exception("Not implemented!");
+        }
+
+        object RevertBlocks()
+        { 
+            // TODO
+            throw new Exception("Not implemented!");
         }
     }
 
