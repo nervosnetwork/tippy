@@ -44,5 +44,6 @@ namespace Tippy.Core.Models
         public bool IsActive { get; set; }
 
         public List<Token> Tokens { get; set; } = default!;
+        public List<FailedTransaction> FailedTransactions { get; set; } = default!;
     }
 }

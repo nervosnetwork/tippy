@@ -20,6 +20,12 @@
 5. Select `Tippy` as startup project for the solution, then start debugging it
 6. Browse `http://localhost:5000/home` in your browser (if it's not opened automatically)
 
+## Add Database Migration
+
+```shell
+dotnet ef migrations add [MigrationName]  --project src/Tippy.Core --startup-project src/Tippy
+```
+
 ## Design
 
 Tippy's page design is baded on [mazipan/bulma-admin-dashboard-template](https://github.com/mazipan/bulma-admin-dashboard-template).
