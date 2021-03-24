@@ -94,7 +94,7 @@ namespace Tippy.Api
                 "start_chain" => StartChain(),
                 "stop_chain" => StopChain(),
                 "mine_blocks" => MineBlocks(),
-                "revert_bloks" => RevertBlocks(),
+                "revert_blocks" => RevertBlocks(),
                 // TODO: other apis
                 _ => "TODO",
             };
@@ -198,6 +198,7 @@ namespace Tippy.Api
             return $"Wait for blocks to be mined.";
         }
 
+        // Revert N blocks.
         object RevertBlocks()
         { 
             if (project == null)
@@ -209,8 +210,32 @@ namespace Tippy.Api
             {
                 throw new Exception("Active chain is not running.");
             }
-            // TODO
-            throw new Exception("Not implemented!");
+
+            if (request.Params == null || request.Params.Length != 1)
+            {
+                throw new Exception("Must provide a param as number of blocks to mine.");
+            }
+
+            var client = new Ckb.Rpc.Client($"http://localhost:{project.NodeRpcPort}");
+
+            try
+            {
+                var number = ulong.Parse(request.Params[0].ToString()!);
+                var tipNumber = client.GetTipBlockNumber();
+                var targetNumber = (tipNumber - number);
+                if (number > tipNumber)
+                {
+                    targetNumber = 0;
+                }
+                var targetBlock = client.GetBlockByNumber(targetNumber)!;
+                client.Truncate(targetBlock.Header.Hash);
+            }
+            catch (System.InvalidOperationException e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return "Reverted blocks.";
         }
     }
 
