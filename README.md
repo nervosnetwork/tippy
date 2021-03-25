@@ -4,6 +4,25 @@
 
 > Tippy is still under active development and considered to be a work in progress.
 
+## Install Dependencies
+
+Transaction debugger requires `ttyd` and `gdb 10`
+
+For Linux
+
+```bash
+brew install ttyd gdb
+```
+
+For macOS, must build gdb from source
+
+```bash
+brew install gdb --build-from-source
+brew install ttyd
+```
+
+And debugger not support Windows.
+
 ## Getting Started
 
 1. Fetch the codebase: `git clone --recursive https://github.com/nervosnetwork/tippy.git`
