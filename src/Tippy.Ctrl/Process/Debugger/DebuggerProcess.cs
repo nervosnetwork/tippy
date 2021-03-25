@@ -27,7 +27,8 @@ namespace Tippy.Ctrl.Process.Debugger
             {
                 throw new Exception("No file path found!");
             }
-            string arguments = $"--port 7682 ckb-debugger -l 0.0.0.0:2000 -g {ScriptGroupType} -h {ScriptHash} -t {TxFilePath} -e {IoType} -i {IoIndex}";
+            string debuggerBinaryPath = BinaryFullPath("ckb-debugger");
+            string arguments = $"--port 7682 {debuggerBinaryPath} -l 0.0.0.0:2000 -g {ScriptGroupType} -h {ScriptHash} -t {TxFilePath} -e {IoType} -i {IoIndex}";
             process = new System.Diagnostics.Process();
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.FileName = "ttyd";
