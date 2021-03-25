@@ -69,19 +69,23 @@
     <div id="inputs">
         @foreach (var (input, index) in Model.TransactionDetail.DisplayInputs.Select((o, i) => (o, i)))
         {
-            <div class="columns">
-                <div class="column is-3">
-                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0" class="button">Debug Lock Script</a>
-
-                </div>
-
-                @if (input.Type != null)
-                {
+            @if (Model.IsDebuggerSupported)
+            {
+                <div class="columns">
                     <div class="column is-3">
-                        <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug Type Script</a>
+                        <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0" class="button">Debug Lock Script</a>
+
                     </div>
-                }
-            </div>
+
+                    @if (input.Type != null)
+                    {
+                        <div class="column is-3">
+                            <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug Type Script</a>
+                        </div>
+                    }
+                </div>
+            }
+
             @if (input.FromCellbase)
             {
                 <div class="columns">
@@ -203,7 +207,6 @@
 
             <div class="column is-2">
                 Lock Script
-                <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="0">(Debug)</a>
             </div>
             <div class="column is-12">
                 @{ var lockScript = Model.OutputLockScripts[index]; }
@@ -218,10 +221,6 @@
             @{ var typeScript = Model.OutputTypeScripts[index]; }
             <div class="column is-2">
                 Type Script
-                @if (Model.OutputTypeScripts[index] != null)
-                {
-                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1">(Debug)</a>
-                }
             </div>
             @if (typeScript != null)
             {
@@ -244,9 +243,13 @@
 
                 </div>
 
-                <div class="column is-5">
-                    <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1" class="button">Debug this script</a>
-                </div>
+                @if (Model.IsDebuggerSupported)
+                {
+                    <div class="column is-5">
+                        <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1" class="button">Debug this script</a>
+                    </div>
+                }
+
             }
             <div class="column is-12">
                 @if (typeScript != null)
