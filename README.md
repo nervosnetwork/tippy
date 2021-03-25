@@ -21,7 +21,7 @@ brew install gdb --build-from-source
 brew install ttyd
 ```
 
-And debugger not support Windows.
+*Note: debugger is not supported on Windows.*
 
 ## Getting Started
 
