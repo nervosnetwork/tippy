@@ -337,10 +337,15 @@ namespace Tippy.Api
             var error = JsonSerializer.Deserialize<ErrorResponseObject>(result);
             if (error != null)
             {
+                object raw = "";
+                if (request.Params != null && request.Params.Length > 0)
+                {
+                    raw = request.Params[0];
+                }
                 var tx = new FailedTransaction
                 {
                     ProjectId = project.Id,
-                    RawTransaction = JsonSerializer.Serialize(request.Params),
+                    RawTransaction = JsonSerializer.Serialize(raw),
                     Error = error.Error.Message,
                     CreatedAt = DateTime.Now
                 };

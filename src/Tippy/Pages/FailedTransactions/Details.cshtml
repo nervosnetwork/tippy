@@ -1,0 +1,32 @@
+﻿@page
+@model Tippy.Pages.FailedTransactions.DetailsModel
+@{
+    ViewData["Title"] = "Failed Transaction";
+}
+
+<h1 class="title">Failed Transaction</h1>
+
+<div class="box transaction-box">
+    <div class="columns is-multiline">
+        <div class="column is-2">
+            <label>Time</label>
+        </div>
+        <div class="column is-10">
+            <span>@Model.Transaction.CreatedAt</span>
+        </div>
+
+        <div class="column is-2">
+            <label>Error</label>
+        </div>
+        <div class="column is-10">
+            <code style="color: white;">@Model.Transaction.Error</code>
+        </div>
+
+        <div class="column is-2">
+            <label>Raw Data</label>
+        </div>
+        <div class="column is-10">
+            <pre><code>@Html.Raw(Model.RawTransaction.Replace("\r\n", "<br />"))</code></pre>
+        </div>
+    </div>
+</div>
