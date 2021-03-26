@@ -1,0 +1,25 @@
+﻿@page
+@model Tippy.Pages.Doc.DebuggerModel
+@{ ViewData["Title"] = "RPC API"; }
+
+<h1 class="title">Debugger</h1>
+
+<style>
+    code {
+        color: white;
+    }
+</style>
+
+<div class="content">
+    <p>Debuger requires <code>ttyd</code> and <code>gdb 10</code>. To install them:</p>
+
+    <h3>On Linux</h3>
+
+<pre class="has-background-dark"><code>brew install ttyd gdb</code></pre>
+
+    <h3>On macOS</h3>
+
+<pre class="has-background-dark"><code>brew install gdb --build-from-source
+brew install ttyd</code></pre>
+    
+</div>
