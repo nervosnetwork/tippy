@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 using DebuggerProcessManager = Tippy.Ctrl.Process.Debugger.ProcessManager;
 using TypesConvert = Ckb.Types.Convert;
-
+using Microsoft.EntityFrameworkCore;
+using Tippy.Core.Models;
+using System.Threading.Tasks;
 
 namespace Tippy.Pages.Debugger
 {
@@ -23,14 +25,17 @@ namespace Tippy.Pages.Debugger
 
         [BindProperty]
         public string? FilePath { get; set; }
-        public IActionResult OnPost(string? txHash, string? ioType, int? ioIndex, int? scriptType)
+        public IActionResult OnPost(string? txHash, string? ioType, int? ioIndex, int? scriptType, int? txId = null)
         {
             if (FilePath == null)
             {
                 throw new Exception("No file path provided!");
             }
 
-            string url = $"/Debugger/Details?txHash={txHash}&ioType={ioType}&ioIndex={ioIndex}&scriptType={scriptType}&filePath={FilePath}";
+            string url = txId == null ?
+                $"/Debugger/Details?txHash={txHash}&ioType={ioType}&ioIndex={ioIndex}&scriptType={scriptType}&filePath={FilePath}"
+                :
+                $"/Debugger/Details?txId={txId}&ioType={ioType}&ioIndex={ioIndex}&scriptType={scriptType}&filePath={FilePath}";
             return Redirect(url);
         }
 
@@ -40,12 +45,8 @@ namespace Tippy.Pages.Debugger
             return Redirect("/Home");
         }
 
-        public void OnGet(string? txHash, string? ioType, int? ioIndex, int? scriptType, string? filePath)
+        public async Task<IActionResult> OnGet(string? txHash, string? ioType, int? ioIndex, int? scriptType, string? filePath, int? txId = null)
         {
-            if (txHash == null)
-            {
-                throw new Exception("txHash cannot be null!");
-            }
             if (ioType != "input" && ioType != "output")
             {
                 throw new Exception("ioType must be `input` or `output`!");
@@ -58,19 +59,44 @@ namespace Tippy.Pages.Debugger
             {
                 throw new Exception("scriptType cannot be null!");
             }
+            if (txId == null && (txHash == null || txHash == ""))
+            {
+                throw new Exception("txId and txHash cannot be all null!");
+            }
 
             Client client = Rpc();
 
-            TransactionWithStatus? txWithStatus = client.GetTransaction(txHash);
-            if (txWithStatus == null)
+            Transaction transaction;
+            if (txId != null)
             {
-                throw new Exception($"Transaction not found: {txHash}");
+                FailedTransaction? failedTransaction = await DbContext.FailedTransactions.FirstOrDefaultAsync(t => t.Id == txId);
+                if (failedTransaction == null)
+                {
+                    throw new Exception($"Failed transaction not found, check your txID: {txId}");
+                }
+                try
+                {
+                    transaction = Transaction.FromJson(failedTransaction.RawTransaction);
+                }
+                catch
+                {
+                    throw new Exception("Failed Transaction cannot parsed to Transaction!");
+                }
+            }
+            else
+            {
+                TransactionWithStatus? txWithStatus = client.GetTransaction(txHash!);
+                if (txWithStatus == null)
+                {
+                    throw new Exception($"Transaction not found: {txHash}");
+                }
+                transaction = txWithStatus.Transaction;
             }
 
-            Output output = txWithStatus.Transaction.Outputs[(int)ioIndex];
+            Output output = transaction.Outputs[(int)ioIndex];
             if (ioType == "input")
             {
-                Input input = txWithStatus.Transaction.Inputs[(int)ioIndex];
+                Input input = transaction.Inputs[(int)ioIndex];
                 TransactionWithStatus originTx = client.GetTransaction(input.PreviousOutput.TxHash)!;
                 output = originTx.Transaction.Outputs[TypesConvert.HexToUInt32(input.PreviousOutput.Index)];
             }
@@ -81,7 +107,7 @@ namespace Tippy.Pages.Debugger
 
             Script script = scriptType == 0 ? output.Lock : output.Type;
             string scriptHash = ComputeScriptHash(script);
-            MockTransaction mockTx = DumpTransaction(client, txHash, txWithStatus.Transaction);
+            MockTransaction mockTx = DumpTransaction(client, transaction);
             mockTx.Tx.Hash = null;
 
             string targetContractData = GetCellDepData(mockTx, script);
@@ -106,12 +132,15 @@ namespace Tippy.Pages.Debugger
             {
                 TempData["ErrorMessage"] = e.Message;
             }
+
+            return Page();
         }
 
         // TODO: Output.Lock may no cell dep, throw a more friendly error.
         private static string GetCellDepData(MockTransaction mockTx, Script script)
         {
-            if (script.HashType == "data") {
+            if (script.HashType == "data")
+            {
                 return GetCellDepDataByDataHash(mockTx, script.CodeHash);
             }
             return GetCellDepDataByTypeHash(mockTx, script.CodeHash);
@@ -216,7 +245,8 @@ namespace Tippy.Pages.Debugger
         {
             string tempPath = Path.GetTempPath();
             string filePathWithoutName = Path.Join(tempPath, "Tippy", "DebuggerBinaries");
-            if (!Directory.Exists(filePathWithoutName)) {
+            if (!Directory.Exists(filePathWithoutName))
+            {
                 Directory.CreateDirectory(filePathWithoutName);
             }
             string filePath = Path.Join(filePathWithoutName, name);
@@ -234,7 +264,7 @@ namespace Tippy.Pages.Debugger
             return filePath;
         }
 
-        private static MockTransaction DumpTransaction(Client client, string txHash, Transaction tx)
+        private static MockTransaction DumpTransaction(Client client, Transaction tx)
         {
             MockInput[] mockInputs = tx.Inputs.Select((input) => GetMockInput(client, input)).ToArray();
             MockCellDep[] mockCellDeps = tx.CellDeps.SelectMany((cellDep) => GetMockCellDep(client, cellDep)).ToArray();
@@ -307,7 +337,8 @@ namespace Tippy.Pages.Debugger
         private static CellDep[] UnpackDepGroup(string data)
         {
             var outPoints = DeserializeOutPointVec(data);
-            return outPoints.Select((outPoint) => {
+            return outPoints.Select((outPoint) =>
+            {
                 return new CellDep()
                 {
                     OutPoint = outPoint,
