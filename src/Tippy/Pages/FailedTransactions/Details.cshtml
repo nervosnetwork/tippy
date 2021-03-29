@@ -19,7 +19,7 @@
             <label>Error</label>
         </div>
         <div class="column is-10">
-            <code style="color: white;">@Model.Transaction.Error</code>
+            <pre style="white-space: pre-wrap;"><code style="color: white;">@Model.Transaction.Error</code></pre>
         </div>
 
         <div class="column is-2">
@@ -29,6 +29,9 @@
             <div class="columns is-multiline">
                 @if (Model.IsDebuggerSupported)
                 {
+                    <div class="column is-12">
+                        <Partial name="_DebuggerInfo" />
+                    </div>
                         @foreach (var (input, index) in Model.DisplayInputs.Select((o, i) => (o, i)))
                         {
                             <div class="column is-10">

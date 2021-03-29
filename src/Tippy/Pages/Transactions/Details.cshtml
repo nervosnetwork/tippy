@@ -72,17 +72,16 @@
             @if (Model.IsDebuggerSupported)
             {
                 <div class="columns">
-                    <div class="column is-3">
+                    <div class="column is-12">
                         <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0" class="button">Debug Lock Script</a>
 
-                    </div>
+                       @if (input.Type != null)
+                        {
+                             <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug Type Script</a>
+                        }
 
-                    @if (input.Type != null)
-                    {
-                        <div class="column is-3">
-                            <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug Type Script</a>
-                        </div>
-                    }
+                        <Partial name="_DebuggerInfo" />
+                    </div>
                 </div>
             }
 
