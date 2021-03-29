@@ -1,0 +1,151 @@
+﻿@page
+@model Tippy.Pages.Doc.ApiModel
+@{ ViewData["Title"] = "RPC API"; }
+
+<h1 class="title">RPC API</h1>
+
+<style>
+    code {
+        color: white;
+    }
+</style>
+
+<div class="content">
+    <p>
+        Tippy exposes a set of RPCs in JSON-RPC 2.0 protocols for controlling a devchain.
+        It also proxies API calls to the active running devchain for transparent CKB interactions.
+    </p>
+
+    <p>
+        The URL of Tippy RPC is <code>http://localhost:5000/api</code>.
+    </p>
+
+    <h2 class="title is-4">CKB RPCs</h2>
+
+    <p>
+        For CKB RPCs, simply call any API with Tippy API URL. For example:
+    </p>
+
+    <pre class="has-background-dark"><code>echo '{
+    "id": 2,
+    "jsonrpc": "2.0",
+    "method": "get_tip_block_number",
+    "params": []
+}' \
+| tr -d '\n' \
+| curl -H 'content-type: application/json' -d @@- \
+http://localhost:5000/api</code></pre>
+
+    <p>See <a href="https://docs.nervos.org/docs/reference/rpc" target="_blank">CKB JSON-RPC doc</a> for more information.</p>
+
+    <h2 class="title is-4">Tippy RPCs</h2>
+
+    <h4 class="title">Method <code>create_chain</code></h4>
+    <ul>
+        <li><code>create_chain()</code></li>
+        <li>result: <code>{ id, name }</code></li>
+    </ul>
+    <p>Create a devchain and set it as current active chain.</p>
+    <h5 class="title">Examples</h5>
+    <p>Request</p>
+    <pre class="has-background-dark"><code>{
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "create_chain",
+    "params": []
+}</code></pre>
+    <p>Response</p>
+    <pre class="has-background-dark"><code>{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "result": {
+      "id": 4,
+      "name": "CKB devchain"
+    } 
+}</code></pre>
+
+    <h4 class="title">Method <code>start_chain</code></h4>
+    <ul>
+        <li><code>start_chain()</code></li>
+        <li>result: <code>"ok"</code></li>
+    </ul>
+    <p>Start the current active chain.</p>
+    <h5 class="title">Examples</h5>
+    <p>Request</p>
+    <pre class="has-background-dark"><code>{
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "start_chain",
+    "params": []
+}</code></pre>
+    <p>Response</p>
+    <pre class="has-background-dark"><code>{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "result": "ok"
+}</code></pre>
+
+    <h4 class="title">Method <code>stop_chain</code></h4>
+    <ul>
+        <li><code>stop_chain()</code></li>
+        <li>result: <code>"ok"</code></li>
+    </ul>
+    <p>Stop the current active chain if it's running.</p>
+    <h5 class="title">Examples</h5>
+    <p>Request</p>
+    <pre class="has-background-dark"><code>{
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "stop_chain",
+    "params": []
+}</code></pre>
+    <p>Response</p>
+    <pre class="has-background-dark"><code>{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "result": "ok"
+}</code></pre>
+
+    <h4 class="title">Method <code>mine_blocks</code></h4>
+    <ul>
+        <li><code>mine_blocks(number_of_blocks)</code></li>
+        <li>result: <code>"Wait for blocks to be mined."</code></li>
+    </ul>
+    <p>Mine <code>number_of_blocks</code> blocks at the interval of 1 second.</p>
+    <h5 class="title">Examples</h5>
+    <p>Request</p>
+    <pre class="has-background-dark"><code>{
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "mine_blocks",
+    "params": [3]
+}</code></pre>
+    <p>Response</p>
+    <pre class="has-background-dark"><code>{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "result": "Wait for blocks to be mined."
+}</code></pre>
+
+    <h4 class="title">Method <code>revert_blocks</code></h4>
+    <ul>
+        <li><code>revert_blocks(number_of_blocks)</code></li>
+        <li>result: <code>"Reverted blocks."</code></li>
+    </ul>
+    <p>Mine <code>number_of_blocks</code> blocks at the interval of 1 second.</p>
+    <h5 class="title">Examples</h5>
+    <p>Request</p>
+    <pre class="has-background-dark"><code>{
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "revert_blocks",
+    "params": [3]
+}</code></pre>
+    <p>Response</p>
+    <pre class="has-background-dark"><code>{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "result": "Reverted blocks."
+}</code></pre>
+
+</div>

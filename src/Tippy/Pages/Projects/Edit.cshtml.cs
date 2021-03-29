@@ -10,7 +10,7 @@ namespace Tippy.Pages.Projects
 {
     public class EditModel : PageModelBase
     {
-        public EditModel(Tippy.Core.Data.DbContext context) : base(context)
+        public EditModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

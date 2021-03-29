@@ -9,9 +9,9 @@ namespace Tippy.Pages.Miners
 {
     public class StartModel : PageModel
     {
-        private readonly Tippy.Core.Data.DbContext _context;
+        private readonly Tippy.Core.Data.TippyDbContext _context;
 
-        public StartModel(Tippy.Core.Data.DbContext context)
+        public StartModel(Tippy.Core.Data.TippyDbContext context)
         {
             _context = context;
         }

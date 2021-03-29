@@ -1,0 +1,25 @@
+﻿<div class="dropdown is-hoverable is-left m-2">
+    <div class="dropdown-trigger">
+        <span class="has-dropdown" aria-haspopup="true" aria-controls="dropdown-menu-debugger">
+            <span class="icon"><i class="fa-2x far fa-question-circle"></i></span>
+        </span>
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu-debugger" role="menu" style="width: 480px ">
+        <div class="dropdown-content" style="background-color: #7F519C;">
+            <div class="dropdown-item">
+                <div class="content">
+                    <p>Debuger requires <code style="color: white;">ttyd</code> and <code style="color: white;">gdb 10</code>. To install them:</p>
+                    @if (OperatingSystem.IsMacOS())
+                    {
+                        <pre class="has-background-dark"><code style="color: white;">brew install gdb --build-from-source
+brew install ttyd</code></pre>
+                    }
+                    else
+                    { 
+                        <pre class="has-background-dark"><code style="color: white;">brew install ttyd gdb</code></pre>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,7 +7,7 @@ namespace Tippy.Pages.Home
 {
     public class SwitchProjectModel : PageModelBase
     {
-        public SwitchProjectModel(Tippy.Core.Data.DbContext context) : base(context)
+        public SwitchProjectModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

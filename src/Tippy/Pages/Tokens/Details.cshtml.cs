@@ -8,7 +8,7 @@ namespace Tippy.Pages.Tokens
     {
         public Token Token = default!;
 
-        public DetailsModel(Tippy.Core.Data.DbContext context) : base(context)
+        public DetailsModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

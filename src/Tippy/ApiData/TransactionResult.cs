@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 using Tippy.Helpers;
+using Ckb.Types;
 
 namespace Tippy.ApiData
 {
@@ -53,6 +54,8 @@ namespace Tippy.ApiData
     public class SudtInfo
     {
         public string Amount { get; set; } = default!;
+
+        public int Decimals { get; set; } = 8;
 
         public string Name { get; set; } = "";
 
@@ -112,6 +115,13 @@ namespace Tippy.ApiData
 
         [JsonPropertyName("generated_tx_hash")]
         public string GeneratedTxHash { get; set; } = default!;
+
+        // Cellbase input has no previous output.
+        [JsonPropertyName("lock")]
+        public Script? Lock { get; set; } = null;
+
+        [JsonPropertyName("type")]
+        public Script? Type { get; set; } = null;
 
         // For not cellbase
         [JsonPropertyName("cell_index")]

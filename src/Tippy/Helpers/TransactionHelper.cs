@@ -14,11 +14,10 @@ namespace Tippy.Helpers
         public const string EmptyHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
         private const int TxProposalWindow = 12;
 
-        public static string CkbAmount(string capacity) => NumberHelper.CkbAmount(capacity);
-
-        public static string SudtAmount(string amount) => amount;
-
-        public static string SudtDataToNumberStr(string data) => Ckb.Types.Convert.LEBytesToUInt128(Ckb.Types.Convert.HexStringToBytes(data)).ToString();
+        public static string SudtDataToAmount(string data)
+        {
+            return Ckb.Types.Convert.LEBytesToUInt128(Ckb.Types.Convert.HexStringToBytes(data)).ToString();
+        }
 
         // For not cellbase
         public static Output[] GetPreviousOutputs(Client client, Input[] inputs)
@@ -123,7 +122,8 @@ namespace Tippy.Helpers
                         }
                         sudtInfo = new SudtInfo
                         {
-                            Amount = SudtDataToNumberStr(previousOutput.Data),
+                            Amount = SudtDataToAmount(previousOutput.Data),
+                            Decimals = token.Decimals,
                             Name = symbol,
                             Id = token.Id
                         };
@@ -143,6 +143,9 @@ namespace Tippy.Helpers
 
                     SudtInfo = sudtInfo,
                     OccupiedCapacity = previousOutput.MinimalCellCapacity().ToString(),
+
+                    Lock = previousOutput.Lock,
+                    Type = previousOutput.Type,
                 };
             }).ToArray();
 
@@ -163,7 +166,8 @@ namespace Tippy.Helpers
                         }
                         sudtInfo = new SudtInfo
                         {
-                            Amount = SudtDataToNumberStr(output.Data),
+                            Amount = SudtDataToAmount(output.Data),
+                            Decimals = token.Decimals,
                             Name = symbol,
                             Id = token.Id
                         };

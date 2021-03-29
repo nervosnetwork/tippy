@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,11 @@ namespace Tippy
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+
             services.AddSignalR();
 
             var mvcBuilder = services.AddRazorPages()
@@ -41,7 +47,7 @@ namespace Tippy
 
             services.AddScoped<ActiveProjectFilter>();
 
-            services.AddDbContext<Core.Data.DbContext>(options =>
+            services.AddDbContext<Core.Data.TippyDbContext>(options =>
             {
                 var dbPath = Path.Combine(Core.Environment.GetAppDataFolder(), "tippy-db.db");
                 options.UseSqlite($"Data Source={dbPath}");

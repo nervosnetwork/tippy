@@ -11,7 +11,7 @@ namespace Tippy.Pages.Transactions
 {
     public class IndexModel : PageModelBase
     {
-        public IndexModel(Tippy.Core.Data.DbContext context) : base(context)
+        public IndexModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

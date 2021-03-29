@@ -57,8 +57,10 @@
                 <div class="title">@Model.ActiveProject.Name</div>
                 <div class="heading">Chain type</div>
                 <div class="title is-5">@Model.ActiveProject.Chain.ToString().ToLower()</div>
-                <div class="heading">RPC</div>
+                <div class="heading">CKB RPC</div>
                 <div class="title is-5">http://localhost:@Model.ActiveProject.NodeRpcPort</div>
+                <div class="heading">Tippy RPC (<a asp-page="/Doc/Api" style="text-transform: none;">document</a>)</div>
+                <div class="title is-5">http://localhost:5000/api</div>
             </div>
         </div>
         @if (Model.IsNodeRunning)

@@ -4,6 +4,15 @@
 
 <h1 class="title">sUDT Token</h1>
 
+<div class="my-2">
+    <a asp-page="./Delete" asp-route-id="@Model.Token.Id" class="button is-danger" title="Delete token">
+        <span class="icon">
+            <i class="fas fa-trash"></i>
+        </span>
+        <span>Delete token</span>
+    </a>
+</div>
+
 <div class="box transaction-box">
     <div class="columns is-multiline">
         <div class="column is-2">
@@ -18,6 +27,13 @@
         </div>
         <div class="column is-10">
             <span>@Model.Token.Symbol</span>
+        </div>
+
+        <div class="column is-2">
+            <label>Decimals</label>
+        </div>
+        <div class="column is-10">
+            <span>@Model.Token.Decimals</span>
         </div>
 
         <div class="column is-2">

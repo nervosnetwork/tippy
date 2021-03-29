@@ -12,7 +12,7 @@ namespace Tippy.Pages.Tokens
 {
     public class CreateModel : PageModelBase
     {
-        public CreateModel(Tippy.Core.Data.DbContext context) : base(context)
+        public CreateModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 
@@ -26,7 +26,6 @@ namespace Tippy.Pages.Tokens
             if (transactionWithStatus != null)
             {
                 Transaction tx = transactionWithStatus.Transaction;
-                var data = tx.OutputsData[index];
                 var typeScript = tx.Outputs[index].Type;
                 Debug.Assert(typeScript != null);
                 Token = new Token

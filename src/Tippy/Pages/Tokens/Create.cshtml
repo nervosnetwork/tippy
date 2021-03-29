@@ -23,6 +23,13 @@
                         <span asp-validation-for="Token.Symbol" class="has-text-danger-dark"></span>
                     </div>
                 </div>
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Token.Decimals" class="label"></label>
+                        <input asp-for="Token.Decimals" class="input" />
+                        <span asp-validation-for="Token.Decimals" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
 
                 <div class="field">
                     <input asp-for="Token.TypeScriptCodeHash" type="hidden" />

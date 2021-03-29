@@ -8,7 +8,7 @@ namespace Tippy.Pages.Projects
 {
     public class ResetModel : PageModelBase
     {
-        public ResetModel(Tippy.Core.Data.DbContext context) : base(context)
+        public ResetModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

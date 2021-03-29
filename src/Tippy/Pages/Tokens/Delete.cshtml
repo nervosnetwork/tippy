@@ -1,0 +1,24 @@
+﻿@page
+@model Tippy.Pages.Tokens.DeleteModel
+@{ ViewData["Title"] = "Delete token"; }
+
+<div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Delete token</p>
+        </header>
+        <section class="modal-card-body has-background-danger">
+            <p>Are you sure you want to delete token <strong>@Html.DisplayFor(model => model.Token.Name)</strong>?</p>
+        </section>
+        <footer class="modal-card-foot">
+            <form method="post" class="mt-4" style="width: 100%;">
+                <div class="field is-grouped is-grouped-right">
+                  <input type="hidden" asp-for="Token.Id" />
+                  <input type="submit" value="Delete" class="button is-danger" />
+                  <a asp-page="./Index" class="button is-light">Cancel</a>
+                </div>
+            </form>
+        </footer>
+    </div>
+</div>

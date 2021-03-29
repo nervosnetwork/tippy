@@ -7,7 +7,7 @@ namespace Tippy.Pages.NodeLog
 {
     public class OpenFolderModel : PageModelBase
     {
-        public OpenFolderModel(Tippy.Core.Data.DbContext context) : base(context)
+        public OpenFolderModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
         }
 

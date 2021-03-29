@@ -84,6 +84,16 @@ namespace Ckb.Types
 
         [JsonProperty(PropertyName = "witnesses")]
         public string[] Witnesses { get; set; } = Array.Empty<string>();
+
+        public static Transaction FromJson(string json)
+        {
+            var obj = JsonConvert.DeserializeObject<Transaction>(json);
+            if (obj == null)
+            {
+                throw new Exception("Deserialize Transaction Failed!");
+            }
+            return obj;
+        }
     }
 
     public class TxStatus
