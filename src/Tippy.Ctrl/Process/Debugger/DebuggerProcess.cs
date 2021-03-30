@@ -10,14 +10,16 @@ namespace Tippy.Ctrl.Process.Debugger
         private string TxFilePath;
         private string IoType;
         private int IoIndex;
+        private string? BinaryPath;
 
-        public DebuggerProcess(ProcessInfo info, string scriptGroupType, string scriptHash, string txFilePath, string ioType, int ioIndex) : base(info)
+        public DebuggerProcess(ProcessInfo info, string scriptGroupType, string scriptHash, string txFilePath, string ioType, int ioIndex, string? binaryPath = null) : base(info)
         {
             ScriptHash = scriptHash;
             ScriptGroupType = scriptGroupType;
             TxFilePath = txFilePath;
             IoType = ioType;
             IoIndex = ioIndex;
+            BinaryPath = binaryPath;
         }
 
         protected override void Configure()
@@ -29,6 +31,10 @@ namespace Tippy.Ctrl.Process.Debugger
             }
             string debuggerBinaryPath = BinaryFullPath("ckb-debugger");
             string arguments = $"--port 7682 {debuggerBinaryPath} -l 0.0.0.0:2000 -g {ScriptGroupType} -h {ScriptHash} -t {TxFilePath} -e {IoType} -i {IoIndex}";
+            if (BinaryPath != null)
+            {
+                arguments += $" -r {BinaryPath}";
+            }
             process = new System.Diagnostics.Process();
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.FileName = "ttyd";
