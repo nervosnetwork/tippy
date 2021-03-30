@@ -114,11 +114,11 @@ namespace Tippy.Pages.Debugger
 
             string binaryFilePath = WriteToFile(scriptHash, targetContractData);
 
+            string? binaryForDebugger = null;
             if (filePath != null)
             {
-                string binaryFileData = ReadHexFromBinaryFile(filePath);
-                mockTx = ReplaceMockTxData(mockTx, script, binaryFileData);
                 binaryFilePath = filePath;
+                binaryForDebugger = filePath;
             }
 
             string mockTxFilePath = WriteMockTx(scriptHash, mockTx.ToJson());
@@ -126,7 +126,7 @@ namespace Tippy.Pages.Debugger
             string scriptGroupType = scriptType == 0 ? "lock" : "type";
             try
             {
-                DebuggerProcessManager.Start(ActiveProject!, scriptGroupType, scriptHash, mockTxFilePath, binaryFilePath, ioType, (int)ioIndex);
+                DebuggerProcessManager.Start(ActiveProject!, scriptGroupType, scriptHash, mockTxFilePath, binaryFilePath, ioType, (int)ioIndex, binaryForDebugger);
             }
             catch (System.InvalidOperationException e)
             {
@@ -136,7 +136,6 @@ namespace Tippy.Pages.Debugger
             return Page();
         }
 
-        // TODO: Output.Lock may no cell dep, throw a more friendly error.
         private static string GetCellDepData(MockTransaction mockTx, Script script)
         {
             if (script.HashType == "data")
@@ -157,52 +156,6 @@ namespace Tippy.Pages.Debugger
                 }
             }
             throw new Exception("CellDep not found!");
-        }
-
-        private static string ReadHexFromBinaryFile(string filePath)
-        {
-            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
-            string hex = TypesConvert.BytesToHexString(fileBytes);
-            return hex;
-        }
-
-        private static MockTransaction ReplaceMockTxData(MockTransaction mockTx, Script script, string newData)
-        {
-            // find cell dep
-            int mockCellDepIndex = -1;
-            MockCellDep[] mockCellDeps = mockTx.MockInfo.CellDeps;
-            for (int i = 0; i < mockCellDeps.Length; i++)
-            {
-                MockCellDep mockCellDep = mockCellDeps[i];
-                if (script.HashType == "data")
-                {
-                    string dataHash = ComputeDataHash(mockCellDep.Data);
-                    if (script.CodeHash == dataHash)
-                    {
-                        mockCellDepIndex = i;
-                        break;
-                    }
-                }
-                else
-                {
-                    if (mockCellDep.Output.Type != null)
-                    {
-                        string typeHash = ComputeScriptHash(mockCellDep.Output.Type);
-                        if (script.CodeHash == typeHash)
-                        {
-                            mockCellDepIndex = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (mockCellDepIndex == -1)
-            {
-                throw new Exception("No cell dep match!");
-            }
-
-            mockTx.MockInfo.CellDeps[mockCellDepIndex].Data = newData;
-            return mockTx;
         }
 
         private static string GetCellDepDataByTypeHash(MockTransaction mockTx, string codeHash)
