@@ -24,7 +24,9 @@ namespace Tippy.Pages.Projects
                 return NotFound();
             }
 
-            Project = await DbContext.Projects.FindAsync(id);
+            Project = await DbContext.Projects
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (Project == null)
             {
                 return NotFound();
@@ -34,28 +36,26 @@ namespace Tippy.Pages.Projects
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            var toUpdate = await DbContext.Projects.FindAsync(id);
+            var toUpdate = await DbContext.Projects.FirstOrDefaultAsync(p => p.Id == id);
             if (toUpdate == null)
             {
                 return NotFound();
             }
 
-            if (await TryUpdateModelAsync<Project>(
-                toUpdate,
-                "project",
-                p => p.Name, p => p.NodeRpcPort, p => p.NodeNetworkPort, p => p.IndexerRpcPort, p => p.LockArg))
+            toUpdate.Name = Project.Name;
+            toUpdate.NodeRpcPort = Project.NodeRpcPort;
+            toUpdate.NodeNetworkPort = Project.NodeNetworkPort;
+            toUpdate.IndexerRpcPort = Project.IndexerRpcPort;
+            toUpdate.LockArg = Project.LockArg;
+            if (toUpdate.LockArg.StartsWith("ckb") || toUpdate.LockArg.StartsWith("ckt"))
             {
-                ProcessManager.Stop(toUpdate);
-
-                if (toUpdate.LockArg.StartsWith("ckb") || toUpdate.LockArg.StartsWith("ckt"))
-                {
-                    toUpdate.LockArg = Address.ParseAddress(toUpdate.LockArg, toUpdate.LockArg.Substring(0, 3)).Args;
-                }
-                await DbContext.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                toUpdate.LockArg = Address.ParseAddress(toUpdate.LockArg, toUpdate.LockArg.Substring(0, 3)).Args;
             }
 
-            return Page();
+            ProcessManager.Stop(toUpdate);
+
+            await DbContext.SaveChangesAsync();
+            return RedirectToPage("./Index");
         }
     }
 }
