@@ -116,14 +116,13 @@ namespace Tippy.Api
                     param = null;
                 }
             }
-            // TODO: support type scripts param
-            var toml = param?.GenesisIssuedCells.Select((c) => c.ToTomlString());
 
             var projects = await dbContext.Projects.ToListAsync();
             var calculatingFromUsed = projects.Count > 0;
             var rpcPorts = projects.Select(p => p.NodeRpcPort);
             var networkPorts = projects.Select(p => p.NodeNetworkPort);
             var indexerPorts = projects.Select(p => p.IndexerRpcPort);
+            var toml = param?.GenesisIssuedCells.Select((c) => c.ToTomlString()) ?? Array.Empty<string>();
 
             var project = new Project
             {
@@ -132,7 +131,8 @@ namespace Tippy.Api
                 NodeRpcPort = calculatingFromUsed ? rpcPorts.Max() + 3 : 8114,
                 NodeNetworkPort = calculatingFromUsed ? networkPorts.Max() + 3 : 8115,
                 IndexerRpcPort = calculatingFromUsed ? indexerPorts.Max() + 3 : 8116,
-                LockArg = param?.AssemblerLockArg ?? "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
+                LockArg = param?.AssemblerLockArg ?? "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7",
+                ExtraToml = String.Join("\n\n", toml)
             };
             projects.ForEach(p => p.IsActive = false);
             project.IsActive = true;
