@@ -42,7 +42,13 @@ http://localhost:5000/api</code></pre>
 
     <h4 class="title">Method <code>create_chain</code></h4>
     <ul>
-        <li><code>create_chain()</code></li>
+        <li><code>create_chain({assembler_lock_arg, genesis_issued_cells})</code></li>
+        <li>
+            <ul>
+                <li><code>assember_lock_arg</code>(optional): Lock arg for block assembler (miner address).</li>
+                <li><code>genesis_issued_cells</code>(optional): An array of genesis issued cells. See example for the structure.</li>
+            </ul>
+        </li>
         <li>result: <code>{ id, name }</code></li>
     </ul>
     <p>Create a devchain and set it as current active chain.</p>
@@ -52,8 +58,23 @@ http://localhost:5000/api</code></pre>
     "id": "1",
     "jsonrpc": "2.0",
     "method": "create_chain",
-    "params": []
-}</code></pre>
+    "params": [
+        {
+            "assembler_lock_arg": "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d8",
+            "genesis_issued_cells": [
+                {
+                    "capacity": "0x5af3107a4000",
+                    "lock": {
+                        "code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+                        "args": "0xf2cb132b2f6849ef8abe57e98cddf713bb8d71cb",
+                        "hash_type": "type"
+                    }
+                }
+            ]
+        }
+    ]
+}
+</code></pre>
     <p>Response</p>
     <pre class="has-background-dark"><code>{
     "jsonrpc": "2.0",
