@@ -103,7 +103,18 @@ namespace Tippy.Api
         // Create a dev chain and set as active chain
         async Task<object> CreateChain()
         {
-            // TODO: support assembler lock arg param
+            CreateChainParam? param = null;
+            if (request.Params != null &&　request.Params.Length == 1)
+            {
+                try
+                {
+                    param = JsonSerializer.Deserialize<CreateChainParam>(request.Params[0].ToString()!);
+                }
+                catch
+                {
+                    param = null;
+                }
+            }
             // TODO: support type scripts param
 
             var projects = await dbContext.Projects.ToListAsync();
@@ -119,7 +130,7 @@ namespace Tippy.Api
                 NodeRpcPort = calculatingFromUsed ? rpcPorts.Max() + 3 : 8114,
                 NodeNetworkPort = calculatingFromUsed ? networkPorts.Max() + 3 : 8115,
                 IndexerRpcPort = calculatingFromUsed ? indexerPorts.Max() + 3 : 8116,
-                LockArg = "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
+                LockArg = param?.AssemblerLockArg ?? "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
             };
             projects.ForEach(p => p.IsActive = false);
             project.IsActive = true;
@@ -275,6 +286,24 @@ namespace Tippy.Api
                 result,
             };
         }
+    }
+
+    class GenesisIssuedCell
+    {
+        [JsonPropertyName("capacity")]
+        public string Capacity { get; set; } = default!;
+
+        [JsonPropertyName("lock")]
+        public Ckb.Types.Script Lock { get; set; } = default!;
+    }
+
+    class CreateChainParam
+    {
+        [JsonPropertyName("assembler_lock_arg")]
+        public string? AssemblerLockArg { get; set; }
+
+        [JsonPropertyName("genesis_issued_cells")]
+        public List<GenesisIssuedCell> GenesisIssuedCells { get; set; } = new List<GenesisIssuedCell>();
     }
 
     class Error
