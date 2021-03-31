@@ -13,6 +13,7 @@ using Tippy.Core.Data;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 using Tippy.Filters;
+using Tippy.Util;
 
 namespace Tippy.Api
 {
@@ -116,6 +117,7 @@ namespace Tippy.Api
                 }
             }
             // TODO: support type scripts param
+            var toml = param?.GenesisIssuedCells.Select((c) => c.ToTomlString());
 
             var projects = await dbContext.Projects.ToListAsync();
             var calculatingFromUsed = projects.Count > 0;
@@ -288,13 +290,45 @@ namespace Tippy.Api
         }
     }
 
+    class LockScript
+    {
+        [JsonPropertyName("args")]
+        public string Args { get; set; } = "";
+
+        [JsonPropertyName("code_hash")]
+        public string CodeHash { get; set; } = "";
+
+        [JsonPropertyName("hash_type")]
+        public string HashType { get; set; } = "";
+    }
+
     class GenesisIssuedCell
     {
         [JsonPropertyName("capacity")]
         public string Capacity { get; set; } = default!;
 
         [JsonPropertyName("lock")]
-        public Ckb.Types.Script Lock { get; set; } = default!;
+        public LockScript Lock { get; set; } = default!;
+
+        /*
+        [[genesis.issued_cells]]
+        capacity = 5_198_735_037_00000000
+        lock.code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
+        lock.args = "0x470dcdc5e44064909650113a274b3b36aecb6dc7"
+        lock.hash_type = "type"
+        */
+        internal string ToTomlString()
+        {
+            var lines = new string[]
+            {
+                "[[genesis.issued_cells]]",
+                $"capacity = {Hex.HexToUInt64(Capacity)}",
+                $"lock.code_hash = \"{Lock.CodeHash}\"",
+                $"lock.args = \"{Lock.Args}\"",
+                $"lock.hash_type = \"{Lock.HashType}\"",
+            };
+            return String.Join("\n", lines);
+        }
     }
 
     class CreateChainParam
