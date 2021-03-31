@@ -111,6 +111,10 @@ namespace Tippy.Ctrl.Process
         {
             var spec = DevChainSpecTemplate;
             spec = spec.Replace("[GENESIS_CELL_MESSAGE]", "ckb_dev_" + ProcessInfo.ID);
+            if (!String.IsNullOrEmpty(ProcessInfo.ExtraToml))
+            {
+                spec += "\n" + ProcessInfo.ExtraToml + "\n";
+            }
             var bytes = Encoding.UTF8.GetBytes(spec);
             return Convert.ToBase64String(bytes);
         }
