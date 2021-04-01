@@ -123,6 +123,9 @@ namespace Tippy.ApiData
         [JsonPropertyName("type")]
         public Script? Type { get; set; } = null;
 
+        [JsonPropertyName("data")]
+        public string? Data { get; set; } = null;
+
         // For not cellbase
         [JsonPropertyName("cell_index")]
         public string? CellIndex { get; set; } = default!;

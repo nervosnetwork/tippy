@@ -146,6 +146,7 @@ namespace Tippy.Helpers
 
                     Lock = previousOutput.Lock,
                     Type = previousOutput.Type,
+                    Data = previousOutput.Data,
                 };
             }).ToArray();
 

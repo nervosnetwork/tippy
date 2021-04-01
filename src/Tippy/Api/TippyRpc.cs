@@ -13,6 +13,7 @@ using Tippy.Core.Data;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 using Tippy.Filters;
+using Tippy.Util;
 
 namespace Tippy.Api
 {
@@ -103,14 +104,25 @@ namespace Tippy.Api
         // Create a dev chain and set as active chain
         async Task<object> CreateChain()
         {
-            // TODO: support assembler lock arg param
-            // TODO: support type scripts param
+            CreateChainParam? param = null;
+            if (request.Params != null &&　request.Params.Length == 1)
+            {
+                try
+                {
+                    param = JsonSerializer.Deserialize<CreateChainParam>(request.Params[0].ToString()!);
+                }
+                catch
+                {
+                    param = null;
+                }
+            }
 
             var projects = await dbContext.Projects.ToListAsync();
             var calculatingFromUsed = projects.Count > 0;
             var rpcPorts = projects.Select(p => p.NodeRpcPort);
             var networkPorts = projects.Select(p => p.NodeNetworkPort);
             var indexerPorts = projects.Select(p => p.IndexerRpcPort);
+            var toml = param?.GenesisIssuedCells.Select((c) => c.ToTomlString()) ?? Array.Empty<string>();
 
             var project = new Project
             {
@@ -119,7 +131,8 @@ namespace Tippy.Api
                 NodeRpcPort = calculatingFromUsed ? rpcPorts.Max() + 3 : 8114,
                 NodeNetworkPort = calculatingFromUsed ? networkPorts.Max() + 3 : 8115,
                 IndexerRpcPort = calculatingFromUsed ? indexerPorts.Max() + 3 : 8116,
-                LockArg = "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
+                LockArg = param?.AssemblerLockArg ?? "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7",
+                ExtraToml = String.Join("\n\n", toml)
             };
             projects.ForEach(p => p.IsActive = false);
             project.IsActive = true;
@@ -275,6 +288,56 @@ namespace Tippy.Api
                 result,
             };
         }
+    }
+
+    class LockScript
+    {
+        [JsonPropertyName("args")]
+        public string Args { get; set; } = "";
+
+        [JsonPropertyName("code_hash")]
+        public string CodeHash { get; set; } = "";
+
+        [JsonPropertyName("hash_type")]
+        public string HashType { get; set; } = "";
+    }
+
+    class GenesisIssuedCell
+    {
+        [JsonPropertyName("capacity")]
+        public string Capacity { get; set; } = default!;
+
+        [JsonPropertyName("lock")]
+        public LockScript Lock { get; set; } = default!;
+
+        /*
+        [[genesis.issued_cells]]
+        capacity = 5_198_735_037_00000000
+        lock.code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
+        lock.args = "0x470dcdc5e44064909650113a274b3b36aecb6dc7"
+        lock.hash_type = "type"
+        */
+        internal string ToTomlString()
+        {
+            var lines = new string[]
+            {
+                "[[genesis.issued_cells]]",
+                $"capacity = {Hex.HexToUInt64(Capacity)}",
+                $"lock.code_hash = \"{Lock.CodeHash}\"",
+                $"lock.args = \"{Lock.Args}\"",
+                $"lock.hash_type = \"{Lock.HashType}\"",
+            };
+            return String.Join("\n", lines);
+        }
+    }
+
+    class CreateChainParam
+    {
+        [JsonPropertyName("assembler_lock_arg")]
+        public string? AssemblerLockArg { get; set; }
+
+        [JsonPropertyName("genesis_issued_cells")]
+        public List<GenesisIssuedCell> GenesisIssuedCells { get; set; } = new List<GenesisIssuedCell>();
     }
 
     class Error

@@ -43,6 +43,8 @@ namespace Tippy.Core.Models
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
 
+        public string ExtraToml { get; set; } = "";
+
         public List<Token> Tokens { get; set; } = default!;
         public List<FailedTransaction> FailedTransactions { get; set; } = default!;
     }
