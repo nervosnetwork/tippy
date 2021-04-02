@@ -4,6 +4,10 @@
 
 > Tippy is still under active development and considered to be a work in progress.
 
+## Getting Started
+
+TODO
+
 ## Install Dependencies
 
 Transaction debugger requires `ttyd` and `gdb 10`
@@ -23,9 +27,9 @@ brew install ttyd
 
 *Note: debugger is not supported on Windows.*
 
-## Getting Started
+## Contributing
 
-1. Fetch the codebase: `git clone --recursive https://github.com/nervosnetwork/tippy.git`
+1. Fetch the codebase: `git clone https://github.com/nervosnetwork/tippy.git`
 2. Install [.NET Core SDK](https://www.microsoft.com/net/download) 5.0
 3. Install CKB related binary dependencies:
   ```shell
@@ -39,10 +43,18 @@ brew install ttyd
 5. Select `Tippy` as startup project for the solution, then start debugging it
 6. Browse `http://localhost:5000/home` in your browser (if it's not opened automatically)
 
-## Add Database Migration
+### Add Database Migration
+
+`EF` models are located in `Tippy.Core` project. When making any changes to them and migration is needed, run this
 
 ```shell
-dotnet ef migrations add [MigrationName]  --project src/Tippy.Core --startup-project src/Tippy
+dotnet ef migrations add [MigrationName] --project src/Tippy.Core --startup-project src/Tippy
+```
+
+Or open `Package Manager Console` in Visual Studio, select `Tippy.Core` as `Default project`, then run
+
+```shell
+Add-Migration [MigrationName]
 ```
 
 ## Design
