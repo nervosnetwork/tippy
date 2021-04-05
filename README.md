@@ -4,9 +4,36 @@
 
 > Tippy is still under active development and considered to be a work in progress.
 
+![Tippy](tippy.png)
+
 ## Getting Started
 
-TODO
+You can download Tippy binary for your platform of choice from the [releases](https://github.com/nervosnetwork/tippy/releases) page.
+
+Tippy is pre-built as self-contained .Net Core application. You don't have to install .Net Core to run it. If you're running it on Linux or macOS and want to use the Debugger feature, please install debugger dependencies following [this](#install-dependencies) section.
+
+### On Windows:
+
+* Download `tippy-win-x64.zip`
+* Extract the zip file (default to `tippy-win-x64`)
+* Enter `tippy-win-x64` folder and click `Tippy.exe` to start
+
+### On Linux:
+
+* Download `tippy-linux-x64.tar.gz`
+* Extract the tar.gz file (default to `tippy-linux-x64`)
+* Make `Tippy` executable: `chmod +x ./tippy-linux-x64/Tippy`
+* `cd tippy-linux-x64` then run `./Tippy` to start
+
+### On macOS:
+
+* Download `Tippy.dmg`
+* Open the dmg file and drag `Tippy.app` to `/Applications` folder
+* From `/Applications` click `Tippy.app` to start
+
+### Tippy Console and UI
+
+While Tippy runs as a console application, it also provides web UI. By default the dashboard UI will be opened automatically, if not you can access it by visiting [http://localhost:5000/Home](http://localhost:5000/Home) from a browser.
 
 ## Install Dependencies
 
