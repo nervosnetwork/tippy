@@ -6,7 +6,7 @@
     <div class="heading my-0">Current Block</div>
     @if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
     {
-        <div class="title is-6">@Model.TipBlockNumber</div>
+        <div class="title is-6" id="tip-block-number">@Model.TipBlockNumber</div>
     }
     else
     {

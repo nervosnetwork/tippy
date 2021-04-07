@@ -77,6 +77,11 @@
                             $.get("/Home/NavbarStatus", (data) => {
                                 $(".navbar-status").remove();
                                 $("#header-navbar").append(data);
+                                $.event.trigger({
+                                    type: "tipnumberupdated",
+                                    message: $(".navbar-status #tip-block-number").text(),
+                                    time: new Date()
+                                });
                             });
                         }, 5000);
                     </script>

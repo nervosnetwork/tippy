@@ -92,7 +92,7 @@
             <div class="column">
                 <div class="box" style="background-color: #56787B">
                     <div class="heading">Current Block</div>
-                    <div class="title">@Model.TipBlockNumber</div>
+                    <div class="title current-block">@Model.TipBlockNumber</div>
                     @if (Model.ActiveProject.Chain == Tippy.Core.Models.Project.ChainType.Dev)
                     {
                     <div class="heading">Miner</div>
@@ -247,4 +247,12 @@
             </div>
         </div>
     }
+}
+
+@section scripts {
+    <script>
+        $(document).on("tipnumberupdated", (e) => {
+            $(".current-block").text(e.message);
+        });
+    </script>
 }
