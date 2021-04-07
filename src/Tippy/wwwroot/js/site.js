@@ -57,15 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var sidebarToggler = document.querySelector('#sidebar-toggler-button')
     var sidebar = document.querySelector('#main-sidebar')
 
-    sidebarToggler.addEventListener('click', function () {
-        sidebar.classList.toggle('closed')
-        if (sidebar.classList.contains('closed')) {
-            withChildren.forEach(function (wChildrenEl) {
-                wChildrenEl.classList.remove('open')
-            })
-        }
-    })
-
     // Notification Animate
     var $notifIcons = document.querySelectorAll('.nav-tag > span > i')
     if ($notifIcons.length > 0) {
