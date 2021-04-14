@@ -68,7 +68,7 @@ brew install ttyd
   ```
 4. Open `Tippy.sln` with Visual Studio 2019 (v16.8 or later), Visual Studio 2019 for Mac (v8.8 or later), or Visual Studio Code
 5. Select `Tippy` as startup project for the solution, then start debugging it
-6. Browse `http://localhost:5000/home` in your browser (if it's not opened automatically)
+6. Browse `http://localhost:5000/home` in your browser
 
 ### Add Database Migration
 
@@ -86,4 +86,4 @@ Add-Migration [MigrationName]
 
 ## Design
 
-Tippy's page design is baded on [mazipan/bulma-admin-dashboard-template](https://github.com/mazipan/bulma-admin-dashboard-template).
+Tippy's page design is based on [mazipan/bulma-admin-dashboard-template](https://github.com/mazipan/bulma-admin-dashboard-template).
