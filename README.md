@@ -48,7 +48,7 @@ brew install ttyd gdb
 For macOS, must build gdb from source
 
 ```bash
-brew install gdb --build-from-source
+brew install gdb --HEAD --build-from-source
 brew install ttyd
 ```
 
