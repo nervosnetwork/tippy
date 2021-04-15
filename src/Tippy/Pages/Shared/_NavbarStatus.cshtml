@@ -1,0 +1,100 @@
+﻿@model Tippy.Pages.PageModelBase
+@using Tippy.Ctrl;
+@using Tippy.Util;
+
+<div class="mx-4 my-2 navbar-status">
+    <div class="heading my-0">Current Block</div>
+    @if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
+    {
+        <div class="title is-6" id="tip-block-number">@Model.TipBlockNumber</div>
+    }
+    else
+    {
+        <div class="title is-6">NA</div>
+    }
+</div>
+
+<div class="mx-4 navbar-status"></div>
+
+<div class="mx-4 my-2 navbar-status">
+    <div class="heading my-0">Epoch</div>
+    @if (Model.EpochView != null)
+    {
+        <div class="title is-6">@Hex.HexToUInt64(Model.EpochView!.Number)</div>
+    }
+    else
+    {
+      <div class="title is-6">NA</div>
+    }
+</div>
+
+<div class="navbar-menu navbar-end navbar-status" id="navMenu">
+    @if (Model.ActiveProject != null)
+    {
+        var isRunning = ProcessManager.IsRunning(Model.ActiveProject);
+        <div class="py-2 mx-6">
+            <div class="heading my-0">Status</div>
+            @if (isRunning)
+            {
+                <div class="title is-6 has-text-running">running</div>
+            }
+            else
+            {
+                <div class="title is-6 has-text-stopped">stopped</div>
+            }
+        </div>
+
+        @if (isRunning)
+        {
+            <form method="post">
+                <button asp-page="/Projects/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-dark my-1 mx-2">
+                    <span class="icon">
+                        <i class="fas fa-pause"></i>
+                    </span>
+                </button>
+            </form>
+            <form method="post">
+                <button asp-page="/Projects/Restart" asp-route-id="@Model.ActiveProject.Id" class="button is-dark my-1 mx-2">
+                    <span class="icon">
+                        <i class="fas fa-redo"></i>
+                    </span>
+                </button>
+            </form>
+        }
+        else
+        {
+            <form asp-page="/Projects/Start" asp-route-id="@Model.ActiveProject.Id" method="post">
+                <button class="button is-dark my-1 mx-2">
+                    <span class="icon">
+                        <i class="fas fa-play"></i>
+                    </span>
+                </button>
+            </form>
+        }
+    }
+    <span class="=navbar-item">
+        <span class="nav-separator"></span>
+    </span>
+    <div class="dropdown is-hoverable is-right">
+        <div class="dropdown-trigger">
+            <span class="button is-dark my-1 mx-2 has-dropdown"aria-haspopup="true" aria-controls="dropdown-menu-process-info">
+                <span class="icon is-small"><i class="fas fa-info"></i></span>
+            </span>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu-process-info" role="menu" style="width: 280px ">
+            <div class="dropdown-content" style="background-color: #7F519C;">
+               <div class="dropdown-item">
+                @{
+                    foreach (var info in Model.ProcessInfo.Split("\n"))
+                    {
+                        <p>@info</p>
+                    }
+                }
+               </div>
+            </div>
+        </div>
+    </div>
+    <a class="button is-dark my-1 mx-2" asp-page="/Config/Index">
+        <span class="icon is-small"><i class="fas fa-cog"></i></span>
+    </a>
+</div>

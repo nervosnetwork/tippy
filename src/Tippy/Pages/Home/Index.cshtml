@@ -92,7 +92,7 @@
             <div class="column">
                 <div class="box" style="background-color: #56787B">
                     <div class="heading">Current Block</div>
-                    <div class="title">@Model.TipBlockNumber</div>
+                    <div class="title current-block">@Model.TipBlockNumber</div>
                     @if (Model.ActiveProject.Chain == Tippy.Core.Models.Project.ChainType.Dev)
                     {
                     <div class="heading">Miner</div>
@@ -143,18 +143,8 @@
                 }
                 </div>
             </div>
-            <div class="column">
-                <div class="box" style="background-color: #6C5054">
-                    <div class="heading">Epoch</div>
-                    <div class="title">@Hex.HexToUInt64(Model.EpochView!.Number)</div>
-                    <div class="heading">Block Index</div>
-                    @{ var current = Model.TipBlockNumber - Hex.HexToUInt64(Model.EpochView!.StartNumber) + 1; }
-                    <div class="title is-5">@current</div>
-                    <div class="heading">Length</div>
-                    <div class="title is-5">@Hex.HexToUInt64(Model.EpochView!.Length)</div>
-                    <div class="heading">Compact Target</div>
-                    <div class="title is-5">@Hex.HexToUInt32(Model.EpochView!.CompactTarget)</div>
-                </div>
+            <div class="column" id="epoch-info">
+                <Partial name="_EpochInfo" />
             </div>
         }
         else
@@ -247,4 +237,13 @@
             </div>
         </div>
     }
+}
+
+@section scripts {
+    <script>
+        $(document).on("tipnumberupdated", (e) => {
+            $(".current-block").text(e.message);
+            $("#epoch-info").load("/Home/EpochInfo");
+        });
+    </script>
 }

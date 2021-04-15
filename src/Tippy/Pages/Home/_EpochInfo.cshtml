@@ -1,0 +1,14 @@
+﻿@model Tippy.Pages.PageModelBase
+@using Tippy.Util;
+
+<div class="box" style="background-color: #6C5054">
+    <div class="heading">Epoch</div>
+    <div class="title">@Hex.HexToUInt64(Model.EpochView!.Number)</div>
+    <div class="heading">Block Index</div>
+    @{ var current = Model.TipBlockNumber - Hex.HexToUInt64(Model.EpochView!.StartNumber) + 1; }
+    <div class="title is-5">@current</div>
+    <div class="heading">Length</div>
+    <div class="title is-5">@Hex.HexToUInt64(Model.EpochView!.Length)</div>
+    <div class="heading">Compact Target</div>
+    <div class="title is-5">@Hex.HexToUInt32(Model.EpochView!.CompactTarget)</div>
+</div>

@@ -8,7 +8,7 @@
     <IsPackable>false</IsPackable>
     <DebugType>embedded</DebugType>
     <UserSecretsId>6e0dc08b-01f2-47f6-8249-66ed1b18f469</UserSecretsId>
-    <Version>0.1.7</Version>
+    <Version>0.1.8</Version>
     <PackageProjectUrl>https://github.com/nervosnetwork/tippy</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nervosnetwork/tippy</RepositoryUrl>
     <Copyright>Copyright (c) Nervos Foundation</Copyright>

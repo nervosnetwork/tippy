@@ -89,6 +89,19 @@
             -->
         </ul>
     </nav>
+
+    @section scripts {
+        <script>
+            if (location.search === "") {
+                $(document).on("tipnumberupdated", (e) => {
+                    if ($("#search-field").is(":focus") || $("#search-field").val() !== "") {
+                    } else {
+                        location.reload();
+                    }
+                });
+            }
+        </script>
+    }
 }
 else
 {
