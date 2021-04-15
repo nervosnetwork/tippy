@@ -37,7 +37,7 @@ While Tippy runs as a console application, it also provides web UI. By default t
 
 ## Install Dependencies
 
-Transaction debugger requires `ttyd` and `gdb 10`
+Transaction debugger requires `ttyd` and `gdb`.
 
 For Linux
 
