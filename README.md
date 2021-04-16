@@ -35,9 +35,17 @@ Tippy is pre-built as self-contained .Net Core application. You don't have to in
 
 While Tippy runs as a console application, it also provides web UI. By default the dashboard UI will be opened automatically, if not you can access it by visiting [http://localhost:5000/Home](http://localhost:5000/Home) from a browser.
 
+### Debugger
+
+Tippy ships with [CKB Debugger](https://github.com/nervosnetwork/ckb-standalone-debugger) to help off-chain contract development.
+
+*Note: debugger is only supported on Linux and macOS. It's unavailable on Windows.*
+
+![CKB Debugger](debugger.png)
+
 ## Install Dependencies
 
-Transaction debugger requires `ttyd` and `gdb`.
+Debugger requires `ttyd` and `gdb`.
 
 For Linux
 
@@ -51,8 +59,6 @@ For macOS, must build gdb from source
 brew install gdb --HEAD --build-from-source
 brew install ttyd
 ```
-
-*Note: debugger is not supported on Windows.*
 
 ## Contributing
 
