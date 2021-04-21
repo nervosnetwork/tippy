@@ -108,8 +108,20 @@ namespace Tippy.Ctrl
 
             WriteLine("Generating block...");
             Client rpc = new($"http://localhost:{ProcessInfo.NodeRpcPort}");
-            var block = rpc.GenerateBlock();
-            WriteLine($"Generated block {block}");
+            string? blockHash;
+            if (true) // TODO: if denylist is not empty
+            {
+                // TODO
+                var template = rpc.GetBlockTemplate()!;
+                // if proposal list contains any `proposals` item (check proposal short id), remove them
+                // if commit list contains any `transactions` item, remove them
+                blockHash = rpc.GenerateBlockWithTemplate(template);
+            }
+            else
+            {
+                blockHash = rpc.GenerateBlock();
+            }
+            WriteLine($"Generated block {blockHash}");
         }
 
         // Advanced mining
