@@ -351,4 +351,97 @@ namespace Ckb.Types
         [JsonProperty(PropertyName = "proposed")]
         public Dictionary<string, TxVerbosity> Proposed { get; set; }
     }
+
+    public class CellbaseTemplate
+    {
+        [JsonProperty(PropertyName = "hash")]
+        public string Hash { get; set; } = default;
+
+        [JsonProperty(PropertyName = "cycles")]
+        public string Cycles { get; set; } = null;
+
+        [JsonProperty(PropertyName = "data")]
+        public Transaction Data { get; set; }
+    }
+
+    public class UncleTemplate
+    {
+        [JsonProperty(PropertyName = "hash")]
+        public string Hash { get; set; } = default;
+
+        [JsonProperty(PropertyName = "required")]
+        public bool Required { get; set; } = default;
+
+        [JsonProperty(PropertyName = "proposals")]
+        public string[] Proposals { get; set; } = Array.Empty<string>();
+
+        [JsonProperty(PropertyName = "head")]
+        public Header Header { get; set; } = default;
+    }
+
+    public class TransactionTemplate
+    {
+        [JsonProperty(PropertyName = "hash")]
+        public string Hash { get; set; } = default;
+
+        [JsonProperty(PropertyName = "required")]
+        public bool Required { get; set; } = default;
+
+        [JsonProperty(PropertyName = "cycles")]
+        public string Cycles { get; set; } = null;
+
+        [JsonProperty(PropertyName = "depends")]
+        public string[] Depends { get; set; } = null;
+
+        [JsonProperty(PropertyName = "data")]
+        public Transaction Data { get; set; }
+    }
+
+    public class BlockTemplate
+    {
+        [JsonProperty(PropertyName = "version")]
+        public string Version { get; set; } = default;
+
+        [JsonProperty(PropertyName = "compact_target")]
+        public string CompactTarget { get; set; }
+
+        [JsonProperty(PropertyName = "current_time")]
+        public string CurrentTime { get; set; }
+
+        [JsonProperty(PropertyName = "number")]
+        public string Number { get; set; }
+
+        [JsonProperty(PropertyName = "epoch")]
+        public string Epoch { get; set; }
+
+        [JsonProperty(PropertyName = "parent_hash")]
+        public string ParentHash { get; set; }
+
+        [JsonProperty(PropertyName = "cycles_limit")]
+        public string CyclesLimit { get; set; }
+
+        [JsonProperty(PropertyName = "bytes_limit")]
+        public string BytesLimit { get; set; }
+
+        [JsonProperty(PropertyName = "uncles_count_limit")]
+        public string UnclesCountLimit { get; set; }
+
+        [JsonProperty(PropertyName = "uncles")]
+        public UncleTemplate[] Uncles { get; set; } = Array.Empty<UncleTemplate>();
+
+        [JsonProperty(PropertyName = "transactions")]
+        public TransactionTemplate[] Transactions { get; set; } = Array.Empty<TransactionTemplate>();
+
+        [JsonProperty(PropertyName = "proposals")]
+        public string[] Proposals { get; set; } = Array.Empty<string>();
+
+        [JsonProperty(PropertyName = "cellbase")]
+        public string Cellbase { get; set; }
+
+        [JsonProperty(PropertyName = "work_id")]
+        public string WorkId { get; set; }
+
+        [JsonProperty(PropertyName = "dao")]
+        public string Dao { get; set; }
+    }
 }
