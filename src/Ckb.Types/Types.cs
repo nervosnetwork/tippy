@@ -436,7 +436,7 @@ namespace Ckb.Types
         public string[] Proposals { get; set; } = Array.Empty<string>();
 
         [JsonProperty(PropertyName = "cellbase")]
-        public string Cellbase { get; set; }
+        public CellbaseTemplate Cellbase { get; set; }
 
         [JsonProperty(PropertyName = "work_id")]
         public string WorkId { get; set; }
