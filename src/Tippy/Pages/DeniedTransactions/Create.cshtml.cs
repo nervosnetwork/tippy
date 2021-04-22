@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tippy.Core.Models;
 
 namespace Tippy.Pages.DeniedTransactions
 {
@@ -11,9 +13,28 @@ namespace Tippy.Pages.DeniedTransactions
         {
         }
 
+        [TempData]
+        public string Message { get; set; } = "";
+
         public async Task<IActionResult> OnPostAsync(string hash, [FromQuery(Name = "type")] string type)
         {
-            // TODO
+            try
+            {
+                var item = new DeniedTransaction
+                {
+                    ProjectId = ActiveProject!.Id,
+                    TxHash = hash,
+                    DenyType = type == "propose" ? DeniedTransaction.Type.Propose : DeniedTransaction.Type.Commit
+                };
+                DbContext.DeniedTransactions.Add(item);
+                await DbContext.SaveChangesAsync();
+                Message = "Added to denylist.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();
             return Redirect(referer);
         }
