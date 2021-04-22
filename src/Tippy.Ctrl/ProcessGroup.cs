@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Timers;
 using Ckb.Rpc;
+using Tippy.Core.Models;
 using static System.Console;
 
 namespace Tippy.Ctrl
@@ -25,6 +26,7 @@ namespace Tippy.Ctrl
 
         private Timer? advancedMiningTimer;
         private int remainingBlocksToMine = 0;
+        internal List<DeniedTransaction>? deniedTransactions;
 
         internal bool IsRunning => node?.IsRunning ?? false;
         internal bool IsMinerRunning => miner?.IsRunning ?? false;
@@ -109,12 +111,17 @@ namespace Tippy.Ctrl
             WriteLine("Generating block...");
             Client rpc = new($"http://localhost:{ProcessInfo.NodeRpcPort}");
             string? blockHash;
-            if (true) // TODO: if denylist is not empty
+            if (deniedTransactions?.Count > 0)
             {
-                // TODO
+                var proposeList = new HashSet<string>(deniedTransactions
+                    .Where(d => d.DenyType == DeniedTransaction.Type.Propose)
+                    .Select(d => d.TxHash.Substring(0, 22))); // Short IDs, like 0x4dc1b9d993638e4ae212
+                var commitList = new HashSet<string>(deniedTransactions.
+                    Where(d => d.DenyType == DeniedTransaction.Type.Commit)
+                    .Select(d => d.TxHash));
                 var template = rpc.GetBlockTemplate()!;
-                // if proposal list contains any `proposals` item (check proposal short id), remove them
-                // if commit list contains any `transactions` item, remove them
+                template.Proposals = (string[])template.Proposals.Where(p => !proposeList.Contains(p));
+                template.Transactions = (Ckb.Types.TransactionTemplate[])template.Transactions.Where(t => !commitList.Contains(t.Hash));
                 blockHash = rpc.GenerateBlockWithTemplate(template);
             }
             else

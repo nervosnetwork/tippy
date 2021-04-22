@@ -1,6 +1,8 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 
@@ -26,7 +28,10 @@ namespace Tippy.Pages.Miners
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Project = await DbContext.Projects.FindAsync(id);
+            Project = await DbContext.Projects
+                .Include(p => p.DeniedTransactions)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
             if (Project == null)
             {
                 return NotFound();

@@ -119,6 +119,7 @@ namespace Tippy.Ctrl
             Start(project);
         }
 
+        // Note: project should have DeniedTransactions loaded before calling this.
         public static void StartMiner(Project project, MinerMode mode, int blocks = 1, int interval = 1)
         {
             var group = GroupFor(project);
@@ -126,6 +127,7 @@ namespace Tippy.Ctrl
             {
                 return;
             }
+            group.deniedTransactions = project.DeniedTransactions;
 
             if (mode == MinerMode.Default)
             {
