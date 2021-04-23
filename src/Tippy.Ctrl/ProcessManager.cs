@@ -119,7 +119,7 @@ namespace Tippy.Ctrl
             Start(project);
         }
 
-        // Note: project should have DeniedTransactions loaded before calling this.
+        // Note: if mode is not Default, project should have DeniedTransactions loaded before calling this.
         public static void StartMiner(Project project, MinerMode mode, int blocks = 1, int interval = 1)
         {
             var group = GroupFor(project);

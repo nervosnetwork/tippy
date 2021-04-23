@@ -100,14 +100,26 @@
                     <label>Denylist</label>
                 </div>
                 <div class="column is-11">
-                    <form method="post">
-                        <button asp-page="/DeniedTransactions/Create" asp-route-hash="@hash" asp-route-type="propose" class="button is-danger is-small" title="Disallow committing">
+                    @if (Model.ProposeDenyList.Contains(hash))
+                    {
+                        <div>
                             <span class="icon">
                                 <i class="fas fa-ban"></i>
                             </span>
-                            <span>Disallow proposing</span>
-                        </button>
-                    </form>
+                            Disallowed
+                        </div>
+                    }
+                    else
+                    {
+                        <form method="post">
+                            <button asp-page="/DeniedTransactions/Create" asp-route-hash="@hash" asp-route-type="propose" class="button is-danger is-small" title="Disallow committing">
+                                <span class="icon">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                                <span>Disallow proposing</span>
+                            </button>
+                        </form>
+                    }
                 </div>
             </div>
             <partial name="_TxVerbosity" model="tx" />
@@ -133,14 +145,26 @@
                     <label>Denylist</label>
                 </div>
                 <div class="column is-11">
-                    <form method="post">
-                        <button asp-page="/DeniedTransactions/Create" asp-route-hash="@hash" asp-route-type="commit" class="button is-danger is-small" title="Disallow committing">
+                    @if (Model.CommitDenyList.Contains(hash))
+                    {
+                        <div>
                             <span class="icon">
                                 <i class="fas fa-ban"></i>
                             </span>
-                            <span>Disallow committing</span>
-                        </button>
-                    </form>
+                            Disallowed
+                        </div>
+                    }
+                    else
+                    {
+                        <form method="post">
+                            <button asp-page="/DeniedTransactions/Create" asp-route-hash="@hash" asp-route-type="commit" class="button is-danger is-small" title="Disallow committing">
+                                <span class="icon">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                                <span>Disallow committing</span>
+                            </button>
+                        </form>
+                    }
                 </div>
             </div>
             <partial name="_TxVerbosity" model="tx" />
