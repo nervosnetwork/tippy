@@ -120,8 +120,12 @@ namespace Tippy.Ctrl
                     Where(d => d.DenyType == DeniedTransaction.Type.Commit)
                     .Select(d => d.TxHash));
                 var template = rpc.GetBlockTemplate()!;
-                template.Proposals = (string[])template.Proposals.Where(p => !proposeList.Contains(p));
-                template.Transactions = (Ckb.Types.TransactionTemplate[])template.Transactions.Where(t => !commitList.Contains(t.Hash));
+                template.Proposals = template.Proposals
+                    .Where(p => !proposeList.Contains(p))
+                    .ToArray();
+                template.Transactions = template.Transactions
+                    .Where(t => !commitList.Contains(t.Hash))
+                    .ToArray();
                 blockHash = rpc.GenerateBlockWithTemplate(template);
             }
             else
