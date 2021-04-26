@@ -10,12 +10,18 @@ namespace Tippy.Pages.TxPool
         {
         }
 
+        [TempData]
+        public string Message { get; set; } = "";
+
+
         public IActionResult OnPost()
         {
             if (ActiveProject != null)
             {
                 Rpc().ClearTxPool();
             }
+
+            Message = "Tx Pool was cleared";
 
             var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();
             return Redirect(referer);

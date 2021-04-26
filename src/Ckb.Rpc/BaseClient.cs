@@ -27,7 +27,12 @@ namespace Ckb.Rpc
                 Method = method,
                 Params = methodParams
             };
-            var serialized = JsonConvert.SerializeObject(request);
+            var serialized = JsonConvert.SerializeObject(
+                request,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
             var bytes = Encoding.UTF8.GetBytes(serialized);
             webRequest.ContentLength = bytes.Length;
             using Stream body = webRequest.GetRequestStream();
@@ -35,7 +40,7 @@ namespace Ckb.Rpc
 
             using WebResponse webResponse = webRequest.GetResponse();
             using Stream responseStream = webResponse.GetResponseStream();
-            using StreamReader responseReader = new StreamReader(responseStream);
+            using StreamReader responseReader = new(responseStream);
             var response = JsonConvert.DeserializeObject<ResponseObject<T>>(responseReader.ReadToEnd());
             if (response != null)
             {

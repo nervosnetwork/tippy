@@ -20,6 +20,14 @@
         </form>
     </div>
 
+    @if ((TempData["Message"]?.ToString() ?? "").Length > 0)
+    {
+        <div class="notification is-success">
+            <button class="delete"></button>
+            <div>@TempData["Message"]</div>
+        </div>
+    }
+
     <div class="box info-box">
         <div class="columns is-multiline">
             <div class="column is-1">
@@ -87,6 +95,37 @@
                         @hash
                     </a>
                 </div>
+
+                <div class="column is-1">
+                    <label>Denylist</label>
+                </div>
+                <div class="column is-11">
+                    @if (Model.ProposeDenyList.Contains(hash))
+                    {
+                        <form method="post">
+                            <span>
+                                Disallowed
+                            </span>
+                            <button asp-page="/DeniedTransactions/Delete" asp-route-hash="@hash" asp-route-type="propose" class="button is-success is-small" title="Allow proposing">
+                                <span class="icon">
+                                    <i class="fas fa-filter"></i>
+                                </span>
+                                <span>Allow proposing</span>
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post">
+                            <button asp-page="/DeniedTransactions/Create" asp-route-hash="@hash" asp-route-type="propose" class="button is-danger is-small" title="Disallow committing">
+                                <span class="icon">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                                <span>Disallow proposing</span>
+                            </button>
+                        </form>
+                    }
+                </div>
             </div>
             <partial name="_TxVerbosity" model="tx" />
         }
@@ -105,6 +144,37 @@
                     <a asp-page="/Transactions/Details" asp-route-txhash="@hash" class="hash-text">
                         @hash
                     </a>
+                </div>
+
+                <div class="column is-1">
+                    <label>Denylist</label>
+                </div>
+                <div class="column is-11">
+                    @if (Model.CommitDenyList.Contains(hash))
+                    {
+                        <form method="post">
+                            <span>
+                                Disallowed
+                            </span>
+                            <button asp-page="/DeniedTransactions/Delete" asp-route-hash="@hash" asp-route-type="commit" class="button is-success is-small" title="Allow committing">
+                                <span class="icon">
+                                    <i class="fas fa-filter"></i>
+                                </span>
+                                <span>Allow committing</span>
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post">
+                            <button asp-page="/DeniedTransactions/Create" asp-route-hash="@hash" asp-route-type="commit" class="button is-danger is-small" title="Disallow committing">
+                                <span class="icon">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                                <span>Disallow committing</span>
+                            </button>
+                        </form>
+                    }
                 </div>
             </div>
             <partial name="_TxVerbosity" model="tx" />
