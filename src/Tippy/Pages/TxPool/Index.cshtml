@@ -102,12 +102,17 @@
                 <div class="column is-11">
                     @if (Model.ProposeDenyList.Contains(hash))
                     {
-                        <div>
-                            <span class="icon">
-                                <i class="fas fa-ban"></i>
+                        <form method="post">
+                            <span>
+                                Disallowed
                             </span>
-                            Disallowed
-                        </div>
+                            <button asp-page="/DeniedTransactions/Delete" asp-route-hash="@hash" asp-route-type="propose" class="button is-success is-small" title="Allow proposing">
+                                <span class="icon">
+                                    <i class="fas fa-filter"></i>
+                                </span>
+                                <span>Allow proposing</span>
+                            </button>
+                        </form>
                     }
                     else
                     {
@@ -147,12 +152,17 @@
                 <div class="column is-11">
                     @if (Model.CommitDenyList.Contains(hash))
                     {
-                        <div>
-                            <span class="icon">
-                                <i class="fas fa-ban"></i>
+                        <form method="post">
+                            <span>
+                                Disallowed
                             </span>
-                            Disallowed
-                        </div>
+                            <button asp-page="/DeniedTransactions/Delete" asp-route-hash="@hash" asp-route-type="commit" class="button is-success is-small" title="Allow committing">
+                                <span class="icon">
+                                    <i class="fas fa-filter"></i>
+                                </span>
+                                <span>Allow committing</span>
+                            </button>
+                        </form>
                     }
                     else
                     {
