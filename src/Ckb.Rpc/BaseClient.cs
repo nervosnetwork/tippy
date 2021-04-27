@@ -35,18 +35,27 @@ namespace Ckb.Rpc
                 });
             var bytes = Encoding.UTF8.GetBytes(serialized);
             webRequest.ContentLength = bytes.Length;
-            using Stream body = webRequest.GetRequestStream();
-            body.Write(bytes, 0, bytes.Length);
 
-            using WebResponse webResponse = webRequest.GetResponse();
-            using Stream responseStream = webResponse.GetResponseStream();
-            using StreamReader responseReader = new(responseStream);
-            var response = JsonConvert.DeserializeObject<ResponseObject<T>>(responseReader.ReadToEnd());
-            if (response != null)
+            try
             {
+                using Stream body = webRequest.GetRequestStream();
+                body.Write(bytes, 0, bytes.Length);
+
+                using WebResponse webResponse = webRequest.GetResponse();
+                using Stream responseStream = webResponse.GetResponseStream();
+                using StreamReader responseReader = new(responseStream);
+                var response = JsonConvert.DeserializeObject<ResponseObject<T>>(responseReader.ReadToEnd());
+                if (response == null)
+                {
+                    throw new Exception("Parse JSON RPC response failed.");
+                }
+
                 return response.Result;
             }
-            return default;
+            catch
+            {
+                return default;
+            }
         }
     }
 
