@@ -25,13 +25,21 @@ Tippy is pre-built as self-contained .Net Core application. You don't have to in
 * Make `Tippy` executable: `chmod +x ./tippy-linux-x64/Tippy`
 * `cd tippy-linux-x64` then run `./Tippy` to start
 
+We also provide a Homebrew formula to install with one-liner:
+
+```
+brew install nervosnetwork/tap/tippy-linux
+```
+
+Then simply run `tippy` to start
+
 ### On macOS:
 
 * Download `Tippy.dmg`
 * Open the dmg file and drag `Tippy.app` to `/Applications` folder
 * From `/Applications` click `Tippy.app` to start
 
-We also provide a Homebrew cask to install with:
+We also provide a Homebrew cask to install with one-liner:
 
 ```
 brew install nervosnetwork/tap/tippy
