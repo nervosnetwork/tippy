@@ -31,6 +31,12 @@ Tippy is pre-built as self-contained .Net Core application. You don't have to in
 * Open the dmg file and drag `Tippy.app` to `/Applications` folder
 * From `/Applications` click `Tippy.app` to start
 
+We also provide a Homebrew cask to install with:
+
+```
+brew install nervosnetwork/tap/tippy
+```
+
 ### Tippy Console and UI
 
 While Tippy runs as a console application, it also provides web UI. By default the dashboard UI will be opened automatically, if not you can access it by visiting [http://localhost:5000/Home](http://localhost:5000/Home) from a browser.
