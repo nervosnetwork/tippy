@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" width="250px">
+  <img src="logo.png" width="256px">
 </p>
 
 ![tippy](https://github.com/nervosnetwork/tippy/workflows/tippy/badge.svg)
