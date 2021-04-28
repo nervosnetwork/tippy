@@ -47,5 +47,6 @@ namespace Tippy.Core.Models
 
         public List<Token> Tokens { get; set; } = default!;
         public List<FailedTransaction> FailedTransactions { get; set; } = default!;
+        public List<DeniedTransaction> DeniedTransactions { get; set; } = default!;
     }
 }

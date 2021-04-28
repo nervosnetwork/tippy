@@ -88,5 +88,16 @@ namespace Ckb.Rpc
         {
             return Call<Types.RawTxPool>("get_raw_tx_pool", true);
         }
+
+        public Types.BlockTemplate? GetBlockTemplate()
+        {
+            return Call<Types.BlockTemplate>("get_block_template");
+        }
+
+        public String? GenerateBlockWithTemplate(Types.BlockTemplate blockTemplate)
+        {
+            Types.BlockTemplate[] methodParams = { blockTemplate };
+            return Call<String>("generate_block_with_template", methodParams);
+        }
     }
 }

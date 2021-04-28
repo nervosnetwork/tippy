@@ -198,6 +198,10 @@ namespace Tippy.Api
                 throw new Exception("Must provide a param as number of blocks to mine.");
             }
 
+            dbContext.Entry(project)
+                .Collection(p => p.DeniedTransactions)
+                .Load();
+
             try
             {
                 var number = int.Parse(request.Params[0].ToString()!);
