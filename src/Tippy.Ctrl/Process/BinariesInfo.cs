@@ -6,6 +6,7 @@ namespace Tippy.Ctrl.Process
     internal class BinariesInfo
     {
         internal string Info { get; private set; } = "";
+        internal bool HasDebuggerDeps { get; private set; } = false;
 
         readonly List<string> binaries = new() { "ckb", "ckb-indexer", "ckb-debugger"/*, "ckb-cli"*/ };
 
@@ -37,16 +38,17 @@ namespace Tippy.Ctrl.Process
                 process.Start();
                 process.BeginOutputReadLine();
                 process.WaitForExit();
+            }
 
-                if (binary == "ckb-debugger")
-                {
-                    RefreshDebuggerDeps();
-                }
+            if (!OperatingSystem.IsWindows())
+            {
+                RefreshDebuggerDeps();
             }
         }
 
         void RefreshDebuggerDeps()
         {
+            HasDebuggerDeps = true;
             // BUGBUG: .Net won't find commands on M1 Mac which has homebrew location at `/opt/homebrew/bin`.
             foreach (var dep in new List<string>() { "gdb", "ttyd" })
             {
@@ -57,22 +59,12 @@ namespace Tippy.Ctrl.Process
                     process.StartInfo.FileName = dep;
                     process.StartInfo.Arguments = "--version";
                     process.StartInfo.WorkingDirectory = Core.Environment.GetAppDataFolder();
-
-                    process.StartInfo.RedirectStandardOutput = true;
-                    process.OutputDataReceived += (sender, e) =>
-                    {
-                        if (!String.IsNullOrEmpty(e.Data))
-                        {
-                            Info += "\t" + e.Data + "\n";
-                        }
-                    };
-
                     process.Start();
-                    process.BeginOutputReadLine();
                     process.WaitForExit();
                 }
                 catch
                 {
+                    HasDebuggerDeps = false;
                 }
             }
         }

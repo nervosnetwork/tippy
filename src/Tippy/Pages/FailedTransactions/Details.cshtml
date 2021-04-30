@@ -35,13 +35,27 @@
                         @foreach (var (input, index) in Model.DisplayInputs.Select((o, i) => (o, i)))
                         {
                             <div class="column is-10">
-                                <a asp-page="/Debugger/Details" asp-route-txId="@Model.ID" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0" class="button">Debug Input @index Lock</a>
+                              @if (Model.DebuggerDepsInstalled)
+                              {
+                                  <a asp-page="/Debugger/Details" asp-route-txId="@Model.ID" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0" class="button">Debug Input @index Lock</a>
+                              }
+                              else
+                              {
+                                  <a class="button" href="#" disabled>Debug Input @index Lock</a>
+                              }
                             </div>
 
                             <div class="column is-10">
                                 @if (input.Type != null)
                                 {
-                                    <a asp-page="/Debugger/Details" asp-route-txId="@Model.ID" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug Input @index Type</a>
+                                    @if (Model.DebuggerDepsInstalled)
+                                    {
+                                        <a asp-page="/Debugger/Details" asp-route-txId="@Model.ID" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug Input @index Type</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="button" href="#" disabled>Debug Input @index Type</a>
+                                    }
                                 }
                             </div>
                         }
@@ -51,7 +65,14 @@
                             <div class="column is-10">
                                 @if (Model.ParsedTransaction!.Outputs[index].Type != null)
                                 {
-                                    <a asp-page="/Debugger/Details" asp-route-txId="@Model.ID" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1" class="button">Debug Output @index Type</a>
+                                    @if (Model.DebuggerDepsInstalled)
+                                    {
+                                        <a asp-page="/Debugger/Details" asp-route-txId="@Model.ID" asp-route-ioIndex="@index" asp-route-ioType="output" asp-route-scriptType="1" class="button">Debug Output @index Type</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="button" href="#" disabled>Debug Output @index Type</a>
+                                    }
                                 }
                             </div>
                         }

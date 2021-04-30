@@ -27,6 +27,7 @@ namespace Tippy.Pages
         public EpochView? EpochView { get; set; }
         public String ProcessInfo { get; set; } = "";
         public bool IsDebuggerSupported = !OperatingSystem.IsWindows();
+        public bool DebuggerDepsInstalled { get; set; } = false;
         public Dictionary<string, Token> Tokens { get; set; } = new(); // Token.Hash -> Token
 
         protected PageModelBase(Tippy.Core.Data.TippyDbContext context)
@@ -43,6 +44,7 @@ namespace Tippy.Pages
         public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
             ProcessInfo = ProcessManager.Info;
+            DebuggerDepsInstalled = ProcessManager.DebuggerDepsInstalled;
 
             Projects = await DbContext.Projects.Include(p => p.Tokens).ToListAsync();
             ActiveProject = await DbContext.Projects.FirstOrDefaultAsync(p => p.IsActive);
