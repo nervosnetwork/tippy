@@ -9,9 +9,9 @@
     <key>CFBundleIconFile</key>
     <string>Tippy.icns</string>
     <key>CFBundleVersion</key>
-    <string>0.2.0</string>
+    <string>0.2.1</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.2.0</string>
+    <string>0.2.1</string>
     <key>CFBundleExecutable</key>
     <string>main</string>
     <key>CFBundleInfoDictionaryVersion</key>
