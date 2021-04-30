@@ -22,6 +22,8 @@ namespace Tippy.Ctrl
         /// </summary>
         public static string Info { get; private set; } = "";
 
+        public static bool DebuggerDepsInstalled { get; private set; } = false;
+
         public enum MinerMode
         {
             Default,
@@ -71,6 +73,7 @@ namespace Tippy.Ctrl
             BinariesInfo binariesInfo = new();
             binariesInfo.Refresh();
             Info = binariesInfo.Info;
+            DebuggerDepsInstalled = binariesInfo.HasDebuggerDeps;
         }
 
         /// If any port is already in use, throw InvalidOperationException.
