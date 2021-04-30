@@ -140,7 +140,14 @@
                     @if (Model.IsDebuggerSupported)
                     {
                         <div class="column is-10">
-                            <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0" class="button">Debug this script</a>
+                            @if (Model.DebuggerDepsInstalled)
+                            {
+                                <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="0" class="button">Debug this script</a>
+                            }
+                            else
+                            {
+                                <a class="button" href="#" disabled>Debug this script</a>
+                            }
                             <Partial name="_DebuggerInfo" />
                         </div>
                     }
@@ -163,7 +170,14 @@
                         @if (Model.IsDebuggerSupported)
                         {
                             <div class="column is-10">
-                                <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug this script</a>
+                              @if (Model.DebuggerDepsInstalled)
+                              {
+                                  <a asp-page="/Debugger/Details" asp-route-txHash="@Model.Transaction.Hash" asp-route-ioIndex="@index" asp-route-ioType="input" asp-route-scriptType="1" class="button">Debug this script</a>
+                              }
+                              else
+                              {
+                                  <a class="button" href="#" disabled>Debug this script</a>
+                              }
                                 <Partial name="_DebuggerInfo" />
                             </div>
                         }
