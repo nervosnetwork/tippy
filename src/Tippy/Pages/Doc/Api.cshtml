@@ -45,7 +45,7 @@ http://localhost:5000/api</code></pre>
         <li><code>create_chain({assembler_lock_arg, genesis_issued_cells})</code></li>
         <li>
             <ul>
-                <li><code>assember_lock_arg</code>(optional): Lock arg for block assembler (miner address).</li>
+                <li><code>assembler_lock_arg</code>(optional): Lock arg for block assembler (miner address).</li>
                 <li><code>genesis_issued_cells</code>(optional): An array of genesis issued cells. See example for the structure.</li>
             </ul>
         </li>
@@ -167,6 +167,33 @@ http://localhost:5000/api</code></pre>
     "jsonrpc": "2.0",
     "id": "1",
     "result": "Reverted blocks."
+}</code></pre>
+
+    <h4 class="title">Method <code>ban_transaction</code></h4>
+    <ul>
+        <li><code>ban_transaction(tx_hash, type)</code></li>
+        <li>
+            <ul>
+                <li><code>tx_hash</code>: Tx hash of the transaction.</li>
+                <li><code>type</code>: Deny type, `propose` or `commit`.</li>
+            </ul>
+        </li>
+        <li>result: <code>"Added to deny list."</code></li>
+    </ul>
+    <p>Add a tx to denylist.</p>
+    <h5 class="title">Examples</h5>
+    <p>Request</p>
+    <pre class="has-background-dark"><code>{
+    "id": "1",
+    "jsonrpc": "2.0",
+    "method": "ban_transaction",
+    "params": ["0x9a0580274e9921e04e139214b58ffc60df1625055ab7806ee635b56d329d7732", "propose"]
+}</code></pre>
+    <p>Response</p>
+    <pre class="has-background-dark"><code>{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "result": "Added to denylist."
 }</code></pre>
 
 </div>
