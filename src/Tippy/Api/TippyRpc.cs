@@ -29,7 +29,15 @@ namespace Tippy.Api
 
         readonly TippyDbContext dbContext;
 
-        readonly HashSet<string> methods = new() { "create_chain", "start_chain", "stop_chain", "mine_blocks", "revert_blocks" };
+        readonly HashSet<string> methods = new()
+        {
+            "create_chain",
+            "start_chain",
+            "stop_chain",
+            "mine_blocks",
+            "revert_blocks",
+            "ban_transaction",
+        };
 
         [HttpPost]
         public ActionResult Index()
@@ -96,6 +104,7 @@ namespace Tippy.Api
                 "stop_chain" => StopChain(),
                 "mine_blocks" => MineBlocks(),
                 "revert_blocks" => RevertBlocks(),
+                "ban_transaction" => await BanTransaction(),
                 // TODO: other apis
                 _ => "TODO",
             };
@@ -253,6 +262,39 @@ namespace Tippy.Api
             }
 
             return "Reverted blocks.";
+        }
+
+        // Add a transaction to denylist
+        async Task<object> BanTransaction()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (request.Params == null || request.Params.Length != 2)
+            {
+                throw new Exception("Must provide params as tx hash and deny type.");
+            }
+
+            var txHash = request.Params[0].ToString()!;
+            var type = request.Params[1].ToString()!;
+            try
+            {
+                var item = new DeniedTransaction
+                {
+                    ProjectId = project.Id,
+                    TxHash = txHash,
+                    DenyType = type == "propose" ? DeniedTransaction.Type.Propose : DeniedTransaction.Type.Commit
+                };
+                dbContext.DeniedTransactions.Add(item);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return "Added to denylist.";
         }
     }
 
