@@ -74,6 +74,210 @@ brew install gdb --HEAD --build-from-source
 brew install ttyd
 ```
 
+## API
+
+Tippy exposes a set of RPCs in JSON-RPC 2.0 protocols for controlling a devchain.
+
+It also proxies API calls to the active running devchain for transparent CKB interactions.
+
+The URL of Tippy RPC is <code>http://localhost:5000/api</code>.
+
+### CKB RPCs
+
+For CKB RPCs, simply call any API method with Tippy API URL. For example:
+
+```
+echo '{
+  "id": 2,
+  "jsonrpc": "2.0",
+  "method": "get_tip_block_number",
+  "params": []
+}' \
+| tr -d '\n' \
+| curl -H 'content-type: application/json' -d @- \
+http://localhost:5000/api
+```
+
+See [CKB JSON-RPC doc](https://docs.nervos.org/docs/reference/rpc) for more information.
+
+### Tippy RPCs
+
+#### Method `create_chain`
+* `create_chain({assembler_lock_arg, genesis_issued_cells})`
+  * `assembler_lock_arg`(optional): Lock arg for block assembler (miner address).
+  * `genesis_issued_cells`(optional): An array of genesis issued cells. See example for the structure.
+* result: `{ id, name }`
+
+Create a devchain and set it as current active chain.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "create_chain",
+      "params": [
+        {
+          "assembler_lock_arg": "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d8",
+          "genesis_issued_cells": [
+              {
+                "capacity": "0x5af3107a4000",
+                "lock": {
+                  "code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+                  "args": "0xf2cb132b2f6849ef8abe57e98cddf713bb8d71cb",
+                  "hash_type": "type"
+                }
+            }
+          ]
+        }
+      ]
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": {
+        "id": 4,
+        "name": "CKB devchain"
+      }
+    }
+
+#### Method `start_chain`
+
+* `start_chain()`
+* result: `"ok"`
+
+Start the current active chain.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "start_chain",
+      "params": []
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "ok"
+    }
+
+#### Method `stop_chain`
+
+* `stop_chain()`
+* result: `"ok"`
+
+Stop the current active chain if it's running.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "stop_chain",
+      "params": []
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "ok"
+    }
+
+#### Method `mine_blocks`
+
+* `mine_blocks(number_of_blocks)`
+* result: `"Wait for blocks to be mined."`
+
+Mine `number_of_blocks` blocks at the interval of 1 second.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "mine_blocks",
+      "params": [3]
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "Wait for blocks to be mined."
+    }
+
+#### Method `revert_blocks`
+
+* `revert_blocks(number_of_blocks)`
+* result: `"Reverted blocks."`
+
+Mine `number_of_blocks` blocks at the interval of 1 second.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "revert_blocks",
+      "params": [3]
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "Reverted blocks."
+    }
+
+#### Method `ban_transaction`
+
+* `ban_transaction(tx_hash, type)`
+  * `tx_hash`: Tx hash of the transaction.
+  * `type`: Deny type, `propose` or `commit`.
+* result: `"Added to deny list."`
+
+Add a tx to denylist.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "ban_transaction",
+      "params": ["0x9a0580274e9921e04e139214b58ffc60df1625055ab7806ee635b56d329d7732", "propose"]
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "Added to denylist."
+    }
+
 ## Contributing
 
 1. Fetch the codebase: `git clone https://github.com/nervosnetwork/tippy.git`
