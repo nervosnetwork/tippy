@@ -198,6 +198,58 @@ Response
       "result": "ok"
     }
 
+#### Method `start_miner`
+
+* `start_miner()`
+* result: `"ok"`
+
+Start the default miner.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "start_miner",
+      "params": []
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "ok"
+    }
+
+#### Method `stop_miner`
+
+* `stop_miner()`
+* result: `"ok"`
+
+Stop the current running default miner.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "stop_miner",
+      "params": []
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "ok"
+    }
+
 #### Method `mine_blocks`
 
 * `mine_blocks(number_of_blocks)`
