@@ -34,6 +34,8 @@ namespace Tippy.Api
             "create_chain",
             "start_chain",
             "stop_chain",
+            "start_miner",
+            "stop_miner",
             "mine_blocks",
             "revert_blocks",
             "ban_transaction",
@@ -102,6 +104,8 @@ namespace Tippy.Api
                 "create_chain" => await CreateChain(),
                 "start_chain" => StartChain(),
                 "stop_chain" => StopChain(),
+                "start_miner" => StartMiner(),
+                "stop_miner" => StopMiner(),
                 "mine_blocks" => MineBlocks(),
                 "revert_blocks" => RevertBlocks(),
                 "ban_transaction" => await BanTransaction(),
@@ -186,6 +190,40 @@ namespace Tippy.Api
             }
 
             ProcessManager.Stop(project);
+            return "ok";
+        }
+
+        // Start the default miner
+        object StartMiner()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (!ProcessManager.IsRunning(project))
+            {
+                throw new Exception("Active chain is not running.");
+            }
+
+            ProcessManager.StartMiner(project, ProcessManager.MinerMode.Default);
+            return "ok";
+        }
+
+        // Stop the running default miner
+        object StopMiner()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (!ProcessManager.IsRunning(project))
+            {
+                throw new Exception("Active chain is not running.");
+            }
+
+            ProcessManager.StopMiner(project);
             return "ok";
         }
 
