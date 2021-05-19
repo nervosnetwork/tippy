@@ -59,7 +59,7 @@ Tippy ships with [CKB Debugger](https://github.com/nervosnetwork/ckb-standalone-
 
 ## Install Dependencies
 
-Debugger requires `ttyd` and `gdb`.
+Debugger requires `ttyd` and `gdb`. We recommend that you install them with homebrew.
 
 For Linux
 
@@ -67,7 +67,7 @@ For Linux
 brew install ttyd gdb
 ```
 
-For macOS, must build gdb from source
+For macOS, build gdb from source (with `--build-from-source` option)
 
 ```bash
 brew install gdb --HEAD --build-from-source
