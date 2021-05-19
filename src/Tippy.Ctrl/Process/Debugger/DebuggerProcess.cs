@@ -5,12 +5,12 @@ namespace Tippy.Ctrl.Process.Debugger
 {
     internal class DebuggerProcess : CommandProcess
     {
-        private string ScriptHash;
-        private string ScriptGroupType;
-        private string TxFilePath;
-        private string IoType;
-        private int IoIndex;
-        private string? BinaryPath;
+        private readonly string ScriptHash;
+        private readonly string ScriptGroupType;
+        private readonly string TxFilePath;
+        private readonly string IoType;
+        private readonly int IoIndex;
+        private readonly string? BinaryPath;
 
         public DebuggerProcess(ProcessInfo info, string scriptGroupType, string scriptHash, string txFilePath, string ioType, int ioIndex, string? binaryPath = null) : base(info)
         {

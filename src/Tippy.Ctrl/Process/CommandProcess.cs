@@ -15,7 +15,7 @@ namespace Tippy.Ctrl.Process
 
         internal CommandProcess(ProcessInfo processInfo) => ProcessInfo = processInfo;
 
-        abstract protected void Configure();
+        protected abstract void Configure();
 
         public bool IsRunning
         {

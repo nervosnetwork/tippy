@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -96,15 +95,12 @@ namespace Tippy.Ctrl.Process
 
         string BuildArguments()
         {
-            switch (ProcessInfo.Chain)
+            return ProcessInfo.Chain switch
             {
-                case Core.Models.Project.ChainType.Testnet:
-                    return $"init --chain testnet --ba-arg {ProcessInfo.LockArg}";
-                case Core.Models.Project.ChainType.Mainnet:
-                    return $"init --chain mainnet --ba-arg {ProcessInfo.LockArg}";
-                default:
-                    return $"init --chain dev --ba-arg {ProcessInfo.LockArg} --import-spec -";
-            }
+                Core.Models.Project.ChainType.Testnet => $"init --chain testnet --ba-arg {ProcessInfo.LockArg}",
+                Core.Models.Project.ChainType.Mainnet => $"init --chain mainnet --ba-arg {ProcessInfo.LockArg}",
+                _ => $"init --chain dev --ba-arg {ProcessInfo.LockArg} --import-spec -",
+            };
         }
 
         string ChainSpec()

@@ -29,7 +29,18 @@ namespace Tippy.Api
 
         readonly TippyDbContext dbContext;
 
-        readonly HashSet<string> methods = new() { "create_chain", "start_chain", "stop_chain", "mine_blocks", "revert_blocks" };
+        readonly HashSet<string> methods = new()
+        {
+            "create_chain",
+            "start_chain",
+            "stop_chain",
+            "start_miner",
+            "stop_miner",
+            "mine_blocks",
+            "revert_blocks",
+            "ban_transaction",
+            "unban_transaction",
+        };
 
         [HttpPost]
         public ActionResult Index()
@@ -94,8 +105,12 @@ namespace Tippy.Api
                 "create_chain" => await CreateChain(),
                 "start_chain" => StartChain(),
                 "stop_chain" => StopChain(),
+                "start_miner" => StartMiner(),
+                "stop_miner" => StopMiner(),
                 "mine_blocks" => MineBlocks(),
                 "revert_blocks" => RevertBlocks(),
+                "ban_transaction" => await BanTransaction(),
+                "unban_transaction" => await UnbanTransaction(),
                 // TODO: other apis
                 _ => "TODO",
             };
@@ -180,6 +195,40 @@ namespace Tippy.Api
             return "ok";
         }
 
+        // Start the default miner
+        object StartMiner()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (!ProcessManager.IsRunning(project))
+            {
+                throw new Exception("Active chain is not running.");
+            }
+
+            ProcessManager.StartMiner(project, ProcessManager.MinerMode.Default);
+            return "ok";
+        }
+
+        // Stop the running default miner
+        object StopMiner()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (!ProcessManager.IsRunning(project))
+            {
+                throw new Exception("Active chain is not running.");
+            }
+
+            ProcessManager.StopMiner(project);
+            return "ok";
+        }
+
         // Mine N blocks at the default 1sec interval.
         object MineBlocks()
         { 
@@ -253,6 +302,74 @@ namespace Tippy.Api
             }
 
             return "Reverted blocks.";
+        }
+
+        // Add a transaction to denylist
+        async Task<object> BanTransaction()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (request.Params == null || request.Params.Length != 2)
+            {
+                throw new Exception("Must provide params as tx hash and deny type.");
+            }
+
+            var txHash = request.Params[0].ToString()!;
+            var type = request.Params[1].ToString()!;
+            try
+            {
+                var item = new DeniedTransaction
+                {
+                    ProjectId = project.Id,
+                    TxHash = txHash,
+                    DenyType = type == "propose" ? DeniedTransaction.Type.Propose : DeniedTransaction.Type.Commit
+                };
+                dbContext.DeniedTransactions.Add(item);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return "Added to denylist.";
+        }
+
+        // Remove a transaction from denylist
+        async Task<object> UnbanTransaction()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (request.Params == null || request.Params.Length != 2)
+            {
+                throw new Exception("Must provide params as tx hash and deny type.");
+            }
+
+            var txHash = request.Params[0].ToString()!;
+            var type = request.Params[1].ToString()!;
+            try
+            {
+                var denyType = type == "propose" ? DeniedTransaction.Type.Propose : DeniedTransaction.Type.Commit;
+                var item = dbContext
+                    .DeniedTransactions
+                    .Where(t => t.TxHash == txHash && t.DenyType == denyType)
+                    .First();
+                if (item != null)
+                {
+                    dbContext.DeniedTransactions.Remove(item);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return "Removed from denylist.";
         }
     }
 

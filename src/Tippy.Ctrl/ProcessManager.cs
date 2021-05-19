@@ -31,7 +31,7 @@ namespace Tippy.Ctrl
             Sophisticated,
         }
 
-        static List<ProcessGroup> processGroups = new List<ProcessGroup>();
+        static readonly List<ProcessGroup> processGroups = new();
 
         static ProcessGroup? GroupFor(Project project) =>
             processGroups.Find(g => g.ProcessInfo == ProcessInfo.FromProject(project));

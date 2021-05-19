@@ -32,7 +32,7 @@ jobs:
           macOS     | [Tippy.dmg](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/Tippy.dmg) | <code>TODO</code>
           Linux     | [tippy-linux-x64.tar.gz](https://github.com/nervosnetwork/tippy/releases/download/${{ steps.get_tag.outputs.tag }}/tippy-linux-x64.tar.gz) | <code>TODO</code>
         draft: true
-        prerelease: true
+        prerelease: false
     - name: Output upload URL file
       run: echo "${{ steps.create_release.outputs.upload_url }}" > upload_url.txt
     - name: Save upload URL file
