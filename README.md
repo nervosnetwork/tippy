@@ -307,7 +307,7 @@ Response
 * `ban_transaction(tx_hash, type)`
   * `tx_hash`: Tx hash of the transaction.
   * `type`: Deny type, `propose` or `commit`.
-* result: `"Added to deny list."`
+* result: `"Added to denylist."`
 
 Add a tx to denylist.
 
@@ -328,6 +328,35 @@ Response
       "jsonrpc": "2.0",
       "id": "1",
       "result": "Added to denylist."
+    }
+
+
+#### Method `unban_transaction`
+
+* `unban_transaction(tx_hash, type)`
+  * `tx_hash`: Tx hash of the transaction.
+  * `type`: Deny type, `propose` or `commit`.
+* result: `"Removed from denylist."`
+
+Remove a tx from denylist.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "unban_transaction",
+      "params": ["0x9a0580274e9921e04e139214b58ffc60df1625055ab7806ee635b56d329d7732", "propose"]
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "Removed from denylist."
     }
 
 ## Contributing
