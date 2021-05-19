@@ -39,6 +39,7 @@ namespace Tippy.Api
             "mine_blocks",
             "revert_blocks",
             "ban_transaction",
+            "unban_transaction",
         };
 
         [HttpPost]
@@ -109,6 +110,7 @@ namespace Tippy.Api
                 "mine_blocks" => MineBlocks(),
                 "revert_blocks" => RevertBlocks(),
                 "ban_transaction" => await BanTransaction(),
+                "unban_transaction" => await UnbanTransaction(),
                 // TODO: other apis
                 _ => "TODO",
             };
@@ -333,6 +335,41 @@ namespace Tippy.Api
                 Console.WriteLine(ex.Message);
             }
             return "Added to denylist.";
+        }
+
+        // Remove a transaction from denylist
+        async Task<object> UnbanTransaction()
+        {
+            if (project == null)
+            {
+                throw new Exception("No active chain. Create a chain first.");
+            }
+
+            if (request.Params == null || request.Params.Length != 2)
+            {
+                throw new Exception("Must provide params as tx hash and deny type.");
+            }
+
+            var txHash = request.Params[0].ToString()!;
+            var type = request.Params[1].ToString()!;
+            try
+            {
+                var denyType = type == "propose" ? DeniedTransaction.Type.Propose : DeniedTransaction.Type.Commit;
+                var item = dbContext
+                    .DeniedTransactions
+                    .Where(t => t.TxHash == txHash && t.DenyType == denyType)
+                    .First();
+                if (item != null)
+                {
+                    dbContext.DeniedTransactions.Remove(item);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return "Removed from denylist.";
         }
     }
 
