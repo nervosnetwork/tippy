@@ -33,6 +33,7 @@ namespace Tippy.Api
         {
             "create_chain",
             "delete_chain",
+            "set_active_chain",
             "start_chain",
             "stop_chain",
             "start_miner",
@@ -105,6 +106,7 @@ namespace Tippy.Api
             {
                 "create_chain" => await CreateChain(),
                 "delete_chain" => await DeleteChain(),
+                "set_active_chain" => await SetActiveChain(),
                 "start_chain" => StartChain(),
                 "stop_chain" => StopChain(),
                 "start_miner" => StartMiner(),
@@ -185,6 +187,36 @@ namespace Tippy.Api
                 {
                     ProcessManager.ResetData(project);
                     dbContext.Projects.Remove(project);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
+            return "ok";
+        }
+
+        // Set active chain
+        async Task<object> SetActiveChain()
+        {
+            int? id = null;
+            if (request.Params != null && request.Params.Length == 1)
+            {
+                try
+                {
+                    id = int.Parse(request.Params[0].ToString()!);
+                }
+                catch
+                {
+                }
+            }
+
+            if (id != null)
+            {
+                var project = await dbContext.Projects.FindAsync(id);
+                if (project != null)
+                {
+                    var projects = await dbContext.Projects.ToListAsync();
+                    projects.ForEach(p => p.IsActive = false);
+                    project.IsActive = true;
                     await dbContext.SaveChangesAsync();
                 }
             }
