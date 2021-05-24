@@ -160,7 +160,7 @@ Request
     {
       "id": "1",
       "jsonrpc": "2.0",
-      "method": "create_chain",
+      "method": "delete_chain",
       "params": [4]
     }
 
