@@ -146,6 +146,32 @@ Response
       }
     }
 
+#### Method `delete_chain`
+* `delete_chain(chain_id)`
+  * `chain_id`: ID of the chain to delete.
+* result: `"ok"`
+
+Delete a chain.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "create_chain",
+      "params": [4]
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "ok"
+    }
+
 #### Method `start_chain`
 
 * `start_chain()`
