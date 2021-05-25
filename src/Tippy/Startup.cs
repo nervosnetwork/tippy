@@ -86,6 +86,18 @@ namespace Tippy
 
                 // endpoints.MapFallbackToController("Index", "Home");
             });
+
+            app.Use(async (context,next) =>
+            {
+                var url = context.Request.Path.Value ?? "";
+                if (url.ToLower().EndsWith("/home"))
+                {
+                    context.Response.Redirect("/");
+                    return;
+                }
+
+                await next();
+            });
         }
     }
 }

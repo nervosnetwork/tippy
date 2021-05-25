@@ -34,7 +34,8 @@ namespace Tippy
                 Task.Run(async () =>
                 {
                     await Task.Delay(2000);
-                    UrlOpener.Open("http://localhost:5000/home");
+                    // TODO: read from hosting URLs
+                    UrlOpener.Open("http://localhost:5000/");
                 });
             }
 
