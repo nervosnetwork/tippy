@@ -32,6 +32,9 @@ namespace Tippy.Api
         readonly HashSet<string> methods = new()
         {
             "create_chain",
+            "delete_chain",
+            "list_chains",
+            "set_active_chain",
             "start_chain",
             "stop_chain",
             "start_miner",
@@ -103,6 +106,9 @@ namespace Tippy.Api
             return request.Method switch
             {
                 "create_chain" => await CreateChain(),
+                "delete_chain" => await DeleteChain(),
+                "list_chains" => await ListChains(),
+                "set_active_chain" => await SetActiveChain(),
                 "start_chain" => StartChain(),
                 "stop_chain" => StopChain(),
                 "start_miner" => StartMiner(),
@@ -159,6 +165,81 @@ namespace Tippy.Api
                 id = project.Id,
                 name = project.Name
             };
+        }
+
+        // Delete a chain
+        async Task<object> DeleteChain()
+        {
+            int? id = null;
+            if (request.Params != null && request.Params.Length == 1)
+            {
+                try
+                {
+                    id = int.Parse(request.Params[0].ToString()!);
+                }
+                catch
+                {
+                }
+            }
+
+            if (id != null)
+            {
+                var project = await dbContext.Projects.FindAsync(id);
+                if (project != null)
+                {
+                    ProcessManager.ResetData(project);
+                    dbContext.Projects.Remove(project);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
+            return "ok";
+        }
+
+        // List all chains
+        async Task<object> ListChains()
+        {
+            var projects = await dbContext.Projects.ToListAsync();
+            return projects.Select(p =>
+            {
+                return new
+                {
+                    id = p.Id,
+                    name = p.Name,
+                    chain_type = p.Chain.ToString().ToLower(),
+                    is_active = p.IsActive,
+                };
+            });
+        }
+
+        // Set active chain
+        async Task<object> SetActiveChain()
+        {
+            int? id = null;
+            if (request.Params != null && request.Params.Length == 1)
+            {
+                try
+                {
+                    id = int.Parse(request.Params[0].ToString()!);
+                }
+                catch
+                {
+                }
+            }
+
+            if (id != null)
+            {
+                var project = await dbContext.Projects.FindAsync(id);
+                if (project != null)
+                {
+                    var projects = await dbContext.Projects.ToListAsync();
+                    projects.ForEach(p => p.IsActive = false);
+                    project.IsActive = true;
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
+            return "ok";
         }
 
         // Start the active chain

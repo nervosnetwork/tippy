@@ -59,7 +59,7 @@ Tippy ships with [CKB Debugger](https://github.com/nervosnetwork/ckb-standalone-
 
 ## Install Dependencies
 
-Debugger requires `ttyd` and `gdb`.
+Debugger requires `ttyd` and `gdb`. We recommend that you install them with homebrew.
 
 For Linux
 
@@ -67,7 +67,7 @@ For Linux
 brew install ttyd gdb
 ```
 
-For macOS, must build gdb from source
+For macOS, build gdb from source (with `--build-from-source` option)
 
 ```bash
 brew install gdb --HEAD --build-from-source
@@ -144,6 +144,95 @@ Response
         "id": 4,
         "name": "CKB devchain"
       }
+    }
+
+#### Method `delete_chain`
+* `delete_chain(chain_id)`
+  * `chain_id`: ID of the chain to delete.
+* result: `"ok"`
+
+Delete a chain.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "delete_chain",
+      "params": [4]
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "ok"
+    }
+
+#### Method `list_chains`
+* result: `[{ id, name, chain_type, is_active }]`
+
+List all chains.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "list_chains",
+      "params": []
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": [
+        {
+          "id": 1,
+          "name": "Aggron",
+          "chain_type": "testnet",
+          "is_active": false
+        },
+        {
+          "id": 2,
+          "name": "CKB devchain",
+          "chain_type": "dev",
+          "is_active": true
+        }
+      ]
+    }
+
+#### Method `set_active_chain`
+* `set_active_chain(chain_id)`
+  * `chain_id`: ID of the chain to set to active.
+* result: `"ok"`
+
+Set active chain.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "set_active_chain",
+      "params": [4]
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": "ok"
     }
 
 #### Method `start_chain`
