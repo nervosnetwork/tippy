@@ -172,6 +172,43 @@ Response
       "result": "ok"
     }
 
+#### Method `list_chains`
+* result: `[{ id, name, chain_type, is_active }]`
+
+List all chains.
+
+**Example**
+
+Request
+
+    {
+      "id": "1",
+      "jsonrpc": "2.0",
+      "method": "list_chains",
+      "params": []
+    }
+
+Response
+
+    {
+      "jsonrpc": "2.0",
+      "id": "1",
+      "result": [
+        {
+          "id": 1,
+          "name": "Aggron",
+          "chain_type": "testnet",
+          "is_active": false
+        },
+        {
+          "id": 2,
+          "name": "CKB devchain",
+          "chain_type": "dev",
+          "is_active": true
+        }
+      ]
+    }
+
 #### Method `set_active_chain`
 * `set_active_chain(chain_id)`
   * `chain_id`: ID of the chain to set to active.
