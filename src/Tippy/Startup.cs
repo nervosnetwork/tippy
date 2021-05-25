@@ -105,10 +105,10 @@ namespace Tippy
             });
 
             appLifetime.ApplicationStarted.Register(() => {
+                Settings.GetSettings().AppUrl = app.ServerFeatures.Get<IServerAddressesFeature>().Addresses.ToList().First();
                 if (Settings.GetSettings().AppSettings.OpenBrowserOnLaunch)
                 {
-                    var root = app.ServerFeatures.Get<IServerAddressesFeature>().Addresses.ToList().First();
-                    UrlOpener.Open(root);
+                    UrlOpener.Open(Settings.GetSettings().AppUrl);
                 }
             });
         }

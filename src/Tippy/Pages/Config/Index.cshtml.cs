@@ -13,6 +13,7 @@ namespace Tippy.Pages.Config
         [BindProperty]
         [Display(Name = "Open browser on launch")]
         public bool OpenBrowserOnLaunch { get; set; } = Core.Settings.GetSettings().AppSettings.OpenBrowserOnLaunch;
+        public string AppUrl = Core.Settings.GetSettings().AppUrl;
 
         [TempData]
         public string Message { get; set; } = "";
