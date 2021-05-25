@@ -33,6 +33,7 @@ namespace Tippy.Api
         {
             "create_chain",
             "delete_chain",
+            "list_chains",
             "set_active_chain",
             "start_chain",
             "stop_chain",
@@ -106,6 +107,7 @@ namespace Tippy.Api
             {
                 "create_chain" => await CreateChain(),
                 "delete_chain" => await DeleteChain(),
+                "list_chains" => await ListChains(),
                 "set_active_chain" => await SetActiveChain(),
                 "start_chain" => StartChain(),
                 "stop_chain" => StopChain(),
@@ -192,6 +194,22 @@ namespace Tippy.Api
             }
 
             return "ok";
+        }
+
+        // List all chains
+        async Task<object> ListChains()
+        {
+            var projects = await dbContext.Projects.ToListAsync();
+            return projects.Select(p =>
+            {
+                return new
+                {
+                    id = p.Id,
+                    name = p.Name,
+                    chain_type = p.Chain.ToString().ToLower(),
+                    is_active = p.IsActive,
+                };
+            });
         }
 
         // Set active chain
