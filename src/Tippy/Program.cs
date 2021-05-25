@@ -1,15 +1,12 @@
 using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Tippy.Core;
 using Tippy.Ctrl;
 using Tippy.Hubs;
-using Tippy.Util;
 
 namespace Tippy
 {
@@ -28,16 +25,6 @@ namespace Tippy
             _hubContext = host.Services.GetService(typeof(IHubContext<LogHub>)) as IHubContext<LogHub>;
             ProcessManager.NodeLogReceived += OnNodeLogReceived;
             ProcessManager.FetchInfo();
-
-            if (Settings.GetSettings().AppSettings.OpenBrowserOnLaunch)
-            {
-                Task.Run(async () =>
-                {
-                    await Task.Delay(2000);
-                    // TODO: read from hosting URLs
-                    UrlOpener.Open("http://localhost:5000/");
-                });
-            }
 
             host.Run();
         }

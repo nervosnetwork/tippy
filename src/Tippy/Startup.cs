@@ -1,15 +1,20 @@
 using System;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Tippy.Core;
 using Tippy.Filters;
 using Tippy.Hubs;
+using Tippy.Util;
+using IHostApplicationLifetime = Microsoft.Extensions.Hosting.IHostApplicationLifetime;
 
 namespace Tippy
 {
@@ -56,7 +61,7 @@ namespace Tippy
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -87,7 +92,7 @@ namespace Tippy
                 // endpoints.MapFallbackToController("Index", "Home");
             });
 
-            app.Use(async (context,next) =>
+            app.Use(async (context, next) =>
             {
                 var url = context.Request.Path.Value ?? "";
                 if (url.ToLower().EndsWith("/home"))
@@ -97,6 +102,14 @@ namespace Tippy
                 }
 
                 await next();
+            });
+
+            appLifetime.ApplicationStarted.Register(() => {
+                if (Settings.GetSettings().AppSettings.OpenBrowserOnLaunch)
+                {
+                    var root = app.ServerFeatures.Get<IServerAddressesFeature>().Addresses.ToList().First();
+                    UrlOpener.Open(root);
+                }
             });
         }
     }
