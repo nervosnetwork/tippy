@@ -49,6 +49,34 @@ brew install nervosnetwork/tap/tippy
 
 While Tippy runs as a console application, it also provides web UI. By default the dashboard UI will be opened automatically, if not you can access it by visiting [http://localhost:5000/](http://localhost:5000/) from a browser.
 
+### Override the App URL
+
+If you want to access the Web UI and Tippy API from another URL than the default `http://localhost` URL, there are two options.
+
+#### 1. Set Environment Variable `ASPNETCORE_URLS`
+
+On Linux you can set the `ASPNETCORE_URLS` Environment Variable to override the default App URL. For example, launch Tippy this way to use `http://0.0.0.0:5000`:
+
+```shell
+ASPNETCORE_URLS="http://0.0.0.0:5000" tippy
+```
+
+#### 2. Modify `appsettings.json`
+
+You can also modify `appsettings.json` file to override the default App URL. For example, add the following section to use `http://0.0.0.0:5000`:
+
+```json
+"Kestrel": {
+  "EndPoints": {
+    "Http": {
+      "Url": "http://0.0.0.0:5000"
+    },
+  }
+}
+```
+
+`appsettings.json` locates in `/Applications/Tippy.app/Contents/MacOS/` on macOS and in the root Tippy folder on Windows.
+
 ### Debugger
 
 Tippy ships with [CKB Debugger](https://github.com/nervosnetwork/ckb-standalone-debugger) to help off-chain contract development.
