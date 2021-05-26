@@ -600,7 +600,8 @@ namespace Tippy.Api
         internal static async void RecordIfNecessary(TippyDbContext dbContext, RequestObject request, string result, Project project)
         {
             var error = JsonSerializer.Deserialize<ErrorResponseObject>(result);
-            if (error != null)
+            var shouldRecord = true; // error != null;
+            if (shouldRecord)
             {
                 object raw = "";
                 if (request.Params != null && request.Params.Length > 0)
@@ -611,7 +612,7 @@ namespace Tippy.Api
                 {
                     ProjectId = project.Id,
                     RawTransaction = JsonSerializer.Serialize(raw),
-                    Error = error.Error.Message,
+                    Error = error?.Error?.Message ?? "",
                     CreatedAt = DateTime.Now
                 };
 
