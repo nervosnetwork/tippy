@@ -7,7 +7,7 @@ using Tippy.ApiData;
 using Tippy.Core.Models;
 using static Tippy.Helpers.TransactionHelper;
 
-namespace Tippy.Pages.FailedTransactions
+namespace Tippy.Pages.RecordedTransactions
 {
     public class DetailsModel : PageModelBase
     {

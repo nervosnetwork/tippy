@@ -1,12 +1,12 @@
 ﻿@page
-@model Tippy.Pages.FailedTransactions.IndexModel
+@model Tippy.Pages.RecordedTransactions.IndexModel
 @{
-    ViewData["Title"] = "Failed Transactions";
+    ViewData["Title"] = "Recorded Transactions";
 }
 
-<h1 class="title">Failed Transactions</h1>
+<h1 class="title">Recorded Transactions</h1>
 
-@if (Model.FailedTransactions.Count > 0)
+@if (Model.RecordedTransactions.Count > 0)
 {
     <table class="table is-striped is-narrow is-fullwidth is-hoverable">
         <thead>
@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var tx in Model.FailedTransactions)
+            @foreach (var tx in Model.RecordedTransactions)
             {
                 <tr>
                     <td>
