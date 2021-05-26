@@ -75,7 +75,7 @@ You can also modify `appsettings.json` file to override the default App URL. For
 }
 ```
 
-`appsettings.json` locates in `/Applications/Tippy.app/Contents/MacOS/` on macOS and in the root Tippy folder on Windows.
+`appsettings.json` locates in `/Applications/Tippy.app/Contents/MacOS/` on macOS and in the root Tippy folder on Windows/Linux. If Tippy is installed with Homebrew on Linux then it locates in `/home/linuxbrew/.linuxbrew/Cellar/tippy-linux/[version]/libexec/`.
 
 ### Debugger
 
