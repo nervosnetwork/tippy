@@ -70,7 +70,7 @@ You can also modify `appsettings.json` file to override the default App URL. For
   "EndPoints": {
     "Http": {
       "Url": "http://0.0.0.0:5000"
-    },
+    }
   }
 }
 ```
