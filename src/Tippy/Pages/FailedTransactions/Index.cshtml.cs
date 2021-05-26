@@ -6,7 +6,7 @@ namespace Tippy.Pages.FailedTransactions
 {
     public class IndexModel : PageModelBase
     {
-        public List<FailedTransaction> FailedTransactions { get; set; } = new List<FailedTransaction>();
+        public List<RecordedTransaction> FailedTransactions { get; set; } = new List<RecordedTransaction>();
 
         public IndexModel(Tippy.Core.Data.TippyDbContext context) : base(context)
         {
@@ -14,8 +14,8 @@ namespace Tippy.Pages.FailedTransactions
 
         public void OnGet()
         {
-            DbContext.Entry(ActiveProject!).Collection(p => p.FailedTransactions).Load();
-            FailedTransactions = ActiveProject!.FailedTransactions;
+            DbContext.Entry(ActiveProject!).Collection(p => p.RecordedTransactions).Load();
+            FailedTransactions = ActiveProject!.RecordedTransactions;
             FailedTransactions.Reverse();
         }
     }

@@ -43,7 +43,7 @@ namespace Tippy.Pages.Projects
                 Project.LockArg = Address.ParseAddress(Project.LockArg, Project.LockArg.Substring(0, 3)).Args;
             }
             Project.Tokens = new List<Token>();
-            Project.FailedTransactions = new List<FailedTransaction>();
+            Project.RecordedTransactions = new List<RecordedTransaction>();
             Project.IsActive = !Projects.Any(p => p.IsActive);
             DbContext.Projects.Add(Project);
             await DbContext.SaveChangesAsync();

@@ -2,7 +2,7 @@ using System;
 
 namespace Tippy.Core.Models
 {
-    public class FailedTransaction
+    public class RecordedTransaction
     {
         public int Id { get; set; }
 

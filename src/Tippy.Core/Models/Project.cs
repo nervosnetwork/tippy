@@ -46,7 +46,7 @@ namespace Tippy.Core.Models
         public string ExtraToml { get; set; } = "";
 
         public List<Token> Tokens { get; set; } = default!;
-        public List<FailedTransaction> FailedTransactions { get; set; } = default!;
+        public List<RecordedTransaction> RecordedTransactions { get; set; } = default!;
         public List<DeniedTransaction> DeniedTransactions { get; set; } = default!;
     }
 }

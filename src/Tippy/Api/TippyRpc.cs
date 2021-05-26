@@ -607,7 +607,7 @@ namespace Tippy.Api
                 {
                     raw = request.Params[0];
                 }
-                var tx = new FailedTransaction
+                var tx = new RecordedTransaction
                 {
                     ProjectId = project.Id,
                     RawTransaction = JsonSerializer.Serialize(raw),
@@ -615,7 +615,7 @@ namespace Tippy.Api
                     CreatedAt = DateTime.Now
                 };
 
-                dbContext.FailedTransactions.Add(tx);
+                dbContext.RecordedTransactions.Add(tx);
                 await dbContext.SaveChangesAsync();
             }
         }

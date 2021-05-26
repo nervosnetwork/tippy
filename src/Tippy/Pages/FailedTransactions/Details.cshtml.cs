@@ -11,7 +11,7 @@ namespace Tippy.Pages.FailedTransactions
 {
     public class DetailsModel : PageModelBase
     {
-        public FailedTransaction Transaction { get; set; } = default!;
+        public RecordedTransaction Transaction { get; set; } = default!;
         public string RawTransaction { get; set; } = "{}";
 
         public Ckb.Types.Transaction? ParsedTransaction { get; set; } = null;
@@ -32,7 +32,7 @@ namespace Tippy.Pages.FailedTransactions
             }
             ID = (int)id;
 
-            Transaction = await DbContext.FailedTransactions.FirstOrDefaultAsync(t => t.Id == id);
+            Transaction = await DbContext.RecordedTransactions.FirstOrDefaultAsync(t => t.Id == id);
 
             if (Transaction == null)
             {
