@@ -557,6 +557,12 @@ namespace Tippy.Api
         public Error Error { get; set; } = default!;
     }
 
+    class ResultResponseObject
+    {
+        [JsonPropertyName("result")]
+        public object Result { get; set; } = default!;
+    }
+
     class RawRpcClient
     {
         readonly string Url;
@@ -600,6 +606,7 @@ namespace Tippy.Api
         internal static async void RecordIfNecessary(TippyDbContext dbContext, RequestObject request, string result, Project project)
         {
             var error = JsonSerializer.Deserialize<ErrorResponseObject>(result);
+            var txHash = JsonSerializer.Deserialize<ResultResponseObject>(result);
             var shouldRecord = true; // error != null;
             if (shouldRecord)
             {
@@ -611,6 +618,7 @@ namespace Tippy.Api
                 var tx = new RecordedTransaction
                 {
                     ProjectId = project.Id,
+                    TxHash = txHash?.Result?.ToString() ?? "",
                     RawTransaction = JsonSerializer.Serialize(raw),
                     Error = error?.Error?.Message ?? "",
                     CreatedAt = DateTime.Now

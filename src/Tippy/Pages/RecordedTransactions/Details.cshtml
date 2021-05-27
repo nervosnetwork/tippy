@@ -1,10 +1,10 @@
 ﻿@page
 @model Tippy.Pages.RecordedTransactions.DetailsModel
 @{
-    ViewData["Title"] = "Failed Transaction";
+    ViewData["Title"] = "Recorded Transaction";
 }
 
-<h1 class="title">Failed Transaction</h1>
+<h1 class="title">Recorded Transaction</h1>
 
 <div class="box transaction-box">
     <div class="columns is-multiline">
@@ -13,6 +13,13 @@
         </div>
         <div class="column is-10">
             <span>@Model.Transaction.CreatedAt</span>
+        </div>
+
+        <div class="column is-2">
+            <label>Tx Hash</label>
+        </div>
+        <div class="column is-10">
+            <span>@Model.Transaction.TxHash</span>
         </div>
 
         <div class="column is-2">

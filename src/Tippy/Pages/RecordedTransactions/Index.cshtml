@@ -12,7 +12,7 @@
         <thead>
             <tr>
                 <th class="has-text-left">ID</th>
-                <th class="has-text-left">Raw Tx</th>
+                <th class="has-text-left">Tx Hash</th>
                 <th class="has-text-left">Error</th>
                 <th class="has-text-left">Time</th>
             </tr>
@@ -24,7 +24,7 @@
                     <td>
                         <a asp-page="./Details" asp-route-id="@tx.Id">@tx.Id</a>
                     </td>
-                    <td>@tx.RawTransaction.Substring(0, System.Math.Min(100, tx.RawTransaction.Length))</td>
+                    <td>@tx.TxHash</td>
                     <td>@tx.Error</td>
                     <td>@tx.CreatedAt</td>
                 </tr>
