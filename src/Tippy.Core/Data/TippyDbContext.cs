@@ -12,7 +12,7 @@ namespace Tippy.Core.Data
 
         public DbSet<Project> Projects { get; set; } = null!;
         public DbSet<Token> Tokens { get; set; } = null!;
-        public DbSet<FailedTransaction> FailedTransactions { get; set; } = null!;
+        public DbSet<RecordedTransaction> RecordedTransactions { get; set; } = null!;
         public DbSet<DeniedTransaction> DeniedTransactions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,9 +30,9 @@ namespace Tippy.Core.Data
                 .WithMany(p => p.Tokens)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<FailedTransaction>()
+            modelBuilder.Entity<RecordedTransaction>()
                 .HasOne(t => t.Project)
-                .WithMany(p => p.FailedTransactions)
+                .WithMany(p => p.RecordedTransactions)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<DeniedTransaction>()

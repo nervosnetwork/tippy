@@ -69,7 +69,7 @@ namespace Tippy.Pages.Debugger
             Transaction transaction;
             if (txId != null)
             {
-                FailedTransaction? failedTransaction = await DbContext.FailedTransactions.FirstOrDefaultAsync(t => t.Id == txId);
+                RecordedTransaction? failedTransaction = await DbContext.RecordedTransactions.FirstOrDefaultAsync(t => t.Id == txId);
                 if (failedTransaction == null)
                 {
                     throw new Exception($"Failed transaction not found, check your txID: {txId}");

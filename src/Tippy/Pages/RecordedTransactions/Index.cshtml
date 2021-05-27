@@ -1,30 +1,30 @@
 ﻿@page
-@model Tippy.Pages.FailedTransactions.IndexModel
+@model Tippy.Pages.RecordedTransactions.IndexModel
 @{
-    ViewData["Title"] = "Failed Transactions";
+    ViewData["Title"] = "Recorded Transactions";
 }
 
-<h1 class="title">Failed Transactions</h1>
+<h1 class="title">Recorded Transactions</h1>
 
-@if (Model.FailedTransactions.Count > 0)
+@if (Model.RecordedTransactions.Count > 0)
 {
     <table class="table is-striped is-narrow is-fullwidth is-hoverable">
         <thead>
             <tr>
                 <th class="has-text-left">ID</th>
-                <th class="has-text-left">Raw Tx</th>
+                <th class="has-text-left">Tx Hash</th>
                 <th class="has-text-left">Error</th>
                 <th class="has-text-left">Time</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var tx in Model.FailedTransactions)
+            @foreach (var tx in Model.RecordedTransactions)
             {
                 <tr>
                     <td>
                         <a asp-page="./Details" asp-route-id="@tx.Id">@tx.Id</a>
                     </td>
-                    <td>@tx.RawTransaction.Substring(0, System.Math.Min(100, tx.RawTransaction.Length))</td>
+                    <td>@tx.TxHash</td>
                     <td>@tx.Error</td>
                     <td>@tx.CreatedAt</td>
                 </tr>

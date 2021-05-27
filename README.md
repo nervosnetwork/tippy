@@ -47,7 +47,35 @@ brew install nervosnetwork/tap/tippy
 
 ### Tippy Console and UI
 
-While Tippy runs as a console application, it also provides web UI. By default the dashboard UI will be opened automatically, if not you can access it by visiting [http://localhost:5000/Home](http://localhost:5000/Home) from a browser.
+While Tippy runs as a console application, it also provides web UI. By default the dashboard UI will be opened automatically, if not you can access it by visiting [http://localhost:5000/](http://localhost:5000/) from a browser.
+
+### Override the App URL
+
+If you want to access the Web UI and Tippy API from another URL than the default `http://localhost` URL, there are two options.
+
+#### 1. Set Environment Variable `ASPNETCORE_URLS`
+
+On Linux you can set the `ASPNETCORE_URLS` Environment Variable to override the default App URL. For example, launch Tippy this way to use `http://0.0.0.0:5000`:
+
+```shell
+ASPNETCORE_URLS="http://0.0.0.0:5000" tippy
+```
+
+#### 2. Modify `appsettings.json`
+
+You can also modify `appsettings.json` file to override the default App URL. For example, add the following section to use `http://0.0.0.0:5000`:
+
+```json
+"Kestrel": {
+  "EndPoints": {
+    "Http": {
+      "Url": "http://0.0.0.0:5000"
+    }
+  }
+}
+```
+
+`appsettings.json` locates in `/Applications/Tippy.app/Contents/MacOS/` on macOS and in the root Tippy folder on Windows/Linux. If Tippy is installed with Homebrew on Linux then it locates in `/home/linuxbrew/.linuxbrew/Cellar/tippy-linux/[version]/libexec/`.
 
 ### Debugger
 
@@ -99,6 +127,10 @@ http://localhost:5000/api
 ```
 
 See [CKB JSON-RPC doc](https://docs.nervos.org/docs/reference/rpc) for more information.
+
+### The `send_transaction` API method
+
+If you call CKB's `send_transaction` API method through Tippy API, the transactions will be recorded in Tippy. Go to the `Recorded Transactions` tab to view them.
 
 ### Tippy RPCs
 
@@ -462,7 +494,7 @@ Response
   ```
 4. Open `Tippy.sln` with Visual Studio 2019 (v16.8 or later), Visual Studio 2019 for Mac (v8.8 or later), or Visual Studio Code
 5. Select `Tippy` as startup project for the solution, then start debugging it
-6. Browse `http://localhost:5000/home` in your browser
+6. Browse `http://localhost:5000/` in your browser
 
 ### Add Database Migration
 

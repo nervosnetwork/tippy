@@ -2,9 +2,10 @@ using System;
 
 namespace Tippy.Core.Models
 {
-    public class FailedTransaction
+    public class RecordedTransaction
     {
         public int Id { get; set; }
+        public string TxHash { get; set; } = "";
 
         public string RawTransaction { get; set; } = "";
 

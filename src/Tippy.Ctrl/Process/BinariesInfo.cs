@@ -58,7 +58,16 @@ namespace Tippy.Ctrl.Process
                     process.StartInfo.FileName = dep;
                     process.StartInfo.Arguments = "--version";
                     process.StartInfo.WorkingDirectory = Core.Environment.GetAppDataFolder();
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.OutputDataReceived += (sender, e) =>
+                    {
+                        if (!String.IsNullOrEmpty(e.Data))
+                        {
+                            Info += e.Data + "\n";
+                        }
+                    };
                     process.Start();
+                    process.BeginOutputReadLine();
                     process.WaitForExit();
                 }
                 catch

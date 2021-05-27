@@ -8,6 +8,7 @@ namespace Tippy.Core
     public class Settings
     {
         public AppSettings AppSettings { get; set; } = default!;
+        public string AppUrl { get; set; } = "";
 
         private static Settings? singleton;
         public static Settings GetSettings()

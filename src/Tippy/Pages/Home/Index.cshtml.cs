@@ -1,8 +1,8 @@
 using System;
 using Ckb.Address;
-using Ckb.Rpc;
 using Ckb.Types;
 using Microsoft.AspNetCore.Mvc;
+using Tippy.Core;
 using Tippy.Ctrl;
 
 namespace Tippy.Pages.Home
@@ -14,6 +14,7 @@ namespace Tippy.Pages.Home
         }
 
         public string MinerAddress { get; set; } = "";
+        public string ApiUrl { get; set; } = "";
 
         [TempData]
         public string Message { get; set; } = "";
@@ -28,13 +29,21 @@ namespace Tippy.Pages.Home
             IsMinerRunning = IsNodeRunning && ProcessManager.IsMinerRunning(ActiveProject!);
             CanStartMining = IsNodeRunning && ProcessManager.CanStartMining(ActiveProject!);
 
+            if (Settings.GetSettings().AppUrl.EndsWith("/"))
+            {
+                ApiUrl = Settings.GetSettings().AppUrl + "api";
+            }
+            else
+            { 
+                ApiUrl = Settings.GetSettings().AppUrl + "/api";
+            }
+
             if (IsNodeRunning)
             {
-                Client rpc = new($"http://localhost:{ActiveProject!.NodeRpcPort}");
                 MinerAddress = Address.GenerateAddress(
                     new Script
                     {
-                        Args = ActiveProject.LockArg,
+                        Args = ActiveProject!.LockArg,
                         CodeHash = Address.SecpCodeHash,
                         HashType = Address.SecpHashType
                     },
