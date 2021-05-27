@@ -128,6 +128,10 @@ http://localhost:5000/api
 
 See [CKB JSON-RPC doc](https://docs.nervos.org/docs/reference/rpc) for more information.
 
+### The `send_transaction` API method
+
+If you call CKB's `send_transaction` API method through Tippy API, the transactions will be recorded in Tippy. Go to the `Recorded Transactions` tab to view them.
+
 ### Tippy RPCs
 
 #### Method `create_chain`
