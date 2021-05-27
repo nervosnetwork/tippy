@@ -19,7 +19,11 @@
             <label>Tx Hash</label>
         </div>
         <div class="column is-10">
-            <span>@Model.Transaction.TxHash</span>
+            <span>
+                <a asp-page="/Transactions/Details" asp-route-txhash="@Model.Transaction.TxHash" class="hash-text">
+                    @Model.Transaction.TxHash
+                </a>
+            </span>
         </div>
 
         <div class="column is-2">
