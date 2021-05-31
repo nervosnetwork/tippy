@@ -60,10 +60,7 @@ namespace Tippy.Ctrl.Process
                     process.StartInfo.RedirectStandardOutput = true;
                     process.OutputDataReceived += (sender, e) =>
                     {
-                        if (!String.IsNullOrEmpty(e.Data))
-                        {
-                            Info += e.Data + "\n";
-                        }
+                        // Do not show gdb/ttyd
                     };
                     process.Start();
                     process.BeginOutputReadLine();
