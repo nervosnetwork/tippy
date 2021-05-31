@@ -70,6 +70,7 @@ namespace Tippy.Ctrl
 
         public static void FetchInfo()
         {
+            Process.Debugger.ProcessManager.SetEnv();
             BinariesInfo binariesInfo = new();
             binariesInfo.Refresh();
             Info = binariesInfo.Info;

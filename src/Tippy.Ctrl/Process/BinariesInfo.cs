@@ -48,7 +48,6 @@ namespace Tippy.Ctrl.Process
         void RefreshDebuggerDeps()
         {
             HasDebuggerDeps = true;
-            // BUGBUG: .Net won't find commands on M1 Mac which has homebrew location at `/opt/homebrew/bin`.
             foreach (var dep in new List<string>() { "gdb", "ttyd" })
             {
                 try
