@@ -26,7 +26,7 @@ namespace Tippy.Util
             }
             catch
             {
-                Console.WriteLine($"Couldn't open URL $(url). Try opening it from your browser.");
+                Console.WriteLine($"Couldn't open URL {url}. Try opening it from your browser.");
             }
         }
     }
