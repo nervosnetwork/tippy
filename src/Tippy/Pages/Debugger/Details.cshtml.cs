@@ -8,6 +8,7 @@ using Ckb.Cryptography;
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 using DebuggerProcessManager = Tippy.Ctrl.Process.Debugger.ProcessManager;
 using TypesConvert = Ckb.Types.Convert;
@@ -25,17 +26,31 @@ namespace Tippy.Pages.Debugger
 
         [BindProperty]
         public string? FilePath { get; set; }
+
+        public List<SelectListItem> ScriptVersions { get; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "1", Text = "CKB2021" },
+            new SelectListItem { Value = "0", Text = "CKB2019" },
+        };
+
+        [BindProperty]
+        public string? ScriptVersion { get; set; }
+
         public IActionResult OnPost(string? txHash, string? ioType, int? ioIndex, int? scriptType, int? txId = null)
         {
-            if (FilePath == null)
-            {
-                throw new Exception("No file path provided!");
+            string url = txId == null ?
+                $"/Debugger/Details?txHash={txHash}&ioType={ioType}&ioIndex={ioIndex}&scriptType={scriptType}"
+                :
+                $"/Debugger/Details?txId={txId}&ioType={ioType}&ioIndex={ioIndex}&scriptType={scriptType}";
+
+            if (FilePath != null) {
+                url = url + $"&filePath={FilePath}";
             }
 
-            string url = txId == null ?
-                $"/Debugger/Details?txHash={txHash}&ioType={ioType}&ioIndex={ioIndex}&scriptType={scriptType}&filePath={FilePath}"
-                :
-                $"/Debugger/Details?txId={txId}&ioType={ioType}&ioIndex={ioIndex}&scriptType={scriptType}&filePath={FilePath}";
+            if (ScriptVersion != null) {
+                url = url + $"&scriptVersion={ScriptVersion}";
+            }
+
             return Redirect(url);
         }
 
@@ -45,8 +60,13 @@ namespace Tippy.Pages.Debugger
             return Redirect("/Home");
         }
 
-        public async Task<IActionResult> OnGet(string? txHash, string? ioType, int? ioIndex, int? scriptType, string? filePath, int? txId = null)
+        public async Task<IActionResult> OnGet(string? txHash, string? ioType, int? ioIndex, int? scriptType, string? filePath, string? scriptVersion, int? txId = null)
         {
+            if (scriptVersion == null) {
+                scriptVersion = "1";
+            }
+            ScriptVersion = scriptVersion;
+
             if (ioType != "input" && ioType != "output")
             {
                 throw new Exception("ioType must be `input` or `output`!");
@@ -126,7 +146,7 @@ namespace Tippy.Pages.Debugger
             string scriptGroupType = scriptType == 0 ? "lock" : "type";
             try
             {
-                DebuggerProcessManager.Start(ActiveProject!, scriptGroupType, scriptHash, mockTxFilePath, binaryFilePath, ioType, (int)ioIndex, binaryForDebugger);
+                DebuggerProcessManager.Start(ActiveProject!, scriptGroupType, scriptHash, mockTxFilePath, binaryFilePath, ioType, (int)ioIndex, scriptVersion, binaryForDebugger);
             }
             catch (System.InvalidOperationException e)
             {
@@ -138,7 +158,7 @@ namespace Tippy.Pages.Debugger
 
         private static string GetCellDepData(MockTransaction mockTx, Script script)
         {
-            if (script.HashType == "data")
+            if (script.HashType != "type")
             {
                 return GetCellDepDataByDataHash(mockTx, script.CodeHash);
             }

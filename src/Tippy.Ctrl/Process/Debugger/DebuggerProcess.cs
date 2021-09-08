@@ -10,15 +10,17 @@ namespace Tippy.Ctrl.Process.Debugger
         private readonly string TxFilePath;
         private readonly string IoType;
         private readonly int IoIndex;
+        private readonly string ScriptVersion;
         private readonly string? BinaryPath;
 
-        public DebuggerProcess(ProcessInfo info, string scriptGroupType, string scriptHash, string txFilePath, string ioType, int ioIndex, string? binaryPath = null) : base(info)
+        public DebuggerProcess(ProcessInfo info, string scriptGroupType, string scriptHash, string txFilePath, string ioType, int ioIndex, string scriptVersion, string? binaryPath = null) : base(info)
         {
             ScriptHash = scriptHash;
             ScriptGroupType = scriptGroupType;
             TxFilePath = txFilePath;
             IoType = ioType;
             IoIndex = ioIndex;
+            ScriptVersion = scriptVersion;
             BinaryPath = binaryPath;
         }
 
@@ -30,7 +32,7 @@ namespace Tippy.Ctrl.Process.Debugger
                 throw new Exception("No file path found!");
             }
             string debuggerBinaryPath = BinaryFullPath("ckb-debugger");
-            string arguments = $"--port 7682 {debuggerBinaryPath} -l 0.0.0.0:2000 -g {ScriptGroupType} -h {ScriptHash} -t {TxFilePath} -e {IoType} -i {IoIndex}";
+            string arguments = $"--port 7682 {debuggerBinaryPath} --mode gdb --gdb-listen 0.0.0.0:2000 --script-group-type {ScriptGroupType} --script-hash {ScriptHash} --tx-file {TxFilePath} --cell-type {IoType} --cell-index {IoIndex} --script-version {ScriptVersion}";
             if (BinaryPath != null)
             {
                 arguments += $" -r {BinaryPath}";

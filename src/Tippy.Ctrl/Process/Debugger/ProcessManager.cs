@@ -7,12 +7,12 @@ namespace Tippy.Ctrl.Process.Debugger
         private static GdbProcess? GdbProcessInstance;
         private static DebuggerProcess? DebuggerProcessInstance;
 
-        public static void Start(Project project, string scriptGroupType, string scriptHash, string txFilePath, string debugFilePath, string ioType, int ioIndex, string? binaryForDebugger)
+        public static void Start(Project project, string scriptGroupType, string scriptHash, string txFilePath, string debugFilePath, string ioType, int ioIndex, string scriptVersion, string? binaryForDebugger)
         {
             Stop();
             ProcessInfo processInfo = ProcessInfo.FromProject(project);
             GdbProcessInstance = new GdbProcess(processInfo, debugFilePath);
-            DebuggerProcessInstance = new DebuggerProcess(processInfo, scriptGroupType, scriptHash, txFilePath, ioType, ioIndex, binaryForDebugger);
+            DebuggerProcessInstance = new DebuggerProcess(processInfo, scriptGroupType, scriptHash, txFilePath, ioType, ioIndex, scriptVersion, binaryForDebugger);
             DebuggerProcessInstance.Start();
             GdbProcessInstance.Start();
         }

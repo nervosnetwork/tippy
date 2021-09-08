@@ -7,7 +7,7 @@ namespace Tippy.Ctrl.Process
     {
         internal string Info { get; private set; } = "";
         internal bool HasDebuggerDeps { get; private set; } = false;
-        readonly List<string> binaries = new() { "ckb", "ckb-indexer", "ckb-debugger"/*, "ckb-cli"*/ };
+        readonly List<string> binaries = new() { "ckb", "ckb-indexer", "ckb-debugger", "ckb-cli" };
 
         internal void Refresh()
         {

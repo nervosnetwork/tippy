@@ -51,8 +51,8 @@ namespace Ckb.Types
         [JsonProperty(PropertyName = "transactions_root")]
         public string TransactionsRoot { get; set; }
 
-        [JsonProperty(PropertyName = "uncles_hash")]
-        public string UnclesHash { get; set; }
+        [JsonProperty(PropertyName = "extra_hash")]
+        public string ExtraHash { get; set; }
 
         [JsonProperty(PropertyName = "version")]
         public string Version { get; set; }
