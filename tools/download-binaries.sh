@@ -14,8 +14,8 @@ function download_ckb_macos() {
   unzip -o ${CKB_FILENAME}.zip ${CKB_FILENAME}/ckb ${CKB_FILENAME}/ckb-cli
   cp ${CKB_FILENAME}/ckb ./
   chmod +x ./ckb
-  # cp ${CKB_FILENAME}/ckb-cli ./
-  # chmod +x ./ckb-cli
+  cp ${CKB_FILENAME}/ckb-cli ./
+  chmod +x ./ckb-cli
   rm -rf $CKB_FILENAME
   rm ${CKB_FILENAME}.zip
 }
@@ -29,8 +29,8 @@ function download_ckb_linux() {
   tar xvzf ${CKB_FILENAME}.tar.gz ${CKB_FILENAME}/ckb ${CKB_FILENAME}/ckb-cli
   cp ${CKB_FILENAME}/ckb ./
   chmod +x ./ckb
-  # cp ${CKB_FILENAME}/ckb-cli ./
-  # chmod +x ./ckb-cli
+  cp ${CKB_FILENAME}/ckb-cli ./
+  chmod +x ./ckb-cli
   rm -rf $CKB_FILENAME
   rm ${CKB_FILENAME}.tar.gz
 }
@@ -43,7 +43,7 @@ function download_ckb_windows() {
   curl -O -L "https://github.com/nervosnetwork/ckb/releases/download/v${CKB_VERSION}/${CKB_FILENAME}.zip"
   unzip -o ${CKB_FILENAME}.zip ${CKB_FILENAME}/ckb.exe ${CKB_FILENAME}/ckb-cli.exe
   cp ${CKB_FILENAME}/ckb.exe ./
-  # cp ${CKB_FILENAME}/ckb-cli.exe ./
+  cp ${CKB_FILENAME}/ckb-cli.exe ./
   rm -rf $CKB_FILENAME
   rm ${CKB_FILENAME}.zip
 }
@@ -94,7 +94,7 @@ function download_ckb_debugger_macos() {
   mkdir -p $ROOT_DIR/src/Tippy.Ctrl/BinDeps/mac
   cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/mac
 
-  curl -O -L "https://github.com/nervosnetwork/ckb-standalone-debugger/releases/download/v${CKB_DEBUGGER_VERSION}/${FILENAME}"
+  curl -O -L "https://github.com/nervosnetwork/ckb-standalone-debugger/releases/download/${CKB_DEBUGGER_VERSION}/${FILENAME}"
   tar xvzf $FILENAME ckb-debugger
   chmod +x ./ckb-debugger
   rm -rf $FILENAME
@@ -105,7 +105,7 @@ function download_ckb_debugger_linux() {
   mkdir -p $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
   cd $ROOT_DIR/src/Tippy.Ctrl/BinDeps/linux
 
-  curl -O -L "https://github.com/nervosnetwork/ckb-standalone-debugger/releases/download/v${CKB_DEBUGGER_VERSION}/${FILENAME}"
+  curl -O -L "https://github.com/nervosnetwork/ckb-standalone-debugger/releases/download/${CKB_DEBUGGER_VERSION}/${FILENAME}"
   tar xvzf $FILENAME ckb-debugger
   chmod +x ./ckb-debugger
   rm -rf $FILENAME

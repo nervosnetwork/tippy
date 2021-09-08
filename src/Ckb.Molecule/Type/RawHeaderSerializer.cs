@@ -16,7 +16,7 @@ namespace Ckb.Molecule.Type
                 new Byte32Serializer(header.ParentHash),
                 new Byte32Serializer(header.TransactionsRoot),
                 new Byte32Serializer(header.ProposalsHash),
-                new Byte32Serializer(header.UnclesHash),
+                new Byte32Serializer(header.ExtraHash),
                 new Byte32Serializer(header.Dao),
             })
         { }

@@ -20,14 +20,22 @@
     <div class="column is-10 is-offset-1">
         <form method="post">
             <div class="field">
-                <label class="label">Upload a binary to replace this script.</label>
+                <label class="label">Fill in the path of a binary to replace this script.</label>
                 <div class="control">
                     <input asp-for="FilePath" class="input is-info" type="text" placeholder="Absolute File Path" />
                 </div>
             </div>
             <div class="field">
+                <label class="label">CKB-VM version to use. See <a href="https://github.com/nervosnetwork/rfcs/pull/236">here</a> for more details.</label>
                 <div class="control">
-                    <button asp-page="./Debugger/Details" class="button is-link is-light">Replace</button>
+                    <div class="select">
+                        <select asp-for="ScriptVersion" asp-items="Model.ScriptVersions"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button asp-page="./Debugger/Details" class="button is-link is-light">Restart</button>
                 </div>
             </div>
         </form>

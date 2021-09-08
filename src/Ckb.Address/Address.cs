@@ -37,7 +37,16 @@ namespace Ckb.Address
             }
             else
             {
-                data.Add(script.HashType == "type" ? 4 : 2);
+                int? formatType = null;
+                if (script.HashType == "type") {
+                    formatType = 4;
+                } else if (script.HashType == "data") {
+                    formatType = 2;
+                }
+                if (formatType == null) {
+                    throw new Exception($"Invalid script hash_type: {script.HashType}");
+                }
+                data.Add((int)formatType);
                 foreach (byte c in Types.Convert.HexStringToBytes(script.CodeHash))
                 {
                     data.Add(Convert.ToInt32(c));

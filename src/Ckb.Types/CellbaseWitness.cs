@@ -42,7 +42,17 @@ namespace Ckb.Types
                 .ToArray();
 
             string codeHash = Convert.BytesToHexString(codeHashSerialization);
-            string hashType = Convert.BytesToHexString(hashTypeSerialization) == "0x00" ? "data" : "type";
+            string hashTypeBytes = Convert.BytesToHexString(hashTypeSerialization);
+            string hashType;
+            if (hashTypeBytes == "0x00") {
+                hashType = "data";
+            } else if (hashTypeBytes == "0x01") {
+                hashType = "type";
+            } else if (hashTypeBytes == "0x02") {
+                hashType = "data1";
+            } else {
+                throw new Exception($"Invalid hash type value: {hashTypeBytes}");
+            }
             string args = Convert.BytesToHexString(argsSerialization);
 
             return new Script()
