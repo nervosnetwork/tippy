@@ -75,11 +75,11 @@ namespace Tippy.Helpers
                     };
                 }).ToArray();
                 var doutlist = dOutputs.ToList();
-                //如果是创世区块
+                //if the 0 block,specal deal unuse data
                 if (blockNumber == 0&& doutlist.Count>9)
                 {
-                    doutlist.RemoveRange(0, 5); //根据配置文件调整
-                    doutlist.RemoveRange(doutlist.Count() - 4, 4);
+                    doutlist.RemoveRange(0, 5); //by the dev setting cell 
+                    doutlist.RemoveRange(doutlist.Count() - 4, 4); //by the dev setting cell 
                 }
                 return (dInputs, doutlist.ToArray());
             }
