@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Ckb.Address;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
-
+using Tippy.Ctrl;
+using Tippy.Shared.MyConstracts;
 namespace Tippy.Pages.Projects
 {
     public class CreateModel : PageModelBase
@@ -14,8 +18,15 @@ namespace Tippy.Pages.Projects
         {
         }
 
+        [BindProperty]
+
+        [Display(Name = "Constracts")]
+        public List<Domain_ConstractFile>  ConstractFiles{ get; set; }
+
         public void OnGet()
         {
+
+            ConstractFiles = WorkPathManage.GetListOfConstractFiles().Select(item => new Domain_ConstractFile { filename= item.Name, filepath=item.FullName}).ToList() ;
             var calculatingFromUsed = Projects.Count > 0;
             var rpcPorts = Projects.Select(p => p.NodeRpcPort);
             var networkPorts = Projects.Select(p => p.NodeNetworkPort);
@@ -42,12 +53,31 @@ namespace Tippy.Pages.Projects
             {
                 Project.LockArg = Address.ParseAddress(Project.LockArg, Project.LockArg.Substring(0, 3)).Args;
             }
+           
+           
             Project.Tokens = new List<Token>();
             Project.RecordedTransactions = new List<RecordedTransaction>();
             Project.IsActive = !Projects.Any(p => p.IsActive);
             DbContext.Projects.Add(Project);
             await DbContext.SaveChangesAsync();
+            foreach (var item in ConstractFiles)
+            {
+                if (item.selectforintockb)
+                {
+                    DbContext.Contracts.Add(new Contracts
+                    {
+                        ProjectId = Project.Id,
+                        createtime = DateTime.Now,
+                        filename = item.filename,
+                        filepath = item.filepath
+                    });
+                }
 
+            }
+            await DbContext.SaveChangesAsync();
+
+            
+          
             return RedirectToPage("./Index");
         }
     }

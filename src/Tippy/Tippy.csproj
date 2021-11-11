@@ -27,20 +27,41 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="BinDeps\linux\ckb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BinDeps\linux\ckb-debugger">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BinDeps\linux\ckb-indexer">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BinDeps\win\ckb-indexer.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BinDeps\win\ckb.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BinDeps\win\ckb\ckb-indexer.exe" />
+    <Content Include="BinDeps\win\ckb\ckb.exe" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Ckb.Address\Ckb.Address.csproj" />
     <ProjectReference Include="..\Ckb.Cryptography\Ckb.Cryptography.csproj" />
-    <ProjectReference Include="..\Ckb.Molecule\Ckb.Molecule.csproj" />
+    <ProjectReference Include="..\Ckb.Types\Ckb.Types.csproj" />
     <ProjectReference Include="..\Tippy.Core\Tippy.Core.csproj" />
     <ProjectReference Include="..\Tippy.Ctrl\Tippy.Ctrl.csproj" />
     <ProjectReference Include="..\Ckb.Rpc\Ckb.Rpc.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\Ckb.Molecule\Ckb.Molecule.csproj" />
-    <ProjectReference Include="..\Ckb.Cryptography\Ckb.Cryptography.csproj" />
+    <ProjectReference Include="..\Tippy.Shared\Tippy.Shared.csproj" />
+    <ProjectReference Include="..\Tippy.Util\Tippy.Util.csproj" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <Folder Include="Pages\LiveCells\" />
     <Folder Include="TagHelpers\" />
     <Folder Include="Hubs\" />
   </ItemGroup>
@@ -67,5 +88,96 @@
 
   <ItemGroup>
     <None Include="libman.json" />
+    <None Include="wwwroot\css\bulma-rtl.css.map" />
+    <None Include="wwwroot\css\bulma.css.map" />
+    <None Include="wwwroot\js\jquery-3.6.0.min.js" />
+    <None Include="wwwroot\js\log.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\sass\.gitignore" />
+    <None Include="wwwroot\sass\bulma-dracula\bulma-dracula-vars.scss" />
+    <None Include="wwwroot\sass\bulma-dracula\bulma-dracula.scss" />
+    <None Include="wwwroot\sass\bulma\bulma.sass" />
+    <None Include="wwwroot\sass\bulma\sass\base\generic.sass" />
+    <None Include="wwwroot\sass\bulma\sass\base\helpers.sass" />
+    <None Include="wwwroot\sass\bulma\sass\base\minireset.sass" />
+    <None Include="wwwroot\sass\bulma\sass\base\_all.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\breadcrumb.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\card.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\dropdown.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\level.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\media.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\menu.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\message.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\modal.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\navbar.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\pagination.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\panel.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\tabs.sass" />
+    <None Include="wwwroot\sass\bulma\sass\components\_all.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\box.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\button.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\container.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\content.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\form.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\icon.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\image.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\notification.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\other.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\progress.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\table.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\tag.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\title.sass" />
+    <None Include="wwwroot\sass\bulma\sass\elements\_all.sass" />
+    <None Include="wwwroot\sass\bulma\sass\form\checkbox-radio.sass" />
+    <None Include="wwwroot\sass\bulma\sass\form\file.sass" />
+    <None Include="wwwroot\sass\bulma\sass\form\input-textarea.sass" />
+    <None Include="wwwroot\sass\bulma\sass\form\select.sass" />
+    <None Include="wwwroot\sass\bulma\sass\form\shared.sass" />
+    <None Include="wwwroot\sass\bulma\sass\form\tools.sass" />
+    <None Include="wwwroot\sass\bulma\sass\form\_all.sass" />
+    <None Include="wwwroot\sass\bulma\sass\grid\columns.sass" />
+    <None Include="wwwroot\sass\bulma\sass\grid\tiles.sass" />
+    <None Include="wwwroot\sass\bulma\sass\grid\_all.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\color.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\flexbox.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\float.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\other.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\overflow.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\position.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\spacing.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\typography.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\visibility.sass" />
+    <None Include="wwwroot\sass\bulma\sass\helpers\_all.sass" />
+    <None Include="wwwroot\sass\bulma\sass\layout\footer.sass" />
+    <None Include="wwwroot\sass\bulma\sass\layout\hero.sass" />
+    <None Include="wwwroot\sass\bulma\sass\layout\section.sass" />
+    <None Include="wwwroot\sass\bulma\sass\layout\_all.sass" />
+    <None Include="wwwroot\sass\bulma\sass\utilities\animations.sass" />
+    <None Include="wwwroot\sass\bulma\sass\utilities\controls.sass" />
+    <None Include="wwwroot\sass\bulma\sass\utilities\derived-variables.sass" />
+    <None Include="wwwroot\sass\bulma\sass\utilities\functions.sass" />
+    <None Include="wwwroot\sass\bulma\sass\utilities\initial-variables.sass" />
+    <None Include="wwwroot\sass\bulma\sass\utilities\mixins.sass" />
+    <None Include="wwwroot\sass\bulma\sass\utilities\_all.sass" />
+    <None Include="wwwroot\sass\README.md" />
+    <None Include="wwwroot\sass\theme.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="BinDeps\ChainSpecTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BinDeps\scripts\dao">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BinDeps\scripts\secp256k1_blake160_multisig_all">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BinDeps\scripts\secp256k1_blake160_sighash_all">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="BinDeps\scripts\secp256k1_data">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

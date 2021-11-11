@@ -94,6 +94,7 @@ namespace Tippy.Pages.Transactions
                     detail.BlockTimestamp = Hex.HexToUInt64(header.Timestamp).ToString();
 
                     var (displayInputs, displayOutputs) = GenerateCellbaseDisplayInfos(client, txhash, tx.Outputs, blockNumber, prefix);
+
                     detail.DisplayInputs = displayInputs;
                     detail.DisplayOutputs = displayOutputs;
                 }

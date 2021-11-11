@@ -1,7 +1,9 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Tippy.Core.Models;
 using Tippy.Ctrl;
 
@@ -30,7 +32,8 @@ namespace Tippy.Pages.Projects
                 return NotFound();
             }
 
-            Project = await _context.Projects.FindAsync(id);
+            Project = _context.Projects.Include(p => p.Contracts).Where(p => p.Id == id).FirstOrDefault();
+                //await _context.Projects.Include.FindAsync(id);
 
             if (Project != null)
             {

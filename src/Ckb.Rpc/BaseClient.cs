@@ -21,7 +21,6 @@ namespace Ckb.Rpc
             webRequest.ContentType = "application/json";
             webRequest.Method = "POST";
             webRequest.KeepAlive = true;
-
             var request = new RequestObject
             {
                 Method = method,

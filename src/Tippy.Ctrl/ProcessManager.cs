@@ -34,7 +34,7 @@ namespace Tippy.Ctrl
         static readonly List<ProcessGroup> processGroups = new();
 
         static ProcessGroup? GroupFor(Project project) =>
-            processGroups.Find(g => g.ProcessInfo == ProcessInfo.FromProject(project));
+            processGroups.Find(g => g.ProcessInfo.ID == ProcessInfo.FromProject(project).ID);
 
         public static bool IsRunning(Project project) => project != null && GroupFor(project) != null;
         public static bool IsMinerRunning(Project project)

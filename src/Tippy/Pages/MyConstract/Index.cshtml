@@ -1,0 +1,111 @@
+﻿@page
+@model Tippy.Pages.MyConstract.IndexModel
+
+@{ ViewData["Title"] = "MyContract"; }
+
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Constracts</h1>
+    </div>
+    <div class="level-right">
+
+        <form  id="formupload" method="post" enctype="multipart/form-data">
+
+            <div class="file is-info has-name">
+                <label class="file-label">
+                    <input class="file-input" id="myfile"  type="file" asp-for="FileUpload.UploadPrivateSchedule">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Info file…
+                        </span>
+                    </span>
+                    <span class="file-name">
+                        your constract file
+                    </span>
+                </label>
+            </div>
+
+            <input type="submit"  hidden="hidden" id="uploadbtn"  width="0" value="upload" />
+
+        </form>
+
+
+    </div>
+</div>
+<form  method="post">
+    <table class="table is-fullwidth">
+        <thead>
+            <tr>
+                <th>ConstractName</th>
+                <th>CreateTime</th>
+                <th>ModifyTime</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tfoot>
+
+        </tfoot>
+        <tbody>
+
+            @foreach (var item in Model.constractFiles)
+            {
+                <tr>
+                    <th>@item.filename</th>
+                    <th>@item.filecreatetime</th>
+                    <th>@item.modifytime</th>
+                    <th style="text-align:center;"><button asp-page-handler="Delete" onclick="return confirm('are you sure delete ?');" asp-route-filepath="@item.filepath" class="delete is-medium"></button></th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+@section Scripts{
+    <script>
+
+        function confirmdelete() {
+            alert(111);
+            Lobibox.confirm({
+                msg: "<span style='color:black;'>Are you sure you want to upload the contract:" + $("#myfile").val() + " ?" + "</span>",
+
+                callback: function ($this, type, ev) {
+                    if (type == "yes") {
+                        $("#uploadbtn").trigger("click");
+                    } else {
+                        $("#myfile").val("");
+                        $(".file-name").text(" your constract file");
+                    }
+
+                }
+            });
+        }
+        $(function () {
+
+            $("#myfile").change(function () {
+                if ($("#myfile").val() == "") {
+                    return;
+                }
+                $(".file-name").text($("#myfile").val());
+                Lobibox.confirm({
+                    msg: "<span style='color:black;'>Are you sure you want to upload the contract:" + $("#myfile").val() + " ?"+"</span>",
+                    
+                    callback: function ($this, type, ev) {
+                        if (type == "yes") {
+                            $("#uploadbtn").trigger("click");
+                        } else {
+                            $("#myfile").val("");
+                            $(".file-name").text(" your constract file");
+                        }
+                       
+                    }
+                });
+
+
+            });
+        });
+
+    </script>
+}
+
