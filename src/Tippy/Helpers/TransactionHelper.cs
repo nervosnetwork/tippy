@@ -76,10 +76,10 @@ namespace Tippy.Helpers
                 }).ToArray();
                 var doutlist = dOutputs.ToList();
                 //如果是创世区块
-                if (blockNumber == 0)
+                if (blockNumber == 0&& doutlist.Count>9)
                 {
-                    doutlist.RemoveRange(0,5); //根据配置文件调整
-                    doutlist.RemoveRange(doutlist.Count()-5, 4);
+                    doutlist.RemoveRange(0, 5); //根据配置文件调整
+                    doutlist.RemoveRange(doutlist.Count() - 4, 4);
                 }
                 return (dInputs, doutlist.ToArray());
             }

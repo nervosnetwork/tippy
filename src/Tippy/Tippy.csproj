@@ -61,6 +61,7 @@
 
 
   <ItemGroup>
+    <Folder Include="BinDeps\scripts\" />
     <Folder Include="Pages\LiveCells\" />
     <Folder Include="TagHelpers\" />
     <Folder Include="Hubs\" />
@@ -165,18 +166,6 @@
 
   <ItemGroup>
     <None Update="BinDeps\ChainSpecTemplate.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="BinDeps\scripts\dao">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="BinDeps\scripts\secp256k1_blake160_multisig_all">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="BinDeps\scripts\secp256k1_blake160_sighash_all">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="BinDeps\scripts\secp256k1_data">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
