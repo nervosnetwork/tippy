@@ -153,7 +153,8 @@ namespace Tippy.Api
                 NodeNetworkPort = calculatingFromUsed ? networkPorts.Max() + 3 : 8115,
                 IndexerRpcPort = calculatingFromUsed ? indexerPorts.Max() + 3 : 8116,
                 LockArg = param?.AssemblerLockArg ?? "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7",
-                ExtraToml = String.Join("\n\n", toml)
+                ExtraToml = String.Join("\n\n", toml),
+                
             };
             projects.ForEach(p => p.IsActive = false);
             project.IsActive = true;

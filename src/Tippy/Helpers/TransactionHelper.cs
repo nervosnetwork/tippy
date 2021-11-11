@@ -53,8 +53,35 @@ namespace Tippy.Helpers
                                 GeneratedTxHash = txHash,
                             }
                 };
-                var dOutputs = Array.Empty<DisplayOutput>();
-                return (dInputs, dOutputs);
+
+               // var dOutputs = Array.Empty<DisplayOutput>();
+                var dOutputs = outputs.Select((output, i) =>
+                {
+                    return new DisplayOutput
+                    {
+                        Id = $"{txHash}:{i}",
+                        Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
+                        AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
+                        TargetBlockNumber = blockNumber.ToString(),
+                        RealId = i,
+                        //PrimaryReward = Hex.HexToUInt64(minerReward.Primary).ToString(),
+                        //SecondaryReward = Hex.HexToUInt64(minerReward.Secondary).ToString(),
+                        //CommitReward = Hex.HexToUInt64(minerReward.Committed).ToString(),
+                        //ProposalReward = Hex.HexToUInt64(minerReward.Proposal).ToString(),
+
+                        // TODO: update Status & ConsumedTxHash
+                        Status = "live",
+                        ConsumedTxHash = "",
+                    };
+                }).ToArray();
+                var doutlist = dOutputs.ToList();
+                //if the 0 block,specal deal unuse data
+                if (blockNumber == 0&& doutlist.Count>9)
+                {
+                    doutlist.RemoveRange(0, 5); //by the dev setting cell 
+                    doutlist.RemoveRange(doutlist.Count() - 4, 4); //by the dev setting cell 
+                }
+                return (dInputs, doutlist.ToArray());
             }
             UInt64 targetBlockNumber = blockNumber + 1 - (UInt64)TxProposalWindow;
             var displayInputs = new DisplayInput[]
@@ -87,7 +114,7 @@ namespace Tippy.Helpers
                     Capacity = Hex.HexToUInt64(output.Capacity).ToString(),
                     AddressHash = Ckb.Address.Address.GenerateAddress(output.Lock, prefix),
                     TargetBlockNumber = targetBlockNumber.ToString(),
-
+                    RealId = i,
                     PrimaryReward = Hex.HexToUInt64(minerReward.Primary).ToString(),
                     SecondaryReward = Hex.HexToUInt64(minerReward.Secondary).ToString(),
                     CommitReward = Hex.HexToUInt64(minerReward.Committed).ToString(),

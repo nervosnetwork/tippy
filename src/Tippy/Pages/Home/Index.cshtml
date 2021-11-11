@@ -95,12 +95,12 @@
                     <div class="title current-block">@Model.TipBlockNumber</div>
                     @if (Model.ActiveProject.Chain == Tippy.Core.Models.Project.ChainType.Dev)
                     {
-                    <div class="heading">Miner</div>
-                    <div class="title is-5">
-                        <a title="@Model.MinerAddress" style="font-size: 80%;" asp-page="/Addresses/Details" asp-route-address="@Model.MinerAddress">
-                            @Model.MinerAddress.Substring(0, 18)...@Model.MinerAddress.Substring(Model.MinerAddress.Length - 18, 18)
-                        </a>
-                    </div>
+                     <div class="heading">Miner</div>
+                      <div class="title is-5">
+                         <a title="@Model.MinerAddress" style="font-size: 80%;" asp-page="/Addresses/Details" asp-route-address="@Model.MinerAddress">
+                                @Model.MinerAddress.Substring(0, 18)...@Model.MinerAddress.Substring(Model.MinerAddress.Length - 18, 18)
+                         </a>
+                        </div>
                     @if (Model.IsMinerRunning)
                     {
                         <form method="post" class="columns">
@@ -112,7 +112,7 @@
                                     <span>Stop</span>
                                 </button>
                             </div>
-                        </form>
+                          </form>
                     }
                     else
                     {
@@ -136,7 +136,7 @@
                             </div>
                         </form>
                         <p>
-                            <a asp-page="/Miners/Advanced" asp-route-id="@Model.ActiveProject.Id" class="has-text-primary-dark">Advanced mining</a>
+                           <a asp-page="/Miners/Advanced" asp-route-id="@Model.ActiveProject.Id" class="has-text-primary-dark">Advanced mining</a>
                         </p>
                     }
                 }

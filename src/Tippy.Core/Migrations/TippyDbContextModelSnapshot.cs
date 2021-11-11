@@ -16,6 +16,31 @@ namespace Tippy.Core.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("Tippy.Core.Models.Contracts", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("chainid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("filename")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("filepath")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Contracts");
+                });
+
             modelBuilder.Entity("Tippy.Core.Models.DeniedTransaction", b =>
                 {
                     b.Property<int>("Id")
@@ -157,6 +182,13 @@ namespace Tippy.Core.Migrations
                     b.ToTable("Tokens");
                 });
 
+            modelBuilder.Entity("Tippy.Core.Models.Contracts", b =>
+                {
+                    b.HasOne("Tippy.Core.Models.Project", null)
+                        .WithMany("contracts")
+                        .HasForeignKey("ProjectId");
+                });
+
             modelBuilder.Entity("Tippy.Core.Models.DeniedTransaction", b =>
                 {
                     b.HasOne("Tippy.Core.Models.Project", "Project")
@@ -192,6 +224,8 @@ namespace Tippy.Core.Migrations
 
             modelBuilder.Entity("Tippy.Core.Models.Project", b =>
                 {
+                    b.Navigation("contracts");
+
                     b.Navigation("DeniedTransactions");
 
                     b.Navigation("RecordedTransactions");

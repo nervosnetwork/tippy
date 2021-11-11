@@ -21,6 +21,7 @@ namespace Tippy.Pages.Transactions
         public Transaction Transaction = default!;
         public TransactionDetailResult TransactionDetail = default!;
         public List<String> OutputsData = default!;
+        public List<String> OutputsDataHash = new List<string>();
         public List<Script> OutputLockScripts = default!;
         public List<Script?> OutputTypeScripts = default!;
 
@@ -48,8 +49,27 @@ namespace Tippy.Pages.Transactions
             OutputsData = tx.Outputs.Select((o, i) =>
             {
                 o.Data = tx.OutputsData[i];
+                try
+                {
+                    LiveCell? cell = client.GetLiveCell(txhash, (ulong)i);
+                    if (cell != null && cell.cell != null)
+                    {
+                        OutputsDataHash.Add(cell.cell.data.hash);
+                    }
+                    else
+                    {
+                        OutputsDataHash.Add(""); 
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    OutputsDataHash.Add("");
+                }
                 return tx.OutputsData[i];
             }).ToList();
+
+
             OutputLockScripts = tx.Outputs.Select((o) => o.Lock).ToList();
             OutputTypeScripts = tx.Outputs.Select<Output, Script?>((o) => o.Type).ToList();
 
@@ -94,6 +114,7 @@ namespace Tippy.Pages.Transactions
                     detail.BlockTimestamp = Hex.HexToUInt64(header.Timestamp).ToString();
 
                     var (displayInputs, displayOutputs) = GenerateCellbaseDisplayInfos(client, txhash, tx.Outputs, blockNumber, prefix);
+
                     detail.DisplayInputs = displayInputs;
                     detail.DisplayOutputs = displayOutputs;
                 }

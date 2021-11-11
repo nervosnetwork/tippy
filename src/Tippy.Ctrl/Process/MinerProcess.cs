@@ -14,7 +14,8 @@ namespace Tippy.Ctrl.Process
 
             process = new System.Diagnostics.Process();
             process.StartInfo.UseShellExecute = false;
-            process.StartInfo.FileName = BinaryFullPath("ckb");
+           
+            process.StartInfo.FileName = BinaryFullPath(WorkPathManage.CkbForPaltform(ckbenum.ckb));
             process.StartInfo.WorkingDirectory = WorkingDirectory();
             process.StartInfo.Arguments = "miner";
         }

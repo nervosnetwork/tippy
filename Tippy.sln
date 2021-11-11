@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Molecule", "src\Ckb.Mol
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ckb.Molecule.Tests", "tests\Ckb.Molecule.Tests\Ckb.Molecule.Tests.csproj", "{3BD402C3-D2DC-4DA3-A3A2-AA880427FCF2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tippy.Shared", "src\Tippy.Shared\Tippy.Shared.csproj", "{8620ED2F-1A7D-47FD-B7AA-D76BC2E0E37A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{3BD402C3-D2DC-4DA3-A3A2-AA880427FCF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BD402C3-D2DC-4DA3-A3A2-AA880427FCF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BD402C3-D2DC-4DA3-A3A2-AA880427FCF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8620ED2F-1A7D-47FD-B7AA-D76BC2E0E37A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8620ED2F-1A7D-47FD-B7AA-D76BC2E0E37A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8620ED2F-1A7D-47FD-B7AA-D76BC2E0E37A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8620ED2F-1A7D-47FD-B7AA-D76BC2E0E37A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

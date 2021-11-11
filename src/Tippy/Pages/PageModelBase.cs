@@ -22,6 +22,7 @@ namespace Tippy.Pages
         protected readonly Tippy.Core.Data.TippyDbContext DbContext;
 
         public IList<Project> Projects { get; set; } = new List<Project>();
+       
         public Project? ActiveProject { get; set; }
         public UInt64 TipBlockNumber { get; set; }
         public EpochView? EpochView { get; set; }

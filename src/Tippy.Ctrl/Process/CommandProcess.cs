@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Tippy.Core.Models;
 
 namespace Tippy.Ctrl.Process
 {
@@ -32,24 +34,19 @@ namespace Tippy.Ctrl.Process
 
         public void Start()
         {
+
             if (!Directory.Exists(WorkingDirectory()))
             {
-                try
-                {
-                    Directory.CreateDirectory(WorkingDirectory());
-                }
-                catch (Exception ex)
-                {
-                    Debug.Fail($"Failed to create folder {ex}");
-                }
+                Directory.CreateDirectory(WorkingDirectory());
             }
 
             Stop();
 
             Configure();
-            HandleOutput();
 
+            HandleOutput();
             process?.Start();
+
             process?.BeginErrorReadLine();
             process?.BeginOutputReadLine();
         }
@@ -63,6 +60,36 @@ namespace Tippy.Ctrl.Process
                 process = null;
             }
         }
+
+        /// <summary>
+        /// copy the constracts files into the ckb working scripts directory
+        /// </summary>
+        protected void CopyTheConstractFiles(List<Contracts> paths)
+        {
+            var specs_cells_path = WorkingScriptDirectory();
+            if (!Directory.Exists(specs_cells_path))
+            {
+                Directory.CreateDirectory(specs_cells_path);
+                try
+                {
+                    foreach (var item in paths)
+                    {
+                        if (File.Exists(item.filepath))
+                        {
+                            File.Copy(item.filepath, Path.Combine(specs_cells_path, item.filename));
+
+                        }
+                    }
+                 }
+                catch (Exception e)
+                {
+
+                }
+            }
+        }
+
+
+       
 
         protected void HandleOutput()
         {
@@ -96,25 +123,39 @@ namespace Tippy.Ctrl.Process
             };
         }
 
-        internal string WorkingDirectory() =>
-            Path.Combine(Core.Environment.GetAppDataFolder(), $"chain-{ProcessInfo.ID}");
 
-        internal static string BinaryFullPath(string binary) =>
-            Path.Combine(Path.Combine(BinDepsDirectory()), binary);
+        internal  string WorkingDirectory() => WorkPathManage.WorkingDirectory(ProcessInfo.ID);
 
-        protected static string[] BinDepsDirectory()
+
+
+        /// <summary>
+        /// set the scripts directory
+        /// </summary>
+        /// <returns></returns>
+        internal string ScriptDirectory() => WorkPathManage.BinDepsPath();
+
+        /// <summary>
+        /// set the working scripts  directory
+        /// </summary>
+        /// <returns></returns>
+        internal  string WorkingScriptDirectory() => WorkPathManage.WorkingScriptDirectory(ProcessInfo.ID);
+
+
+        internal static string BinaryFullPath(string binary) => WorkPathManage.BinaryFullPath(binary);
+
+
+
+
+        internal static string[] BinDepsDirectory()
         {
-            var platformFolder = "win";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                platformFolder = "mac";
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                platformFolder = "linux";
-            }
-
-            return new[] { AppContext.BaseDirectory, "BinDeps", platformFolder };
+            return WorkPathManage.BinDepsDirectory();
         }
+
+        internal static string BinDepsPath(string childDirectory = "")
+        {
+            return WorkPathManage.BinDepsPath(childDirectory);
+
+        }
+
     }
 }

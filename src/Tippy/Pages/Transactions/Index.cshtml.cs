@@ -83,7 +83,7 @@ namespace Tippy.Pages.Transactions
                     continue;
                 }
 
-                var txs = block.Transactions.Skip(1).Select(tx =>
+                var txs = block.Transactions.Skip(0).Select(tx =>
                 {
                     UInt64 capacityInvolved = GetInputsCapacities(client, tx);
 
