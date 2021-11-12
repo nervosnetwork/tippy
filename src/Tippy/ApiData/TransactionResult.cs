@@ -186,6 +186,10 @@ namespace Tippy.ApiData
         // $"{txHash}:{index(int)}"
         [JsonPropertyName("id")]
         public string? Id { get; set; } = default!;
+        // $"{index(int)}"
+        [JsonPropertyName("realId")]
+        public int RealId { get; set; } = default!;
+
 
         [JsonPropertyName("sudt_info")]
         public SudtInfo? SudtInfo = null;

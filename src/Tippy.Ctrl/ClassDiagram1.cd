@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Tippy.Ctrl.Process.BinariesInfo" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAACAAAABAAAQAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Process\BinariesInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tippy.Ctrl.LogReceivedEventArgs" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProcessManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tippy.Ctrl.ProcessManager">
+    <Position X="5.25" Y="2" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Tippy.Ctrl.ProcessManager.MinerMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ProcessManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAkACAAAECAgBAAQCEAAYBABAAAIAAAAEAAAAg=</HashCode>
+      <FileName>ProcessManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Delegate Name="Tippy.Ctrl.NodeLogEventHandler" Collapsed="true">
+    <Position X="13.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProcessManager.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

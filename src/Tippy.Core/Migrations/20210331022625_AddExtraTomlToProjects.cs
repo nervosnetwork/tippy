@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tippy.Core.Migrations
 {
@@ -12,6 +12,8 @@ namespace Tippy.Core.Migrations
                 type: "TEXT",
                 nullable: false,
                 defaultValue: "");
+
+            
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -19,6 +21,7 @@ namespace Tippy.Core.Migrations
             migrationBuilder.DropColumn(
                 name: "ExtraToml",
                 table: "Projects");
+          
         }
     }
 }

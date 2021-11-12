@@ -20,6 +20,18 @@ namespace Ckb.Rpc
             return Call<Dictionary<string, object>>("get_blockchain_info") ?? fallback;
         }
 
+        /// <summary>
+        /// get a live cell entity
+        /// </summary>
+        /// <param name="txhash"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Types.LiveCell? GetLiveCell(string txhash,ulong index)
+        {
+            object[] methodParams = { new { index = Hex.UInt64ToHex(index), tx_hash= txhash },true };
+            return Call<Types.LiveCell>("get_live_cell", methodParams) ;
+        }
+
         public Types.Block? GetBlockByNumber(UInt64 num)
         {
             string[] methodParams = { Hex.UInt64ToHex(num) };

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tippy.Core.Migrations
 {
@@ -14,6 +14,7 @@ namespace Tippy.Core.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Chain = table.Column<string>(type: "TEXT", nullable: false),
+                   
                     NodeRpcPort = table.Column<int>(type: "INTEGER", nullable: false),
                     NodeNetworkPort = table.Column<int>(type: "INTEGER", nullable: false),
                     IndexerRpcPort = table.Column<int>(type: "INTEGER", nullable: false),
@@ -24,6 +25,24 @@ namespace Tippy.Core.Migrations
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Contracts",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProjectId = table.Column<string>(type: "INTEGER", nullable: false),
+                    filename = table.Column<string>(type: "TEXT", nullable: true),
+                    filepath = table.Column<int>(type: "TEXT", nullable: false),
+                    createtime= table.Column<int>(type: "DATETIME", nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contracts", x => x.id);
+                });
+
+
+
 
             migrationBuilder.CreateTable(
                 name: "Tokens",
@@ -63,6 +82,8 @@ namespace Tippy.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "Projects");
+            migrationBuilder.DropTable(
+               name: "Contracts");
         }
     }
 }
