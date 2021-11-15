@@ -4,7 +4,16 @@ WORKDIR /source
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
-COPY aspnetapp/*.csproj ./aspnetapp/
+COPY src/Ckb.Address/*.csproj ./aspnetapp/
+COPY src/Ckb.Cryptography/*.csproj ./aspnetapp/
+COPY src/Ckb.Molecule/*.csproj ./aspnetapp/
+COPY src/Ckb.Rpc/*.csproj ./aspnetapp/
+COPY src/Ckb.Types/*.csproj ./aspnetapp/
+COPY src/Tippy/*.csproj ./aspnetapp/
+COPY src/Tippy.Core/*.csproj ./aspnetapp/
+COPY src/Tippy.Ctrl/*.csproj ./aspnetapp/
+COPY src/Tippy.Shared/*.csproj ./aspnetapp/
+COPY src/Tippy.Util/*.csproj ./aspnetapp/
 RUN dotnet restore
 
 # copy everything else and build app
