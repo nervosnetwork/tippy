@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -8,6 +7,7 @@
       "sslPort": 0
     }
   },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
@@ -28,8 +28,8 @@
       "commandName": "Executable",
       "launchUrl": "http://172.30.117.86:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://172.30.117.86:5000"
+        "ASPNETCORE_URLS": "http://172.30.117.86:5000",
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "distributionName": ""
     },
@@ -37,10 +37,15 @@
       "commandName": "WSL2",
       "launchUrl": "http://172.30.112.1:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://172.30.112.1:5000"
+        "ASPNETCORE_URLS": "http://172.30.112.1:5000",
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "distributionName": ""
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/home",
+      "publishAllPorts": true
     }
   }
 }

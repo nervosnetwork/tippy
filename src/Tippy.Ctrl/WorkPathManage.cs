@@ -23,6 +23,8 @@ namespace Tippy.Ctrl
     {
         internal static string WorkingDirectory(int id) =>
          Path.Combine(Core.Environment.GetAppDataFolder(), $"chain-{id}");
+        
+      
 
         /// <summary>
         /// set the scripts directory

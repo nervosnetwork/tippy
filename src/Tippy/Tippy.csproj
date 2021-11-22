@@ -14,6 +14,8 @@
     <Copyright>Copyright (c) Nervos Foundation</Copyright>
     <Authors>Nervos Foundation</Authors>
     <Description>One click CKB devnet</Description>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
@@ -80,6 +82,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />
   </ItemGroup>
 
@@ -162,6 +165,12 @@
     <None Include="wwwroot\sass\bulma\sass\utilities\_all.sass" />
     <None Include="wwwroot\sass\README.md" />
     <None Include="wwwroot\sass\theme.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\js\lobibox.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

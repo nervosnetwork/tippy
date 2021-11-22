@@ -7,7 +7,28 @@ namespace Tippy.Core
 {
     public class Environment
     {
-        public static string GetAppDataFolder() => Path.Combine(GetSystemAppDataFolder(), "Tippy");
+        public static string GetAppDataFolder() {
+            //var datapath = GetSystemAppDataFolder();
+            //if (string.IsNullOrEmpty(datapath))
+            //{
+            //    datapath = "\\";
+            //    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            //    {
+            //        datapath = "/";
+            //    }
+            //    else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            //    {
+            //        datapath = "/";
+            //    }
+            //}
+
+            var datapath = AppContext.BaseDirectory;
+            var path= Path.Combine(datapath, "CKBSTATE");
+            return path;
+            
+           
+
+        } 
 
         public static void CreateAppDataFolder()
         {
