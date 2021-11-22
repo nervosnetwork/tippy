@@ -20,6 +20,12 @@ Tippy is pre-built as self-contained .Net Core application. You don't have to in
 
 ### On Linux:
 
+####  1、start with docker
+```
+docker run -it --rm -v /mnt/f/docker.tippy.user/CKBSTATE:/app/CKBSTATE  -v /mnt/f/docker.tippy.user/scripts:/app/BinDeps/scripts   -p 8000:80  --name tippy registry.cn-hangzhou.aliyuncs.com/nervos/tippy:0.3.3
+```
+
+####  2、also you can start with tippy Run files
 * Download `tippy-linux-x64.tar.gz`
 * Extract the tar.gz file (default to `tippy-linux-x64`)
 * Make `Tippy` executable: `chmod +x ./tippy-linux-x64/Tippy`
