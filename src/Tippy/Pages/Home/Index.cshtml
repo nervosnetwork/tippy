@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using Tippy.Util 
+@using Tippy.Util
 @model Tippy.Pages.Home.IndexModel
 @{
     ViewData["Title"] = "Dashboard";
@@ -17,35 +17,35 @@
 
 @if (Model.Projects.Count == 0)
 {
-  <div class="container my-2" style="text-align: center;">
-    <div class="pt-6 pb-2">
-      <span class="icon">
-        <i class="fas fa-exclamation-triangle fa-6x"></i>
-      </span>
-    </div>
-
-    <p class="mt-4 mb-6">You haven't set up any chain yet. To get started, you can...</p>
-
-    <form class="my-4" asp-page="./QuickStart" method="post">
-        <button class="button is-primary is-primary-button">
+    <div class="container my-2" style="text-align: center;">
+        <div class="pt-6 pb-2">
             <span class="icon">
-                <i class="fas fa-bolt"></i>
+                <i class="fas fa-exclamation-triangle fa-6x"></i>
             </span>
-            <strong>Launch a CKB devnet instantly</strong>
-        </button>
-    </form>
+        </div>
 
-    <p>or</p>
+        <p class="mt-4 mb-6">You haven't set up any chain yet. To get started, you can...</p>
 
-    <div class="my-4">
-        <a class="button is-primary is-primary-button" asp-page="/Projects/Create">
-            <span class="icon">
-                <i class="fas fa-plus"></i>
-            </span>
-            <strong>Create a customized chain to run</strong>
-        </a>
+        <form class="my-4" asp-page="./QuickStart" method="post">
+            <button class="button is-primary is-primary-button">
+                <span class="icon">
+                    <i class="fas fa-bolt"></i>
+                </span>
+                <strong>Launch a CKB devnet instantly</strong>
+            </button>
+        </form>
+
+        <p>or</p>
+
+        <div class="my-4">
+            <a class="button is-primary is-primary-button" asp-page="/Projects/Create">
+                <span class="icon">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <strong>Create a customized chain to run</strong>
+            </a>
+        </div>
     </div>
-  </div>
 }
 
 @if (Model.ActiveProject != null)
@@ -95,56 +95,80 @@
                     <div class="title current-block">@Model.TipBlockNumber</div>
                     @if (Model.ActiveProject.Chain == Tippy.Core.Models.Project.ChainType.Dev)
                     {
-                     <div class="heading">Miner</div>
-                      <div class="title is-5">
-                         <a title="@Model.MinerAddress" style="font-size: 80%;" asp-page="/Addresses/Details" asp-route-address="@Model.MinerAddress">
+                        <div class="heading">Miner</div>
+                        <div class="title is-5">
+                            <a title="@Model.MinerAddress" style="font-size: 80%;" asp-page="/Addresses/Details" asp-route-address="@Model.MinerAddress">
                                 @Model.MinerAddress.Substring(0, 18)...@Model.MinerAddress.Substring(Model.MinerAddress.Length - 18, 18)
-                         </a>
+                            </a>
                         </div>
-                    @if (Model.IsMinerRunning)
-                    {
-                        <form method="post" class="columns">
-                            <div class="column is-half">
-                                <button asp-page="/Miners/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #ff6960; width: 100%;">
-                                    <span class="icon">
-                                        <i class="fas fa-pause"></i>
-                                    </span>
-                                    <span>Stop</span>
-                                </button>
+                        @if (Model.IsMinerRunning)
+                        {
+                            <form method="post" class="columns">
+                                <div class="column is-half">
+                                    <button asp-page="/Miners/Stop" asp-route-id="@Model.ActiveProject.Id" class="button is-light is-medium my-1" style="color: #ff6960; width: 100%;">
+                                        <span class="icon">
+                                            <i class="fas fa-pause"></i>
+                                        </span>
+                                        <span>Stop</span>
+                                    </button>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            var disabled = !Model.CanStartMining;
+                            <form method="post" class="columns">
+                                <div class="column is-half">
+                                    <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                        <span class="icon">
+                                            <i class="fas fa-play"></i>
+                                        </span>
+                                        <span>Start</span>
+                                    </button>
+                                </div>
+                                <div class="column is-half">
+                                    <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                        <span class="icon">
+                                            <i class="fas fa-hammer"></i>
+                                        </span>
+                                        <span style="font-size: 80%;">Mine a block</span>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="columns">
+                                <div class="column is-full">
+                                    <button id="btn_mine_more" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
+                                        <span class="icon">
+                                            @*<i class="fas fa-hammer"></i>*@
+                                        </span>
+                                        <span style="font-size: 80%;">Mine more blocks</span>
+                                    </button>
+                                </div>
                             </div>
-                          </form>
+                            <div class="columns" id="formmore" style="text-align:center;">
+                                <div class="column is-three-quarters">
+                                    <input class="input is-small" type="text" id="txt_add_count" placeholder="enter count">
+                                </div>
+                                <div class="column" style="padding-bottom:-2em;">
+                                    <button onclick="add_more_blocks(@Model.ActiveProject.Id)" disabled=@disabled class="button is-black  is-small  my-1">
+                                        <span class="icon">
+                                            <i class="fas fa-hammer"></i>
+                                        </span>
+                                        <span>sure</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <p>
+                                <a asp-page="/Miners/Advanced" asp-route-id="@Model.ActiveProject.Id" class="has-text-primary-dark">Advanced mining</a>
+                            </p>
+                        }
                     }
                     else
                     {
-                        var disabled = !Model.CanStartMining;
-                        <form method="post" class="columns">
-                            <div class="column is-half">
-                                <button asp-page="/Miners/Start" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
-                                    <span class="icon">
-                                        <i class="fas fa-play"></i>
-                                    </span>
-                                    <span>Start</span>
-                                </button>
-                            </div>
-                            <div class="column is-half">
-                                <button asp-page="/Miners/GenerateBlock" asp-route-id="@Model.ActiveProject.Id" disabled=@disabled class="button is-light is-medium my-1" style="color: #b33ffe; width: 100%;">
-                                    <span class="icon">
-                                        <i class="fas fa-hammer"></i>
-                                    </span>
-                                    <span style="font-size: 80%;">Mine a block</span>
-                                </button>
-                            </div>
-                        </form>
-                        <p>
-                           <a asp-page="/Miners/Advanced" asp-route-id="@Model.ActiveProject.Id" class="has-text-primary-dark">Advanced mining</a>
-                        </p>
+                        <div class="heading">Miner</div>
+                        <div class="title is-5">Mining is disabled for @Model.ActiveProject.Chain.ToString().ToLower()</div>
                     }
-                }
-                else
-                {
-                    <div class="heading">Miner</div>
-                    <div class="title is-5">Mining is disabled for @Model.ActiveProject.Chain.ToString().ToLower()</div>
-                }
                 </div>
             </div>
             <div class="column" id="epoch-info">
@@ -243,11 +267,54 @@
     }
 }
 
-@section scripts {
+@section Scripts{
     <script>
+
         $(document).on("tipnumberupdated", (e) => {
             $(".current-block").text(e.message);
-            $("#epoch-info").load("/Home/EpochInfo");
+            $("#epoch-info").load("/home/epochinfo");
+        });
+        function add_more_blocks(id) {
+            var count = $("#txt_add_count").val();
+            
+            var list = { id: id, count: 1 };
+            for (var i = 0; i < count; i++) {
+                $.ajax({
+
+                    type: "Get",
+                    async: false,
+                    contentType: "application/json",
+                    dataType: "json",
+                    url: "/Miners/GenerateBlock?handler=minermoreblocks",
+
+
+                    data: $.param(list),//JSON.stringify(list),
+
+                    success: function (result) {
+                        if (result == "ok") {
+                            var currentcount = parseInt($(".current-block").text());
+                            $(".current-block").text(currentcount + 1);
+                        }
+
+                        
+                    },
+                    //请求失败，包含具体的错误信息
+                    error: function (e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                });
+            }
+           
+          
+         return false;
+        }
+        $(function () {
+            $("#formmore").hide();
+            $("#btn_mine_more").click(function () {
+                $("#formmore").toggle(500);
+                return false;
+            });
         });
     </script>
 }

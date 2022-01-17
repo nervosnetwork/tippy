@@ -18,6 +18,39 @@ namespace Tippy.Pages.Miners
         public Project? Project { get; set; }
         public void OnGet()
         {
+
+        }
+
+        public async Task<JsonResult> OnGetMinerMoreBlocks(int? id,int? count)
+        {
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            Project = await DbContext.Projects
+                .Include(p => p.DeniedTransactions)
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (Project != null)
+            {
+                try
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                           ProcessManager.StartMiner(Project, ProcessManager.MinerMode.SingleBlock);
+                    }
+                 
+                }
+                catch (System.InvalidOperationException e)
+                {
+                    TempData["ErrorMessage"] = e.Message;
+                }
+            }
+
+            var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();
+            return new JsonResult("ok");
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
@@ -32,11 +65,13 @@ namespace Tippy.Pages.Miners
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync();
 
+
+
             if (Project != null)
             {
                 try
                 {
-                    ProcessManager.StartMiner(Project, ProcessManager.MinerMode.SingleBlock);
+                   ProcessManager.StartMiner(Project, ProcessManager.MinerMode.SingleBlock);
                 }
                 catch (System.InvalidOperationException e)
                 {
