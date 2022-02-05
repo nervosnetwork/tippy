@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,12 +13,14 @@ namespace Tippy.Ctrl.Process
 
         protected override void Configure()
         {
+          
             InitalizeCkbIfNecessary();
             UpdateConfiguration();
 
             process = new System.Diagnostics.Process();
             process.StartInfo.UseShellExecute = false;
-            process.StartInfo.FileName = BinaryFullPath("ckb");
+       
+            process.StartInfo.FileName = BinaryFullPath(WorkPathManage.CkbForPaltform(ckbenum.ckb));
             process.StartInfo.WorkingDirectory = WorkingDirectory();
             process.StartInfo.Arguments = "run";
         }
@@ -28,33 +31,51 @@ namespace Tippy.Ctrl.Process
             {
                 return;
             }
-
+           
             using System.Diagnostics.Process process = new();
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardInput = true;
-            process.StartInfo.FileName = BinaryFullPath("ckb");
+          
+           process.StartInfo.FileName = BinaryFullPath(WorkPathManage.CkbForPaltform(ckbenum.ckb));
             process.StartInfo.WorkingDirectory = WorkingDirectory();
             process.StartInfo.Arguments = BuildArguments();
-            process.Start();
 
-            StreamWriter writer = process.StandardInput;
-            writer.Write(ChainSpec());
-            writer.Close();
+          
+
+            process.Start();
+           
+             StreamWriter writer = process.StandardInput;
+             writer.Write(ChainSpec());
+             writer.Close();
 
             process.WaitForExit();
+            CopyTheConstractFiles(ProcessInfo.Contracts);
         }
 
         public void Reset()
         {
             try
             {
-                Directory.Delete(Path.Combine(WorkingDirectory(), "indexer-data"), true);
-                Directory.Delete(Path.Combine(WorkingDirectory(), "data"), true);
+                var filepath = Path.Combine(WorkingDirectory(), "indexer-data");
+                if (File.Exists(filepath))
+                Directory.Delete(filepath, true);
+              
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Failed to reset project data, {e.Message}");
             }
+            try
+            {
+                var filepath = Path.Combine(WorkingDirectory(), "data");
+                if (File.Exists(filepath))
+                    Directory.Delete(Path.Combine(WorkingDirectory(), "data"), true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to reset project data, {e.Message}");
+            }
+
         }
 
         void UpdateConfiguration()
@@ -92,6 +113,7 @@ namespace Tippy.Ctrl.Process
         }
 
         string TomlFile => Path.Combine(WorkingDirectory(), "ckb.toml");
+       static string chainspectemplatefile => Path.Combine(new[] { AppContext.BaseDirectory, "BinDeps", "ChainSpecTemplate.txt" });
 
         string BuildArguments()
         {
@@ -107,6 +129,21 @@ namespace Tippy.Ctrl.Process
         {
             var spec = DevChainSpecTemplate;
             spec = spec.Replace("[GENESIS_CELL_MESSAGE]", "ckb_dev_" + ProcessInfo.ID);
+            spec = spec.Replace("0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7", ProcessInfo.LockArg);
+            var initcapacity = ModilfySpecToml.InitCapacity(ProcessInfo.InitCapacity);
+            var cstomesConstracts = ModilfySpecToml.InitCstomesConstracts(ProcessInfo.Contracts);
+            if (!string.IsNullOrEmpty(initcapacity))
+            {
+                spec = spec.Replace("{{Capacity}}", initcapacity);
+            }
+            if (!string.IsNullOrEmpty(initcapacity))
+            {
+                spec = spec.Replace("{{Customes_System_Cells}}", cstomesConstracts);
+            }
+            else
+            {
+                spec = spec.Replace("{{Customes_System_Cells}}", string.Empty);
+            }
             if (!String.IsNullOrEmpty(ProcessInfo.ExtraToml))
             {
                 spec += "\n" + ProcessInfo.ExtraToml + "\n";
@@ -119,10 +156,20 @@ namespace Tippy.Ctrl.Process
         {
             get
             {
-                var resourceName = "Tippy.Ctrl.ChainSpecTemplate.txt";
-                using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName)!;
-                using StreamReader reader = new StreamReader(stream);
-                return reader.ReadToEnd();
+                //var resourceName = "Tippy.Ctrl.ChainSpecTemplate.txt";
+                //using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName)!;
+                //using StreamReader reader = new StreamReader(stream);
+                //return reader.ReadToEnd();
+
+                if (File.Exists(chainspectemplatefile))
+                {
+                    return System.IO.File.ReadAllText(chainspectemplatefile);
+                }
+                else
+                {
+                    return "";
+                }
+                 
             }
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -38,16 +39,32 @@ namespace Tippy
 
         private static void CreateDbIfNotExists(IHost host)
         {
+           
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            var dbPath =Path.Combine(Core.Environment.GetAppDataFolder(), "tippy-db.db");
+            if (File.Exists(dbPath))
+            {
+                logger.LogWarning("the db path: " +dbPath+" is exist;");
+            }
+            else
+            {
+                logger.LogWarning("the db path: " + dbPath + " is  not exist;");
+            }
+            logger.LogWarning("the working path: "+WorkPathManage.WorkingScriptDirectory(0));
+          
             try
             {
                 var context = services.GetRequiredService<Core.Data.TippyDbContext>();
                 context.Database.Migrate();
+                
+                
             }
             catch (Exception ex)
             {
-                var logger = services.GetRequiredService<ILogger<Program>>();
+            
+
                 logger.LogError(ex, "An error occurred creating the DB.");
             }
         }
@@ -55,6 +72,7 @@ namespace Tippy
         static void OnAppExit(object? sender, EventArgs e)
         {
             Console.WriteLine("Exiting Tippy...");
+            string ss = "";
             ProcessManager.Stop();
         }
 

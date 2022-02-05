@@ -10,7 +10,7 @@ namespace Tippy.Pages.Projects
         {
         }
 
-        public Dictionary<Project, bool> RunningFlags { get; set; } = default!;
+        public Dictionary<Project, bool> RunningFlags { get; set; } = new Dictionary<Project, bool>();
 
         public void OnGet()
         {

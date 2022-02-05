@@ -8,7 +8,40 @@
 <div class="container">
     <div class="columns">
         <form method="post" class="column is-half is-offset-one-quarter">
-            <div class="box form-box">
+            <div class="box form-box ">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title has-text-dark">
+                            Select Contracts into chain.
+                        </p>
+                        <button id="btn" onclick="return false;" class="card-header-icon" aria-label="more options">
+                            <span class="icon">
+                                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </header>
+                    <div class="card-content" hidden="hidden">
+                        <div class="content">
+                            @for (int i = 0; i < Model.ConstractFiles.Count; i++)
+                            {
+
+                                <div>
+                                    <label class="checkbox">
+                                        <input type="checkbox" asp-for="@Model.ConstractFiles[i].selectforintockb">
+                                        @Model.ConstractFiles[i].filename
+                                        <input asp-for="@Model.ConstractFiles[i].filepath" type="hidden" />
+                                        <input asp-for="@Model.ConstractFiles[i].filename" type="hidden" />
+                                    </label>
+                                </div>
+
+
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+
                 <div asp-validation-summary="ModelOnly" class="has-text-danger-dark"></div>
                 <div class="field">
                     <div class="control">
@@ -17,6 +50,7 @@
                         <span asp-validation-for="Project.Name" class="has-text-danger-dark"></span>
                     </div>
                 </div>
+
                 <div class="field">
                     <label asp-for="Project.Chain" class="label"></label>
                     <div class="control">
@@ -37,6 +71,17 @@
                         <label asp-for="Project.NodeNetworkPort" class="label"></label>
                         <input asp-for="Project.NodeNetworkPort" class="input" />
                         <span asp-validation-for="Project.NodeNetworkPort" class="has-text-danger-dark"></span>
+                    </div>
+                </div>
+
+
+
+
+                <div class="field">
+                    <div class="control">
+                        <label asp-for="Project.InitCapacity" class="label"></label>
+                        <input asp-for="Project.InitCapacity" class="input" />
+                        <span asp-validation-for="Project.InitCapacity" class="has-text-danger-dark"></span>
                     </div>
                 </div>
                 <div class="field">
@@ -68,5 +113,13 @@
 </div>
 
 @section Scripts {
+    <script>
+        $(function () {
+            $("#btn").click(function () {
+                $(".card-content").toggle(500);
+            });
+        });
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
 }

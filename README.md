@@ -513,3 +513,19 @@ Add-Migration [MigrationName]
 ## Design
 
 Tippy's page design is based on [mazipan/bulma-admin-dashboard-template](https://github.com/mazipan/bulma-admin-dashboard-template).
+
+## Q&A
+
+### I'm using Tippy in WSL and I can see the Tippy UI via localhost:5000, but the height is always 0
+
+This is probably because you have proxy enabled. Try launching Tippy with the following command
+
+```
+unset HTTPS_PROXY HTTP_PROXY http_proxy https_proxy
+path/to/Tippy
+```
+
+### Where can I find the CKB node data started with Tippy
+
+- Linux: `~/.config/Tippy`
+- Win: `~/ApplicationData/Tippy`

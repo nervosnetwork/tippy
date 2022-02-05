@@ -23,6 +23,29 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5000"
+    },
+    "WSL": {
+      "commandName": "Executable",
+      "launchUrl": "http://172.30.117.86:5000",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "http://172.30.117.86:5000",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "distributionName": ""
+    },
+    "WSL_1": {
+      "commandName": "WSL2",
+      "launchUrl": "http://172.30.112.1:5000",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "http://172.30.112.1:5000",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "distributionName": ""
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/home",
+      "publishAllPorts": true
     }
   }
 }

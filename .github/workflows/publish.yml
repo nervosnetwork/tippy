@@ -1,22 +1,19 @@
 name: publish
 
 on:
-  pull_request:
-    branches:
-      - main
-    types: [closed]
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - '*'
 
 jobs:
   release:
     name: Create draft release
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
     steps:
     - name: Get tag
       id: get_tag
-      env:
-        HEAD_REF: ${{ github.event.pull_request.head.ref }}
-      run: echo ::set-output name=tag::${HEAD_REF#release\/}
+      run: echo ::set-output name=tag::$(echo $GITHUB_REF | cut -d / -f 3)
     - name: Create draft release
       id: create_release
       uses: actions/create-release@v1
@@ -44,7 +41,6 @@ jobs:
   publish-linux:
     name: Publish Linux
     needs: [release]
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
 
     steps:
@@ -103,7 +99,6 @@ jobs:
   publish-win:
     name: Publish Windows
     needs: [release]
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
 
     steps:
@@ -165,7 +160,6 @@ jobs:
   publish-mac:
     name: Publish macOS
     needs: [release]
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: macos-latest
 
     steps:

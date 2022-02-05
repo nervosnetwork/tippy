@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model Tippy.Pages.Debugger.DetailsModel
 @{ ViewData["Title"] = "Debugger"; }
 
@@ -35,13 +35,17 @@
 </div>
 
 <div class="columns">
-    <iframe class="column is-10 is-offset-1" height="640" src="http://localhost:7681"></iframe>
+    <iframe class="column is-10 is-offset-1" height="640" id="debugger-frame-1"></iframe>
 </div>
 
 <div class="columns" style="margin-top: 20px;">
-    <iframe class="column is-10 is-offset-1" height="320" src="http://localhost:7682"></iframe>
+    <iframe class="column is-10 is-offset-1" height="320" id="debugger-frame-2"></iframe>
 </div>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        $("#debugger-frame-1").attr("src", "http://" + window.location.hostname + ":7681");
+        $("#debugger-frame-2").attr("src", "http://" + window.location.hostname + ":7682");
+    </script>
 }

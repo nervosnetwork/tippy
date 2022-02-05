@@ -444,4 +444,29 @@ namespace Ckb.Types
         [JsonProperty(PropertyName = "dao")]
         public string Dao { get; set; }
     }
+
+
+
+    public class LiveCell
+    {
+        [JsonProperty(PropertyName = "cell")]
+        public Cell cell { get; set; } = default;
+        [JsonProperty(PropertyName = "status")]
+        public string status { get; set; }
+    }
+    public class Cell
+    {
+        [JsonProperty(PropertyName = "data")]
+        public CellData data { get; set; } = default;
+        [JsonProperty(PropertyName = "output")]
+        public Output output { get; set; } = default;
+        
+    }
+    public class CellData
+    {
+        [JsonProperty(PropertyName = "content")]
+        public string content { get; set; }
+        [JsonProperty(PropertyName = "hash")]
+        public string hash { get; set; }
+    }
 }

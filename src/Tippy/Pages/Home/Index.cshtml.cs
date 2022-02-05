@@ -1,6 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using Ckb.Address;
 using Ckb.Types;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tippy.Core;
 using Tippy.Ctrl;
@@ -23,12 +25,17 @@ namespace Tippy.Pages.Home
         public bool IsMinerRunning { get; set; }
         public bool CanStartMining { get; set; }
 
+
+        public Task<IActionResult> OnGetMinerMoreBlocks(int? id)
+        {
+            var referer = Request.GetTypedHeaders().Referer.ToString().ToLower();
+            return Task.FromResult<IActionResult>(RedirectToPage("./Index"));
+        }
         public void OnGet()
         {
             IsNodeRunning = ActiveProject != null && ProcessManager.IsRunning(ActiveProject);
             IsMinerRunning = IsNodeRunning && ProcessManager.IsMinerRunning(ActiveProject!);
             CanStartMining = IsNodeRunning && ProcessManager.CanStartMining(ActiveProject!);
-
             if (Settings.GetSettings().AppUrl.EndsWith("/"))
             {
                 ApiUrl = Settings.GetSettings().AppUrl + "api";

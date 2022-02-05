@@ -263,7 +263,7 @@
                 Lock Script
             </div>
             <div class="column is-12">
-                @{ var lockScript = Model.OutputLockScripts[index]; }
+                @{ var lockScript = Model.OutputLockScripts[output.RealId]; }
                 <pre>
 {
     code_hash: @lockScript.CodeHash,
@@ -272,7 +272,7 @@
 }</pre>
             </div>
 
-            @{ var typeScript = Model.OutputTypeScripts[index]; }
+            @{ var typeScript = Model.OutputTypeScripts[output.RealId]; }
             <div class="column is-2">
                 Type Script
             </div>
@@ -328,11 +328,14 @@
                 }
             </div>
 
-            <div class="column is-2">
-                Data
+            <div class="column is-12">
+                <span>Data</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red"> Cell Index: &nbsp;@output.RealId</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:red"> Hash Value: &nbsp;@Model.OutputsDataHash[output.RealId]</span>
             </div>
             <div class="column is-12">
-                <pre>@Model.OutputsData[index]</pre>
+             
+                <pre>@Model.OutputsData[output.RealId]</pre>
             </div>
         </div>
             <hr />

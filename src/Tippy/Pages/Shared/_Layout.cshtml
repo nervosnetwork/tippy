@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Lobibox.min.css" />
     <style>
     </style>
 </head>
@@ -23,11 +24,11 @@
                         <div class="project-menu-link level m-2">
                             <div class="level-left">
                                 <div>
-                                <div class="heading my-0">Chain</div>
-                                @{ 
-                                    var projectName = Model.ActiveProject?.Name ?? "NA";
-                                }
-                                <div class="title is-6">@projectName</div>
+                                    <div class="heading my-0">Chain</div>
+                                    @{
+                                        var projectName = Model.ActiveProject?.Name ?? "NA";
+                                    }
+                                    <div class="title is-6">@projectName</div>
                                 </div>
                             </div>
                             <div class="level-right">
@@ -50,18 +51,23 @@
                             }
 
                             <div class="bottom-fixed">
-                              <hr class="navbar-thin-divider" />
-                              <form class="" asp-page="./QuickStart" method="post">
-                                  <button class="button is-dark">
-                                      <span class="icon"><i class="fas fa-bolt"></i></span>
-                                      <span>Instant Launch</span>
-                                  </button>
-                              </form>
-                              <hr class="navbar-thin-divider" />
-                              <a asp-page="/Projects/Index" class="button is-dark">
-                                  <span class="icon"><i class="fas fa-layer-group"></i></span>
-                                  <span>Manage Chains</span>
-                              </a>
+                                <hr class="navbar-thin-divider" />
+                                <form class="" asp-page="./QuickStart" method="post">
+                                    <button class="button is-dark">
+                                        <span class="icon"><i class="fas fa-bolt"></i></span>
+                                        <span>Instant Launch</span>
+                                    </button>
+                                </form>
+                                <hr class="navbar-thin-divider" />
+                                <a asp-page="/Projects/Index" class="button is-dark">
+                                    <span class="icon"><i class="fas fa-layer-group"></i></span>
+                                    <span>Manage Chains</span>
+                                </a>
+                                <hr class="navbar-thin-divider" />
+                                <a asp-page="/MyConstract/Index" class="button is-dark">
+                                    <span class="icon"><i class="fab fa-fonticons"></i></span>
+                                    <span>My Constracts</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -103,7 +109,7 @@
                             </a>
                         </li>
                         @if (Model.ActiveProject != null && ProcessManager.IsRunning(Model.ActiveProject))
-                        { 
+                        {
                             <li>
                                 <a asp-page="/Blocks/Index">
                                     <span class="icon is-small"><i class="fas fa-server"></i></span>
@@ -191,7 +197,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script src="~/js/lobibox.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

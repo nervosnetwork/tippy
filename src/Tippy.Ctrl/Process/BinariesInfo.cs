@@ -7,24 +7,23 @@ namespace Tippy.Ctrl.Process
     {
         internal string Info { get; private set; } = "";
         internal bool HasDebuggerDeps { get; private set; } = false;
-        readonly List<string> binaries = new() { "ckb", "ckb-indexer", "ckb-debugger"/*, "ckb-cli"*/ };
-
+        readonly List<string> binaries = new() { WorkPathManage.CkbForPaltform(ckbenum.ckb), WorkPathManage.CkbForPaltform(ckbenum.ckbindexer), WorkPathManage.CkbForPaltform(ckbenum.ckbdebugger)/*, "ckb-cli"*/ };
+        //readonly List<string> binaries = new() { "ckb.exe", "ckb-indexer.exe", "ckb-debugger.exe"/*, "ckb-cli"*/ };
         internal void Refresh()
         {
             foreach (var binary in binaries)
             {
-                // ckb-debugger not supported on Windows yet.
-                if (OperatingSystem.IsWindows() && binary == "ckb-debugger")
-                {
-                    continue;
-                }
+                ///ckb - debugger not supported on Windows yet.
+                //if (OperatingSystem.IsWindows() && binary == WorkPathManage.CkbForPaltform(ckbenum.ckbdebugger))
+                //{
+                //    continue;
+                //}
 
                 System.Diagnostics.Process process = new();
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.FileName = CommandProcess.BinaryFullPath(binary);
                 process.StartInfo.Arguments = "--version";
                 process.StartInfo.WorkingDirectory = Core.Environment.GetAppDataFolder();
-
                 process.StartInfo.RedirectStandardOutput = true;
                 process.OutputDataReceived += (sender, e) =>
                 {
@@ -43,6 +42,7 @@ namespace Tippy.Ctrl.Process
             {
                 RefreshDebuggerDeps();
             }
+        
         }
 
         void RefreshDebuggerDeps()
