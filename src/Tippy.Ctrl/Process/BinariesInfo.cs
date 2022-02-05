@@ -13,18 +13,17 @@ namespace Tippy.Ctrl.Process
         {
             foreach (var binary in binaries)
             {
-               ///ckb - debugger not supported on Windows yet.
-                if (OperatingSystem.IsWindows() && binary == WorkPathManage.CkbForPaltform(ckbenum.ckbdebugger))
-                {
-                    continue;
-                }
+                ///ckb - debugger not supported on Windows yet.
+                //if (OperatingSystem.IsWindows() && binary == WorkPathManage.CkbForPaltform(ckbenum.ckbdebugger))
+                //{
+                //    continue;
+                //}
 
                 System.Diagnostics.Process process = new();
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.FileName = CommandProcess.BinaryFullPath(binary);
                 process.StartInfo.Arguments = "--version";
                 process.StartInfo.WorkingDirectory = Core.Environment.GetAppDataFolder();
-
                 process.StartInfo.RedirectStandardOutput = true;
                 process.OutputDataReceived += (sender, e) =>
                 {

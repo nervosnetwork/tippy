@@ -177,5 +177,8 @@
     <None Update="BinDeps\ChainSpecTemplate.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="BinDeps\win\ckb-debugger.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

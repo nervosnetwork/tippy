@@ -282,23 +282,22 @@
                 $.ajax({
 
                     type: "Get",
-                    async: false,
+                    async: true,
                     contentType: "application/json",
                     dataType: "json",
                     url: "/Miners/GenerateBlock?handler=minermoreblocks",
-
-
-                    data: $.param(list),//JSON.stringify(list),
-
+                    data: $.param(list),
                     success: function (result) {
+                        
                         if (result == "ok") {
+                          
                             var currentcount = parseInt($(".current-block").text());
-                            $(".current-block").text(currentcount + 1);
+                            $(".current-block").html(currentcount + 1);
+                        
                         }
 
                         
                     },
-                    //请求失败，包含具体的错误信息
                     error: function (e) {
                         console.log(e.status);
                         console.log(e.responseText);
